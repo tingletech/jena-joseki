@@ -5,16 +5,19 @@
 
 package org.joseki.server.processors;
 
+import org.apache.commons.logging.* ;
 import org.joseki.server.*;
 import org.joseki.server.module.* ;
 import com.hp.hpl.jena.rdf.model.*;
 
 /** General template 
  * @author      Andy Seaborne
- * @version     $Id: ProcessorCom.java,v 1.2 2004-11-03 17:37:55 andy_seaborne Exp $
+ * @version     $Id: ProcessorCom.java,v 1.3 2004-11-04 15:44:52 andy_seaborne Exp $
  */
-public abstract class ProcessorCom implements ProcessorModel, Loadable
+public abstract class ProcessorCom implements ProcessorModel, Processor, Interface, Loadable
 {
+    Log logger = LogFactory.getLog(ProcessorCom.class) ;
+    
     // Useful constant
     static protected Model emptyModel = ModelFactory.createDefaultModel() ;
     
@@ -35,9 +38,62 @@ public abstract class ProcessorCom implements ProcessorModel, Loadable
         mutatingOp = (mutating == MutatesModel) ;
     }
 
-    /** @see org.joseki.server.ProcessorModel#init(Resource, Resource)
+    
+    /** @see org.joseki.server.Processor */
+    public void exec(Request request, Response response) throws ExecutionException
+    {
+        logger.fatal("Not implemented") ;
+        throw new ExecutionException(ExecutionError.rcNotImplemented, 
+                                     "ProcessorCom.exec(Request, Response)") ;
+    }
+    
+    
+    /** @see org.joseki.module.Loadable#init(Resource, Resource)
      */
     public void init(Resource processor, Resource implementation) { }
+    
+    
+    public Model exec(Request request) throws ExecutionException
+    {
+        SourceModel src = request.getSourceModel() ;
+        if ( mutatingOp && src.isImmutable() )
+            throw new ExecutionException(ExecutionError.rcImmutableModel, "Immutable Model") ;
+        
+        boolean needsAbortOperation = false ; 
+        try {
+            src.startOperation(readOnlyLock) ;
+            needsAbortOperation = true ;
+            Model resultModel = exec(src, request) ;
+            src.endOperation() ;
+            needsAbortOperation = false ;
+            return resultModel ;
+        }
+        catch (ExecutionException ex)
+        {
+            needsAbortOperation = true ;
+            logger.trace("RDFException: "+ex.getMessage() ) ;
+            throw ex ;
+        }
+        catch (Exception ex)
+        {
+            needsAbortOperation = false ;
+            src.abortOperation() ;
+            logger.trace("Exception: "+ex.getMessage() ) ;
+            throw new ExecutionException(ExecutionError.rcInternalError, null) ;
+        }
+        finally
+        {
+            if ( needsAbortOperation )
+            {
+                needsAbortOperation = false ;
+                src.abortOperation();
+            }
+        }
+        //return emptyModel ;
+    }
+
+    /** Execute the operation - inside a transaction/MRSW lock when this is called */  
+    public abstract Model exec(SourceModel src, Request request)  throws ExecutionException ;
 }
 
 

@@ -6,18 +6,18 @@
 
 package org.joseki.server;
 
-import org.joseki.server.module.* ;
 import com.hp.hpl.jena.rdf.model.*;
 
-/** Interface for all processors.
- *  Query processors have their own, specialised interface.
+/** Interface to processors that return RDF graphs.
+ *
+ *  @see Processor
  *  @see QueryProcessor
- * 
+ *  
  * @author      Andy Seaborne
- * @version     $Id: ProcessorModel.java,v 1.1 2004-11-03 17:37:42 andy_seaborne Exp $
+ * @version     $Id: ProcessorModel.java,v 1.2 2004-11-04 15:44:58 andy_seaborne Exp $
  */
 
-public interface ProcessorModel extends Loadable
+public interface ProcessorModel extends Interface
 {
     /** Execute the operation.  
      * @return Model    Should not be null.

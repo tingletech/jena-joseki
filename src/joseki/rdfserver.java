@@ -13,7 +13,7 @@ import org.joseki.Joseki ;
 /** Command line application to run an RDF Server
  *
  * @author  Andy Seaborne
- * @version $Id: rdfserver.java,v 1.1 2004-11-03 10:15:05 andy_seaborne Exp $
+ * @version $Id: rdfserver.java,v 1.2 2004-11-04 15:44:59 andy_seaborne Exp $
  */
 
 
@@ -24,7 +24,7 @@ public class rdfserver
     public static boolean VERBOSE = false ;
     public static boolean DEBUG = false ;
 
-    public static final int defaultPort = 2020 ;
+    public static final int defaultPort = Joseki.defaultPort ;
     public static int port = defaultPort ;
     
     public static final String PortArg = "port" ;

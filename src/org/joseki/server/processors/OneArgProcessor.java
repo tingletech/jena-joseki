@@ -12,7 +12,7 @@ import com.hp.hpl.jena.rdf.model.*;
 
 /** General template for any operation that takes exactly one model as argument
  * @author      Andy Seaborne
- * @version     $Id: OneArgProcessor.java,v 1.2 2004-11-03 17:37:55 andy_seaborne Exp $
+ * @version     $Id: OneArgProcessor.java,v 1.3 2004-11-04 15:44:52 andy_seaborne Exp $
  */
 public abstract class OneArgProcessor extends ProcessorCom
 {
@@ -27,53 +27,31 @@ public abstract class OneArgProcessor extends ProcessorCom
     public int argsNeeded() { return ProcessorModel.ARGS_ONE ; }
 
     /**
-     * @see org.joseki.server.ProcessorModel#exec(Request)
+     * @see org.joseki.server.ProcessorModel#exec(SourceModel, Request)
      */
-    public Model exec(Request request) throws ExecutionException
+    public Model exec(SourceModel src, Request request) throws ExecutionException
     {
-        SourceModel src = request.getSourceModel() ;
-        if ( super.mutatingOp && src.isImmutable() )
-            throw new ExecutionException(ExecutionError.rcImmutableModel, "Immutable Model") ;
-        
-        boolean needsEndOperation = false ; 
         try {
-            src.startOperation(readOnlyLock) ;
-            needsEndOperation = true ;
-            try {
-                List graphs = request.getDataArgs() ;
-                Model resultModel = null ;
-                // Use only first arg - or should we cal for all args and return 
-                for ( Iterator iter = graphs.iterator() ; iter.hasNext() ; )
-                {
-                    Model graph = (Model)iter.next() ;
-                    Model r = execOneArg(src, graph, request) ;
-                    if ( resultModel == null )
-                        resultModel = r ;
-                    else
-                        resultModel.add(r) ;
-                }
-                return resultModel ;
-                
-            } catch (RDFException ex)
-            {
-                src.abortOperation() ;
-                logger.trace("RDFException: "+ex.getMessage() ) ;
-                throw new ExecutionException(ExecutionError.rcInternalError, null) ;
-            }
-            catch (Exception ex)
-            {
-                needsEndOperation = false ;
-                src.abortOperation() ;
-                logger.trace("Exception: "+ex.getMessage() ) ;
-                throw new ExecutionException(ExecutionError.rcInternalError, null) ;
-            }
-        } finally
+            if ( super.mutatingOp && src.isImmutable() )
+                throw new ExecutionException(ExecutionError.rcImmutableModel, "Immutable Model") ;
+            
+            List graphs = request.getDataArgs() ;
+            if ( graphs.size() != 1 )
+                throw new ExecutionException(ExecutionError.rcArgumentError, "Wrong number of arguments") ;
+            Model arg = (Model)graphs.get(0) ;
+            
+            Model r = execOneArg(src, arg, request) ;
+            return r ;
+            
+        } catch (RDFException ex)
         {
-            if ( needsEndOperation )
-            {
-                needsEndOperation = false ;
-                src.endOperation();
-            }
+            logger.trace("RDFException: "+ex.getMessage() ) ;
+            throw new ExecutionException(ExecutionError.rcInternalError, null) ;
+        }
+        catch (Exception ex)
+        {
+            logger.trace("Exception: "+ex.getMessage() ) ;
+            throw new ExecutionException(ExecutionError.rcInternalError, null) ;
         }
         //return emptyModel ;
     }

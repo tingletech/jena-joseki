@@ -2,34 +2,24 @@
  * (c) Copyright 2003, 2004 Hewlett-Packard Development Company, LP
  * [See end of file]
  */
- 
+
 package org.joseki.server;
 
-import com.hp.hpl.jena.rdf.model.Model ;
-import com.hp.hpl.jena.rdf.model.RDFException;
-
 /**
- * @author      Andy Seaborne
- * @version     $Id: QueryProcessor.java,v 1.3 2004-11-04 15:44:58 andy_seaborne Exp $
+ * Anything that has an operation that can say what it is. 
+ * 
+ * @author  Andy Seaborne
+ * @version $Id: Interface.java,v 1.1 2004-11-04 15:44:58 andy_seaborne Exp $
  */
-public interface QueryProcessor extends ProcessorModel
+
+
+public interface Interface
 {
-//    /** Map from short name for the query language (as used by GET dispatching)
-//     *  and the long URI.  String maps to String (not a URI object).
-//     */
-    //public Map getQueryLanguages() ;
-    
-    /* Execute a query and return a model (subgraph).
-     * The query argument supplied as string.
+    /** The URI for this class.
+     * When loading, must agree with the URI specified in the decription.
      */
-    public Model execQuery(SourceModel aModel, String queryString, Request request) throws RDFException, QueryExecutionException ;
-
-    /* Execute a query and return a model (subgraph).
-     * The query argument supplied as a model.
-     */
-    public Model execQuery(SourceModel aModel, Model queryModel, Request request) throws RDFException, QueryExecutionException ;
+    public String getInterfaceURI() ;
 }
-
 
 /*
  *  (c) Copyright 2003, 2004 Hewlett-Packard Development Company, LP

@@ -7,13 +7,14 @@ package org.joseki.server.processors;
 
 import org.apache.commons.logging.* ;
 import org.joseki.server.*;
+
 import com.hp.hpl.jena.rdf.model.*;
 
 /** General template for any operation that takes no models
  *  (in the request body) as arguments - they can have parameters.
  * 
  * @author      Andy Seaborne
- * @version     $Id: ZeroArgProcessor.java,v 1.2 2004-11-03 17:37:55 andy_seaborne Exp $
+ * @version     $Id: ZeroArgProcessor.java,v 1.3 2004-11-04 15:44:52 andy_seaborne Exp $
  */
 public abstract class ZeroArgProcessor extends ProcessorCom
 {
@@ -29,33 +30,28 @@ public abstract class ZeroArgProcessor extends ProcessorCom
     /**
      * @see org.joseki.server.ProcessorModel#exec(Request)
      */
-    public Model exec(Request request) throws ExecutionException
+    public Model exec(SourceModel src, Request request) throws ExecutionException
     {
-        SourceModel src = request.getSourceModel() ;
-        if ( super.mutatingOp && src.isImmutable() )
-            throw new ExecutionException(ExecutionError.rcImmutableModel, "Immutable Model") ;
-        
         try {
-            src.startOperation(readOnlyLock) ;
-            try {
-                Model resultModel = execZeroArg(src, request) ;
-                return resultModel ;
-            } catch (RDFException ex)
-            {
-                src.abortOperation() ;
-                logger.trace("RDFException: "+ex.getMessage() ) ;
-                throw new ExecutionException(ExecutionError.rcInternalError, null) ;
-            }
-            catch (Exception ex)
-            {
-                src.abortOperation() ;
-                logger.trace("Exception: "+ex.getMessage() ) ;
-                throw new ExecutionException(ExecutionError.rcInternalError, null) ;
-            }
-        } finally {src.endOperation(); }
+            if ( super.mutatingOp && src.isImmutable() )
+                throw new ExecutionException(ExecutionError.rcImmutableModel, "Immutable Model") ;
+            
+            Model r = execZeroArg(src, request) ;
+            return r ;
+            
+        } catch (RDFException ex)
+        {
+            logger.trace("RDFException: "+ex.getMessage() ) ;
+            throw new ExecutionException(ExecutionError.rcInternalError, null) ;
+        }
+        catch (Exception ex)
+        {
+            logger.trace("Exception: "+ex.getMessage() ) ;
+            throw new ExecutionException(ExecutionError.rcInternalError, null) ;
+        }
         //return emptyModel ;
     }
-    
+
     public abstract Model execZeroArg(SourceModel target, Request request)
         throws RDFException, ExecutionException ;
 }

@@ -6,21 +6,18 @@
 package org.joseki.server.processors;
 
 
-import org.joseki.util.* ;
 import org.joseki.vocabulary.*;
 import org.joseki.server.* ;
 
 import com.hp.hpl.jena.rdf.model.* ;
 import com.hp.hpl.jena.query.* ;
 
-
 import org.apache.commons.logging.* ;
-import java.util.* ;
 
 /** Query processor that executes a SPARQL query on a model
  * 
  * @author  Andy Seaborne
- * @version $Id: QueryProcessorSPARQL.java,v 1.1 2004-11-03 10:15:03 andy_seaborne Exp $
+ * @version $Id: QueryProcessorSPARQL.java,v 1.2 2004-11-04 15:44:52 andy_seaborne Exp $
  */
 
 public class QueryProcessorSPARQL extends QueryProcessorCom implements QueryProcessor
@@ -42,29 +39,34 @@ public class QueryProcessorSPARQL extends QueryProcessorCom implements QueryProc
                 ExecutionError.rcOperationNotSupported,
                 "Wrong implementation - this RDQL processor works with Jena models");         
         Model model = ((SourceModelJena)src).getModel() ;
-        QueryResults results = null ;
         
+        if ( queryString == null || queryString.equals("") )
+        {
+            logger.debug("Query: No query string provided") ;
+        }
+        else
+        {
+            String tmp = queryString ;
+            tmp = tmp.replace('\n', ' ') ;
+            tmp = tmp.replace('\r', ' ') ;
+            logger.debug("Query: "+tmp) ;
+        }
+        
+        if (queryString == null)
+            throw new QueryExecutionException(
+                ExecutionError.rcQueryExecutionFailure,
+                "No query supplied");
+        
+        return queryToModel(model, queryString) ;
+        
+    }
+    
+    private Model queryToModel(Model model, String queryString) throws QueryExecutionException
+    {
         try {
-            if ( queryString == null || queryString.equals("") )
-            {
-                logger.debug("Query: No query string provided") ;
-            }
-            else
-            {
-                String tmp = queryString ;
-                tmp = tmp.replace('\n', ' ') ;
-                tmp = tmp.replace('\r', ' ') ;
-                logger.debug("Query: "+tmp) ;
-            }
-            
-            if (queryString == null)
-                throw new QueryExecutionException(
-                    ExecutionError.rcQueryExecutionFailure,
-                    "No query supplied");
-            
             Query query = null ;
             try {
-                query = Query.create(queryString, Query.SyntaxDAWG) ;
+                query = Query.create(queryString, Query.SyntaxSPARQL) ;
             } catch (Throwable thrown)
             {
                 logger.info("Query parse error: request failed") ;
@@ -72,65 +74,35 @@ public class QueryProcessorSPARQL extends QueryProcessorCom implements QueryProc
             }
             
             query.setSource(model) ;
-
-            // Should choose a better execution engine that specialises in building a single subgraph
+            
             QueryExecution qe = QueryFactory.createQueryExecution(query) ;
             
-            results = qe.execSelect() ;
+            if ( query.isSelectType() )
+            {
+                QueryResults results = qe.execSelect() ;
+                ResultSetFormatter rsFmt = new  ResultSetFormatter(results) ;
+                return rsFmt.toModel() ;
+            }
             
+            if ( query.isConstructType() )
+                return qe.execConstruct() ;
             
-            String format = request.getParam("format");
-            // EXPERIMENTAL/undocumented
-            String closure$ = request.getParam("closure");
-            boolean closure = (closure$ != null && closure$.equalsIgnoreCase("true"));
-
-            Model resultModel = ModelFactory.createDefaultModel();
-
-            // EXPERIMENTAL/undocumented : closure over the result
-            // variables
-            if (closure)
+            if ( query.isDescribeType() )
+                return qe.execDescribe() ; 
+            
+            if ( query.isAskType() )
             {
-                doClosure(query, results, resultModel);
-                return resultModel;
+                logger.warn("Not implemented: ASK queries") ;
+                throw new QueryExecutionException(ExecutionError.rcOperationNotSupported, "ASK query") ;
             }
-
-            if (format == null)
-            {
-                for (; results.hasNext();)
-                {
-                    ResultBinding rb = (ResultBinding)results.next();
-                    rb.mergeTriples(resultModel, query);
-                }
-                resultModel.setNsPrefixes(model);
-                Map m = src.getPrefixes();
-                if (m != null)
-                    resultModel.setNsPrefixes(src.getPrefixes());
-                
-                return resultModel;
-            }
-
-            if (format.equalsIgnoreCase("BV") || format.equals("http://jena.hpl.hp.com/2003/07/query/BV"))
-            {
-                ResultSetFormatter fmt = new ResultSetFormatter(results) ;
-                fmt.asRDF(resultModel);
-                fmt.close() ;
-                resultModel.setNsPrefix("rs", "http://jena.hpl.hp.com/2003/03/result-set#");
-                return resultModel;
-            }
-
-            throw new QueryExecutionException(
-                ExecutionError.rcOperationNotSupported,
-                "Unknown results format requested: " + format);
+            
+            logger.warn("Unknown query type") ;
+            throw new QueryExecutionException(ExecutionError.rcOperationNotSupported, "Unknown query type") ;
         }
         catch (QueryException qEx)
         {
             logger.info("Query execution error: "+qEx) ;
             throw new QueryExecutionException(ExecutionError.rcQueryExecutionFailure, null) ;
-        }
-        finally 
-        {
-            if ( results != null )
-                results.close() ;
         }
     }
     
@@ -154,25 +126,7 @@ public class QueryProcessorSPARQL extends QueryProcessorCom implements QueryProc
         }
         return resultModel ;
     }
-    
-    private void doClosure(Query query, QueryResults results, Model resultModel)
-    {
-        for (; results.hasNext() ; )
-        {
-            ResultBinding rb = (ResultBinding)results.next() ;
-            for ( Iterator iter = query.getResultVars().iterator() ; iter.hasNext() ; )
-            {
-                String var = (String)iter.next() ;
-                Object x = rb.get(var) ;
-                if ( ! ( x instanceof Resource ) )
-                {
-                    logger.warn("Non-resource in query closure: "+x) ;
-                    continue ;
-                }
-                Closure.closure((Resource)x, false, resultModel) ;
-            }
-        }
-    }   
+   
 }
 
 /*

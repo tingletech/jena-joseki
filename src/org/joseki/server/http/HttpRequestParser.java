@@ -17,12 +17,11 @@ import com.hp.hpl.jena.rdf.model.*;
 /** Extracting of information from incomiong HTTP servlet request.
  * 
  * @author      Andy Seaborne
- * @version     $Id: HttpRequestParser.java,v 1.2 2004-11-03 17:37:55 andy_seaborne Exp $
+ * @version     $Id: HttpRequestParser.java,v 1.3 2004-11-04 15:44:59 andy_seaborne Exp $
  */
 public class HttpRequestParser
 {
     static Log log = LogFactory.getLog(HttpRequestParser.class.getName()) ;
-    static public final String ENC_UTF8 = "UTF-8" ;
     
     public void setArgs(Request request, HttpServletRequest httpRequest) throws ExecutionException
     {
@@ -47,7 +46,7 @@ public class HttpRequestParser
                 log.warn("No data supplied - Content-length: "+len) ;
             
             HttpContentType ct = new HttpContentType(httpRequest.getContentType(),
-                                                     "RDF/XML", ENC_UTF8) ;
+                                                     "RDF/XML", HttpUtils.ENC_UTF8) ;
     
             // The reader uses encoding specified by the HTTP Header 
             BufferedReader r = httpRequest.getReader();

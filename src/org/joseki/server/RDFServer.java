@@ -16,6 +16,7 @@ import org.mortbay.jetty.servlet.* ;
 
 //import org.joseki.logging.LoggingControl;
 import org.joseki.server.http.*;
+import org.joseki.Joseki ;
 import org.apache.commons.logging.* ;
 
 //import org.apache.commons.logging.impl.Jdk14Logger;
@@ -23,7 +24,7 @@ import org.apache.commons.logging.* ;
 
 /** Standalone server.
  * 
- * @version $Id: RDFServer.java,v 1.2 2004-11-03 14:28:28 andy_seaborne Exp $
+ * @version $Id: RDFServer.java,v 1.3 2004-11-04 15:44:58 andy_seaborne Exp $
  * @author  Andy Seaborne
  */
 
@@ -48,9 +49,6 @@ public class RDFServer
      */  
     public static final String propertyModelSet   = "jena.rdfserver.modelset" ;
     
-    /** Default port for the server */
-    public static final int defaultPort = 2020 ;
-    
     /** Default location for the Joseki server */
     public static final String defaultServerBaseURI = "/" ;
     
@@ -69,9 +67,9 @@ public class RDFServer
      */
     public RDFServer(String configFile)
     {
-        String tmp = System.getProperty(propertyPort, defaultPort+"") ;
+        String tmp = System.getProperty(propertyPort, Joseki.defaultPort+"") ;
         int p = Integer.parseInt(tmp) ;
-        init(configFile, defaultPort, defaultServerBaseURI) ;
+        init(configFile, Joseki.defaultPort, defaultServerBaseURI) ;
     }
 
     /** Create a new RDFServer

@@ -5,6 +5,8 @@
 
 package org.joseki.server.module;
 
+import org.joseki.server.Interface;
+
 import com.hp.hpl.jena.rdf.model.* ;
 
 
@@ -13,11 +15,11 @@ import com.hp.hpl.jena.rdf.model.* ;
  * Understands the RDf properties for naming and initializing a new instance. 
  * 
  * @author  Andy Seaborne
- * @version $Id: Loadable.java,v 1.1 2004-11-03 10:15:04 andy_seaborne Exp $
+ * @version $Id: Loadable.java,v 1.2 2004-11-04 15:44:58 andy_seaborne Exp $
  */
 
 
-public interface Loadable
+public interface Loadable extends Interface
 {
     /** The URI for this loadable class.
      *  Must agree with the URI specified on loading (if any).

@@ -5,35 +5,23 @@
 
 
 package org.joseki.server;
-
-import org.joseki.server.module.* ;
-import java.io.OutputStream ;
+import org.joseki.server.module.Loadable;
 
 /** Interface for all processors.
- *  Query processors have their own, specialised interface.
  *  @see QueryProcessor
+ *  @see ProcessorModel
  * 
  * @author      Andy Seaborne
- * @version     $Id: Processor.java,v 1.2 2004-11-03 17:37:42 andy_seaborne Exp $
+ * @version     $Id: Processor.java,v 1.3 2004-11-04 15:44:58 andy_seaborne Exp $
  */
 
 public interface Processor extends Loadable
 {
-    /** Execute the operation.  
-     * @return Model    Should not be null.
+    /** Execute the operation in the Request object and
+     *  send the answers via the Response object.   
      */
 
-    public void exec(Request request, OutputStream out) throws ExecutionException ;
-    
-    static final int ARGS_ZERO         = 0 ;
-    static final int ARGS_ONE          = 1 ;
-    
-    static final int ARGS_ZERO_OR_ONE  = -1 ;
-    
-    /** Return the number of argument models this operation
-     *  expects in the input request.  For HTTP, this is zero or one.
-     */
-    public int argsNeeded() ;
+    public void exec(Request request, Response response) throws ExecutionException ;
 }
 
 /*

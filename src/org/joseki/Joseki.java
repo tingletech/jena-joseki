@@ -9,19 +9,20 @@ import java.util.* ;
 
 /** Constants and other definitions.
  * @author      Andy Seaborne
- * @version     $Id: Joseki.java,v 1.1 2004-11-03 10:15:06 andy_seaborne Exp $
+ * @version     $Id: Joseki.java,v 1.2 2004-11-04 15:44:59 andy_seaborne Exp $
  */
 public class Joseki
 {
+    public static final int defaultPort = 2022 ; 
     // TODO automate version number (read from file?) 
-    public static String version = "2.2" ;
+    public static String version = "3.0" ;
     public static String httpHeaderField = "X-Joseki-Server" ;
     public static String httpHeaderValue = "Joseki-"+version ;
     
     // TODO Split constants into client-side and server-side constants.
     // TODO Shared utils.
     
-    public static final String baseURI = "http://org.joseki/" ;
+    //public static final String baseURI = "http://joseki.org/" ;
 
     public static final String contentTypeN3 = "application/n3" ;
     public static final String contentTypeRDFXML = "application/rdf+xml" ;

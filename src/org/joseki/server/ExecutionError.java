@@ -6,7 +6,7 @@
 package org.joseki.server;
 
 /**
- * @version     $Id: ExecutionError.java,v 1.1 2004-11-03 10:15:01 andy_seaborne Exp $
+ * @version     $Id: ExecutionError.java,v 1.2 2004-11-04 15:44:58 andy_seaborne Exp $
  * @author      Andy Seaborne
  */
 
@@ -23,6 +23,7 @@ public class ExecutionError
     static public final int rcImmutableModel         = 10 ;
     static public final int rcConfigurationError     = 11 ;
     static public final int rcArgumentError          = 12 ;
+    static public final int rcNotImplemented         = 13 ;
     
     static public final int rcQueryParseFailure      = 100 ;
     static public final int rcQueryExecutionFailure  = 101 ;
@@ -44,6 +45,7 @@ public class ExecutionError
           "Immutable model" ,
           "Incorrect configuration" ,
           "Error in arguments", 
+          "Not implemented" ,
           null // Terminator
     };
 

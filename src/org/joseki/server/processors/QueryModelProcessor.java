@@ -6,7 +6,7 @@
 package org.joseki.server.processors;
 
 import org.joseki.server.* ;
-//import org.joseki.server.module.* ;
+import org.joseki.server.module.* ;
 import org.joseki.vocabulary.JosekiVocab;
 
 import com.hp.hpl.jena.rdf.model.* ;
@@ -18,15 +18,15 @@ import com.hp.hpl.jena.rdf.model.* ;
  *  model as property "joseki:queryOperationName".
  * 
  * @author      Andy Seaborne
- * @version     $Id: QueryModelProcessor.java,v 1.2 2004-11-03 17:37:55 andy_seaborne Exp $
+ * @version     $Id: QueryModelProcessor.java,v 1.3 2004-11-04 15:44:52 andy_seaborne Exp $
  */
-public class QueryModelProcessor implements ProcessorModel
+public class QueryModelProcessor implements ProcessorModel, Loadable
 {
     public QueryModelProcessor()
     {
     }
     
-    /** @see org.joseki.server.ProcessorModel#init(Resource, Resource)
+    /** @see org.joseki.server.module#init(Resource, Resource)
       */
      public void init(Resource processor, Resource binding) { }
      

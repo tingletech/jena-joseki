@@ -7,6 +7,7 @@ package org.joseki.server.processors;
 
 import org.apache.commons.logging.*;
 import org.joseki.server.*;
+import org.joseki.server.module.Loadable ; 
 import com.hp.hpl.jena.rdf.model.*;
 import com.hp.hpl.jena.rdf.model.RDFException;
 
@@ -15,9 +16,9 @@ import com.hp.hpl.jena.rdf.model.RDFException;
  *  ad a model (e.g. HTTP POST).
  * 
  * @author      Andy Seaborne
- * @version     $Id: QueryProcessorCom.java,v 1.2 2004-11-03 17:37:55 andy_seaborne Exp $
+ * @version     $Id: QueryProcessorCom.java,v 1.3 2004-11-04 15:44:52 andy_seaborne Exp $
  */
-public abstract class QueryProcessorCom implements QueryProcessor
+public abstract class QueryProcessorCom implements QueryProcessor, Loadable
 {
     static final Log logger = LogFactory.getLog(QueryProcessorCom.class.getName()) ; 
 
