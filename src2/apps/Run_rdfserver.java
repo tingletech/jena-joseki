@@ -26,9 +26,14 @@ public class Run_rdfserver
         // So the other threads must be daemon threads.  But why?
 
         for ( ; ; )
-            try {
-                Runtime.getRuntime().wait(10000) ;
-            } catch (Exception ex) {}
+        {
+            Object obj = new Object() ;
+            synchronized(obj)
+            {
+                // Remember to own the lock first.
+                try { obj.wait() ; } catch (Exception ex) {}
+            }
+        }
     }
     
     static void setPropertyDefault(String name, String value)
