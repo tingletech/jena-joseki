@@ -18,12 +18,12 @@ import org.apache.commons.logging.* ;
  *  Does not cause updates to the model to be propagated back to the disk file.
  *
  * @author Andy Seaborne
- * @version $Id: SourceControllerFile.java,v 1.2 2005-01-03 20:26:30 andy_seaborne Exp $
+ * @version $Id: SourceControllerFile.java,v 1.3 2005-01-14 18:17:11 andy_seaborne Exp $
  */ 
 
 public class SourceControllerFile implements SourceController, Loadable
 {
-    static Log logger = LogFactory.getLog(SourceControllerFile.class.getName()) ;
+    private static Log log = LogFactory.getLog(SourceControllerFile.class.getName()) ;
     
     String serverURI ;
     String filename ;
@@ -49,17 +49,17 @@ public class SourceControllerFile implements SourceController, Loadable
 
         if ( aModelStmt == null )
         {
-            logger.warn("Model: "+serverURI + " : No internal Jena model specified") ;
+            log.warn("Model: "+serverURI + " : No internal Jena model specified") ;
             return null ;
         } 
         
         filename = null ;
         try { 
             filename = aModelStmt.getResource().getURI() ;
-            logger.debug("File source controller: "+serverURI + " ==> " + filename) ;
+            log.debug("File source controller: "+serverURI + " ==> " + filename) ;
         } catch (RDFException ex)
         {
-            logger.warn("No internal resource URI for "+serverURI) ;
+            log.warn("No internal resource URI for "+serverURI) ;
             return null ;
         }
         
@@ -69,23 +69,23 @@ public class SourceControllerFile implements SourceController, Loadable
     public String getServerURI() { return serverURI ; }
     
     // Called when used.
-    public void activate() { logger.trace("activate: "+filename) ; return ; }
+    public void activate() { log.trace("activate: "+filename) ; return ; }
     
     // Called when not in use any more.
-    public void deactivate() { logger.trace("deactivate: "+filename) ; return ; }
+    public void deactivate() { log.trace("deactivate: "+filename) ; return ; }
 
     // Called each time a source needs to be built.
     public Model buildSource()
     {
-        logger.debug("buildSource: "+serverURI+ " ("+filename+")") ;
+        log.debug("buildSource: "+serverURI+ " ("+filename+")") ;
         try {
             return fileManager.loadModel(filename) ;
         } catch (RDFException rdfEx)
         {
             if ( rdfEx.getCause() != null )
-                logger.warn(filename+": "+rdfEx.getCause()) ;
+                log.warn(filename+": "+rdfEx.getCause()) ;
             else
-                logger.warn(filename+": "+rdfEx) ;
+                log.warn(filename+": "+rdfEx) ;
             throw rdfEx ;
         }
     }
@@ -93,7 +93,7 @@ public class SourceControllerFile implements SourceController, Loadable
     // Called when released (if releasable)
     public void releaseSource()
     {
-        logger.debug("releaseSource: "+serverURI+ " ("+filename+")") ;
+        log.debug("releaseSource: "+serverURI+ " ("+filename+")") ;
     }
 }
 

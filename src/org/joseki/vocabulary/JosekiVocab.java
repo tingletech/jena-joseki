@@ -11,14 +11,14 @@ package org.joseki.vocabulary;
  *  This class adds the non-schema-generated defintions.
  * 
  * @author      Andy Seaborne
- * @version     $Id: JosekiVocab.java,v 1.3 2005-01-03 20:26:36 andy_seaborne Exp $
+ * @version     $Id: JosekiVocab.java,v 1.4 2005-01-14 18:17:28 andy_seaborne Exp $
  */
 
 public class JosekiVocab extends JosekiSchema
 {
     
     // Not mechanically generated.
-    // Resource versions omitted : we probably want the resource inth model (with properties).
+    // Resource versions omitted : we probably want the resource in the model (with properties).
     
     public static String opQuery          = getURI()+"OpQuery" ;
     //public static Resource r_opQuery      = ResourceFactory.createResource(opQuery) ;

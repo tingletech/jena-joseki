@@ -17,14 +17,14 @@ import org.apache.commons.logging.* ;
  *  It is a loadable Joseki module.
  *
  * @author Andy Seaborne
- * @version $Id: SourceControllerFileDebug.java,v 1.2 2005-01-03 20:26:30 andy_seaborne Exp $
+ * @version $Id: SourceControllerFileDebug.java,v 1.3 2005-01-14 18:17:10 andy_seaborne Exp $
  */ 
 
 public class SourceControllerFileDebug
     extends SourceControllerFile
     implements SourceController, Loadable
 {
-    static Log logger = LogFactory.getLog(SourceControllerFileDebug.class.getName()) ;
+    private static Log log = LogFactory.getLog(SourceControllerFileDebug.class.getName()) ;
     
     //static { System.err.println("SourceControllerDebug") ; }
     
@@ -44,21 +44,21 @@ public class SourceControllerFileDebug
     public void init(Resource binding, Resource implementation)
     {
         if ( binding.isAnon() )
-            logger.info("Binding: []") ;
+            log.info("Binding: []") ;
         else 
-            logger.info("Binding: "+binding.getURI()) ;
+            log.info("Binding: "+binding.getURI()) ;
             
         if ( implementation.isAnon() )
-            logger.info("Implementation: []") ;
+            log.info("Implementation: []") ;
         else 
-            logger.info("Implementation: "+implementation.getURI()) ;
+            log.info("Implementation: "+implementation.getURI()) ;
 
         // Parameters
         StmtIterator sIter = binding.listProperties() ;
         for ( ; sIter.hasNext() ;)
         {
             Statement s = sIter.nextStatement() ;
-            logger.info("  "+s) ;
+            log.info("  "+s) ;
         }
     }
     
@@ -76,26 +76,26 @@ public class SourceControllerFileDebug
     // Called when used.
     public void activate()
     {
-        logger.info("activate: " + getServerURI());
+        log.info("activate: " + getServerURI());
         super.activate();
     }
 
     // Called when not in use any more.
     public void deactivate()
     {
-        logger.info("deactivate: " + getServerURI());
+        log.info("deactivate: " + getServerURI());
         super.deactivate();
     }
     // Called each time a source needs to be built.
     public Model buildSource()
     {
-        logger.info("buildSource: "+getServerURI()) ;
+        log.info("buildSource: "+getServerURI()) ;
         return super.buildSource() ;
     }
     
     public void releaseSource()
     {
-        logger.info("releaseSource: "+getServerURI()) ;
+        log.info("releaseSource: "+getServerURI()) ;
         super.releaseSource() ;
     }
 

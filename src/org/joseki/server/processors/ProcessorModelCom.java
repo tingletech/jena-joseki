@@ -5,7 +5,6 @@
 
 package org.joseki.server.processors;
 
-import org.apache.commons.logging.* ;
 import org.joseki.server.*;
 //import org.joseki.server.http.HttpUtils;
 
@@ -21,11 +20,10 @@ import com.hp.hpl.jena.rdf.model.*;
  * @see ProcessorCom
  * 
  * @author      Andy Seaborne
- * @version     $Id: ProcessorModelCom.java,v 1.10 2005-01-03 20:26:33 andy_seaborne Exp $
+ * @version     $Id: ProcessorModelCom.java,v 1.11 2005-01-14 18:17:28 andy_seaborne Exp $
  */
 public abstract class ProcessorModelCom extends ProcessorCom
 {
-    Log logger = LogFactory.getLog(ProcessorModelCom.class) ;
     // Useful constant
     static protected Model emptyModel = ModelFactory.createDefaultModel() ;
     

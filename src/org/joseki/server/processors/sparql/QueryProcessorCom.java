@@ -16,12 +16,12 @@ import org.joseki.server.processors.ProcessorCom;
 /** QueryProcessorCom - the root of query processors.
  * 
  * @author Andy Seaborne
- * @version $Id: QueryProcessorCom.java,v 1.5 2005-01-11 10:52:02 andy_seaborne Exp $
+ * @version $Id: QueryProcessorCom.java,v 1.6 2005-01-14 18:17:31 andy_seaborne Exp $
  */
 
 public abstract class QueryProcessorCom extends ProcessorCom implements QueryProcessor
 {
-    Log log = LogFactory.getLog(QueryProcessorCom.class) ;
+    private Log log = LogFactory.getLog(QueryProcessorCom.class) ;
     
     public QueryProcessorCom(String name)
     {

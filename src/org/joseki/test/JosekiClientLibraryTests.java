@@ -23,7 +23,7 @@ import javax.servlet.http.HttpServletResponse ;
  *  Tests must leave the server and its models unchanged.
  * 
  * @author      Andy Seaborne
- * @version     $Id: JosekiClientLibraryTests.java,v 1.6 2005-01-11 10:52:01 andy_seaborne Exp $
+ * @version     $Id: JosekiClientLibraryTests.java,v 1.7 2005-01-14 18:17:31 andy_seaborne Exp $
  */
 public class JosekiClientLibraryTests extends TestSuite
 {
@@ -326,7 +326,6 @@ public class JosekiClientLibraryTests extends TestSuite
     
     class FetchTest extends  ClientLibraryTest
     {
-        String modelURI ;
         String resource ;
         String predicate ;
         String objectURI ;
@@ -336,7 +335,6 @@ public class JosekiClientLibraryTests extends TestSuite
         FetchTest(String testName, String target, String thing, Model resultModel)
         {
             super(writer, testName, target, resultModel) ;
-            modelURI = target ;
             resource = thing ;
             predicate = null ;
             objectValue = null ;
@@ -515,14 +513,12 @@ public class JosekiClientLibraryTests extends TestSuite
 
     class PingTest extends ClientLibraryTest
     {
-        String modelURI ;
         Model data ;
         boolean expectSuccess ;
         
         PingTest(String testName, String target, boolean shouldWork)
         {
             super(writer, testName, target, shouldWork) ;
-            modelURI = target ;
             expectSuccess = shouldWork ;
         }
         

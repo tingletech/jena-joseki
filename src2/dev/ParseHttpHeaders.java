@@ -10,7 +10,7 @@ package dev;
 /** apps.ParseHttpHeaders
  * 
  * @author Andy Seaborne
- * @version $Id: ParseHttpHeaders.java,v 1.1 2005-01-10 11:48:19 andy_seaborne Exp $
+ * @version $Id: ParseHttpHeaders.java,v 1.2 2005-01-14 18:17:28 andy_seaborne Exp $
  */
 
 public class ParseHttpHeaders
@@ -32,14 +32,6 @@ public class ParseHttpHeaders
     // Accept-Encoding  = gzip,deflate
     // Accept-Charset   = ISO-8859-1,utf-8;q=0.7,*;q=0.7
     
-    class MT {
-        String mediaType  = null;
-        String paramsName = null;
-        String paramValue = null; // Object
-    }
-    
-    //List items = 
-    
     String mediaType = null;
     String params[] = null;
     String charset = null;
@@ -49,8 +41,6 @@ public class ParseHttpHeaders
         String[] x = {",", ";", "="} ;
         parse(s, 0, x) ;
     }
-    
-    
     
     private static void parse(String s, int index, String[] splits)
     {

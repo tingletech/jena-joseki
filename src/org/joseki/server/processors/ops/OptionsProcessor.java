@@ -15,12 +15,11 @@ import com.hp.hpl.jena.rdf.model.*;
  *  This is not the processor for the options operation on the whole server.
  * 
  * @author      Andy Seaborne
- * @version     $Id: OptionsProcessor.java,v 1.2 2005-01-03 20:26:35 andy_seaborne Exp $
+ * @version     $Id: OptionsProcessor.java,v 1.3 2005-01-14 18:17:30 andy_seaborne Exp $
  */
 
 public class OptionsProcessor extends ArgZeroProcessor //implements ProcessorModel
 {
-    static protected Model emptyModel = ModelFactory.createDefaultModel() ;
     String acceptsOpName = "options" ;
     boolean readOnlyLock = true ;
 
