@@ -7,10 +7,12 @@ Joseki3
   Or split Reponse into interface and implementation
   Drive by SOAP-ization
 
-+ Refactor processors into op package, query model package and sparql
-  Common code in "processors" package
-
 + Query only version?  No operations.
+
++ Attach named collections
+  attachedModel [ :graphName   ,  :resource <file:> ]
+  or attachedModel <foo>
+  <foo> a :namedCollection ;
 
 + Allow fetch handlers (renamed) for DESCRIBE
 
@@ -20,6 +22,10 @@ Joseki3
 
 + Errors with long messages as well as short.
   inc stack traces.
+
++ Enable FROM loading in SPARQL processor
+  Make server config controlled
+  SPARQL *service* processor 
 
 + Restructure the main server implementation
   ??
