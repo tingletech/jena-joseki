@@ -1,6 +1,20 @@
 #!/bin/bash
 
-LIBDIR="$1"
+DIRROOT="$1"
+
+if [ "$DIRROOT" = "" ]
+then
+    echo "No directory given" 1>&2
+    exit 1
+    fi
+
+# remove any trailing /
+DIRROOT=${DIRROOT%/}
+
+LIBDIR="$DIRROOT/lib"
+CPDIR="$DIRROOT/classes"
+
+# Cygwin - on Windows, the Java separator is ;
 
 CYGWIN=0
 SEP=':'
@@ -10,23 +24,30 @@ then
     SEP=';'
     fi
 
-if [ "$LIBDIR" = "" ]
-then
-    echo "No argument passed to make_path" 1>&2
-    exit 1
-    fi
+# CP is the variable collecting the path/
+# It may already have a value.
 
 CP="${CP:-}"
-first=1
-[ "$CP" != "" ] && first=0
+
+# Append any jars in the lib/ directory
 
 for jar in "$LIBDIR"/*.jar
-do
+  do
+  # Check for no expansion
+  [ -e "$jar" ] || break
   #echo "Path: $jar"
-  # Order matters here
-  [ "$first" == 0 ] && CP="${CP}${SEP}"
-  [ "$first" == 1 ] && first=0
+  [ "$CP" != "" ] && CP="${CP}${SEP}"
   CP="${CP}$jar"
+  first=0
 done
 
-echo $CP
+# Prepend any classes/ directory
+
+if [ -e "$CPDIR" ]
+then
+    [ "$CP" != "" ] && CP="${SEP}${CP}"
+    CP="${CPDIR}$CP"
+    first=0
+    fi
+
+echo "$CP"
