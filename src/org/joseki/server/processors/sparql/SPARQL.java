@@ -21,7 +21,7 @@ import com.hp.hpl.jena.query.* ;
 /** SPARQL operations
  * 
  * @author  Andy Seaborne
- * @version $Id: SPARQL.java,v 1.2 2004-11-11 17:03:36 andy_seaborne Exp $
+ * @version $Id: SPARQL.java,v 1.3 2004-11-11 21:15:02 andy_seaborne Exp $
  */
 
 public class SPARQL implements QueryProcessor
@@ -66,10 +66,8 @@ public class SPARQL implements QueryProcessor
         
     }
 
-    /** @see Loadable#getInterfaceURI */
     public String getInterfaceURI() { return JosekiVocab.queryOperationSPARQL ; }
 
-    /** @see Loadable#init*/
     public void init(Resource binding, Resource implementation) {}
 }
 

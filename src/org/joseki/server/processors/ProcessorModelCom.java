@@ -12,7 +12,7 @@ import org.joseki.server.*;
 import com.hp.hpl.jena.rdf.model.*;
 
 /** General purpose template for implementing ProcessorModel's.
- *  Use ProcessorCom for locking - this clsass provides translation
+ *  Use ProcessorCom for locking - this class provides translation
  *  between the general Processor Request=>Response framework and
  *  the model-based ProcessorModel Request=>Model framework.    
  * 
@@ -20,7 +20,7 @@ import com.hp.hpl.jena.rdf.model.*;
  * @see ProcessorCom
  * 
  * @author      Andy Seaborne
- * @version     $Id: ProcessorModelCom.java,v 1.3 2004-11-11 18:10:15 andy_seaborne Exp $
+ * @version     $Id: ProcessorModelCom.java,v 1.4 2004-11-11 21:15:01 andy_seaborne Exp $
  */
 public abstract class ProcessorModelCom extends ProcessorCom implements ProcessorModel
 {
