@@ -24,7 +24,7 @@ import org.apache.commons.logging.* ;
 
 /** Standalone server.
  * 
- * @version $Id: RDFServer.java,v 1.3 2004-11-04 15:44:58 andy_seaborne Exp $
+ * @version $Id: RDFServer.java,v 1.4 2004-11-15 09:32:02 andy_seaborne Exp $
  * @author  Andy Seaborne
  */
 
@@ -179,7 +179,7 @@ public class RDFServer
                     bindException = (java.net.BindException)ex2 ;
                     continue ;
                 }
-                log.warn("Exception: "+ex2) ;
+                log.warn("MultiException: "+ex2) ;
             }
             
             if ( bindException != null )
@@ -189,6 +189,11 @@ public class RDFServer
                 System.exit(99) ;
             }
             throw new JosekiServerException("Failed to start web application server") ;
+        }
+        catch (Exception exMisc)
+        {
+            log.warn("Exception (server startup): "+exMisc) ;
+            System.exit(98) ;
         }
         
         if ( ! earlyInitialize )
