@@ -32,6 +32,14 @@ Joseki3
 + Allow fetch handlers (renamed) for DESCRIBE
   Need doing in ARQ first
 
++ Management
+  At least keep some statistics (and provide a web page?!)
+    Server, per processor, per query processor
+    Part of "standard" processor interface to ensure compliance
+  May be JMX (later), 
+  javax.management in 1.5.0 MBean
+  
+
 + SOAP connector (Axis)
 
 + Restructure the main server implementation
