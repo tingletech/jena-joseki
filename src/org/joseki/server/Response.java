@@ -23,13 +23,14 @@ import javax.servlet.http.HttpServletResponse;
 
 /** Abstaction of an operation response
  * @author      Andy Seaborne
- * @version     $Id: Response.java,v 1.16 2004-11-19 15:26:16 andy_seaborne Exp $
+ * @version     $Id: Response.java,v 1.17 2004-11-19 18:48:39 andy_seaborne Exp $
  */
 public class Response extends ExecutionError
 {
     // This is really "ResponseHttp" - will become that and have an interface for Response. 
     static Log log = LogFactory.getLog(Response.class) ;
     String mimeType = null ;
+    String charset = null ;
     int responseCode = rcOK ;
     String responseMessage = null ;
     
@@ -56,7 +57,7 @@ public class Response extends ExecutionError
     public void startResponse()
     {
         responseCommitted = true ;
-        ser.setHttpResponse(httpRequest, httpResponse, mimeType);        
+        ser.setHttpResponse(httpRequest, httpResponse, mimeType, charset);        
     }
         
     public void finishResponse()
@@ -87,7 +88,10 @@ public class Response extends ExecutionError
         // Set content-type
         
         String mimeType = HttpUtils.chooseContentType(httpRequest);
+        String charset = HttpUtils.chooseCharset(httpRequest) ;
+        
         setMimeType(mimeType) ;
+        setCharset(charset) ;
         startResponse() ;
         
         try {
@@ -132,7 +136,7 @@ public class Response extends ExecutionError
         }
         
         HttpResultSerializer httpSerializer = new HttpResultSerializer() ;
-        httpSerializer.setHttpResponse(httpRequest, httpResponse, null) ;
+        httpSerializer.setHttpResponse(httpRequest, httpResponse, null, null) ;
         
         String httpMsg = execEx.shortMessage ;
         if (execEx.shortMessage == null)
@@ -195,6 +199,16 @@ public class Response extends ExecutionError
     }
     
 
+    /**
+     * @return Returns the charset.
+     */
+    public String getCharset() { return charset ; }
+
+    /**
+     * @param charset The charset to set.
+     */
+    public void setCharset(String charset) { this.charset = charset; }
+    
     /**
      * @return Returns the responseCode.
      */

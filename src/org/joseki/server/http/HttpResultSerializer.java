@@ -20,7 +20,7 @@ import com.hp.hpl.jena.shared.JenaException;
 /** Extracting operation data from HTTP servlet requests and formatting results for sending back.
  * 
  * @author      Andy Seaborne
- * @version     $Id: HttpResultSerializer.java,v 1.9 2004-11-17 18:27:46 andy_seaborne Exp $
+ * @version     $Id: HttpResultSerializer.java,v 1.10 2004-11-19 18:48:39 andy_seaborne Exp $
  */
 public class HttpResultSerializer
 {
@@ -106,7 +106,7 @@ public class HttpResultSerializer
     
     public void setHttpResponse(HttpServletRequest httpRequest,
                                  HttpServletResponse httpResponse,
-                                 String mimeType) 
+                                 String mimeType, String charset) 
     {
         // ---- Set up HTTP Response
         // Stop caching when debugging (not that ?queryString URLs are cached)
@@ -123,7 +123,9 @@ public class HttpResultSerializer
         // See: http://www.w3.org/International/O-HTTP-charset.html
         if ( mimeType != null )
         {
-            String contentType = mimeType+"; charset=UTF-8" ;
+            String contentType = mimeType ;
+            if ( charset != null )
+                contentType = contentType+"; charset="+charset ;
             log.trace("Content-Type for response: "+contentType) ;
             httpResponse.setContentType(contentType) ;
         }

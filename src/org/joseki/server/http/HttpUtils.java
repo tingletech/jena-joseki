@@ -6,7 +6,7 @@
 
 package org.joseki.server.http;
 
-import java.util.Enumeration;
+import java.util.* ;
 
 import javax.servlet.http.HttpServletRequest ;
 import javax.servlet.http.HttpServletResponse ;
@@ -18,7 +18,7 @@ import org.joseki.util.Convert;
 /** org.joseki.server.http.HttpUtils
  * 
  * @author Andy Seaborne
- * @version $Id: HttpUtils.java,v 1.5 2004-11-17 18:27:46 andy_seaborne Exp $
+ * @version $Id: HttpUtils.java,v 1.6 2004-11-19 18:48:39 andy_seaborne Exp $
  */
 
 public class HttpUtils
@@ -37,6 +37,18 @@ public class HttpUtils
     
     public static String chooseCharset(HttpServletRequest httpRequest)
     {
+        String a = httpRequest.getHeader("Accept-Charset") ;
+        List l = MediaRange.multiMediaRange(a) ;
+        
+ 
+        for ( Iterator iter = l.listIterator() ; iter.hasNext() ; )
+        {
+            MediaRange r = (MediaRange)iter.next() ;
+            if ( r.getMediaType().asString().equalsIgnoreCase(ENC_UTF8) )
+                return ENC_UTF8 ;
+        }
+        
+        LogFactory.getLog(HttpUtils.class).warn("Accept-Charset: "+a) ;
         // Negotiation!
         return ENC_UTF8 ;
     }
@@ -54,11 +66,19 @@ public class HttpUtils
         
         // See also: Accept-Charset
         // Currently, we ignore this and just do UTF-8.
+
+        // There can be multiple headers.
         
-        Enumeration en = httpRequest.getHeaders("Accept") ;
-        for ( ; en.hasMoreElements() ; )
+        String a = httpRequest.getHeader("Accept") ;
+        List l = MediaRange.multiMediaRange(a) ;
+        
+        for ( Iterator iter = l.listIterator(); iter.hasNext(); )
         {
-            String s = (String)en.nextElement() ;
+            MediaRange r = (MediaRange)iter.next() ;
+            String s = r.getMediaType().asString() ;
+            
+            // Do we know about this media type as a writer?
+            
             String m = Joseki.getWriterType(s) ;
             if ( m != null )
             {
@@ -67,12 +87,6 @@ public class HttpUtils
             }
         }
         
-        String acceptCharset = httpRequest.getHeader("Accept-Charset") ;
-        if ( acceptCharset != null )
-        {
-            if ( ! acceptCharset.equalsIgnoreCase(ENC_UTF8) )
-                LogFactory.getLog(HttpUtils.class).warn("Accept-Charset: "+acceptCharset) ;
-        }
         return mimeType;
     }
     
