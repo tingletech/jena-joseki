@@ -1,16 +1,23 @@
 Joseki3
 =======
 
++ Upgrade to latest result set format
+    Renaming tags
+    bound="false"
+
++ Latest protocol
+    Rename tags
+    (centralize names)
+    Recognize (and ignore) new tags that don't mean much to Joseki
+    Adding in "uri=" into protocol for SPARQL
+    Add private args "ctype" (result set type), and XSLT "stylesheet"
+
 + Add joseki:textContentType
   If looks like a browser, then text/plain with this type as contents.
 
 + Enable FROM loading in SPARQL processor
   Make server config controlled
   SPARQL *service* processor 
-
-+ Protocol
-  Adding in "uri=" into protocol for SPARQL
-  Add private args "ctype", "stylesheet"
 
 + Errors with long messages as well as short.
   inc stack traces.
