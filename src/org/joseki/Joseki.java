@@ -9,7 +9,7 @@ import java.util.* ;
 
 /** Constants and other definitions.
  * @author      Andy Seaborne
- * @version     $Id: Joseki.java,v 1.7 2004-11-25 12:56:21 andy_seaborne Exp $
+ * @version     $Id: Joseki.java,v 1.8 2004-11-25 18:21:57 andy_seaborne Exp $
  */
 public class Joseki
 {
@@ -30,6 +30,8 @@ public class Joseki
     public static final String contentTypeXML      = "application/xml" ;
 
     public static final String contentTextPlain    = "text/plain" ;
+    
+    public static final String charsetUTF8         = "utf-8" ;
     
     public static String serverContentType = contentTypeRDFXML ;
     public static String clientContentType = contentTypeRDFXML ;
@@ -72,7 +74,7 @@ public class Joseki
     
     static Map jenaWriters = new HashMap() ;
     static {
-        // Not application/xml
+        setWriterType(contentTypeXML, "RDF/XML-ABBREV") ;
         setWriterType(contentTypeN3, "N3") ;
         setWriterType(contentTypeRDFXML, "RDF/XML-ABBREV") ;
         setWriterType(contentTypeNTriples, "N-TRIPLE") ;

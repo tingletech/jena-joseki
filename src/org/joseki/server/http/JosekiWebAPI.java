@@ -21,7 +21,7 @@ import org.joseki.Joseki ;
 
 /** The servlet class.
  * @author  Andy Seaborne
- * @version $Id: JosekiWebAPI.java,v 1.13 2004-11-19 15:56:40 andy_seaborne Exp $
+ * @version $Id: JosekiWebAPI.java,v 1.14 2004-11-25 18:21:49 andy_seaborne Exp $
  */
 
 public class JosekiWebAPI extends HttpServlet implements Connector
@@ -374,14 +374,20 @@ public class JosekiWebAPI extends HttpServlet implements Connector
     {
        try {
             String uri = request.getModelURI() ;
+            String s = null ; 
             if ( request.getOpName().equals("query") )
-                log.debug("URI="+ uri + "  Query="+request.getParam("lang")) ;
+                s = "URI="+ uri + "  Query="+request.getParam("lang") ;
             else
-                log.debug("URI="+ uri + "  Request="+request.getOpName()) ;
+                s = "URI="+ uri + "  Request="+request.getOpName() ;
 
+            log.debug(s) ;
+            
             dispatcher.exec(request, response) ;
+            //log.info("OK - "+s) ;
         } catch (ExecutionException execEx)
         {
+            //String s = httpResponseCode(execEx.returnCode) ;
+            //log.info(s+" ("+execEx.returnCode+")") ;
             response.doException(execEx) ;
             return ;
         }

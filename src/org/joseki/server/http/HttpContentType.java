@@ -3,7 +3,7 @@
  * [See end of file]
  */
 
-package org.joseki.util;
+package org.joseki.server.http;
 
 
 import org.apache.commons.logging.*;
@@ -12,11 +12,12 @@ import org.apache.commons.logging.*;
  * Handle HTTP content type
  * 
  * @author Andy Seaborne
- * @version $Id: HttpContentType.java,v 1.2 2004-11-17 18:27:46 andy_seaborne Exp $
+ * @version $Id: HttpContentType.java,v 1.1 2004-11-25 18:21:49 andy_seaborne Exp $
  */
 
 public class HttpContentType
 {
+    // TODO Replace by AcceptType? 
     static Log log = LogFactory.getLog(HttpContentType.class);
 
     String mediaType = null;

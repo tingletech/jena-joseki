@@ -1,6 +1,15 @@
 Joseki3
 =======
 
++ Rethink "joseki.serverDebug"
+
++ MIME type negotiation
+  Need SPARQL processor to get Resposen to decide earlier.
+  Currently, gets null and is always application/rdf+xml
+  Design bug: choosing MIME type skips application/xml
+  Need "choose(pref=...)"
+  And Response need to freeze choosing.
+
 + Adding in "uri=" into protocol for SPARQL
 
 + Request and RequestImpl merge to a single class
@@ -9,7 +18,7 @@ Joseki3
 
 + Query only version?  No operations.
 
-+ Attach named collections
++ Attach named collections (awaiting DAWG design first)
   attachedModel [ :graphName   ,  :resource <file:> ]
   or attachedModel <foo>
   <foo> a :namedCollection ;

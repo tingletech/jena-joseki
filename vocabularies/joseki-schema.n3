@@ -30,7 +30,7 @@
 :useContentType
     a               rdf:Property ;
     rdfs:range      rdfs:Literal ;
-    rdfs:comment    "Set the MIME type for the protocol" ;
+    rdfs:comment    "Set the default MIME type for the protocol" ;
     rdfs:label      "Content-Type" .
 
 
@@ -48,12 +48,20 @@
     rdfs:comment  "URI of this server - Not normally needed" ;
     rdfs:label    "Server URI".
 
-:serverDebug
+:serverHttpExplicitNoCache
     a rdf:Property ;
     rdfs:domain   :JosekiServer ;
     rdfs:range    rdfs:Literal ;
-    rdfs:comment  "Set server debugging mode" ;
-    rdfs:label    "Server Debug".
+    rdfs:comment  "Ensure HTTP headers have \"no cache\" set" ;
+    rdfs:label    "Server HTTP Explicit No Cache".
+
+
+## :serverDebug
+##     a rdf:Property ;
+##     rdfs:domain   :JosekiServer ;
+##     rdfs:range    rdfs:Literal ;
+##     rdfs:comment  "Set server debugging mode" ;
+##     rdfs:label    "Server Debug".
 
 
 ##-------------------------------------------------------------

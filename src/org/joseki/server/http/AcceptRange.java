@@ -8,18 +8,17 @@ package org.joseki.server.http;
 import java.util.* ;
 import org.apache.commons.logging.* ;
 
-/** A class to handle HTTP media types and media ranges and accept parameters 
+/** A class to handle HTTP accept types and accept ranges and accept parameters 
  * 
  * @author Andy Seaborne
- * @version $Id: MediaRange.java,v 1.2 2004-11-21 16:43:03 andy_seaborne Exp $
+ * @version $Id: AcceptRange.java,v 1.1 2004-11-25 18:21:49 andy_seaborne Exp $
  */
 
-public class MediaRange
+public class AcceptRange
 {
-    // TODO Rename - this works on more than media types. 
     // Documentation at end.
     
-    MediaType mediaType = null;
+    AcceptItem acceptItem = null;
     
     Map params = new HashMap() ;
     double q = 1.0 ;
@@ -28,7 +27,7 @@ public class MediaRange
     /** Returns a list of headers, sorted so that the most significant is first
      */
     
-    static List multiMediaRange(String s)
+    static List multiAcceptRange(String s)
     {
         //s = s.trim() ;
         List l = new ArrayList() ;
@@ -40,23 +39,23 @@ public class MediaRange
         {
             if ( x[i].equals(""))
                 continue ;
-            MediaRange mType = new MediaRange(x[i]) ;
+            AcceptRange mType = new AcceptRange(x[i]) ;
             mType.posn = i ;
             l.add(mType) ;
         }
-        multiMediaRangeSort(l);
+        multiAcceptRangeSort(l);
         return l ;
     }
 
-    static void multiMediaRangeSort(List l)
+    static void multiAcceptRangeSort(List l)
     {
-        Collections.sort(l, new MediaTypeCompare()) ;
+        Collections.sort(l, new AcceptTypeCompare()) ;
     }
                                    
     
     /** Debug form */
     
-    static String multiMediaRangeToString(List x)
+    static String multiAcceptRangeToString(List x)
     {
         if ( x.size() == 0)
             return "(empty)" ;
@@ -68,14 +67,14 @@ public class MediaRange
         {
             if ( ! first )
                 tmp = tmp +" " ;
-            tmp = tmp + (MediaRange)iter.next() ;
+            tmp = tmp + (AcceptRange)iter.next() ;
             first = false ;
         }
         return tmp ;
         
     }
     
-    static String multiMediaRangeToHeaderString(List x)
+    static String multiAcceptRangeToHeaderString(List x)
     {
         if ( x.size() == 0)
             return "" ;
@@ -87,7 +86,7 @@ public class MediaRange
         {
             if ( ! first )
                 tmp = tmp +"," ;
-            tmp = tmp + ((MediaRange)iter.next()).toHeaderString() ;
+            tmp = tmp + ((AcceptRange)iter.next()).toHeaderString() ;
             first = false ;
         }
         return tmp ;
@@ -98,22 +97,22 @@ public class MediaRange
         List r = new ArrayList() ;
         r.add(list1) ;
         r.add(list2) ;
-        Collections.sort(r, new MediaTypeCompare()) ;
+        Collections.sort(r, new AcceptTypeCompare()) ;
         return r ;
     }
     
     
-    public MediaRange(String s)
+    public AcceptRange(String s)
     {
         process1(s) ;
     }
     
-    public MediaType getMediaType() { return mediaType ; } 
+    public AcceptItem getAcceptItem() { return acceptItem ; } 
     
     private void process1(String s)
     {
         String[] x = split(s, ";") ;
-        mediaType = new MediaType(x[0]) ;
+        acceptItem = new AcceptItem(x[0]) ;
         
         for ( int i = 1 ; i < x.length ; i++ )
         {
@@ -129,7 +128,7 @@ public class MediaRange
                     {}
             }
             else
-                LogFactory.getLog(MediaRange.class).warn("Duff parameter: "+x[i]+" in "+s) ;
+                LogFactory.getLog(AcceptRange.class).warn("Duff parameter: "+x[i]+" in "+s) ;
         }
     }
     
@@ -139,7 +138,7 @@ public class MediaRange
     public String toHeaderString()
     {
         StringBuffer b = new StringBuffer() ;
-        b.append(mediaType.toString()) ;
+        b.append(acceptItem.toString()) ;
         for ( Iterator iter = params.keySet().iterator() ; iter.hasNext() ; )
         {
             String k = (String)iter.next() ;
@@ -160,7 +159,7 @@ public class MediaRange
     {
         StringBuffer b = new StringBuffer() ;
         b.append("[") ;
-        b.append(mediaType.toString()) ;
+        b.append(acceptItem.toString()) ;
         for ( Iterator iter = params.keySet().iterator() ; iter.hasNext() ; )
         {
             String k = (String)iter.next() ;
@@ -185,34 +184,39 @@ public class MediaRange
         return x ;
     }
     
-
+    private static AcceptTypeCompare comp = new AcceptTypeCompare() ;
+    public boolean matches(AcceptItem r2)
+    {
+        String s1 = this.getAcceptItem().asString() ;
+        String s2 = r2.asString() ;
+        return this.getAcceptItem().asString().equals(r2.asString()) ;
+    }
     
+    // Sort - the rightmost element (highest) will be the preferred accept type.
     
-    // Sort - the rightmost element (highest) will be the preferred media type.
-    
-    public static class MediaTypeCompare implements Comparator
+    public static class AcceptTypeCompare implements Comparator
     {
         public int compare(Object arg1, Object arg2)
         {
-            if ( ! (arg1 instanceof MediaRange) )
-                throw new ClassCastException("Not a MediaType: "+arg1.getClass().getName()) ;
-            if ( ! (arg2 instanceof MediaRange) )
-                throw new ClassCastException("Not a MediaType: "+arg2.getClass().getName()) ;
-            MediaRange mType1 = (MediaRange)arg1 ; 
-            MediaRange mType2 = (MediaRange)arg2 ;
+            if ( ! (arg1 instanceof AcceptRange) )
+                throw new ClassCastException("Not a AcceptItem: "+arg1.getClass().getName()) ;
+            if ( ! (arg2 instanceof AcceptRange) )
+                throw new ClassCastException("Not a AcceptItem: "+arg2.getClass().getName()) ;
+            AcceptRange mType1 = (AcceptRange)arg1 ; 
+            AcceptRange mType2 = (AcceptRange)arg2 ;
             
             int r = Double.compare(mType1.q, mType2.q) ;
             
             if ( r == 0 )
-                r = subCompare(mType1.mediaType.type, mType2.mediaType.type) ;
+                r = subCompare(mType1.acceptItem.getAcceptType(), mType2.acceptItem.getAcceptType()) ;
             
             if ( r == 0 )
-                r = subCompare(mType1.mediaType.subType, mType2.mediaType.subType) ;
+                r = subCompare(mType1.acceptItem.getAcceptType(), mType2.acceptItem.getAcceptType()) ;
             
             if ( r == 0 )
             {
                 // This reverses the input order so that the rightmost elements is the
-                // greatest and hence is the first mentioned in the media range.
+                // greatest and hence is the first mentioned in the accept range.
                 
                 if ( mType1.posn < mType2.posn )
                     r = +1 ;
@@ -257,9 +261,9 @@ public class MediaRange
 
     public static void testOne(String s)
     {
-        List l = MediaRange.multiMediaRange(s) ;
-        System.out.println(MediaRange.multiMediaRangeToString(l)) ;
-        System.out.println(MediaRange.multiMediaRangeToHeaderString(l)) ;
+        List l = AcceptRange.multiAcceptRange(s) ;
+        System.out.println(AcceptRange.multiAcceptRangeToString(l)) ;
+        System.out.println(AcceptRange.multiAcceptRangeToHeaderString(l)) ;
         System.out.println() ;
     }
     
@@ -285,6 +289,10 @@ public class MediaRange
     //accept-params  = ";" "q" "=" qvalue *( accept-extension )
     //
     //accept-extension = ";" token [ "=" ( token | quoted-string ) ]
+    //
+    // Accept-Charset = "Accept-Charset" ":"
+    //                  1#( charset [ ";" "q" "=" qvalue ] )
+    
     
     
     // Examples:

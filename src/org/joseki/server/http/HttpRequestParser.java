@@ -10,14 +10,13 @@ import java.io.* ;
 
 import javax.servlet.http.* ; 
 import org.joseki.* ;
-import org.joseki.util.HttpContentType ;
 import org.joseki.server.*;
 import com.hp.hpl.jena.rdf.model.*;
 
 /** Extracting of information from incomiong HTTP servlet request.
  * 
  * @author      Andy Seaborne
- * @version     $Id: HttpRequestParser.java,v 1.5 2004-11-15 16:22:06 andy_seaborne Exp $
+ * @version     $Id: HttpRequestParser.java,v 1.6 2004-11-25 18:21:49 andy_seaborne Exp $
  */
 public class HttpRequestParser
 {
@@ -32,7 +31,7 @@ public class HttpRequestParser
                 //log.warn("No data supplied - Content-length: "+len) ;
             
             HttpContentType ct = new HttpContentType(httpRequest.getContentType(),
-                                                     "RDF/XML", HttpUtils.ENC_UTF8) ;
+                                                     Joseki.contentTypeXML, Joseki.charsetUTF8) ;
     
             // The reader uses encoding specified by the HTTP Header 
             BufferedReader r = httpRequest.getReader();
@@ -40,7 +39,7 @@ public class HttpRequestParser
             // NB Error 406 if content encodings are not possible.
             // HttpServletResponse.SC_NOT_ACCEPTABLE
             
-            if ( !ct.getCharset().equalsIgnoreCase("UTF-8") )
+            if ( !ct.getCharset().equalsIgnoreCase(Joseki.charsetUTF8) )
                 log.warn("Request charset is "+ct.getCharset()) ;
             
             // The reader may not be ready() (i.e. the body not yet in the local

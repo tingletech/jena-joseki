@@ -2,7 +2,8 @@
 package apps;
 //import joseki.rdfserver;
 import java.net.* ;
-import org.joseki.util.HttpContentType ;
+
+import org.joseki.server.http.HttpContentType;
 
 public class Run
 {

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="ISO-8859-1"?>
+<?xml version="1.0"?>
 
 <!DOCTYPE web-app
 PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.2//EN"
@@ -48,11 +48,17 @@ PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.2//EN"
 
   <!-- Warning: using /* for Joseki services 
        means that the welcome page is not handled.
+       Nor other mappings like /*.html 
    -->
   
   <servlet-mapping>
     <servlet-name>StaticPage</servlet-name>
     <url-pattern>/index.html</url-pattern>
+  </servlet-mapping>
+
+  <servlet-mapping>
+    <servlet-name>StaticPage</servlet-name>
+    <url-pattern>/query.html</url-pattern>
   </servlet-mapping>
 
   <servlet-mapping>
@@ -78,15 +84,17 @@ PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.2//EN"
 
   <!-- SECURIY -->
 
+<!--
   <security-constraint>
     <web-resource-collection>
       <web-resource-name>Joseki</web-resource-name>
-      <url-pattern>/rdfserver/*</url-pattern>
+      <url-pattern>/*</url-pattern>
       <http-method>GET</http-method>
       <http-method>POST</http-method>
       <http-method>OPTIONS</http-method>
     </web-resource-collection>
   </security-constraint>
+-->
 
 </web-app>
 

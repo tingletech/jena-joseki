@@ -6,38 +6,38 @@
 
 package org.joseki.server.http;
 
-/** A class to handle HTTP media types
+/** A class to handle HTTP Accept types
  * 
  * @author Andy Seaborne
- * @version $Id: MediaType.java,v 1.4 2004-11-19 18:48:39 andy_seaborne Exp $
+ * @version $Id: AcceptItem.java,v 1.1 2004-11-25 18:21:49 andy_seaborne Exp $
  */
 
-public class MediaType
+public class AcceptItem
 {
-    String mediaType  = null;
+    private String acceptType  = null;
     
-    String type = null ;
-    String subType = null ;
+    private String type = null ;
+    private String subType = null ;
     
     
-    public MediaType(String s)
+    public AcceptItem(String s)
     {
-        mediaType = s ;
+        acceptType = s ;
         parse() ;
     }
     
-    public MediaType(String type, String subType)
+    public AcceptItem(String type, String subType)
     {
         this.type = type ;
         this.subType = subType ;
-        mediaType = type ;
+        acceptType = type ;
         if ( subType != null )
-            mediaType = type+"/"+subType ;
+            acceptType = type+"/"+subType ;
     }
     
     private void parse()
     {
-        String[] t = MediaRange.split(mediaType, "/") ;
+        String[] t = AcceptRange.split(acceptType, "/") ;
         
         type = t[0] ;
         if ( t.length > 1 )
@@ -46,12 +46,54 @@ public class MediaType
     
     public String asString()
     {
-        return mediaType ;
+        return acceptType ;
     }
     
     public String toString()
     {
-        return mediaType ;
+        return acceptType ;
+    }
+    /**
+     * @return Returns the acceptType.
+     */
+    public String getAcceptType()
+    {
+        return acceptType;
+    }
+    /**
+     * @param acceptType The acceptType to set.
+     */
+    public void setAcceptType(String acceptType)
+    {
+        this.acceptType = acceptType;
+    }
+    /**
+     * @return Returns the subType.
+     */
+    public String getSubType()
+    {
+        return subType;
+    }
+    /**
+     * @param subType The subType to set.
+     */
+    public void setSubType(String subType)
+    {
+        this.subType = subType;
+    }
+    /**
+     * @return Returns the type.
+     */
+    public String getType()
+    {
+        return type;
+    }
+    /**
+     * @param type The type to set.
+     */
+    public void setType(String type)
+    {
+        this.type = type;
     }
 }
 

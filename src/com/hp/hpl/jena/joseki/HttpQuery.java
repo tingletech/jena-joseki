@@ -6,8 +6,8 @@
 package com.hp.hpl.jena.joseki;
 
 import org.joseki.*;
+import org.joseki.server.http.HttpContentType;
 import org.joseki.util.Convert ;
-import org.joseki.util.HttpContentType;
 import org.joseki.vocabulary.*;
 
 import java.net.* ;
@@ -29,7 +29,7 @@ import com.hp.hpl.jena.shared.* ;
  *  If the query string is large, then HTTP POST?query is used.
 
  * @author  Andy Seaborne
- * @version $Id: HttpQuery.java,v 1.1 2004-11-03 10:14:56 andy_seaborne Exp $
+ * @version $Id: HttpQuery.java,v 1.2 2004-11-25 18:21:58 andy_seaborne Exp $
  */
 public class HttpQuery
 {

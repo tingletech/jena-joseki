@@ -11,7 +11,7 @@ import java.io.* ;
 
 import com.hp.hpl.jena.rdf.model.*;
 import org.joseki.*;
-import org.joseki.util.HttpContentType ;
+import org.joseki.server.http.HttpContentType;
 
 /** Common code for performing an HTTP operation (not query) on a remote model.
  *  
@@ -21,7 +21,7 @@ import org.joseki.util.HttpContentType ;
  *  @see HttpOptions
  *  @see HttpQuery
  * @author      Andy Seaborne
- * @version     $Id: HttpExecute.java,v 1.2 2004-11-15 12:18:12 andy_seaborne Exp $
+ * @version     $Id: HttpExecute.java,v 1.3 2004-11-25 18:21:58 andy_seaborne Exp $
  */
 
 public class HttpExecute
