@@ -10,4 +10,6 @@ LOG1="-Dlog4j.configuration=${LOGCONFIG}"
 LOG2="-Dorg.apache.commons.logging.Log=org.apache.commons.logging.impl.Log4JLogger"
 LOG="$LOG1 $LOG2"
 
-exec java -cp "$CP" $LOG joseki.query "$@"
+SOCKS=${SOCKS:-}
+
+exec java -cp "$CP" $SOCKS $LOG joseki.query "$@"
