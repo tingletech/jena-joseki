@@ -14,7 +14,7 @@ import com.hp.hpl.jena.rdf.model.* ;
 /** Registry for operation processors.
  * 
  * @author      Andy Seaborne
- * @version     $Id: ProcessorRegistry.java,v 1.3 2004-11-11 11:52:22 andy_seaborne Exp $
+ * @version     $Id: ProcessorRegistry.java,v 1.4 2004-11-15 15:27:51 andy_seaborne Exp $
  */
 
 public class ProcessorRegistry
@@ -119,7 +119,7 @@ public class ProcessorRegistry
             procRegistry.put(shortName, processor) ;
         }
     
-        ProcessorModel findProcessor(String opName)
+        synchronized ProcessorModel findProcessor(String opName)
         {
             ProcessorModel proc = (ProcessorModel)procRegistry.get(opName) ;
             return proc ;
@@ -150,7 +150,7 @@ public class ProcessorRegistry
             procRegistry.put(languageName, queryPprocessor) ;
         }
     
-        QueryProcessorModel findProcessor(String languageName)
+        synchronized QueryProcessorModel findProcessor(String languageName)
         {
             QueryProcessorModel proc = (QueryProcessorModel)procRegistry.get(languageName) ;
             return proc ;

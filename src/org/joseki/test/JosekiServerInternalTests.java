@@ -19,7 +19,7 @@ import com.hp.hpl.jena.rdf.model.*;
 /** Tests of the mechanisms (attach, dispatch) of the server side.
  * 
  * @author      Andy Seaborne
- * @version     $Id: JosekiServerInternalTests.java,v 1.1 2004-11-03 10:15:03 andy_seaborne Exp $
+ * @version     $Id: JosekiServerInternalTests.java,v 1.2 2004-11-15 15:28:03 andy_seaborne Exp $
  */
 public class JosekiServerInternalTests extends TestSuite
 {
@@ -93,7 +93,12 @@ public class JosekiServerInternalTests extends TestSuite
         protected Model perform(String opName, Model m) throws ExecutionException
         {
             log.info(getName()+": "+opName+" :: "+modelURI) ;
-            Request request = dispatcher.createOperation(modelURI, requestURL, opName) ;
+            Request request = //dispatcher.createOperation(modelURI, requestURL, opName) ;
+                new RequestImpl(modelURI, requestURL, opName, null) ;
+            SourceModel src = dispatcher.findModel(modelURI) ;
+            request.setSourceModel(dispatcher.findModel(modelURI)) ;
+            request.setProcessor(dispatcher.findProcessor(src, opName)) ;
+
             if ( m != null )
                 request.addArg(m) ;
             Model resultModel = dispatcher.exec(request) ;
@@ -192,8 +197,12 @@ public class JosekiServerInternalTests extends TestSuite
             // Query it
             {
                 log.info(getName()+": query :: "+modelURI);
-                Request request = dispatcher.createQueryRequest(modelURI, requestURL, "RDQL") ;
-                request.setParam("lang", "RDQL") ;
+                String queryLang = "RDQL" ;
+                Request request = new RequestImpl(modelURI, requestURL, "query", queryLang) ;
+                SourceModel src = dispatcher.findModel(modelURI) ;
+                request.setSourceModel(src) ;
+                request.setProcessor(dispatcher.findQueryProcessor(src, queryLang)) ;
+                request.setParam("lang", queryLang) ;
                 request.setParam("query", "SELECT * WHERE (?x, ?y, ?z)") ;
                 Model resultModel = dispatcher.exec(request) ;
                 assertNotNull(resultModel) ;

@@ -19,7 +19,7 @@ import com.hp.hpl.jena.shared.JenaException;
 /** Extracting operation data from HTTP servlet requests and formatting results for sending back.
  * 
  * @author      Andy Seaborne
- * @version     $Id: HttpResultSerializer.java,v 1.5 2004-11-15 12:18:15 andy_seaborne Exp $
+ * @version     $Id: HttpResultSerializer.java,v 1.6 2004-11-15 15:28:03 andy_seaborne Exp $
  */
 public class HttpResultSerializer
 {
@@ -35,7 +35,7 @@ public class HttpResultSerializer
      * @return true for a successful send, false for any problem (ie.e HTTP repsonse if not 200)
      */
     
-    public boolean sendResponse(Model resultModel, Request request,
+    public boolean XsendResponse(Model resultModel, Request request,
                              HttpServletRequest httpRequest,
                              HttpServletResponse httpResponse)
     {
@@ -206,6 +206,7 @@ public class HttpResultSerializer
                     break ;
                 case ExecutionError.rcArgumentError:
                     httpRC = HttpServletResponse.SC_BAD_REQUEST ;
+                    break ;
                 case ExecutionError.rcNotImplemented:
                     httpRC = HttpServletResponse.SC_NOT_IMPLEMENTED ;
                     break ;

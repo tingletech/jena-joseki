@@ -18,7 +18,7 @@ import com.hp.hpl.jena.vocabulary.* ;
  *  operation processors and keeps the mapping from URI to model.
  * 
  * @author      Andy Seaborne
- * @version     $Id: Dispatcher.java,v 1.4 2004-11-15 12:18:02 andy_seaborne Exp $
+ * @version     $Id: Dispatcher.java,v 1.5 2004-11-15 15:27:51 andy_seaborne Exp $
  */
 public class Dispatcher
 {
@@ -42,66 +42,6 @@ public class Dispatcher
     public ModelSet getModelSet() { return modelSet ; }
     
     public Loader getLoader() { return loader ; }  
-
-    /** Find target model, choose processor and make an operation.
-     * The operation will need connection-specific completion for argument transport.
-     */
-    
-    public Request createOperation(String uri, String url, String opName) throws ExecutionException
-    {
-        // FIXME Remove this - dispatcher shoudl not create requests
-        return createRequest(uri, url, opName, true) ;
-    }
-    
-    public synchronized Request createRequest(String uri, String url, String opName, boolean modelMustExist) throws ExecutionException
-    {
-        // FIXME Remove this - dispatcher shoudl not create requests
-        SourceModel aModel = findModel(uri);
-        ProcessorModel proc = null ;
-        if ( aModel == null )
-        {
-            if (modelMustExist)
-                throw new ExecutionException(ExecutionError.rcNoSuchURI, "Not found: " + uri);
-        }
-        else
-        {   
-            proc = findProcessor(aModel, opName) ;
-            if ( proc == null )
-                  throw new ExecutionException(ExecutionError.rcOperationNotSupported, "Request not found: " + opName);
-        }
-        Request req = new RequestImpl(uri, url, opName, null) ;
-        req.setDispatcher(this) ;
-        req.setSourceModel(aModel) ;
-        req.setProcessor(proc) ;
-        return req ;
-    }
-    
-
-    public Request createQueryRequest(String uri, String url, String langName) throws ExecutionException
-    {
-        QueryProcessorModel qProc = null;
-        SourceModel aModel = null;
-        synchronized (this)
-        {
-            aModel = findModel(uri);
-            if (aModel == null)
-                throw new ExecutionException(ExecutionError.rcNoSuchURI, "Not found: " + uri);
-            qProc = findQueryProcessor(aModel, langName) ;
-        }        
-
-        if ( qProc == null )
-        {
-            if ( langName == null )
-                throw new ExecutionException(ExecutionError.rcQueryExecutionFailure, "Null query language name") ;
-            throw new ExecutionException(ExecutionError.rcNoSuchQueryLanguage, "No such query language: "+langName) ;
-        }
-        Request req = new RequestImpl(uri, url, "query", langName) ;
-        req.setDispatcher(this) ;
-        req.setSourceModel(aModel) ;
-        req.setProcessor(qProc) ;
-        req.setParam("lang", langName) ;
-        return req ;
-    }
 
     /** Actually do something!
      * @param request                    Request to perform

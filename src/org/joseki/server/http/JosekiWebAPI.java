@@ -22,7 +22,7 @@ import org.joseki.Joseki ;
 
 /** The servlet class.
  * @author  Andy Seaborne
- * @version $Id: JosekiWebAPI.java,v 1.9 2004-11-15 12:18:15 andy_seaborne Exp $
+ * @version $Id: JosekiWebAPI.java,v 1.10 2004-11-15 15:28:03 andy_seaborne Exp $
  */
 
 public class JosekiWebAPI extends HttpServlet implements Connector
@@ -174,7 +174,11 @@ public class JosekiWebAPI extends HttpServlet implements Connector
                 queryLang = "GET" ;
             
             try {
-                Request opRequest = dispatcher.createQueryRequest(uri, requestURL, queryLang) ;
+                //Request opRequest = dispatcher.createQueryRequest(uri, requestURL, queryLang) ;
+                Request opRequest =
+                        new RequestImpl(uri, requestURL, "query", queryLang) ;
+                if ( queryLang == null )
+                    throw new ExecutionException(ExecutionError.rcArgumentError, "No query language name") ;
                 
                 Map m = httpRequest.getParameterMap() ;
                 for ( Iterator iter = m.keySet().iterator() ; iter.hasNext() ; )
@@ -245,7 +249,6 @@ public class JosekiWebAPI extends HttpServlet implements Connector
                 reqName = reqName.substring("op=".length()) ;
             
             try {
-                
                 Request opRequest =
                 //    dispatcher.createOperation(uri, requestURL, reqName) ;
                     new RequestImpl(uri, requestURL, reqName, null) ;
@@ -303,21 +306,18 @@ public class JosekiWebAPI extends HttpServlet implements Connector
                 if (uri.equals("*") || uri.equals("/") || uri.equals("/*"))
                 {
                     // There isn't an SourceModel for the server itself - do the work here.
-                    try {
-                        Request opRequest = dispatcher.createRequest(uri, requestURL, "options", false) ;
-                        Response opResponse = new Response(opRequest, httpRequest, httpResponse) ;
-                        opRequest.setParam("baseURL", baseURL) ;
-                        //msg("Options: URI="+ req.getModelURI() + "  Request="+req.getName()) ;
-                        log.info("Options: URI="+ opRequest.getModelURI() + "  Request="+opRequest.getOpName()) ;
-                        Model resultModel = dispatcher.getOptionsModel(baseURL);
-                        opResponse.doResponse(resultModel) ;
-                        //doResponse(resultModel, opHostRequest, httpRequest, httpResponse) ;
-                    }
-                    catch (ExecutionException execEx) { doExeception(execEx, uri, httpResponse); }
+                    Request opRequest = new RequestImpl(uri, requestURL, "options", null) ;
+                    Response opResponse = new Response(opRequest, httpRequest, httpResponse) ;
+                    opRequest.setParam("baseURL", baseURL) ;
+                    //msg("Options: URI="+ req.getModelURI() + "  Request="+req.getName()) ;
+                    log.info("Options: URI="+ opRequest.getModelURI() + "  Request="+opRequest.getOpName()) ;
+                    Model resultModel = dispatcher.getOptionsModel(baseURL);
+                    opResponse.doResponse(resultModel) ;
                     return ;
+                    //doResponse(resultModel, opHostRequest, httpRequest, httpResponse) ;
                 }
-                
-                Request opRequest = dispatcher.createOperation(uri, requestURL, "options") ;
+                Request opRequest = new RequestImpl(uri, requestURL, "options", null) ;
+                    //dispatcher.createOperation(uri, requestURL, "options") ;
                 Response opResponse = new Response(opRequest, httpRequest, httpResponse)  ;
                 opRequest.setParam("baseURL", baseURL) ;
                 execute(opRequest, opResponse);
@@ -381,24 +381,33 @@ public class JosekiWebAPI extends HttpServlet implements Connector
                 log.debug("URI="+ uri + "  Request="+request.getOpName()) ;
     
             // Find target and processor
+            SourceModel aModel = null ;
+            ProcessorModel proc = null ;
             
-            SourceModel aModel = dispatcher.findModel(uri);
-    
-            if ( aModel == null )
-                throw new ExecutionException(ExecutionError.rcNoSuchURI, "Not found: " + uri);
             
-            ProcessorModel proc = null ; 
-            if ( request.getOpName().equals("query") && request.getQueryLanguage() != null )
-                proc = dispatcher.findQueryProcessor(aModel, request.getQueryLanguage()) ;
-            else
-                proc = dispatcher.findProcessor(aModel, request.getOpName()) ;
-            
-            if ( proc == null )
+            synchronized (dispatcher)
             {
-                proc = dispatcher.findProcessor(aModel, request.getOpName()) ; // DEBUG
-                throw new ExecutionException(ExecutionError.rcOperationNotSupported, "Request not found: " + request.getOpName());
+                aModel = dispatcher.findModel(uri);
+        
+                if ( aModel == null )
+                    throw new ExecutionException(ExecutionError.rcNoSuchURI, "Not found: " + uri);
+                
+                if ( request.getOpName().equals("query") &&
+                     request.getQueryLanguage() != null )
+                {
+                    proc = dispatcher.findQueryProcessor(aModel, request.getQueryLanguage()) ;
+                    if ( proc == null )
+                        throw new ExecutionException(ExecutionError.rcNoSuchQueryLanguage,
+                                                     "No such query language: "+request.getQueryLanguage()) ;
+                }
+                else
+                {
+                    proc = dispatcher.findProcessor(aModel, request.getOpName()) ;
+                    if ( proc == null )
+                        throw new ExecutionException(ExecutionError.rcOperationNotSupported, "Request not found: " + request.getOpName());
+                }
             }
-    
+            
             request.setDispatcher(dispatcher) ;
             request.setSourceModel(aModel) ;
             request.setProcessor(proc) ;
@@ -456,7 +465,7 @@ public class JosekiWebAPI extends HttpServlet implements Connector
             log.debug("Successful operation: URI = " + opRequest.getModelURI()+" : Request = "+opRequest.getOpName() ) ;
             try
             {
-                if ( httpSerializer.sendResponse(resultModel, opRequest,
+                if ( httpSerializer.XsendResponse(resultModel, opRequest,
                         httpRequest, httpResponse) )
                     log.info("OK - "+HttpUtils.fmtRequest(httpRequest)) ;
             }
