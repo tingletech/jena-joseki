@@ -1,19 +1,22 @@
 Joseki3
 =======
 
-+ Rethink "joseki.serverDebug"
++ Add joseki:textContentType
+  If looks like a browser, then text/plain with this type as contents.
 
-+ MIME type negotiation
-  Need SPARQL processor to get Resposen to decide earlier.
-  Currently, gets null and is always application/rdf+xml
-  Design bug: choosing MIME type skips application/xml
-  Need "choose(pref=...)"
-  And Response need to freeze choosing.
++ Enable FROM loading in SPARQL processor
+  Make server config controlled
+  SPARQL *service* processor 
 
-+ Adding in "uri=" into protocol for SPARQL
++ Protocol
+  Adding in "uri=" into protocol for SPARQL
+  Add private args "ctype", "stylesheet"
+
++ Errors with long messages as well as short.
+  inc stack traces.
 
 + Request and RequestImpl merge to a single class
-  Or split Reponse into interface and implementation
+  Or split Response into interface and implementation
   Drive by SOAP-ization
 
 + Query only version?  No operations.
@@ -24,17 +27,9 @@ Joseki3
   <foo> a :namedCollection ;
 
 + Allow fetch handlers (renamed) for DESCRIBE
+  Need doing in ARQ first
 
 + SOAP connector (Axis)
-
-+ Charset handling and MIME-type with "q="
-
-+ Errors with long messages as well as short.
-  inc stack traces.
-
-+ Enable FROM loading in SPARQL processor
-  Make server config controlled
-  SPARQL *service* processor 
 
 + Restructure the main server implementation
   ??
