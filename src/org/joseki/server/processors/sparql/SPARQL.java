@@ -24,7 +24,7 @@ import com.hp.hpl.jena.query.* ;
 /** SPARQL operations
  * 
  * @author  Andy Seaborne
- * @version $Id: SPARQL.java,v 1.6 2004-11-16 19:04:53 andy_seaborne Exp $
+ * @version $Id: SPARQL.java,v 1.7 2004-11-17 14:47:36 andy_seaborne Exp $
  */
 
 public class SPARQL extends QueryProcessorCom
@@ -51,23 +51,25 @@ public class SPARQL extends QueryProcessorCom
                     "Wrong implementation - this RDQL processor works with Jena models");         
             Model model = ((SourceModelJena)src).getModel() ;
             
-            if ( queryString == null || queryString.equals("") )
+            if (queryString == null )
             {
-                log.debug("Query: No query string provided") ;
-            }
-            else
-            {
-                String tmp = queryString ;
-                tmp = tmp.replace('\n', ' ') ;
-                tmp = tmp.replace('\r', ' ') ;
-                log.debug("Query: "+tmp) ;
-            }
-            
-            if (queryString == null)
+                log.debug("Query: No query argument") ;
                 throw new QueryExecutionException(
                     ExecutionError.rcQueryExecutionFailure,
                     "No query supplied");
-
+            } 
+             
+            if ( queryString.equals("") )
+            {
+                log.debug("Query: No query argument") ;
+                throw new QueryExecutionException(
+                    ExecutionError.rcQueryExecutionFailure,
+                    "Empty query string");
+            }
+            
+            String queryStringLog = formatForLog(queryString) ;
+            log.debug("Query: "+queryStringLog) ;
+            
             Query query = null ;
             try {
                 query = Query.create(queryString, Query.SyntaxSPARQL) ;
@@ -77,21 +79,11 @@ public class SPARQL extends QueryProcessorCom
                 //    response.setError(ExecutionError.rcQueryParseFailure)
                 //    OutputString out = response.getOutputStream() ;
                 //    out.write(something meaning full)
-                
-                // Fake it.
-                String tmp = queryString ;
-                tmp = tmp.replace('\n', ' ') ;
-                tmp = tmp.replace('\r', ' ') ;
-                log.info("Query parse exception: "+tmp) ;
-                
-                tmp = "Query:\n\r"+queryString +"\n\r" + ex.getMessage() ;
+                String tmp = queryString +"\n\r" + ex.getMessage() ;
                 throw new QueryExecutionException(ExecutionError.rcQueryParseFailure, "Parse error: \n"+tmp) ;
             } catch (Throwable thrown)
             {
-                String tmp = queryString ;
-                tmp = tmp.replace('\n', ' ') ;
-                tmp = tmp.replace('\r', ' ') ;
-                log.info("Query unknown error during parsing: "+tmp+" "+thrown) ;
+                log.info("Query unknown error during parsing: "+queryStringLog, thrown) ;
                 throw new QueryExecutionException(ExecutionError.rcQueryParseFailure, "Unknown Parse error") ;
             }
             
@@ -167,9 +159,11 @@ public class SPARQL extends QueryProcessorCom
         try {
             QueryExecution qe = QueryFactory.createQueryExecution(query) ;
             ResultSetFormatter fmt = new ResultSetFormatter(qe.execSelect()) ;
-            
+            // TODO Remove any HTTPisms
+            response.setMimeType(Joseki.contentTypeXML) ;
+            // See doResponse as well - more header setting?  How to abstract?
+            response.setResponseCode(Response.rcOK) ;
             response.startResponse() ;
-            // Set headers
             fmt.outputAsXML(response.getOutputStream()) ;
             response.finishResponse() ;
         }
@@ -184,6 +178,14 @@ public class SPARQL extends QueryProcessorCom
     public String getInterfaceURI() { return JosekiVocab.queryOperationSPARQL ; }
 
     public void init(Resource binding, Resource implementation) {}
+    
+    private String formatForLog(String queryString)
+    {
+        String tmp = queryString ;
+        tmp = tmp.replace('\n', ' ') ;
+        tmp = tmp.replace('\r', ' ') ;
+        return tmp ;
+    }
 }
 
 /*

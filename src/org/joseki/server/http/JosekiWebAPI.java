@@ -14,7 +14,6 @@ import javax.servlet.http.*;
 
 import com.hp.hpl.jena.util.FileManager;
 import com.hp.hpl.jena.rdf.model.*;
-import com.hp.hpl.jena.shared.JenaException;
 
 import org.joseki.server.*;
 import org.joseki.Joseki ;
@@ -22,7 +21,7 @@ import org.joseki.Joseki ;
 
 /** The servlet class.
  * @author  Andy Seaborne
- * @version $Id: JosekiWebAPI.java,v 1.11 2004-11-15 17:34:36 andy_seaborne Exp $
+ * @version $Id: JosekiWebAPI.java,v 1.12 2004-11-17 14:47:36 andy_seaborne Exp $
  */
 
 public class JosekiWebAPI extends HttpServlet implements Connector
@@ -420,66 +419,66 @@ public class JosekiWebAPI extends HttpServlet implements Connector
         return null ;
     }
 
-    // Normal reply result is a model
-
-    private void XdoResponse(Model resultModel, Request opRequest,
-            HttpServletRequest httpRequest,
-            HttpServletResponse httpResponse)
-    {
-        try
-        {
-            log.debug("Successful operation: URI = " + opRequest.getModelURI()+" : Request = "+opRequest.getOpName() ) ;
-            try
-            {
-                if ( httpSerializer.XsendResponse(resultModel, opRequest,
-                        httpRequest, httpResponse) )
-                    log.info("OK - "+HttpUtils.fmtRequest(httpRequest)) ;
-            }
-            catch (RDFException rdfEx)
-            {
-                //msg(Level.WARNING, "RDFException", rdfEx);
-                log.warn("RDFException", rdfEx);
-                //printStackTrace(printName + "(execute)", rdfEx);
-                httpResponse.sendError(
-                        HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
-                        "RDFException: " + rdfEx);
-                return;
-            }
-            catch (JenaException jEx)
-            {
-                //msg(Level.WARNING, "Exception", ex);
-                log.warn("JenaException: "+jEx.getMessage());
-                if ( jEx.getCause() != null )
-                    jEx.getCause().printStackTrace(httpResponse.getWriter());
-                else
-                    jEx.printStackTrace(httpResponse.getWriter());
-                httpResponse.sendError(
-                        HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
-                        "JenaException: " + jEx);
-                return;
-            }
-            catch (Exception ex)
-            {
-                //msg(Level.WARNING, "Exception", ex);
-                log.warn("Exception", ex);
-
-                httpResponse.sendError(
-                        HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
-                        "Exception: " + ex);
-                return;
-            }
-        }
-        catch (IOException ioEx)
-        {
-            //msg(Level.WARNING,"IOException in normal response") ;
-            log.warn("IOException in normal response") ;
-            try {
-                httpResponse.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-                httpResponse.flushBuffer();
-                httpResponse.getWriter().close();
-            } catch (Exception e) { }
-        }
-    }
+//    // Normal reply result is a model
+//
+//    private void XdoResponse(Model resultModel, Request opRequest,
+//            HttpServletRequest httpRequest,
+//            HttpServletResponse httpResponse)
+//    {
+//        try
+//        {
+//            log.debug("Successful operation: URI = " + opRequest.getModelURI()+" : Request = "+opRequest.getOpName() ) ;
+//            try
+//            {
+//                if ( httpSerializer.sendResponse(resultModel, opRequest,
+//                        httpRequest, httpResponse) )
+//                    log.info("OK - "+HttpUtils.fmtRequest(httpRequest)) ;
+//            }
+//            catch (RDFException rdfEx)
+//            {
+//                //msg(Level.WARNING, "RDFException", rdfEx);
+//                log.warn("RDFException", rdfEx);
+//                //printStackTrace(printName + "(execute)", rdfEx);
+//                httpResponse.sendError(
+//                        HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
+//                        "RDFException: " + rdfEx);
+//                return;
+//            }
+//            catch (JenaException jEx)
+//            {
+//                //msg(Level.WARNING, "Exception", ex);
+//                log.warn("JenaException: "+jEx.getMessage());
+//                if ( jEx.getCause() != null )
+//                    jEx.getCause().printStackTrace(httpResponse.getWriter());
+//                else
+//                    jEx.printStackTrace(httpResponse.getWriter());
+//                httpResponse.sendError(
+//                        HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
+//                        "JenaException: " + jEx);
+//                return;
+//            }
+//            catch (Exception ex)
+//            {
+//                //msg(Level.WARNING, "Exception", ex);
+//                log.warn("Exception", ex);
+//
+//                httpResponse.sendError(
+//                        HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
+//                        "Exception: " + ex);
+//                return;
+//            }
+//        }
+//        catch (IOException ioEx)
+//        {
+//            //msg(Level.WARNING,"IOException in normal response") ;
+//            log.warn("IOException in normal response") ;
+//            try {
+//                httpResponse.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+//                httpResponse.flushBuffer();
+//                httpResponse.getWriter().close();
+//            } catch (Exception e) { }
+//        }
+//    }
     
     // Reply when an exception was generated
 

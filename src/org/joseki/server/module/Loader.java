@@ -18,7 +18,7 @@ import com.hp.hpl.jena.shared.* ;
  * Understands the RDF properties for naming and initializing a new instance. 
  * 
  * @author  Andy Seaborne
- * @version $Id: Loader.java,v 1.1 2004-11-03 10:15:04 andy_seaborne Exp $
+ * @version $Id: Loader.java,v 1.2 2004-11-17 14:47:35 andy_seaborne Exp $
  */
 
 public class Loader
@@ -77,7 +77,15 @@ public class Loader
         
         try {            
             logger.trace("Load module: " + className);
-            Class classObj = classLoader.loadClass(className);
+            Class classObj = null ;
+            try {
+                classObj = classLoader.loadClass(className);
+            } catch (ClassNotFoundException ex)
+            {
+                logger.warn("Class not found: "+className);
+                return null ;
+            }
+            
             if ( classObj == null )
             {
                 logger.warn("Null return from classloader");
@@ -131,8 +139,7 @@ public class Loader
         }
         catch (Exception ex)
         {
-            logger.warn("  Problems loading class " + className + " : " + ex + ": " + ex.getMessage());
-            ex.printStackTrace(System.out) ;
+            logger.warn("Unexpected exception loading class " + className, ex);
             return null;
         }
     }

@@ -73,15 +73,9 @@ joseki:FetchModuleClosure
 joseki:ImplQueryOperationSPARQL
     a   joseki:QueryOperation ;
     module:className
-        "org.joseki.server.processors.QueryProcessorSPARQL" ;
+        #"org.joseki.server.processors.QueryProcessorSPARQL_X" ;
+        "org.joseki.server.processors.sparql.SPARQL" ;
     .
-
-joseki:ImplQueryOperationRDQL
-    a   joseki:QueryOperation ;
-    module:className
-        "org.joseki.server.processors.QueryProcessorRDQL" ;
-    .
-
 
 joseki:ImplQueryOperationGET
     a   joseki:QueryOperation ;
@@ -89,16 +83,24 @@ joseki:ImplQueryOperationGET
         "org.joseki.server.processors.QueryProcessorGET" ;
     .
 
+## ---- Processors for the old style query=>model
+
+joseki:ImplQueryOperationRDQL
+    a   joseki:QueryOperation ;
+    module:className
+        "org.joseki.server.processors.qmodel.QueryProcessorRDQL" ;
+    .
+
 joseki:ImplQueryOperationFetch
     a   joseki:QueryOperation ;
     module:className
-        "org.joseki.server.processors.QueryProcessorFetch" ;
+        "org.joseki.server.processors.fetch.QueryProcessorFetch" ;
     .
 
 joseki:ImplQueryOperationSPO
     a   joseki:QueryOperation ;
     module:className
-        "org.joseki.server.processors.QueryProcessorSPO" ;
+        "org.joseki.server.processors.qmodel.QueryProcessorSPO" ;
     .
 
 
@@ -154,28 +156,28 @@ joseki:BindingOptions
 joseki:ImplOpQueryPOST
     a   joseki:Operation ;
     module:className
-        "org.joseki.server.processors.QueryProcessorPOST" .
+        "org.joseki.server.processors.ProcessorQueryPOST" .
 
 joseki:ImplOpAdd
     a   joseki:Operation ;
     module:className
-        "org.joseki.server.processors.AddProcessor" .
+        "org.joseki.server.processors.ops.AddProcessor" .
 
 joseki:ImplOpRemove
     a   joseki:Operation ;
     module:className
-        "org.joseki.server.processors.RemoveProcessor" .
+        "org.joseki.server.processors.ops.RemoveProcessor" .
 
 joseki:ImplOpPing
     a   joseki:Operation ;
     module:className
-        "org.joseki.server.processors.PingProcessor" .
+        "org.joseki.server.processors.ops.PingProcessor" .
     
 
 joseki:ImplOpOptions
     a   joseki:Operation ;
     module:className
-        "org.joseki.server.processors.OptionsProcessor" . 
+        "org.joseki.server.processors.ops.OptionsProcessor" . 
 
 ## ------------------------------------------
 ## Joseki source controllers

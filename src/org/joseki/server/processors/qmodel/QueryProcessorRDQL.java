@@ -3,12 +3,13 @@
  * [See end of file]
  */
 
-package org.joseki.server.processors;
+package org.joseki.server.processors.qmodel;
 
 
 import org.joseki.util.* ;
 import org.joseki.vocabulary.*;
 import org.joseki.server.* ;
+import org.joseki.server.processors.QueryProcessorModelCom;
 
 import com.hp.hpl.jena.rdf.model.* ;
 
@@ -25,7 +26,7 @@ import java.util.* ;
  *  @see com.hp.hpl.jena.joseki.QueryHTTP
  * 
  * @author  Andy Seaborne
- * @version $Id: QueryProcessorRDQL.java,v 1.5 2004-11-15 17:34:36 andy_seaborne Exp $
+ * @version $Id: QueryProcessorRDQL.java,v 1.1 2004-11-17 14:47:36 andy_seaborne Exp $
  */
 
 public class QueryProcessorRDQL extends QueryProcessorModelCom

@@ -21,7 +21,7 @@ import com.hp.hpl.jena.rdf.model.*;
  * @see ProcessorCom
  * 
  * @author      Andy Seaborne
- * @version     $Id: ProcessorModelCom.java,v 1.8 2004-11-15 17:34:36 andy_seaborne Exp $
+ * @version     $Id: ProcessorModelCom.java,v 1.9 2004-11-17 14:47:35 andy_seaborne Exp $
  */
 public abstract class ProcessorModelCom extends ProcessorCom
 {
@@ -29,10 +29,10 @@ public abstract class ProcessorModelCom extends ProcessorCom
     // Useful constant
     static protected Model emptyModel = ModelFactory.createDefaultModel() ;
     
-    static final int ARGS_ZERO         = 0 ;
-    static final int ARGS_ONE          = 1 ;
+    public static final int ARGS_ZERO         = 0 ;
+    public static final int ARGS_ONE          = 1 ;
     
-    static final int ARGS_ZERO_OR_ONE  = -1 ;
+    public static final int ARGS_ZERO_OR_ONE  = -1 ;
     
     public ProcessorModelCom(String opName, int opType)
     {

@@ -3,16 +3,17 @@
  * [See end of file]
  */
  
-package org.joseki.server.processors;
+package org.joseki.server.processors.ops;
 
 import org.joseki.server.*;
+import org.joseki.server.processors.LockType;
 import org.joseki.vocabulary.JosekiVocab;
 
 import com.hp.hpl.jena.rdf.model.*;
 
 /** Ping operation processor.  Returns an empty model.
  * @author      Andy Seaborne
- * @version     $Id: PingProcessor.java,v 1.4 2004-11-15 16:21:49 andy_seaborne Exp $
+ * @version     $Id: PingProcessor.java,v 1.1 2004-11-17 14:47:34 andy_seaborne Exp $
  */
 
 public class PingProcessor extends ArgZeroProcessor

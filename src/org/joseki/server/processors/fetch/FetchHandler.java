@@ -5,7 +5,7 @@
 
 /**
  * @author     Andy Seaborne
- * @version    $Id: FetchHandler.java,v 1.1 2004-11-03 10:14:57 andy_seaborne Exp $
+ * @version    $Id: FetchHandler.java,v 1.2 2004-11-17 14:47:36 andy_seaborne Exp $
  */
  
 package org.joseki.server.processors.fetch;
@@ -17,7 +17,6 @@ import java.util.Set ;
 
 public interface FetchHandler
 {
-    
     boolean handles(Resource r, Set types) ;
     void fetch(Resource r, Set types, Model acc) ;
 }

@@ -11,6 +11,9 @@ import org.apache.commons.logging.*;
 import junit.framework.*;
 import org.joseki.server.* ;
 import org.joseki.server.processors.*;
+import org.joseki.server.processors.ops.AddProcessor;
+import org.joseki.server.processors.ops.RemoveProcessor;
+import org.joseki.server.processors.qmodel.QueryProcessorRDQL;
 import org.joseki.server.source.*;
 
 
@@ -19,7 +22,7 @@ import com.hp.hpl.jena.rdf.model.*;
 /** Tests of the mechanisms (attach, dispatch) of the server side.
  * 
  * @author      Andy Seaborne
- * @version     $Id: JosekiServerInternalTests.java,v 1.3 2004-11-15 17:34:36 andy_seaborne Exp $
+ * @version     $Id: JosekiServerInternalTests.java,v 1.4 2004-11-17 14:47:35 andy_seaborne Exp $
  */
 public class JosekiServerInternalTests extends TestSuite
 {

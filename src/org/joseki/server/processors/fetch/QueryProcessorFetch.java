@@ -3,7 +3,7 @@
  * [See end of file]
  */
 
-package org.joseki.server.processors;
+package org.joseki.server.processors.fetch;
 
 import org.joseki.server.*;
 import org.apache.commons.logging.* ;
@@ -12,7 +12,9 @@ import java.util.* ;
 import com.hp.hpl.jena.rdf.model.*;
 import com.hp.hpl.jena.shared.* ;
 import com.hp.hpl.jena.vocabulary.* ;
-import org.joseki.server.processors.fetch.* ;
+
+import org.joseki.server.processors.QueryProcessorModelCom;
+//import org.joseki.server.processors.fetch.* ;
 import org.joseki.vocabulary.*;
 import org.joseki.server.module.*;
 import org.joseki.util.PrintUtils;
@@ -24,7 +26,7 @@ import org.joseki.util.PrintUtils;
  *  closure over the properties with this node as subject.
  * 
  * @author      Andy Seaborne
- * @version     $Id: QueryProcessorFetch.java,v 1.4 2004-11-15 17:34:36 andy_seaborne Exp $
+ * @version     $Id: QueryProcessorFetch.java,v 1.1 2004-11-17 14:47:36 andy_seaborne Exp $
  */
 public class QueryProcessorFetch extends QueryProcessorModelCom
 {

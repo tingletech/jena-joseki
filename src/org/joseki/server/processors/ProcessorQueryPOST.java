@@ -21,14 +21,14 @@ import com.hp.hpl.jena.rdf.model.* ;
  *  model as property "joseki:queryOperationName".
  * 
  * @author      Andy Seaborne
- * @version     $Id: QueryProcessorPOST.java,v 1.4 2004-11-15 17:34:36 andy_seaborne Exp $
+ * @version     $Id: ProcessorQueryPOST.java,v 1.1 2004-11-17 14:47:35 andy_seaborne Exp $
  */
 
-public class QueryProcessorPOST extends ProcessorCom
+public class ProcessorQueryPOST extends ProcessorCom
 {
-    Log log = LogFactory.getLog(QueryProcessorPOST.class) ;
+    Log log = LogFactory.getLog(ProcessorQueryPOST.class) ;
     
-    public QueryProcessorPOST()
+    public ProcessorQueryPOST()
     {
         super("QueryProcessorPOST", LockType.ReadOperation) ;
     }

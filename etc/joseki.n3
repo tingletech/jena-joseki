@@ -78,13 +78,7 @@
     joseki:hasOperation         joseki:BindingQueryPOST ;
     joseki:hasOperation         joseki:BindingAdd ;
     # Define the operation completely inline
-    joseki:hasOperation
-        [ joseki:operationName "ping" ; 
-          module:interface      joseki:OpPing ;
-          module:implementation
-            [ module:className
-                  "org.joseki.server.processors.PingProcessor" ]
-        ] ;
+    joseki:hasOperation         _:ping ;
     rdfs:comment "Initially empty model" ;
     .
 
@@ -97,6 +91,16 @@
     joseki:hasQueryOperation    joseki:BindingSPO ;
     joseki:hasQueryOperation    joseki:BindingGET ;
     rdfs:comment "A collection of book details" ;
+    .
+
+# Example - this is the defintion from joseki-defs
+# excpet using bNodes.  It could even be inlined above.
+_:ping 
+    joseki:operationName "ping" ; 
+    module:interface      joseki:OpPing ;
+    module:implementation
+      [ module:className 
+              "org.joseki.server.processors.ops.PingProcessor" ] ;
     .
 
 # Local Variables:

@@ -20,7 +20,7 @@ import com.hp.hpl.jena.shared.JenaException;
 /** Extracting operation data from HTTP servlet requests and formatting results for sending back.
  * 
  * @author      Andy Seaborne
- * @version     $Id: HttpResultSerializer.java,v 1.7 2004-11-15 17:34:36 andy_seaborne Exp $
+ * @version     $Id: HttpResultSerializer.java,v 1.8 2004-11-17 14:47:36 andy_seaborne Exp $
  */
 public class HttpResultSerializer
 {
@@ -28,33 +28,6 @@ public class HttpResultSerializer
     
     public HttpResultSerializer() {}
 
-    /** Send a response.  
-     * @param resultModel
-     * @param request
-     * @param httpRequest
-     * @param httpResponse
-     * @return true for a successful send, false for any problem (ie.e HTTP repsonse if not 200)
-     */
-    
-    public boolean XsendResponse(Model resultModel, Request request,
-                             HttpServletRequest httpRequest,
-                             HttpServletResponse httpResponse)
-    {
-        // FIXME - Remove this when call code in Response
-        // Shouldn't be null - should be empty model
-        if (resultModel == null)
-        {
-            log.warn("Result is null pointer for result model") ;
-            sendPanic(request, httpRequest, httpResponse, null,
-                      "Server internal error: processor returned a null pointer, not a model") ;
-            return false;                 
-        }
-
-        String mimeType = HttpUtils.chooseMimeType(httpRequest);
-
-        setHttpResponse(httpRequest, httpResponse, mimeType);        
-        return writeModel(resultModel, request, httpRequest, httpResponse, mimeType) ;
-    }
     
     public boolean writeModel(Model resultModel, Request request,
                              HttpServletRequest httpRequest,
@@ -153,9 +126,6 @@ public class HttpResultSerializer
             httpResponse.setContentType(contentType) ;
         }
     }
-
-
-    
     
     
     public void sendError(ExecutionException execEx, HttpServletResponse response)
@@ -252,6 +222,34 @@ public class HttpResultSerializer
             return;
         } catch (Exception ex2) { log.warn("Problems sending panic", ex2) ; }
     }
+    
+//  /** Send a response.  
+//  * @param resultModel
+//  * @param request
+//  * @param httpRequest
+//  * @param httpResponse
+//  * @return true for a successful send, false for any problem (ie.e HTTP repsonse if not 200)
+//  */
+// 
+// public boolean sendResponse(Model resultModel, Request request,
+//                          HttpServletRequest httpRequest,
+//                          HttpServletResponse httpResponse)
+// {
+//     // Shouldn't be null - should be empty model
+//     if (resultModel == null)
+//     {
+//         log.warn("Result is null pointer for result model") ;
+//         sendPanic(request, httpRequest, httpResponse, null,
+//                   "Server internal error: processor returned a null pointer, not a model") ;
+//         return false;                 
+//     }
+//
+//     String mimeType = HttpUtils.chooseMimeType(httpRequest);
+//
+//     setHttpResponse(httpRequest, httpResponse, mimeType);        
+//     return writeModel(resultModel, request, httpRequest, httpResponse, mimeType) ;
+// }
+
 }
 
 

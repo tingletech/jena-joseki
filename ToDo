@@ -1,0 +1,39 @@
+Joseki3
+=======
+
++ Adding in "uri=" into protocol for SPARQL
+
++ Request and RequestImpl merge to a single class
+  Or split Reponse into interface and implementation
+  Drive by SOAP-ization
+
++ Refactor processors into op package, query model package and sparql
+  Common code in "processors" package
+
++ Query only version?  No operations.
+
++ Allow fetch handlers (renamed) for DESCRIBE
+
++ SOAP connector (Axis)
+
++ Charset handling and MIME-type with "q="
+
++ Errors with long messages as well as short.
+  inc stack traces.
+
++ Restructure the main server implementation
+  ??
+    .server.config
+    .server.dispatch.
+    .server.processor (all process bits - interfaces and abstract classes)
+    .server.operations
+    .server.query
+    .server
+        SourceModel
+	SourceController
+	Processor
+	RDFServer
+	JosekiServerException
+	ExecutionException
+	ExecutionError
+	Registry (the central one)

@@ -2,61 +2,43 @@
  * (c) Copyright 2003, 2004 Hewlett-Packard Development Company, LP
  * [See end of file]
  */
+ 
+package org.joseki.server.processors.ops;
 
-package org.joseki.server.processors;
-
-import org.apache.commons.logging.* ;
+//import org.apache.commons.logging.* ;
 import org.joseki.server.*;
+import org.joseki.server.processors.LockType;
+import org.joseki.vocabulary.*;
 
 import com.hp.hpl.jena.rdf.model.*;
 
-/** General template for any operation that takes no models
- *  (in the request body) as arguments - they can have parameters.
- * 
+/** ProcessorModel to remove the statements in the argument model from the target model.
  * @author      Andy Seaborne
- * @version     $Id: ArgZeroProcessor.java,v 1.1 2004-11-15 16:21:49 andy_seaborne Exp $
+ * @version     $Id: RemoveProcessor.java,v 1.1 2004-11-17 14:47:34 andy_seaborne Exp $
  */
-public abstract class ArgZeroProcessor extends ProcessorModelCom
+public class RemoveProcessor extends ArgOneProcessor
 {
-    static final Log logger = LogFactory.getLog(ArgZeroProcessor.class.getName()) ; 
- 
-    public ArgZeroProcessor(String n, int lockType)
+
+    public RemoveProcessor()
     {
-        super(n, lockType) ;
+        super("remove", LockType.WriteOperation) ;
     }
 
-    public int argsNeeded() { return ARGS_ZERO ; }
-    
-    /**
-     * @see org.joseki.server.ProcessorModel#exec(Request)
-     */
-    public Model exec(Request request) throws ExecutionException
+    public String getInterfaceURI() { return JosekiVocab.opRemove ; }
+
+    public Model execOneArg(SourceModel src, Model graph, Request req)
+        throws RDFException, ExecutionException
     {
-        if ( request.getDataArgs().size() != 0 )
-            throw new ExecutionException(Response.rcArgumentError,
-                                         "Wrong number of arguments: wanted 0, got "+request.getDataArgs().size()) ;
-
-        SourceModel src = request.getSourceModel() ;
-        try {
-            Model r = execZeroArg(src, request) ;
-            return r ;
-        } catch (RDFException ex)
-        {
-            logger.trace("RDFException: "+ex.getMessage() ) ;
-            throw new ExecutionException(ExecutionError.rcInternalError, null) ;
-        }
-        catch (Exception ex)
-        {
-            logger.trace("Exception: "+ex.getMessage() ) ;
-            throw new ExecutionException(ExecutionError.rcInternalError, null) ;
-        }
-        //return emptyModel ;
+        if (!(src instanceof SourceModelJena))
+            throw new ExecutionException(
+                ExecutionError.rcOperationNotSupported,
+                "Wrong implementation - this Fetch processor works with Jena models");         
+        Model target = ((SourceModelJena)src).getModel() ;
+        target.remove(graph) ;
+        return super.emptyModel ;
     }
-
-    public abstract Model execZeroArg(SourceModel target, Request request)
-        throws RDFException, ExecutionException ;
+        
 }
-
 
 /*
  *  (c) Copyright 2003, 2004 Hewlett-Packard Development Company, LP

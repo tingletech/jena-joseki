@@ -3,13 +3,14 @@
  * [See end of file]
  */
 
-package org.joseki.server.processors;
+package org.joseki.server.processors.qmodel;
 
 import org.apache.commons.logging.* ;
 
 import org.joseki.util.Closure ;
 import org.joseki.vocabulary.*;
 import org.joseki.server.*;
+import org.joseki.server.processors.QueryProcessorModelCom;
 
 import com.hp.hpl.jena.rdf.model.*;
 import com.hp.hpl.jena.rdf.model.RDFException;
@@ -19,7 +20,7 @@ import java.util.* ;
 /** Query processor that returns the whole model.
  * 
  * @author      Andy Seaborne
- * @version     $Id: QueryProcessorSPO.java,v 1.2 2004-11-11 17:03:23 andy_seaborne Exp $
+ * @version     $Id: QueryProcessorSPO.java,v 1.1 2004-11-17 14:47:36 andy_seaborne Exp $
  */
 public class QueryProcessorSPO extends QueryProcessorModelCom
 {

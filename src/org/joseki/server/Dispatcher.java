@@ -18,7 +18,7 @@ import com.hp.hpl.jena.vocabulary.* ;
  *  operation processors and keeps the mapping from URI to model.
  * 
  * @author      Andy Seaborne
- * @version     $Id: Dispatcher.java,v 1.6 2004-11-15 17:34:17 andy_seaborne Exp $
+ * @version     $Id: Dispatcher.java,v 1.7 2004-11-17 14:47:35 andy_seaborne Exp $
  */
 public class Dispatcher
 {
@@ -43,20 +43,8 @@ public class Dispatcher
     
     public Loader getLoader() { return loader ; }  
 
-//    /** Actually do something!
-//     * @param request                    Request to perform
-//     * @throws ExecutionException
-//     */
-//    
-//    public Model exec(Request request) throws ExecutionException
-//    {
-//        // FIXME Remove me!
-//        return request.getProcessor().exec(request) ;
-//    }
-    
     public void exec(Request request, Response response) throws ExecutionException
     {
-        
         // Find target and processor
         SourceModel aModel = null ;
         Processor proc = null ;

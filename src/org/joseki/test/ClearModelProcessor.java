@@ -8,6 +8,7 @@ package org.joseki.test;
 import java.util.* ;
 import org.joseki.server.*;
 import org.joseki.server.processors.*;
+import org.joseki.server.processors.ops.ArgZeroProcessor;
 import org.joseki.vocabulary.JosekiVocab;
 
 import com.hp.hpl.jena.rdf.model.*;
@@ -16,7 +17,7 @@ import com.hp.hpl.jena.rdf.model.*;
  *  on a live system.
  * 
  * @author      Andy Seaborne
- * @version     $Id: ClearModelProcessor.java,v 1.4 2004-11-15 16:22:06 andy_seaborne Exp $
+ * @version     $Id: ClearModelProcessor.java,v 1.5 2004-11-17 14:47:35 andy_seaborne Exp $
  */
 
 public class ClearModelProcessor extends ArgZeroProcessor

@@ -22,7 +22,7 @@ import javax.servlet.http.HttpServletResponse;
 
 /** Abstaction of an operation response
  * @author      Andy Seaborne
- * @version     $Id: Response.java,v 1.13 2004-11-16 19:04:51 andy_seaborne Exp $
+ * @version     $Id: Response.java,v 1.14 2004-11-17 14:47:35 andy_seaborne Exp $
  */
 public class Response extends ExecutionError
 {
@@ -38,6 +38,7 @@ public class Response extends ExecutionError
     
     HttpServletRequest httpRequest = null ;
     HttpServletResponse httpResponse = null ;
+    HttpResultSerializer ser = new HttpResultSerializer() ;
     
     public Response(Request request,
                     HttpServletRequest httpRequest,
@@ -51,7 +52,12 @@ public class Response extends ExecutionError
 //        { LogFactory.getLog(Response.class).fatal("Can't get ServletOutputStream", ex) ; }
     }
     
-    public void startResponse() { responseCommitted = true ; }
+    public void startResponse()
+    {
+        responseCommitted = true ;
+        ser.setHttpResponse(httpRequest, httpResponse, mimeType);        
+    }
+        
     public void finishResponse()
     {
         try { getOutputStream().flush() ; } catch (Exception ex) {}
@@ -68,7 +74,6 @@ public class Response extends ExecutionError
             return ;
         }
         
-        HttpResultSerializer ser = new HttpResultSerializer() ;
         if (resultModel == null)
         {
             log.warn("Result is null pointer for result model") ;
@@ -78,8 +83,9 @@ public class Response extends ExecutionError
         }
 
         String mimeType = HttpUtils.chooseMimeType(httpRequest);
-
-        ser.setHttpResponse(httpRequest, httpResponse, mimeType);        
+        setMimeType(mimeType) ;
+        startResponse() ;
+        
         try {
             try {
                 ser.writeModel(resultModel, request, httpRequest, httpResponse, mimeType) ;

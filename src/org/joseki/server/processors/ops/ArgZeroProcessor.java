@@ -3,48 +3,44 @@
  * [See end of file]
  */
 
-package org.joseki.server.processors;
+package org.joseki.server.processors.ops;
 
-import java.util.* ;
 import org.apache.commons.logging.* ;
 import org.joseki.server.*;
+import org.joseki.server.processors.ProcessorModelCom;
+
 import com.hp.hpl.jena.rdf.model.*;
 
-/** General template for any operation that takes exactly one model as argument
+/** General template for any operation that takes no models
+ *  (in the request body) as arguments - they can have parameters.
+ * 
  * @author      Andy Seaborne
- * @version     $Id: ArgOneProcessor.java,v 1.1 2004-11-15 16:21:49 andy_seaborne Exp $
+ * @version     $Id: ArgZeroProcessor.java,v 1.1 2004-11-17 14:47:34 andy_seaborne Exp $
  */
-public abstract class ArgOneProcessor extends ProcessorModelCom
+public abstract class ArgZeroProcessor extends ProcessorModelCom
 {
     static final Log logger = LogFactory.getLog(ArgZeroProcessor.class.getName()) ; 
-
-    
-    public ArgOneProcessor(String n, int lockType)
+ 
+    public ArgZeroProcessor(String n, int lockType)
     {
         super(n, lockType) ;
     }
 
-    public int argsNeeded() { return ARGS_ONE ; }
-
+    public int argsNeeded() { return ARGS_ZERO ; }
+    
     /**
-     * @see org.joseki.server.processors.ProcessorModelCom#exec(Request)
+     * @see org.joseki.server.ProcessorModel#exec(Request)
      */
     public Model exec(Request request) throws ExecutionException
     {
-        if ( request.getDataArgs().size() != 1 )
+        if ( request.getDataArgs().size() != 0 )
             throw new ExecutionException(Response.rcArgumentError,
-                                         "Wrong number of arguments: wanted 1, got "+request.getDataArgs().size()) ;
-        
+                                         "Wrong number of arguments: wanted 0, got "+request.getDataArgs().size()) ;
+
         SourceModel src = request.getSourceModel() ;
         try {
-            List graphs = request.getDataArgs() ;
-            if ( graphs.size() != 1 )
-                throw new ExecutionException(ExecutionError.rcArgumentError, "Wrong number of arguments") ;
-            Model arg = (Model)graphs.get(0) ;
-            
-            Model r = execOneArg(src, arg, request) ;
+            Model r = execZeroArg(src, request) ;
             return r ;
-            
         } catch (RDFException ex)
         {
             logger.trace("RDFException: "+ex.getMessage() ) ;
@@ -57,8 +53,8 @@ public abstract class ArgOneProcessor extends ProcessorModelCom
         }
         //return emptyModel ;
     }
-    
-    public abstract Model execOneArg(SourceModel src, Model arg, Request request)
+
+    public abstract Model execZeroArg(SourceModel target, Request request)
         throws RDFException, ExecutionException ;
 }
 

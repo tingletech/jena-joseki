@@ -2,41 +2,49 @@
  * (c) Copyright 2003, 2004 Hewlett-Packard Development Company, LP
  * [See end of file]
  */
- 
-package org.joseki.server.processors;
+
+package org.joseki.server.processors.ops;
 
 import org.joseki.server.*;
-import org.joseki.vocabulary.*;
+import org.joseki.server.processors.LockType;
+import org.joseki.vocabulary.JosekiVocab;
 
-import com.hp.hpl.jena.rdf.model.Model;
-import com.hp.hpl.jena.rdf.model.RDFException;
+import com.hp.hpl.jena.rdf.model.*;
 
-/** ProcessorModel to add the statements in the argument model into the target model.
- *
+/** ProcessorModel that produces the meta-data for an attached model.
+ *  This is not the processor for the options operation on the whole server.
+ * 
  * @author      Andy Seaborne
- * @version     $Id: AddProcessor.java,v 1.5 2004-11-15 16:21:49 andy_seaborne Exp $
+ * @version     $Id: OptionsProcessor.java,v 1.1 2004-11-17 14:47:34 andy_seaborne Exp $
  */
-public class AddProcessor extends ArgOneProcessor
+
+public class OptionsProcessor extends ArgZeroProcessor //implements ProcessorModel
 {
-    public AddProcessor()
+    static protected Model emptyModel = ModelFactory.createDefaultModel() ;
+    String acceptsOpName = "options" ;
+    boolean readOnlyLock = true ;
+
+    public OptionsProcessor()
     {
-        super("add", LockType.WriteOperation) ;
+        super("options", LockType.ReadOperation) ;
     }
+    
+    public String getInterfaceURI() { return JosekiVocab.opOptions ; }
 
-    public String getInterfaceURI() { return JosekiVocab.opAdd ; }
-
-    public Model execOneArg(SourceModel src, Model graph, Request req)
-        throws RDFException, ExecutionException
+    
+    public Model execZeroArg(SourceModel src, Request request) throws RDFException, ExecutionException
     {
-        if (!(src instanceof SourceModelJena))
-            throw new ExecutionException(
-                ExecutionError.rcOperationNotSupported,
-                "Wrong implementation - this Fetch processor works with Jena models");         
-        Model target = ((SourceModelJena)src).getModel() ;
+//        if (!(src instanceof SourceModelJena))
+//            throw new QueryExecutionException(
+//                ExecutionError.rcOperationNotSupported,
+//                "Wrong implementation - this Fetch processor works with Jena models");         
+//        Model model = ((SourceModelJena)src).getModel() ;
         
-        target.add(graph) ;
-        return super.emptyModel ;
+        String baseURL = request.getParam("baseURL") ;
+        Model resultModel = request.getDispatcher().getOptionsModel(request.getSourceModel(), baseURL) ;
+        return resultModel ;
     }
+
 }
 
 

@@ -3,27 +3,28 @@
  * [See end of file]
  */
  
-package org.joseki.server.processors;
+package org.joseki.server.processors.ops;
 
-//import org.apache.commons.logging.* ;
 import org.joseki.server.*;
+import org.joseki.server.processors.LockType;
 import org.joseki.vocabulary.*;
 
-import com.hp.hpl.jena.rdf.model.*;
+import com.hp.hpl.jena.rdf.model.Model;
+import com.hp.hpl.jena.rdf.model.RDFException;
 
-/** ProcessorModel to remove the statements in the argument model from the target model.
+/** ProcessorModel to add the statements in the argument model into the target model.
+ *
  * @author      Andy Seaborne
- * @version     $Id: RemoveProcessor.java,v 1.5 2004-11-15 16:21:50 andy_seaborne Exp $
+ * @version     $Id: AddProcessor.java,v 1.1 2004-11-17 14:47:34 andy_seaborne Exp $
  */
-public class RemoveProcessor extends ArgOneProcessor
+public class AddProcessor extends ArgOneProcessor
 {
-
-    public RemoveProcessor()
+    public AddProcessor()
     {
-        super("remove", LockType.WriteOperation) ;
+        super("add", LockType.WriteOperation) ;
     }
 
-    public String getInterfaceURI() { return JosekiVocab.opRemove ; }
+    public String getInterfaceURI() { return JosekiVocab.opAdd ; }
 
     public Model execOneArg(SourceModel src, Model graph, Request req)
         throws RDFException, ExecutionException
@@ -33,11 +34,12 @@ public class RemoveProcessor extends ArgOneProcessor
                 ExecutionError.rcOperationNotSupported,
                 "Wrong implementation - this Fetch processor works with Jena models");         
         Model target = ((SourceModelJena)src).getModel() ;
-        target.remove(graph) ;
+        
+        target.add(graph) ;
         return super.emptyModel ;
     }
-        
 }
+
 
 /*
  *  (c) Copyright 2003, 2004 Hewlett-Packard Development Company, LP
