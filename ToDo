@@ -1,6 +1,10 @@
 Joseki3
 =======
 
++ Bugs:
+  1/ web.xml: static pages assignment is Jetty-specific
+  2/ Can't find config file when not the root application
+
 + Latest protocol
     Rename params
     (centralize names)
