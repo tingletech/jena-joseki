@@ -25,18 +25,18 @@ import com.hp.hpl.jena.rdf.model.* ;
  *  model as property "joseki:queryOperationName".
  * 
  * @author      Andy Seaborne
- * @version     $Id: QueryModelProcessor.java,v 1.4 2004-11-11 11:52:39 andy_seaborne Exp $
+ * @version     $Id: QueryProcessorPOST.java,v 1.1 2004-11-11 12:01:36 andy_seaborne Exp $
  */
 
-public class QueryModelProcessor extends ProcessorModelCom
+public class QueryProcessorPOST extends ProcessorModelCom
 {
     // TODO Remove when query-model removed 
     
-    Log log = LogFactory.getLog(QueryModelProcessor.class) ;
+    Log log = LogFactory.getLog(QueryProcessorPOST.class) ;
     
-    public QueryModelProcessor()
+    public QueryProcessorPOST()
     {
-        super("QueryModelProcessor", ReadOperation, NoChangeToModel) ;
+        super("QueryProcessorPOST", ReadOperation, NoChangeToModel) ;
     }
     
     /** @see org.joseki.server.module#init(Resource, Resource)
@@ -106,7 +106,7 @@ public class QueryModelProcessor extends ProcessorModelCom
      */
     public String getInterfaceURI()
     {
-        return JosekiVocab.opQueryModel ;
+        return JosekiVocab.opQueryPOST ;
     }
 
     /** A model is required.

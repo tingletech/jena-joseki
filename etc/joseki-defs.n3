@@ -109,11 +109,20 @@ joseki:ImplQueryOperationSPO
 ## indirects them to the specific query processor based on language.
 ## It is not itself a query processor.
 
+joseki:BindingQueryPOST
+    a   joseki:OperationBinding ;
+    joseki:operationName  "query" ; 
+    module:interface      joseki:OpQueryPOST ;
+    module:implementation joseki:ImplOpQueryPOST .
+
+# Old name - compatibility with joseki:BindingQueryPOST
 joseki:BindingQueryModel
     a   joseki:OperationBinding ;
     joseki:operationName  "query" ; 
-    module:interface      joseki:OpQueryModel ;
-    module:implementation joseki:ImplOpQueryModel .
+    module:interface      joseki:OpQueryPOST ;
+    module:implementation joseki:ImplOpQueryPOST .
+
+
 
 joseki:BindingAdd
     a   joseki:OperationBinding ;
@@ -142,10 +151,10 @@ joseki:BindingOptions
 ## ------------------------------------------
 ## Joseki implementations of operations
 
-joseki:ImplOpQueryModel
+joseki:ImplOpQueryPOST
     a   joseki:Operation ;
     module:className
-        "org.joseki.server.processors.QueryModelProcessor" .
+        "org.joseki.server.processors.QueryProcessorPOST" .
 
 joseki:ImplOpAdd
     a   joseki:Operation ;

@@ -25,7 +25,7 @@
     joseki:hasQueryOperation    joseki:BindingRDQL ;
     joseki:hasQueryOperation    joseki:BindingGET ;
     joseki:hasQueryOperation    joseki:BindingFetchClosure ;
-    joseki:hasOperation         joseki:BindingQueryModel ;
+    joseki:hasOperation         joseki:BindingQueryPOST ;
     joseki:hasOperation         joseki:BindingOptions ;
     joseki:hasOperation         joseki:BindingPing ;
 
@@ -42,7 +42,7 @@
     joseki:hasQueryOperation    joseki:BindingGET ;
     joseki:hasQueryOperation    joseki:BindingFetchClosure ;
     joseki:hasQueryOperation    joseki:BindingSPO ;
-    joseki:hasOperation         joseki:BindingQueryModel ;
+    joseki:hasOperation         joseki:BindingQueryPOST ;
     joseki:hasOperation         joseki:BindingOptions ;
     joseki:hasOperation         joseki:BindingPing ;
 
@@ -58,7 +58,7 @@
     joseki:hasQueryOperation    joseki:BindingGET ;
     joseki:hasQueryOperation    joseki:BindingFetchClosure ;
     ## No queries over POST
-    ##joseki:hasOperation         joseki:BindingQueryModel ;
+    ##joseki:hasOperation         joseki:BindingQueryPOST ;
     joseki:hasOperation         joseki:BindingOptions ;
     # Define the operation completely inline
     joseki:hasOperation
@@ -76,7 +76,7 @@
     joseki:hasQueryOperation     joseki:BindingRDQL ;
     joseki:hasQueryOperation     joseki:BindingGET ;
     ## No queries over POST
-    ##joseki:hasOperation         joseki:BindingQueryModel ;
+    ##joseki:hasOperation         joseki:BindingQueryPOST ;
     joseki:hasOperation         joseki:BindingAdd ;
     joseki:hasOperation         joseki:BindingRemove ;
     joseki:hasOperation         joseki:BindingOptions ;

@@ -11,7 +11,7 @@ package org.joseki.vocabulary;
  *  This class adds the non-schema-generated defintions.
  * 
  * @author      Andy Seaborne
- * @version     $Id: JosekiVocab.java,v 1.1 2004-11-03 10:15:03 andy_seaborne Exp $
+ * @version     $Id: JosekiVocab.java,v 1.2 2004-11-11 12:01:35 andy_seaborne Exp $
  */
 
 public class JosekiVocab extends JosekiSchema
@@ -22,8 +22,8 @@ public class JosekiVocab extends JosekiSchema
     
     public static String opQuery          = getURI()+"OpQuery" ;
     //public static Resource r_opQuery      = ResourceFactory.createResource(opQuery) ;
-    public static String opQueryModel     = getURI()+"OpQueryModel" ;
-    //public static Resource r_opQueryModel = ResourceFactory.createResource(opQueryModel) ; 
+    public static String opQueryPOST       = getURI()+"OpQueryPOST" ;
+    //public static Resource opQueryPOST    = ResourceFactory.createResource(opQueryPOST) ; 
     public static String opOptions        = getURI()+"OpOptions" ;
     //public static Resource r_opOptions    = ResourceFactory.createResource(opOptions) ;
     public static String opPing           = getURI()+"OpPing" ;

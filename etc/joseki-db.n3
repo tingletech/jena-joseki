@@ -26,7 +26,7 @@
     joseki:dbDriver           "com.mysql.jdbc.Driver" ;
     joseki:hasQueryOperation  joseki:BindingRDQL ;
     joseki:hasOperation       joseki:BindingPing ;
-    joseki:hasOperation       joseki:BindingQueryModel ;
+    joseki:hasOperation       joseki:BindingQueryPOST ;
     .
 
 # Local Variables:

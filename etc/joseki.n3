@@ -61,7 +61,7 @@
     joseki:hasQueryOperation    joseki:BindingRDQL ;
     joseki:hasQueryOperation    joseki:BindingSPO ;
     # Allow query over POST
-    joseki:hasOperation         joseki:BindingQueryModel ;
+    joseki:hasOperation         joseki:BindingQueryPOST ;
     joseki:isImmutable			"true" ;
     # Not pingable
     joseki:namespacePrefix
@@ -75,7 +75,7 @@
     joseki:hasQueryOperation    joseki:BindingRDQL ;
     joseki:hasQueryOperation    joseki:BindingSPARQL ;
     joseki:hasQueryOperation    joseki:BindingGET ;
-    joseki:hasOperation         joseki:BindingQueryModel ;
+    joseki:hasOperation         joseki:BindingQueryPOST ;
     joseki:hasOperation         joseki:BindingAdd ;
     # Define the operation completely inline
     joseki:hasOperation
