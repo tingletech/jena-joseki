@@ -5,11 +5,9 @@
 
 package org.joseki.server.processors.sparql;
 
-import java.io.* ;
 import org.apache.commons.logging.*;
 
 import com.hp.hpl.jena.rdf.model.*;
-import com.hp.hpl.jena.util.FileUtils;
 
 import org.joseki.Joseki ;
 import org.joseki.server.ExecutionError;
@@ -18,7 +16,7 @@ import org.joseki.server.Request;
 import org.joseki.server.Response;
 import org.joseki.server.SourceModel;
 import org.joseki.server.SourceModelJena;
-import org.joseki.server.http.HttpResultSerializer;
+//import org.joseki.server.http.HttpResultSerializer;
 import org.joseki.vocabulary.JosekiVocab;
 
 import com.hp.hpl.jena.query.* ;
@@ -26,7 +24,7 @@ import com.hp.hpl.jena.query.* ;
 /** SPARQL operations
  * 
  * @author  Andy Seaborne
- * @version $Id: SPARQL.java,v 1.5 2004-11-16 18:59:24 andy_seaborne Exp $
+ * @version $Id: SPARQL.java,v 1.6 2004-11-16 19:04:53 andy_seaborne Exp $
  */
 
 public class SPARQL extends QueryProcessorCom
@@ -166,15 +164,21 @@ public class SPARQL extends QueryProcessorCom
     public static void execQueryXML(Query query, Response response)
         throws QueryExecutionException
     {
-        log.warn("Ignoring request for XML results") ;
-        response.startResponse() ;
-        HttpResultSerializer ser = new HttpResultSerializer() ;
-        PrintWriter w = FileUtils.asPrintWriterUTF8(response.getOutputStream()) ;
-        w.println("XML RESULTS") ;
-        w.flush() ;
-        response.finishResponse() ;
-
+        try {
+            QueryExecution qe = QueryFactory.createQueryExecution(query) ;
+            ResultSetFormatter fmt = new ResultSetFormatter(qe.execSelect()) ;
+            
+            response.startResponse() ;
+            // Set headers
+            fmt.outputAsXML(response.getOutputStream()) ;
+            response.finishResponse() ;
+        }
         //throw new QueryExecutionException(Response.rcNotImplemented, "SPARQL.execQueryXML") ;
+        catch (QueryException qEx)
+        {
+            log.info("Query execution error: "+qEx) ;
+            throw new QueryExecutionException(ExecutionError.rcQueryExecutionFailure, null) ;
+        }
     }
 
     public String getInterfaceURI() { return JosekiVocab.queryOperationSPARQL ; }

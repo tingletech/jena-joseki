@@ -22,7 +22,7 @@ import javax.servlet.http.HttpServletResponse;
 
 /** Abstaction of an operation response
  * @author      Andy Seaborne
- * @version     $Id: Response.java,v 1.12 2004-11-16 18:59:24 andy_seaborne Exp $
+ * @version     $Id: Response.java,v 1.13 2004-11-16 19:04:51 andy_seaborne Exp $
  */
 public class Response extends ExecutionError
 {
@@ -52,7 +52,11 @@ public class Response extends ExecutionError
     }
     
     public void startResponse() { responseCommitted = true ; }
-    public void finishResponse() { responseSent = true ; }
+    public void finishResponse()
+    {
+        try { getOutputStream().flush() ; } catch (Exception ex) {}
+        responseSent = true ;
+    }
     
     // TODO Tidy up
     
