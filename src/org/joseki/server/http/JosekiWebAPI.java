@@ -22,7 +22,7 @@ import org.joseki.Joseki ;
 
 /** The servlet class.
  * @author  Andy Seaborne
- * @version $Id: JosekiWebAPI.java,v 1.5 2004-11-14 12:00:55 andy_seaborne Exp $
+ * @version $Id: JosekiWebAPI.java,v 1.6 2004-11-14 12:05:37 andy_seaborne Exp $
  */
 
 public class JosekiWebAPI extends HttpServlet implements Connector
@@ -373,11 +373,6 @@ public class JosekiWebAPI extends HttpServlet implements Connector
 
         resultModel = dispatcher.exec(req) ;
         doResponse(resultModel, req, httpRequest, httpResponse);
-        
-        //TODO Replace with a real result object
-        // At the moment, relies on the fact that its always a memory model and 
-        // nothing much happens on a close(). 
-        //resultModel.close() ;
     }
 
 

@@ -13,12 +13,12 @@ import com.hp.hpl.jena.rdf.model.*;
  *  Processor interface and this more specialised one. 
  *  
  * @author      Andy Seaborne
- * @version     $Id: ProcessorModel.java,v 1.4 2004-11-11 17:50:24 andy_seaborne Exp $
+ * @version     $Id: ProcessorModel.java,v 1.5 2004-11-14 12:05:37 andy_seaborne Exp $
  */
 
 public interface ProcessorModel extends Interface
 {
-    // TODO remove ProcessorModel
+    // TODO remove ProcessorModel - becomes an abstract class implementing "Processor"
     /** Execute the operation.  
      * @return Model    Should not be null.
      */

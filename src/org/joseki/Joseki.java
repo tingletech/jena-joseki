@@ -9,7 +9,7 @@ import java.util.* ;
 
 /** Constants and other definitions.
  * @author      Andy Seaborne
- * @version     $Id: Joseki.java,v 1.3 2004-11-04 18:05:51 andy_seaborne Exp $
+ * @version     $Id: Joseki.java,v 1.4 2004-11-14 12:05:37 andy_seaborne Exp $
  */
 public class Joseki
 {
@@ -20,7 +20,6 @@ public class Joseki
     public static String httpHeaderValue = "Joseki-"+version ;
     
     // TODO Split constants into client-side and server-side constants.
-    // TODO Shared utils.
     
     //public static final String baseURI = "http://joseki.org/" ;
 

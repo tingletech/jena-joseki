@@ -19,7 +19,7 @@ import com.hp.hpl.jena.query.* ;
  *  on a model over HTTP.
  *
  * @author  Andy Seaborne
- * @version $Id: QueryHTTP.java,v 1.2 2004-11-03 17:37:55 andy_seaborne Exp $
+ * @version $Id: QueryHTTP.java,v 1.3 2004-11-14 12:05:37 andy_seaborne Exp $
  */
 public class QueryHTTP implements QueryExecution
 {
@@ -104,19 +104,19 @@ public class QueryHTTP implements QueryExecution
     
     public Model execConstruct()
     {
-        // TODO Auto-generated method stub
+        logger.warn("Unimplemented: execConstruct)") ;
         return null;
     }
 
     public Model execDescribe()
     {
-        // TODO Auto-generated method stub
+        logger.warn("Unimplemented: execDescribe)") ;
         return null;
     }
 
     public boolean execAsk()
     {
-        // TODO Auto-generated method stub
+        logger.warn("Unimplemented: execAsk)") ;
         return false;
     }
 }
