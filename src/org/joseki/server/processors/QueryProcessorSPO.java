@@ -19,9 +19,9 @@ import java.util.* ;
 /** Query processor that returns the whole model.
  * 
  * @author      Andy Seaborne
- * @version     $Id: QueryProcessorSPO.java,v 1.1 2004-11-03 10:15:03 andy_seaborne Exp $
+ * @version     $Id: QueryProcessorSPO.java,v 1.2 2004-11-11 17:03:23 andy_seaborne Exp $
  */
-public class QueryProcessorSPO extends QueryProcessorCom
+public class QueryProcessorSPO extends QueryProcessorModelCom
 {
     static Log logger = LogFactory.getLog(QueryProcessorSPO.class.getName()) ;
     

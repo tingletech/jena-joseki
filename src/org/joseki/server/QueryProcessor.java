@@ -9,17 +9,16 @@ import com.hp.hpl.jena.rdf.model.RDFException;
 
 /** 
  * @author      Andy Seaborne
- * @version     $Id: QueryProcessor.java,v 1.4 2004-11-11 11:52:27 andy_seaborne Exp $
+ * @version     $Id: QueryProcessor.java,v 1.5 2004-11-11 17:03:36 andy_seaborne Exp $
  */
 public interface QueryProcessor extends Processor
 {
-    
 //    /** Map from short name for the query language (as used by GET dispatching)
 //     *  and the long URI.  String maps to String (not a URI object).
 //     */
     //public Map getQueryLanguages() ;
     
-    /** Execute a query - teh query string may be null or empty, depending on the
+    /** Execute a query - the query string may be null or empty, depending on the
      *  conventions for the query language. 
      */
     public void execQuery(SourceModel aModel, String queryString,

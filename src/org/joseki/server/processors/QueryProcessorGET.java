@@ -18,9 +18,9 @@ import com.hp.hpl.jena.rdf.model.RDFException;
 /** Query processor that returns the whole model.
  * 
  * @author      Andy Seaborne
- * @version     $Id: QueryProcessorGET.java,v 1.2 2004-11-11 11:52:39 andy_seaborne Exp $
+ * @version     $Id: QueryProcessorGET.java,v 1.3 2004-11-11 17:03:23 andy_seaborne Exp $
  */
-public class QueryProcessorGET extends QueryProcessorCom
+public class QueryProcessorGET extends QueryProcessorModelCom
 {
     static Log log = LogFactory.getLog(QueryProcessorGET.class) ;
     

@@ -24,9 +24,9 @@ import org.joseki.util.PrintUtils;
  *  closure over the properties with this node as subject.
  * 
  * @author      Andy Seaborne
- * @version     $Id: QueryProcessorFetch.java,v 1.2 2004-11-11 11:52:39 andy_seaborne Exp $
+ * @version     $Id: QueryProcessorFetch.java,v 1.3 2004-11-11 17:03:23 andy_seaborne Exp $
  */
-public class QueryProcessorFetch extends QueryProcessorCom
+public class QueryProcessorFetch extends QueryProcessorModelCom
 {
     Log log = LogFactory.getLog(QueryProcessorFetch.class.getName() ) ; 
     

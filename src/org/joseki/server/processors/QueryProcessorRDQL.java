@@ -25,10 +25,10 @@ import java.util.* ;
  *  @see com.hp.hpl.jena.joseki.QueryHTTP
  * 
  * @author  Andy Seaborne
- * @version $Id: QueryProcessorRDQL.java,v 1.3 2004-11-11 11:52:39 andy_seaborne Exp $
+ * @version $Id: QueryProcessorRDQL.java,v 1.4 2004-11-11 17:03:23 andy_seaborne Exp $
  */
 
-public class QueryProcessorRDQL extends QueryProcessorCom implements QueryProcessorModel
+public class QueryProcessorRDQL extends QueryProcessorModelCom implements QueryProcessorModel
 {
     static Log logger = LogFactory.getLog(QueryProcessorRDQL.class.getName()) ;
     

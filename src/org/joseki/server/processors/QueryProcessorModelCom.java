@@ -16,15 +16,16 @@ import com.hp.hpl.jena.rdf.model.RDFException;
  *  ad a model (e.g. HTTP POST).
  * 
  * @author      Andy Seaborne
- * @version     $Id: QueryProcessorCom.java,v 1.5 2004-11-11 11:52:39 andy_seaborne Exp $
+ * @version     $Id: QueryProcessorModelCom.java,v 1.1 2004-11-11 17:03:23 andy_seaborne Exp $
  */
-public abstract class QueryProcessorCom implements QueryProcessorModel, Loadable
+public abstract class QueryProcessorModelCom implements QueryProcessorModel, Loadable
 {
-    static final Log logger = LogFactory.getLog(QueryProcessorCom.class.getName()) ; 
+    // FIXME No lock!
+    static final Log logger = LogFactory.getLog(QueryProcessorModelCom.class.getName()) ; 
 
     boolean readOnlyLock = true ;
 
-    public QueryProcessorCom() { }
+    public QueryProcessorModelCom() { }
 
     /** @see org.joseki.server.module.Loadable#init(Resource, Resource)
      */

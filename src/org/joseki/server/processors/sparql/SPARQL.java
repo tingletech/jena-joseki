@@ -7,17 +7,24 @@ package org.joseki.server.processors.sparql;
 
 import org.apache.commons.logging.*;
 import com.hp.hpl.jena.rdf.model.*;
-//import org.joseki.server.Request;
+
+import org.joseki.server.ExecutionException;
+import org.joseki.server.QueryExecutionException;
+import org.joseki.server.Request;
 import org.joseki.server.Response;
+import org.joseki.server.QueryProcessor;
+import org.joseki.server.SourceModel;
+import org.joseki.vocabulary.JosekiVocab;
+
 import com.hp.hpl.jena.query.* ;
 
 /** SPARQL operations
  * 
  * @author  Andy Seaborne
- * @version $Id: SPARQL.java,v 1.1 2004-11-09 21:54:15 andy_seaborne Exp $
+ * @version $Id: SPARQL.java,v 1.2 2004-11-11 17:03:36 andy_seaborne Exp $
  */
 
-public class SPARQL
+public class SPARQL implements QueryProcessor
 {
     static Log logger = LogFactory.getLog(SPARQL.class) ;
     
@@ -46,6 +53,24 @@ public class SPARQL
     {
         
     }
+
+    public void execQuery(SourceModel aModel, String queryString, Request request, Response response) throws RDFException, QueryExecutionException
+    {
+        // TODO Auto-generated method stub
+        
+    }
+
+    public void exec(Request request, Response response) throws ExecutionException
+    {
+        // TODO Auto-generated method stub
+        
+    }
+
+    /** @see Loadable#getInterfaceURI */
+    public String getInterfaceURI() { return JosekiVocab.queryOperationSPARQL ; }
+
+    /** @see Loadable#init*/
+    public void init(Resource binding, Resource implementation) {}
 }
 
 /*
