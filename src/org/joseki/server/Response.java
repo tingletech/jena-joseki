@@ -7,7 +7,7 @@ package org.joseki.server;
 import java.io.IOException;
 
 import org.apache.commons.logging.* ;
-//import java.io.IOException;
+import java.io.* ;
 
 import org.joseki.Joseki ;
 import org.joseki.server.http.HttpResultSerializer ;
@@ -22,7 +22,7 @@ import javax.servlet.http.HttpServletResponse;
 
 /** Abstaction of an operation response
  * @author      Andy Seaborne
- * @version     $Id: Response.java,v 1.11 2004-11-15 17:34:17 andy_seaborne Exp $
+ * @version     $Id: Response.java,v 1.12 2004-11-16 18:59:24 andy_seaborne Exp $
  */
 public class Response extends ExecutionError
 {
@@ -149,6 +149,16 @@ public class Response extends ExecutionError
 
     }
 
+    public OutputStream getOutputStream()
+    { 
+        try {
+            return httpResponse.getOutputStream() ;
+        } catch (IOException ex)
+        {
+            log.fatal("IOexception", ex) ;
+            return null ;
+        }
+    }
     
     /**
      * @return Returns the mimeType.

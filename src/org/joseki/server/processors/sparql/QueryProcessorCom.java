@@ -9,12 +9,13 @@ package org.joseki.server.processors.sparql;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.joseki.server.*;
-import org.joseki.server.processors.*;
+import org.joseki.server.processors.LockType;
+import org.joseki.server.processors.ProcessorCom;
 
 /** QueryProcessorCom - the root of query processors.
  * 
  * @author Andy Seaborne
- * @version $Id: QueryProcessorCom.java,v 1.2 2004-11-11 17:50:24 andy_seaborne Exp $
+ * @version $Id: QueryProcessorCom.java,v 1.3 2004-11-16 18:59:24 andy_seaborne Exp $
  */
 
 public abstract class QueryProcessorCom extends ProcessorCom implements QueryProcessor
@@ -41,20 +42,13 @@ public abstract class QueryProcessorCom extends ProcessorCom implements QueryPro
                                                "No query language name or URI found");
         }
         
-        QueryProcessor qProc = null ;
-        log.fatal("NOT IMPLEMENTED: Dispatcher holding QueryProcessor") ;
-        if ( true )
-            throw new QueryExecutionException(Response.rcNotImplemented,
-                                              "Dispatcher holding QueryProcessor") ;
-        
-        // Or has the WebAPI code done all this?
-        
-        //qProc = aModel.getProcessorRegistry().findQueryProcessor(queryLangName);
-        if (qProc == null )
-            throw new QueryExecutionException(ExecutionError.rcOperationNotSupported,
-                                         "No query language found") ;
-        qProc.execQuery(aModel, queryString, request, response) ;
+        execQuery(aModel, queryString, request, response) ;
     }
+    
+    public abstract void execQuery(SourceModel aModel, String queryString,
+                                   Request request, Response response)
+        throws QueryExecutionException ;
+    
 }
 
 /*

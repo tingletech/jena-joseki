@@ -7,12 +7,13 @@ package org.joseki.server;
 
 /** 
  * @author      Andy Seaborne
- * @version     $Id: QueryProcessor.java,v 1.6 2004-11-15 17:34:17 andy_seaborne Exp $
+ * @version     $Id: QueryProcessor.java,v 1.7 2004-11-16 18:59:24 andy_seaborne Exp $
  */
 public interface QueryProcessor extends Processor
 {
     public void execQuery(SourceModel src, String queryString,
-                          Request request, Response response) ;
+                          Request request, Response response)
+        throws QueryExecutionException ;
 }
 
 

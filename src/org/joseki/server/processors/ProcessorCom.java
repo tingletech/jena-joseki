@@ -16,7 +16,7 @@ import com.hp.hpl.jena.rdf.model.*;
  * @see Processor
 
  * @author      Andy Seaborne
- * @version     $Id: ProcessorCom.java,v 1.8 2004-11-12 16:41:38 andy_seaborne Exp $
+ * @version     $Id: ProcessorCom.java,v 1.9 2004-11-16 18:58:58 andy_seaborne Exp $
  */
 public abstract class ProcessorCom implements Processor, Loadable
 {
@@ -71,7 +71,7 @@ public abstract class ProcessorCom implements Processor, Loadable
         {
             needsAbortOperation = false ;
             src.abortOperation() ;
-            log.trace("Exception: "+ex.getMessage() ) ;
+            log.info("Exception: "+ex.getMessage(), ex ) ;
             throw new ExecutionException(ExecutionError.rcInternalError, null) ;
         }
         finally

@@ -9,7 +9,7 @@ import java.util.* ;
 
 /** Constants and other definitions.
  * @author      Andy Seaborne
- * @version     $Id: Joseki.java,v 1.4 2004-11-14 12:05:37 andy_seaborne Exp $
+ * @version     $Id: Joseki.java,v 1.5 2004-11-16 18:59:22 andy_seaborne Exp $
  */
 public class Joseki
 {
@@ -23,14 +23,12 @@ public class Joseki
     
     //public static final String baseURI = "http://joseki.org/" ;
 
-    public static final String contentTypeN3 = "application/n3" ;
-    public static final String contentTypeRDFXML = "application/rdf+xml" ;
+    public static final String contentTypeN3       = "application/n3" ;
+    public static final String contentTypeTurtle   = "application/turtle" ;
+    public static final String contentTypeRDFXML   = "application/rdf+xml" ;
     public static final String contentTypeNTriples = "application/n-triples" ;
+    public static final String contentTypeXML      = "application/xml" ;
 
-    // Not preferred : cope with on input
-    static final String contentTypeXML = "application/xml" ;
-    static final String contentTypeRDF = "application/rdf" ;
-    
     public static String serverContentType = contentTypeRDFXML ;
     public static String clientContentType = contentTypeRDFXML ;
     
@@ -63,14 +61,17 @@ public class Joseki
         setReaderType(contentTypeRDFXML, "RDF/XML") ;
         setReaderType(contentTypeNTriples, "N-TRIPLE") ;
         setReaderType(contentTypeXML, "RDF/XML") ;
-        setReaderType(contentTypeRDF, "RDF/XML") ;
+        setReaderType(contentTypeTurtle, "TURTLE") ;
+        
     }
     
     static Map jenaWriters = new HashMap() ;
     static {
+        // Not application/xml
         setWriterType(contentTypeN3, "N3") ;
         setWriterType(contentTypeRDFXML, "RDF/XML-ABBREV") ;
         setWriterType(contentTypeNTriples, "N-TRIPLE") ;
+        setWriterType(contentTypeTurtle, "TURTLE") ;
     }
 }
 

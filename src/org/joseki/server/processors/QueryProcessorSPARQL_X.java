@@ -17,14 +17,14 @@ import org.apache.commons.logging.* ;
 /** Query processor that executes a SPARQL query on a model
  * 
  * @author  Andy Seaborne
- * @version $Id: QueryProcessorSPARQL.java,v 1.7 2004-11-15 17:34:36 andy_seaborne Exp $
+ * @version $Id: QueryProcessorSPARQL_X.java,v 1.1 2004-11-16 18:58:58 andy_seaborne Exp $
  */
 
-public class QueryProcessorSPARQL extends QueryProcessorModelCom implements QueryProcessor
+public class QueryProcessorSPARQL_X extends QueryProcessorModelCom implements QueryProcessor
 {
-    static Log logger = LogFactory.getLog(QueryProcessorSPARQL.class.getName()) ;
+    static Log logger = LogFactory.getLog(QueryProcessorSPARQL_X.class.getName()) ;
     
-    public QueryProcessorSPARQL()
+    public QueryProcessorSPARQL_X()
     {
         super() ;
     }
