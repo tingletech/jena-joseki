@@ -13,7 +13,7 @@ import com.hp.hpl.jena.rdf.model.*;
 
 /** Ping operation processor.  Returns an empty model.
  * @author      Andy Seaborne
- * @version     $Id: PingProcessor.java,v 1.1 2004-11-17 14:47:34 andy_seaborne Exp $
+ * @version     $Id: PingProcessor.java,v 1.2 2004-12-02 10:17:16 andy_seaborne Exp $
  */
 
 public class PingProcessor extends ArgZeroProcessor
@@ -27,7 +27,7 @@ public class PingProcessor extends ArgZeroProcessor
 
     public Model execZeroArg(SourceModel src, Request request) throws RDFException, ExecutionException
     {
-        return super.emptyModel ;
+        return emptyModel ;
     }
 }
 

@@ -14,7 +14,7 @@ import com.hp.hpl.jena.rdf.model.*;
 
 /** ProcessorModel to remove the statements in the argument model from the target model.
  * @author      Andy Seaborne
- * @version     $Id: RemoveProcessor.java,v 1.1 2004-11-17 14:47:34 andy_seaborne Exp $
+ * @version     $Id: RemoveProcessor.java,v 1.2 2004-12-02 10:17:16 andy_seaborne Exp $
  */
 public class RemoveProcessor extends ArgOneProcessor
 {
@@ -35,7 +35,7 @@ public class RemoveProcessor extends ArgOneProcessor
                 "Wrong implementation - this Fetch processor works with Jena models");         
         Model target = ((SourceModelJena)src).getModel() ;
         target.remove(graph) ;
-        return super.emptyModel ;
+        return emptyModel ;
     }
         
 }

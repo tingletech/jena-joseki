@@ -17,7 +17,7 @@ import com.hp.hpl.jena.rdf.model.*;
  *  on a live system.
  * 
  * @author      Andy Seaborne
- * @version     $Id: ClearModelProcessor.java,v 1.5 2004-11-17 14:47:35 andy_seaborne Exp $
+ * @version     $Id: ClearModelProcessor.java,v 1.6 2004-12-02 10:17:40 andy_seaborne Exp $
  */
 
 public class ClearModelProcessor extends ArgZeroProcessor
@@ -40,7 +40,7 @@ public class ClearModelProcessor extends ArgZeroProcessor
             s.add(sIter.next()) ;
         for ( Iterator iter = s.iterator() ; iter.hasNext() ; )
             target.remove((Statement)iter.next()) ;
-        return super.emptyModel ;
+        return emptyModel ;
     }
 }
 
