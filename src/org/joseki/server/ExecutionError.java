@@ -6,7 +6,7 @@
 package org.joseki.server;
 
 /**
- * @version     $Id: ExecutionError.java,v 1.2 2004-11-04 15:44:58 andy_seaborne Exp $
+ * @version     $Id: ExecutionError.java,v 1.3 2004-11-12 20:00:35 andy_seaborne Exp $
  * @author      Andy Seaborne
  */
 
@@ -28,8 +28,6 @@ public class ExecutionError
     static public final int rcQueryParseFailure      = 100 ;
     static public final int rcQueryExecutionFailure  = 101 ;
     static public final int rcQueryUnknownFormat     = 102 ;
-
-
 
     static public String messages[] =
         { "OK",

@@ -14,7 +14,7 @@ import java.util.* ;
  *  provides methods to create the operation as well as meet
  *  the Request interface.
  * @author      Andy Seaborne
- * @version     $Id: RequestImpl.java,v 1.2 2004-11-03 17:37:42 andy_seaborne Exp $
+ * @version     $Id: RequestImpl.java,v 1.3 2004-11-12 20:00:34 andy_seaborne Exp $
  */
 public class RequestImpl implements Request
 {
@@ -34,9 +34,9 @@ public class RequestImpl implements Request
     List args = new ArrayList();
     Map params = new HashMap();
 
-    public RequestImpl(String u, String url, String name, Dispatcher d, SourceModel aModel, ProcessorModel proc)
+    public RequestImpl(String uri, String url, String name, Dispatcher d, SourceModel aModel, ProcessorModel proc)
     {
-        modelURI = u ;
+        modelURI = uri ;
         requestURL = url ;
         opName = name ;
         dispatcher = d ;

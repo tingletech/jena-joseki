@@ -16,14 +16,13 @@ import com.hp.hpl.jena.util.FileManager;
 import com.hp.hpl.jena.rdf.model.*;
 import com.hp.hpl.jena.shared.JenaException;
 
-import org.joseki.util.Convert;
 import org.joseki.server.*;
 import org.joseki.Joseki ;
 
 
 /** The servlet class.
  * @author  Andy Seaborne
- * @version $Id: JosekiWebAPI.java,v 1.3 2004-11-08 17:44:20 andy_seaborne Exp $
+ * @version $Id: JosekiWebAPI.java,v 1.4 2004-11-12 20:01:02 andy_seaborne Exp $
  */
 
 public class JosekiWebAPI extends HttpServlet implements Connector
@@ -149,7 +148,7 @@ public class JosekiWebAPI extends HttpServlet implements Connector
     {
         try {
             if ( log.isDebugEnabled() )
-                log.debug(fmtRequest(httpRequest)) ;
+                log.debug(HttpUtils.fmtRequest(httpRequest)) ;
             
             // getRequestURL is the exact string used by the caller in the request.
             // Internally, its the "request URI" that names the model
@@ -210,7 +209,7 @@ public class JosekiWebAPI extends HttpServlet implements Connector
     {
         try {
             if ( log.isDebugEnabled() )
-                log.debug(fmtRequest(httpRequest)) ;
+                log.debug(HttpUtils.fmtRequest(httpRequest)) ;
             
             String requestURL = httpRequest.getRequestURL().toString() ;
             String uri = httpRequest.getRequestURI() ;
@@ -270,7 +269,7 @@ public class JosekiWebAPI extends HttpServlet implements Connector
     throws ServletException, java.io.IOException
     {
         try {
-            log.debug(fmtRequest(httpRequest)) ;
+            log.debug(HttpUtils.fmtRequest(httpRequest)) ;
 
             String requestURL = httpRequest.getRequestURL().toString() ;
             String uri = httpRequest.getRequestURI() ;
@@ -421,7 +420,7 @@ public class JosekiWebAPI extends HttpServlet implements Connector
             {
                 if ( httpSerializer.sendResponse(resultModel, opRequest,
                         httpRequest, httpResponse) )
-                    log.info("OK - "+fmtRequest(httpRequest)) ;
+                    log.info("OK - "+HttpUtils.fmtRequest(httpRequest)) ;
             }
             catch (RDFException rdfEx)
             {
@@ -491,7 +490,6 @@ public class JosekiWebAPI extends HttpServlet implements Connector
         }
     }
 
-
     // Desparate way to reply
     
     protected void doResponse(HttpServletResponse response, int reason)
@@ -512,25 +510,6 @@ public class JosekiWebAPI extends HttpServlet implements Connector
     {
         //return this.getClass().getName() ;
         return printName;
-    }
-
-    static String fmtRequest(HttpServletRequest request)
-    {
-        StringBuffer sbuff = new StringBuffer() ;
-        sbuff.append(request.getMethod()) ;
-        sbuff.append(" ") ;
-        sbuff.append(Convert.decWWWForm(request.getRequestURL()));
-        
-        String qs = request.getQueryString();
-        if (qs != null)
-        {
-        	String tmp = request.getQueryString() ;
-            tmp = Convert.decWWWForm(tmp) ;
-            tmp = tmp.replace('\n', ' ') ;
-            tmp = tmp.replace('\r', ' ') ;
-            sbuff.append("?").append(tmp);
-        }
-        return sbuff.toString() ;
     }
 
     // Need a way to pair requests and responses.

@@ -13,11 +13,12 @@ import javax.servlet.http.HttpServletResponse ;
 
 import org.apache.commons.logging.LogFactory;
 import org.joseki.Joseki;
+import org.joseki.util.Convert;
 
 /** org.joseki.server.http.HttpUtils
  * 
  * @author Andy Seaborne
- * @version $Id: HttpUtils.java,v 1.3 2004-11-12 16:41:47 andy_seaborne Exp $
+ * @version $Id: HttpUtils.java,v 1.4 2004-11-12 20:01:02 andy_seaborne Exp $
  */
 
 public class HttpUtils
@@ -57,6 +58,25 @@ public class HttpUtils
                 LogFactory.getLog(HttpUtils.class).warn("Accept-Charset: "+acceptCharset) ;
         }
         return mimeType;
+    }
+    
+    static String fmtRequest(HttpServletRequest request)
+    {
+        StringBuffer sbuff = new StringBuffer() ;
+        sbuff.append(request.getMethod()) ;
+        sbuff.append(" ") ;
+        sbuff.append(Convert.decWWWForm(request.getRequestURL()));
+        
+        String qs = request.getQueryString();
+        if (qs != null)
+        {
+            String tmp = request.getQueryString() ;
+            tmp = Convert.decWWWForm(tmp) ;
+            tmp = tmp.replace('\n', ' ') ;
+            tmp = tmp.replace('\r', ' ') ;
+            sbuff.append("?").append(tmp);
+        }
+        return sbuff.toString() ;
     }
 
     public static String httpResponseCode(int responseCode)

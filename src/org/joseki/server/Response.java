@@ -4,13 +4,17 @@
  */
 
 package org.joseki.server;
+import java.io.IOException;
+
 import org.apache.commons.logging.* ;
 //import java.io.IOException;
 
+import org.joseki.Joseki ;
 import org.joseki.server.http.HttpResultSerializer ;
 import org.joseki.server.http.HttpUtils ;
 
 import com.hp.hpl.jena.rdf.model.Model; 
+import com.hp.hpl.jena.rdf.model.RDFException;
 
 //import javax.servlet.ServletOutputStream; 
 import javax.servlet.http.HttpServletRequest;
@@ -18,7 +22,7 @@ import javax.servlet.http.HttpServletResponse;
 
 /** Abstaction of an operation response
  * @author      Andy Seaborne
- * @version     $Id: Response.java,v 1.6 2004-11-12 16:58:45 andy_seaborne Exp $
+ * @version     $Id: Response.java,v 1.7 2004-11-12 20:00:35 andy_seaborne Exp $
  */
 public class Response extends ExecutionError
 {
@@ -28,8 +32,9 @@ public class Response extends ExecutionError
     String responseMessage = null ;
     
     Request request ;
-    // Note whether we have started writing the reply.
-    boolean committed = false ;
+    boolean responseCommitted = false ;
+    boolean responseSent = false ;
+    
     HttpServletRequest httpRequest = null ;
     HttpServletResponse httpResponse = null ;
     
@@ -43,42 +48,99 @@ public class Response extends ExecutionError
 //        { LogFactory.getLog(Response.class).fatal("Can't get ServletOutputStream", ex) ; }
     }
     
-    public void startResponse() { committed = true ;}
-    public void finishResponse() {}
+    public void startResponse() { responseCommitted = true ; }
+    public void finishResponse() { responseSent = true ; }
     
-    // See also JosekiWebAPI.doResponse and friends
+    // TODO Tidy up
     
-    public void serialize(Model m)
+    public void doResponse(Model m)
     {
+        if ( this.responseSent )
+        {
+            log.fatal("doResponse: Response already sent: "+request.getRequestURL()) ;
+            return ;
+        }
         HttpResultSerializer ser = new HttpResultSerializer() ;
         try {
-            ser.sendResponse(m, null, httpRequest, httpResponse) ;
-        } catch (Exception ex)
-        {
             try {
-                log.warn("Internal server error", ex) ;
-                httpResponse.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR) ;
-                httpResponse.flushBuffer() ;
-                httpResponse.getOutputStream().close() ;
-            } catch (Exception e) {}
-        }        
+                ser.sendResponse(m, null, httpRequest, httpResponse) ;
+            }
+            catch (RDFException rdfEx)
+            {
+                //msg(Level.WARNING, "RDFException", rdfEx);
+                log.warn("RDFException", rdfEx);
+                //printStackTrace(printName + "(execute)", rdfEx);
+                httpResponse.sendError(
+                        HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
+                        "RDFException: " + rdfEx);
+                return;
+            } catch (Exception ex)
+            {
+                try {
+                    log.warn("Internal server error", ex) ;
+                    httpResponse.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR) ;
+                } catch (Exception e) {}
+            }
+        } catch (IOException ioEx)
+        {
+            //msg(Level.WARNING,"IOException in normal response") ;
+            log.warn("IOException in normal response") ;
+            try {
+                httpResponse.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+                httpResponse.flushBuffer();
+                httpResponse.getWriter().close();
+            } catch (Exception e) { }
+        }
+        responseSent = true ;
     }
 
-    public void serialize(ExecutionException ex) throws ExecutionException 
+    public void doException(ExecutionException execEx) throws ExecutionException 
     {
-        HttpResultSerializer ser = new HttpResultSerializer() ;
-        try {
-            ser.sendError(ex, httpResponse) ;
-        } catch (Exception ex2)
+        if ( this.responseSent )
         {
+            log.fatal("doException: Response already sent: "+request.getRequestURL()) ;
+            return ;
+        }
+
+        HttpResultSerializer httpSerializer = new HttpResultSerializer() ;
+        try {
+            String httpMsg = ExecutionError.errorString(execEx.returnCode);
+            //msg("Error in operation: URI = " + uri + " : " + httpMsg);
+            log.info("Error: URI = " + request.getModelURI() + " : " + httpMsg);
+            httpSerializer.sendError(execEx, httpResponse) ;
+            return;
+        } catch (IOException ioEx)
+        {
+            log.warn("IOException in exception response") ;
             try {
-                log.warn("Internal server error", ex2) ;
-                httpResponse.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR) ;
-                httpResponse.flushBuffer() ;
-                httpResponse.getOutputStream().close() ;
-            } catch (Exception e) {}
-        }    
+                httpResponse.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+                httpResponse.flushBuffer();
+                httpResponse.getWriter().close();
+            } catch (Exception e) { }
+        }
+        responseSent = true ;
+
     }
+    
+    // Desparate way to reply
+    
+    protected void doPanic(int reason)
+    {
+        if ( this.responseSent )
+        {
+            log.fatal("doPanic: Response already sent: "+request.getRequestURL()) ;
+            return ;
+        }
+        try {                
+            httpResponse.setHeader(Joseki.httpHeaderField, Joseki.httpHeaderValue) ;
+            httpResponse.setStatus(reason) ;
+            httpResponse.flushBuffer() ;
+            httpResponse.getWriter().close() ;
+        } catch (Exception e) {}
+        responseSent = true ;
+
+    }
+
     
     /**
      * @return Returns the mimeType.
@@ -108,7 +170,7 @@ public class Response extends ExecutionError
      */
     public void setResponseCode(int responseCode)
     {
-        if ( committed )
+        if ( responseCommitted )
         {
             log.warn("Response started - can't set responseCode to "+
                      HttpUtils.httpResponseCode(responseCode)) ;
