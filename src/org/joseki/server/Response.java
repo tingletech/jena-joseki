@@ -4,11 +4,14 @@
  */
 
 package org.joseki.server;
-import java.io.* ;
+
+import java.io.OutputStream;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /** Abstaction of an operation response
  * @author      Andy Seaborne
- * @version     $Id: Response.java,v 1.2 2004-11-09 11:33:27 andy_seaborne Exp $
+ * @version     $Id: Response.java,v 1.3 2004-11-09 17:26:24 andy_seaborne Exp $
  */
 public class Response
 {
@@ -17,6 +20,16 @@ public class Response
     int responseCode = ExecutionError.rcOK ;
     String responseMessage = null ;
     
+    // Note whether we have started writing the reply.
+    boolean committed = false ;
+    HttpServletRequest request = null ;
+    HttpServletResponse response = null ;
+    
+    public Response(HttpServletRequest req, HttpServletResponse resp)
+    {
+        request = req ;
+        response = resp ;
+    }
     
     /**
      * @return Returns the mimeType.
