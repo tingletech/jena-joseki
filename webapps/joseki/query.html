@@ -140,7 +140,7 @@ code {
 <div class="moreindent">
 
 
-<form action="/books">
+<form action="books">
 SELECT - get variables (apply XSLT stylesheet)<br/>
 <input type="hidden" name="lang" value="SPARQL" />
 <textarea name="query" cols="70" rows="5">
@@ -150,13 +150,13 @@ SELECT $book $title WHERE ($book dc:title $title)
 </textarea>
 <br/>
 XSLT style sheet (leave blank for none): 
-<input name="stylesheet" size="25" value="/xml-to-html.xsl" />
+<input name="stylesheet" size="25" value="xml-to-html.xsl" />
 <br/>
 <input type="submit" value="Get Results" />
 </form>
 <hr/>
 
-<form action="/books">
+<form action="books">
 CONSTRUCT * - return a subgraph<br/>
 <input type="hidden" name="lang" value="SPARQL" />
 <textarea name="query" cols="70" rows="5">
@@ -168,7 +168,7 @@ CONSTRUCT * WHERE ($book dc:title $title)
 </form>
 <hr/>
 
-<form action="/books">
+<form action="books">
 DESCRIBE - get information about something<br/>
 <input type="hidden" name="lang" value="SPARQL" />
 <textarea name="query" cols="70" rows="6">

@@ -98,7 +98,7 @@
     <!-- ============================================== -->
     <!-- webapp : Does not compile the source -->
 
-    <target name="webapp-build" depends="check-jar,copy-webapp-libs,webapp-build-clean" 
+    <target name="webapp-build" depends="check-jar,webapp-build-clean,copy-webapp-libs" 
         description="Create the webapps area (does not make the JAR file) in webapps.build/joseki"/>
 
     <target name="webapp-deploy" depends="webapp-build-format,webapp-build"

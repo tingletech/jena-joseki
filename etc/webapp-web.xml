@@ -20,13 +20,6 @@ PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.2//EN"
   </servlet>
 
   <servlet>
-    <servlet-name>StaticPage</servlet-name>
-    <servlet-class>
-      org.mortbay.jetty.servlet.Default
-    </servlet-class>
-  </servlet>
-
-  <servlet>
     <!-- NOT rdfserver (the application name) -->
     <servlet-name>Jena RDF Server</servlet-name>
     <servlet-class>org.joseki.server.http.JosekiWebAPI</servlet-class>
@@ -42,7 +35,7 @@ PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.2//EN"
   <!-- MAPPINGS -->
 
   <servlet-mapping>
-    <servlet-name>StaticPage</servlet-name>
+    <servlet-name>default</servlet-name>
     <url-pattern>/favicon.ico</url-pattern>
   </servlet-mapping>
 
@@ -52,17 +45,22 @@ PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.2//EN"
    -->
   
   <servlet-mapping>
-    <servlet-name>StaticPage</servlet-name>
+    <servlet-name>default</servlet-name>
+    <url-pattern>/xml-to-html.xsl </url-pattern>
+  </servlet-mapping>
+
+  <servlet-mapping>
+    <servlet-name>default</servlet-name>
     <url-pattern>/index.html</url-pattern>
   </servlet-mapping>
 
   <servlet-mapping>
-    <servlet-name>StaticPage</servlet-name>
+    <servlet-name>default</servlet-name>
     <url-pattern>/query.html</url-pattern>
   </servlet-mapping>
 
   <servlet-mapping>
-    <servlet-name>StaticPage</servlet-name>
+    <servlet-name>default</servlet-name>
     <url-pattern>/robots.txt</url-pattern>
   </servlet-mapping>
 
@@ -97,4 +95,3 @@ PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.2//EN"
 -->
 
 </web-app>
-

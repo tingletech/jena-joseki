@@ -12,11 +12,6 @@ PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.2//EN"
 
   <!-- A well-known servlet for testing -->
 
-  <!-- The servlet "default" serves static pages.
-       It is define in webdefault.xml which is applied by
-       the servlet container first (Jetty, Tomcat)
-  -->
-
   <servlet>
     <servlet-name>Dumper</servlet-name>
     <servlet-class>
@@ -25,10 +20,11 @@ PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.2//EN"
   </servlet>
 
   <servlet>
+    <!-- NOT rdfserver (the application name) -->
     <servlet-name>Jena RDF Server</servlet-name>
     <servlet-class>org.joseki.server.http.JosekiWebAPI</servlet-class>
 
-    <!-- Joseki configuration file -->
+    <!-- Configuration file -->
     <init-param>
       <param-name>jena.rdfserver.modelset</param-name>
       <param-value>etc/joseki.n3</param-value>
@@ -43,20 +39,24 @@ PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.2//EN"
     <url-pattern>/favicon.ico</url-pattern>
   </servlet-mapping>
 
+  <!-- Warning: using /* for Joseki services 
+       means that the welcome page is not handled.
+       Nor other mappings like /*.html 
+   -->
+  
   <servlet-mapping>
     <servlet-name>default</servlet-name>
-    <!-- Style sheet that turns XML results into an HTML table -->
+    <url-pattern>/index.html</url-pattern>
+  </servlet-mapping>
+
+  <servlet-mapping>
+    <servlet-name>default</servlet-name>
     <url-pattern>/xml-to-html.xsl</url-pattern>
   </servlet-mapping>
 
   <servlet-mapping>
     <servlet-name>default</servlet-name>
-    <url-pattern>/*.css</url-pattern>
-  </servlet-mapping>
-
-  <servlet-mapping>
-    <servlet-name>default</servlet-name>
-    <url-pattern>/*.html</url-pattern>
+    <url-pattern>/query.html</url-pattern>
   </servlet-mapping>
 
   <servlet-mapping>
@@ -69,28 +69,15 @@ PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.2//EN"
     <url-pattern>/dump</url-pattern>
   </servlet-mapping>
 
-  <!-- "Default servlet" is the URL-pattern "/"
-       Do not confuse with servlet called "default"
-       Standard:
-  <servlet-mapping>
-    <servlet-name>default</servlet-name>
-    <url-pattern>/</url-pattern>
-  </servlet-mapping>
-    -->
-
-  <!-- Note: the URL pattern is very general
-       If it is / or /* then the welcome file is not applied 
-       as this servlet-mapping will match first -->
+  <!-- Note: the URL pattern is very general -->
   <servlet-mapping>
     <servlet-name>Jena RDF Server</servlet-name>
     <url-pattern>/*</url-pattern>
   </servlet-mapping>
 
-  <!-- Does not work - gets served by the rule above.
   <welcome-file-list>
     <welcome-file>index.html</welcome-file>
   </welcome-file-list>
-  -->
 
 
   <!-- SECURIY -->
@@ -108,4 +95,3 @@ PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.2//EN"
 -->
 
 </web-app>
-
