@@ -29,7 +29,7 @@ import com.hp.hpl.jena.shared.* ;
  *  If the query string is large, then HTTP POST?query is used.
 
  * @author  Andy Seaborne
- * @version $Id: HttpQuery.java,v 1.2 2004-11-25 18:21:58 andy_seaborne Exp $
+ * @version $Id: HttpQuery.java,v 1.3 2004-12-07 21:12:32 andy_seaborne Exp $
  */
 public class HttpQuery
 {
@@ -253,7 +253,7 @@ public class HttpQuery
         {
             HttpURLConnection conn = (HttpURLConnection) target.openConnection();
             conn.setRequestProperty("Accept", Joseki.contentTypeRDFXML+", "+
-                                              Joseki.contentTypeN3) ;
+                                              Joseki.contentTypeAppN3) ;
             // By default, following 3xx redirects is true
             //conn.setFollowRedirects(true) ;
 
@@ -297,7 +297,7 @@ public class HttpQuery
         {
             HttpURLConnection conn = (HttpURLConnection) target.openConnection();
             conn.setRequestProperty("Accept", Joseki.contentTypeRDFXML+", "+
-                                              Joseki.contentTypeN3) ;
+                                              Joseki.contentTypeAppN3) ;
             conn.setRequestProperty("Accept-Charset", ENC_UTF8) ;
             conn.setRequestProperty("Content-Type", //Joseki.clientContentType) ;
                                     Joseki.clientContentType+ "; charset="+ENC_UTF8) ;

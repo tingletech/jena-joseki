@@ -15,7 +15,7 @@ import org.joseki.util.Convert;
 /** org.joseki.server.http.HttpUtils
  * 
  * @author Andy Seaborne
- * @version $Id: HttpUtils.java,v 1.11 2004-11-27 19:35:28 andy_seaborne Exp $
+ * @version $Id: HttpUtils.java,v 1.12 2004-12-07 21:12:33 andy_seaborne Exp $
  */
 
 public class HttpUtils
@@ -78,6 +78,16 @@ public class HttpUtils
         return i ;
     }
     
+    
+    public static String match(String headerString, String str)
+    {
+        AcceptList l = new AcceptList(headerString) ;
+        AcceptItem aItem = new AcceptItem(str) ;
+        AcceptItem m = l.match(aItem) ;
+        if ( m == null )
+            return null ;
+        return m.toHeaderString() ;
+    }
     
     public static boolean accept(String headerString, String str)
     {

@@ -28,7 +28,7 @@ import com.hp.hpl.jena.util.* ;
  * Parse and process a Joseki configuration file
  * 
  * @author  Andy Seaborne
- * @version $Id: Configuration.java,v 1.5 2004-11-25 12:56:49 andy_seaborne Exp $
+ * @version $Id: Configuration.java,v 1.6 2004-12-07 21:12:33 andy_seaborne Exp $
  */
 
 
@@ -169,7 +169,8 @@ public class Configuration
                 {
                     String contentType = r.getRequiredProperty(JosekiVocab.useContentType).getString() ;
 
-                    if ( contentType.equals(Joseki.contentTypeN3) ||
+                    if ( contentType.equals(Joseki.contentTypeAppN3) ||
+                         contentType.equals(Joseki.contentTypeTextN3) ||
                          contentType.equals(Joseki.contentTypeRDFXML) ||
                          contentType.equals(Joseki.contentTypeNTriples) )
                     {

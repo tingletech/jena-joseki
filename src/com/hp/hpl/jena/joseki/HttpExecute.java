@@ -21,7 +21,7 @@ import org.joseki.server.http.HttpContentType;
  *  @see HttpOptions
  *  @see HttpQuery
  * @author      Andy Seaborne
- * @version     $Id: HttpExecute.java,v 1.3 2004-11-25 18:21:58 andy_seaborne Exp $
+ * @version     $Id: HttpExecute.java,v 1.4 2004-12-07 21:12:32 andy_seaborne Exp $
  */
 
 public class HttpExecute
@@ -76,7 +76,7 @@ public class HttpExecute
         {
             conn = (HttpURLConnection) url.openConnection();
             conn.setRequestProperty("Accept", Joseki.contentTypeRDFXML+", "+
-                                              Joseki.contentTypeN3) ;
+                                              Joseki.contentTypeAppN3) ;
             conn.setRequestProperty("Accept-Charset", ENC_UTF8) ;
             
             if ( requestMethod != null )

@@ -9,7 +9,7 @@ import java.util.* ;
 
 /** Constants and other definitions.
  * @author      Andy Seaborne
- * @version     $Id: Joseki.java,v 1.9 2004-11-26 16:58:57 andy_seaborne Exp $
+ * @version     $Id: Joseki.java,v 1.10 2004-12-07 21:12:18 andy_seaborne Exp $
  */
 public class Joseki
 {
@@ -23,14 +23,15 @@ public class Joseki
     
     //public static final String baseURI = "http://joseki.org/" ;
 
-    public static final String contentTypeN3       = "application/n3" ;
+    public static final String contentTypeAppN3    = "application/n3" ;
     public static final String contentTypeTurtle   = "application/turtle" ;
     public static final String contentTypeRDFXML   = "application/rdf+xml" ;
     public static final String contentTypeNTriples = "application/n-triples" ;
     public static final String contentTypeXML      = "application/xml" ;
 
     public static final String contentTypeTextPlain    = "text/plain" ;
-    public static final String contentTypeForText  = contentTypeN3 ;
+    public static final String contentTypeTextN3       = "text/n3" ;
+    public static final String contentTypeForText  = contentTypeTextPlain ;
     
     public static final String charsetUTF8         = "utf-8" ;
     
@@ -65,7 +66,8 @@ public class Joseki
     
     static Map jenaReaders = new HashMap() ;
     static {
-        setReaderType(contentTypeN3, "N3") ;
+        setReaderType(contentTypeAppN3, "N3") ;
+        setReaderType(contentTypeTextN3, "N3") ;
         setReaderType(contentTypeRDFXML, "RDF/XML") ;
         setReaderType(contentTypeNTriples, "N-TRIPLE") ;
         setReaderType(contentTypeXML, "RDF/XML") ;
@@ -76,7 +78,7 @@ public class Joseki
     static Map jenaWriters = new HashMap() ;
     static {
         setWriterType(contentTypeXML, "RDF/XML-ABBREV") ;
-        setWriterType(contentTypeN3, "N3") ;
+        setWriterType(contentTypeAppN3, "N3") ;
         setWriterType(contentTypeRDFXML, "RDF/XML-ABBREV") ;
         setWriterType(contentTypeNTriples, "N-TRIPLE") ;
         setWriterType(contentTypeTurtle, "TURTLE") ;
