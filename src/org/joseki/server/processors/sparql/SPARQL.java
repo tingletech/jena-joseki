@@ -22,7 +22,7 @@ import com.hp.hpl.jena.query.* ;
 /** SPARQL operations
  * 
  * @author  Andy Seaborne
- * @version $Id: SPARQL.java,v 1.18 2005-01-07 16:51:40 andy_seaborne Exp $
+ * @version $Id: SPARQL.java,v 1.19 2005-02-04 21:45:24 andy_seaborne Exp $
  */
 
 public class SPARQL extends QueryProcessorCom
@@ -84,8 +84,9 @@ public class SPARQL extends QueryProcessorCom
                 log.info("Query unknown error during parsing: "+queryStringLog, thrown) ;
                 throw new QueryExecutionException(ExecutionError.rcQueryParseFailure, "Unknown Parse error") ;
             }
-            
-            query.setDataSet(model) ;
+
+            if ( ! query.hasDataSetDescription() )
+                query.setDataSet(model) ;
             
             QueryExecution qe = QueryFactory.createQueryExecution(query) ;
 
@@ -134,7 +135,7 @@ public class SPARQL extends QueryProcessorCom
             if ( query.isSelectType() )
             {
                 ResultSet results = qe.execSelect() ;
-                ResultSetFormatter rsFmt = new  ResultSetFormatter(results) ;
+                ResultSetFormatter rsFmt = new  ResultSetFormatter(results, query.getPrefixMap()) ;
                 return rsFmt.toModel() ;
             }
             
@@ -179,7 +180,7 @@ public class SPARQL extends QueryProcessorCom
         
         try {
             QueryExecution qe = QueryFactory.createQueryExecution(query) ;
-            ResultSetFormatter fmt = new ResultSetFormatter(qe.execSelect()) ;
+            ResultSetFormatter fmt = new ResultSetFormatter(qe.execSelect(), query.getPrefixMap()) ;
             // TODO Remove any HTTPisms
             response.setMimeType(Joseki.contentTypeXML) ;
             // See doResponse as well - more header setting?  How to abstract?
