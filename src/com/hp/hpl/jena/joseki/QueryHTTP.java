@@ -10,6 +10,7 @@ import java.net.* ;
 
 //import com.hp.hpl.jena.common.* ;
 import com.hp.hpl.jena.rdf.model.* ;
+import com.hp.hpl.jena.util.FileManager;
 //import com.hp.hpl.jena.rdf.model.impl.* ;
 //import com.hp.hpl.jena.vocabulary.* ;
 
@@ -19,7 +20,7 @@ import com.hp.hpl.jena.query.* ;
  *  on a model over HTTP.
  *
  * @author  Andy Seaborne
- * @version $Id: QueryHTTP.java,v 1.4 2004-11-21 20:54:37 andy_seaborne Exp $
+ * @version $Id: QueryHTTP.java,v 1.5 2004-12-16 11:48:44 andy_seaborne Exp $
  */
 public class QueryHTTP implements QueryExecution
 {
@@ -118,6 +119,11 @@ public class QueryHTTP implements QueryExecution
     {
         logger.warn("Unimplemented: execAsk)") ;
         return false;
+    }
+
+    public void setFileManager(FileManager arg0)
+    {
+        throw new java.lang.UnsupportedOperationException(this.getClass().getName()+"setFileManager()") ;
     }
 }
 
