@@ -9,13 +9,13 @@ import java.util.* ;
 
 /** Constants and other definitions.
  * @author      Andy Seaborne
- * @version     $Id: Joseki.java,v 1.2 2004-11-04 15:44:59 andy_seaborne Exp $
+ * @version     $Id: Joseki.java,v 1.3 2004-11-04 18:05:51 andy_seaborne Exp $
  */
 public class Joseki
 {
     public static final int defaultPort = 2022 ; 
     // TODO automate version number (read from file?) 
-    public static String version = "3.0" ;
+    public static String version = "3.0-dev" ;
     public static String httpHeaderField = "X-Joseki-Server" ;
     public static String httpHeaderValue = "Joseki-"+version ;
     

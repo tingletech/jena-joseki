@@ -3,7 +3,7 @@
     <property name="Name"            value="Joseki"/>
     <property name="name"            value="joseki"/>
 
-    <property name="version"         value="2.2"/>
+    <property name="version"         value="3.0-dev-1"/>
     <property name="dist.name"       value="${name}-${version}"/>
     <property name="dist.path"       value="${Name}-${version}"/>
     <property name="dist.root"       value="dist"/>
