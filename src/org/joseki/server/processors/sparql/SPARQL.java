@@ -22,7 +22,7 @@ import com.hp.hpl.jena.query.* ;
 /** SPARQL operations
  * 
  * @author  Andy Seaborne
- * @version $Id: SPARQL.java,v 1.17 2005-01-07 16:00:54 andy_seaborne Exp $
+ * @version $Id: SPARQL.java,v 1.18 2005-01-07 16:51:40 andy_seaborne Exp $
  */
 
 public class SPARQL extends QueryProcessorCom
@@ -167,7 +167,15 @@ public class SPARQL extends QueryProcessorCom
     {
         String stylesheetURL = null ;
         if ( request.containsParam(paramStyleSheet) )
+        {
             stylesheetURL = request.getParam(paramStyleSheet) ;
+            if ( stylesheetURL != null )
+            {
+                stylesheetURL = stylesheetURL.trim() ;
+                if ( stylesheetURL.length() == 0 )
+                    stylesheetURL = null ;
+            }
+        }
         
         try {
             QueryExecution qe = QueryFactory.createQueryExecution(query) ;
