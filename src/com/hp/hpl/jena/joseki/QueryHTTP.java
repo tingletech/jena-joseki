@@ -20,7 +20,7 @@ import com.hp.hpl.jena.query.* ;
  *  on a model over HTTP.
  *
  * @author  Andy Seaborne
- * @version $Id: QueryHTTP.java,v 1.5 2004-12-16 11:48:44 andy_seaborne Exp $
+ * @version $Id: QueryHTTP.java,v 1.6 2004-12-20 18:23:06 andy_seaborne Exp $
  */
 public class QueryHTTP implements QueryExecution
 {
@@ -74,7 +74,7 @@ public class QueryHTTP implements QueryExecution
                 logger.debug("Model size is zero") ;
 
             // Execute the query locally to build result binding.
-            query.setSource(resultModel);
+            query.setDataSet(resultModel) ;
             QueryExecution qexec = QueryFactory.createQueryExecution(query);
             return qexec.execSelect() ;
         } 

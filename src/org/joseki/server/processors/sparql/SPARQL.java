@@ -22,7 +22,7 @@ import com.hp.hpl.jena.query.* ;
 /** SPARQL operations
  * 
  * @author  Andy Seaborne
- * @version $Id: SPARQL.java,v 1.13 2004-11-26 16:58:58 andy_seaborne Exp $
+ * @version $Id: SPARQL.java,v 1.14 2004-12-20 18:23:06 andy_seaborne Exp $
  */
 
 public class SPARQL extends QueryProcessorCom
@@ -85,7 +85,7 @@ public class SPARQL extends QueryProcessorCom
                 throw new QueryExecutionException(ExecutionError.rcQueryParseFailure, "Unknown Parse error") ;
             }
             
-            query.setSource(model) ;
+            query.setDataSet(model) ;
             
             QueryExecution qe = QueryFactory.createQueryExecution(query) ;
 
