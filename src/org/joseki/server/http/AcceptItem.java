@@ -6,10 +6,12 @@
 
 package org.joseki.server.http;
 
+import org.joseki.util.StringUtils ;
+
 /** A class to handle HTTP Accept types
  * 
  * @author Andy Seaborne
- * @version $Id: AcceptItem.java,v 1.1 2004-11-25 18:21:49 andy_seaborne Exp $
+ * @version $Id: AcceptItem.java,v 1.2 2004-11-26 16:58:57 andy_seaborne Exp $
  */
 
 public class AcceptItem
@@ -37,14 +39,35 @@ public class AcceptItem
     
     private void parse()
     {
-        String[] t = AcceptRange.split(acceptType, "/") ;
+        String[] t = StringUtils.split(acceptType, "/") ;
         
         type = t[0] ;
         if ( t.length > 1 )
             subType = t[1] ;
     }
     
-    public String asString()
+    public boolean accepts(AcceptItem item)
+    {
+        if ( ! accept(this.type, item.type) )
+            return false ;
+        
+        return accept(this.subType, item.subType) ;
+    }
+    
+    private boolean accept(String a, String b)
+    {
+        // Null implies *
+        if ( a == null || b == null )
+            return true ;
+        
+        if ( a.equals("*") || b.equals("*") )
+            return true ;
+        
+        return a.equals(b) ;
+    }
+    
+    // Rename as toHeaderString
+    public String toHeaderString()
     {
         return acceptType ;
     }

@@ -12,30 +12,17 @@ import javax.servlet.http.HttpServletRequest ;
 import javax.servlet.http.HttpServletResponse ;
 
 import org.apache.commons.logging.*;
-import org.joseki.Joseki;
 import org.joseki.util.Convert;
 
 /** org.joseki.server.http.HttpUtils
  * 
  * @author Andy Seaborne
- * @version $Id: HttpUtils.java,v 1.9 2004-11-25 18:21:49 andy_seaborne Exp $
+ * @version $Id: HttpUtils.java,v 1.10 2004-11-26 16:58:57 andy_seaborne Exp $
  */
 
 public class HttpUtils
 {
     private static Log log = LogFactory.getLog(HttpUtils.class) ;
-
-    static public final List defaultCharsetPrefs = new ArrayList() ;
-    static { defaultCharsetPrefs.add(new AcceptItem(Joseki.charsetUTF8)) ; }
-
-    static public final List defaultMediaTypePrefs = new ArrayList() ;
-    static {
-        //for 
-        defaultMediaTypePrefs.add(new AcceptItem(Joseki.contentTypeXML)) ;
-        defaultMediaTypePrefs.add(new AcceptItem(Joseki.contentTypeRDFXML)) ;
-        defaultMediaTypePrefs.add(new AcceptItem(Joseki.contentTypeN3)) ;
-    }        
-
 
     /// Relevant headers:
     //  "Accept", "Accept-Encoding", "Accept-Charset"
@@ -44,95 +31,66 @@ public class HttpUtils
     // More complex preferences matching would be to weight the prefs and maximze
     // accept q * pref q.  No need to be that complicated at the moment.
     
-    public static String chooseCharset(HttpServletRequest httpRequest, List myPrefs)
+    public static AcceptItem chooseCharset(HttpServletRequest httpRequest,
+                                           AcceptList myPrefs,
+                                           AcceptItem defaultAcceptItem)
     {
         String a = httpRequest.getHeader("Accept-Charset") ;
-        if ( a == null )
-        {
-            if ( myPrefs == null )
-                return Joseki.charsetUTF8 ;
-            AcceptItem t =  (AcceptItem)myPrefs.get(0) ;
-            return t.getAcceptType() ;
-        }
-        List l = AcceptRange.multiAcceptRange(a) ;
-        if ( myPrefs == null )
-            myPrefs = defaultCharsetPrefs ;
- 
-        for ( Iterator iter = l.listIterator() ; iter.hasNext() ; )
-        {
-            AcceptRange r = (AcceptRange)iter.next() ;
-            if ( log.isDebugEnabled() )
-                log.debug("Charset requested: "+r) ;
-            
-            if ( isAcceptableAcceptType(r, myPrefs) )
-                return r.getAcceptItem().getType() ;
-            
-//            if ( r.getAcceptType().asString().equalsIgnoreCase(ENC_UTF8) )
-//                return ENC_UTF8 ;
-        }
+        if ( log.isDebugEnabled() )
+            log.debug("Accept-Charset request: "+a) ;
         
-        log.warn("Accept-Charset: "+a) ;
-        // Negotiation!
-        return Joseki.charsetUTF8 ;
+        AcceptItem item = choose(a, myPrefs, defaultAcceptItem) ;
+        
+        if ( log.isDebugEnabled() )
+            log.debug("Charset chosen: "+item) ;
+
+        return item ;
     }
     
-    public static String chooseContentType(HttpServletRequest httpRequest,
-                                           List myPrefs)
+    public static AcceptItem chooseContentType(HttpServletRequest httpRequest,
+                                               AcceptList myPrefs,
+                                               AcceptItem defaultAcceptItem)
     {
-        String mimeType = Joseki.serverContentType ;
-        
-        // Decide MIME type.
-        // Based on exact match - no */* stuff -
-        // so browsers (text/plain) and the Joseki library works (application/???)
-        
-        // See also: Accept-Charset
-        // Currently, we ignore this and just do UTF-8.
-
-        // There can be multiple headers.
-        
         String a = httpRequest.getHeader("Accept") ;
-        if ( a == null )
-        {
-            if ( log.isDebugEnabled() )
-                log.debug("No accept header in request") ;
-            return mimeType ;
-        }
-            
-        List l = AcceptRange.multiAcceptRange(a) ;
-        if ( myPrefs == null )
-            myPrefs = defaultMediaTypePrefs ;
+        if ( log.isDebugEnabled() )
+            log.debug("Accept request: "+a) ;
         
-        boolean found = false ;
-        for ( Iterator iter = l.listIterator(); iter.hasNext(); )
-        {
-            AcceptRange r = (AcceptRange)iter.next() ;
-            String s = r.getAcceptItem().asString() ;
-            
-            if ( log.isTraceEnabled() )
-                log.debug("Content type requested: "+r) ;
+        AcceptItem item = choose(a, myPrefs, defaultAcceptItem) ;
 
-            if ( isAcceptableAcceptType(r, myPrefs) )
-            {
-                // Just a check.
-                String m = Joseki.getWriterType(r.getAcceptItem().asString()) ;
-                if ( m != null )
-                {
-                    mimeType = s ;
-                    found = true ;
-                    if ( log.isDebugEnabled() )
-                        log.debug("Choosing MIME type as "+mimeType) ;
-                    break ;
-                }
-                else
-                    log.warn("No writer for acceptable mime type: "+s) ;
-            }
+        if ( log.isDebugEnabled() )
+            log.debug("Content type chosen: "+item) ;
+
+        return item ;
+    }
+        
+    static AcceptItem choose(String headerString, AcceptList myPrefs,
+                             AcceptItem defaultAcceptItem)
+    {
+        if ( headerString == null )
+            return defaultAcceptItem ;
+        
+        AcceptList l = new AcceptList(headerString) ;
+
+        if ( myPrefs == null )
+            return l.first() ;
+
+        for ( Iterator iter = myPrefs.iterator() ; iter.hasNext() ; )
+        {
+            AcceptItem aItem = ((AcceptRange)iter.next()).getAcceptItem() ;
+            
+            if ( l.accepts(aItem) )
+                return aItem ;
         }
         
-        if ( ! found && log.isDebugEnabled() )
-            log.debug("Defaulting MIME type to "+mimeType) ;
-        return mimeType;
+        return null ;
     }
     
+    public static boolean accept(String headerString, String str)
+    {
+        AcceptList l = new AcceptList(headerString) ;
+        AcceptItem aItem = new AcceptItem(str) ;
+        return l.accepts(aItem) ;
+    }
     
     static String fmtRequest(HttpServletRequest request)
     {
@@ -152,18 +110,6 @@ public class HttpUtils
         }
         return sbuff.toString() ;
     }
-
-    private static boolean isAcceptableAcceptType(AcceptRange r, List myPrefs)
-    {
-        for ( Iterator iter = myPrefs.listIterator() ; iter.hasNext() ; )
-        {
-            AcceptItem p = (AcceptItem)iter.next() ;
-            if ( r.matches(p) )
-                return true ;
-        }
-        return false ;
-    }
-    
 
     public static String httpResponseCode(int responseCode)
     {

@@ -7,11 +7,12 @@
 package org.joseki.server.http;
 import java.util.* ;
 import org.apache.commons.logging.* ;
+import org.joseki.util.StringUtils ;
 
 /** A class to handle HTTP accept types and accept ranges and accept parameters 
  * 
  * @author Andy Seaborne
- * @version $Id: AcceptRange.java,v 1.1 2004-11-25 18:21:49 andy_seaborne Exp $
+ * @version $Id: AcceptRange.java,v 1.2 2004-11-26 16:58:57 andy_seaborne Exp $
  */
 
 public class AcceptRange
@@ -24,84 +25,8 @@ public class AcceptRange
     double q = 1.0 ;
     int posn = 0 ;
     
-    /** Returns a list of headers, sorted so that the most significant is first
-     */
-    
-    static List multiAcceptRange(String s)
-    {
-        //s = s.trim() ;
-        List l = new ArrayList() ;
-        if ( s == null )
-            return l ;
-        
-        String[] x = split(s, ",") ;
-        for ( int i = 0 ; i < x.length ; i++ )
-        {
-            if ( x[i].equals(""))
-                continue ;
-            AcceptRange mType = new AcceptRange(x[i]) ;
-            mType.posn = i ;
-            l.add(mType) ;
-        }
-        multiAcceptRangeSort(l);
-        return l ;
-    }
-
-    static void multiAcceptRangeSort(List l)
-    {
-        Collections.sort(l, new AcceptTypeCompare()) ;
-    }
-                                   
-    
-    /** Debug form */
-    
-    static String multiAcceptRangeToString(List x)
-    {
-        if ( x.size() == 0)
-            return "(empty)" ;
-        
-        String tmp = "" ;
-        
-        boolean first = true ;
-        for ( Iterator iter = x.iterator() ; iter.hasNext() ; )
-        {
-            if ( ! first )
-                tmp = tmp +" " ;
-            tmp = tmp + (AcceptRange)iter.next() ;
-            first = false ;
-        }
-        return tmp ;
-        
-    }
-    
-    static String multiAcceptRangeToHeaderString(List x)
-    {
-        if ( x.size() == 0)
-            return "" ;
-        
-        String tmp = "" ;
-        
-        boolean first = true ;
-        for ( Iterator iter = x.iterator() ; iter.hasNext() ; )
-        {
-            if ( ! first )
-                tmp = tmp +"," ;
-            tmp = tmp + ((AcceptRange)iter.next()).toHeaderString() ;
-            first = false ;
-        }
-        return tmp ;
-    }
-    
-    static List multiCombineMT(List list1, List list2)
-    {
-        List r = new ArrayList() ;
-        r.add(list1) ;
-        r.add(list2) ;
-        Collections.sort(r, new AcceptTypeCompare()) ;
-        return r ;
-    }
-    
-    
+ 
+  
     public AcceptRange(String s)
     {
         process1(s) ;
@@ -111,13 +36,13 @@ public class AcceptRange
     
     private void process1(String s)
     {
-        String[] x = split(s, ";") ;
+        String[] x = StringUtils.split(s, ";") ;
         acceptItem = new AcceptItem(x[0]) ;
         
         for ( int i = 1 ; i < x.length ; i++ )
         {
             // Each a parameter
-            String z[] = split(x[i], "=") ;
+            String z[] = StringUtils.split(x[i], "=") ;
             if ( z.length == 2 )
             {
                 this.params.put(z[0], z[1]) ;
@@ -172,101 +97,7 @@ public class AcceptRange
         b.append("]") ;
         return b.toString() ;
     }
-
-    
-    static String[] split(String s, String splitStr)
-    {
-        String[] x = s.split(splitStr) ;
-        for ( int i = 0 ; i < x.length ; i++ )
-        {
-            x[i] = x[i].trim() ;
-        }
-        return x ;
-    }
-    
-    private static AcceptTypeCompare comp = new AcceptTypeCompare() ;
-    public boolean matches(AcceptItem r2)
-    {
-        String s1 = this.getAcceptItem().asString() ;
-        String s2 = r2.asString() ;
-        return this.getAcceptItem().asString().equals(r2.asString()) ;
-    }
-    
-    // Sort - the rightmost element (highest) will be the preferred accept type.
-    
-    public static class AcceptTypeCompare implements Comparator
-    {
-        public int compare(Object arg1, Object arg2)
-        {
-            if ( ! (arg1 instanceof AcceptRange) )
-                throw new ClassCastException("Not a AcceptItem: "+arg1.getClass().getName()) ;
-            if ( ! (arg2 instanceof AcceptRange) )
-                throw new ClassCastException("Not a AcceptItem: "+arg2.getClass().getName()) ;
-            AcceptRange mType1 = (AcceptRange)arg1 ; 
-            AcceptRange mType2 = (AcceptRange)arg2 ;
-            
-            int r = Double.compare(mType1.q, mType2.q) ;
-            
-            if ( r == 0 )
-                r = subCompare(mType1.acceptItem.getAcceptType(), mType2.acceptItem.getAcceptType()) ;
-            
-            if ( r == 0 )
-                r = subCompare(mType1.acceptItem.getAcceptType(), mType2.acceptItem.getAcceptType()) ;
-            
-            if ( r == 0 )
-            {
-                // This reverses the input order so that the rightmost elements is the
-                // greatest and hence is the first mentioned in the accept range.
-                
-                if ( mType1.posn < mType2.posn )
-                    r = +1 ;
-                if ( mType1.posn > mType2.posn )
-                    r = -1 ;
-            }
-            
-            // The most significant sorts to the first in a list.
-            r = -r ;
-            return r ;
-        }
-        
-        public int subCompare(String a, String b)
-        {
-            if ( a == null )
-                return 1 ;
-            if ( b == null )
-                return -1 ;
-            if ( a.equals("*") && b.equals("*") )
-                return 0 ;
-            if ( a.equals("*") )
-                return -1 ;
-            if ( b.equals("*") )
-                return 1 ;
-            return 0 ;
-        }
-    }
-    
-    
-    
-    public static void main(String[] argv)
-    {
-        testOne("ISO-8859-1,utf-8;q=0.7,*;q=0.7") ;
-        testOne("text/xml,  application/xml,  application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5") ;
-        testOne("text/xml;charset=utf-8") ;
-        testOne("text/*,text/plain;x=*,*/*,*/plain,text/*") ;
-        testOne("image/gif, image/x-xbitmap, image/jpeg, image/pjpeg, application/x-shockwave-flash, application/vnd.ms-excel, application/vnd.ms-powerpoint, application/msword, */*") ;
-        testOne(" , a,,  ") ;
-        
-    }
-
-
-    public static void testOne(String s)
-    {
-        List l = AcceptRange.multiAcceptRange(s) ;
-        System.out.println(AcceptRange.multiAcceptRangeToString(l)) ;
-        System.out.println(AcceptRange.multiAcceptRangeToHeaderString(l)) ;
-        System.out.println() ;
-    }
-    
+ 
     // RFC 2068(HTTP 1.1) defines the format:
     //        media-type     = type "/" subtype *( ";" parameter )
     //        type           = token

@@ -6,12 +6,12 @@
 package org.joseki.server;
 import java.io.IOException;
 
+
 import org.apache.commons.logging.* ;
 import java.io.* ;
 
 import org.joseki.Joseki ;
-import org.joseki.server.http.HttpResultSerializer ;
-import org.joseki.server.http.HttpUtils ;
+import org.joseki.server.http.*; 
 
 //import com.hp.hpl.jena.util.FileUtils ;
 import com.hp.hpl.jena.rdf.model.Model; 
@@ -23,13 +23,15 @@ import javax.servlet.http.HttpServletResponse;
 
 /** Abstaction of an operation response
  * @author      Andy Seaborne
- * @version     $Id: Response.java,v 1.19 2004-11-25 18:21:57 andy_seaborne Exp $
+ * @version     $Id: Response.java,v 1.20 2004-11-26 16:58:58 andy_seaborne Exp $
  */
 public class Response extends ExecutionError
 {
     // This is really "ResponseHttp" - will become that and have an interface for Response. 
     static Log log = LogFactory.getLog(Response.class) ;
     String mimeType = null ;
+    String writerMimeType = null ;
+    
     String charset = null ;
     int responseCode = rcOK ;
     String responseMessage = null ;
@@ -37,6 +39,20 @@ public class Response extends ExecutionError
     Request request ;
     boolean responseCommitted = false ;
     boolean responseSent = false ;
+
+    static AcceptItem defaultCharset      = new AcceptItem(Joseki.charsetUTF8) ;
+    static AcceptList prefCharset         = new AcceptList("utf-8") ;
+    
+    // These EXCLUDE application/xml
+    static AcceptItem defaultContentType  = new AcceptItem(Joseki.contentTypeRDFXML) ;
+    
+    static String[] x = { //Joseki.contentTypeXML ,
+                          Joseki.contentTypeRDFXML ,
+                          Joseki.contentTypeTurtle ,
+                          Joseki.contentTypeN3 ,
+                          Joseki.contentTypeNTriples } ;
+
+    static AcceptList prefContentType     = new AcceptList(x) ;
     
     HttpServletRequest httpRequest = null ;
     HttpServletResponse httpResponse = null ;
@@ -66,15 +82,15 @@ public class Response extends ExecutionError
         responseSent = true ;
     }
     
-    public void chooseHttpHeaders()
-    {
-        String mimeType = HttpUtils.chooseContentType(httpRequest, null);
-        String charset = HttpUtils.chooseCharset(httpRequest, null) ;
-        
-        setMimeType(mimeType) ;
-        setCharset(charset) ;
-    }
-    
+//    public void chooseHttpHeaders()
+//    {
+//        String mimeType = HttpUtils.chooseContentType(httpRequest, prefContentType, defaultContentType).getAcceptType() ;
+//        String charset = HttpUtils.chooseCharset(httpRequest,  prefCharset, defaultCharset).getAcceptType() ;
+//        
+//        setMimeType(mimeType) ;
+//        setCharset(charset) ;
+//    }
+//    
     // TODO Tidy up
     
     public void doResponse(Model resultModel)
@@ -96,12 +112,35 @@ public class Response extends ExecutionError
         // HTTP-isms
         // Set content-type
         
-        chooseHttpHeaders() ;
+        boolean wantsText = accepts("Accept", "text/*") ;
+        if ( wantsText )
+        {
+            // Send text/plain
+            writerMimeType = Joseki.contentTypeForText ;
+            setMimeType(Joseki.contentTypeTextPlain) ;
+        }
+
+        
+        if ( mimeType == null )
+        {
+            AcceptItem i = HttpUtils.chooseContentType(httpRequest, prefContentType, defaultContentType) ; 
+            setMimeType(i.getAcceptType()) ;
+        }
+        
+        if ( charset == null )
+        {
+            AcceptItem i = HttpUtils.chooseCharset(httpRequest,  prefCharset, defaultCharset) ;
+            setCharset(i.getAcceptType()) ;
+        }
+        
+        if ( writerMimeType == null )
+            writerMimeType = mimeType ;
+        
         startResponse() ;
         
         try {
             try {
-                ser.writeModel(resultModel, request, httpRequest, httpResponse, mimeType) ;
+                ser.writeModel(resultModel, request, httpRequest, httpResponse, writerMimeType) ;
             }
             catch (JenaException jEx)
             {
@@ -170,6 +209,13 @@ public class Response extends ExecutionError
         } catch (Exception e) {}
         responseSent = true ;
 
+    }
+    
+    public boolean accepts(String field, String cType)
+    {
+        String f = httpRequest.getHeader(field) ;
+        return HttpUtils.accept(f, cType) ;
+        
     }
 
 //    public PrintWriter getUTF8Writer()

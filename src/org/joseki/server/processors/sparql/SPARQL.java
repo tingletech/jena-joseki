@@ -11,12 +11,7 @@ import org.apache.commons.logging.*;
 import com.hp.hpl.jena.rdf.model.*;
 
 import org.joseki.Joseki ;
-import org.joseki.server.ExecutionError;
-import org.joseki.server.QueryExecutionException;
-import org.joseki.server.Request;
-import org.joseki.server.Response;
-import org.joseki.server.SourceModel;
-import org.joseki.server.SourceModelJena;
+import org.joseki.server.*;
 //import org.joseki.server.http.HttpResultSerializer;
 import org.joseki.vocabulary.JosekiVocab;
 import com.hp.hpl.jena.util.FileUtils ;
@@ -27,7 +22,7 @@ import com.hp.hpl.jena.query.* ;
 /** SPARQL operations
  * 
  * @author  Andy Seaborne
- * @version $Id: SPARQL.java,v 1.12 2004-11-25 18:21:57 andy_seaborne Exp $
+ * @version $Id: SPARQL.java,v 1.13 2004-11-26 16:58:58 andy_seaborne Exp $
  */
 
 public class SPARQL extends QueryProcessorCom
@@ -94,12 +89,25 @@ public class SPARQL extends QueryProcessorCom
             
             QueryExecution qe = QueryFactory.createQueryExecution(query) ;
 
-            response.chooseHttpHeaders() ;
-            String mimeType = response.getMimeType() ; 
+            // Test for SELECT in XML result set form
+            boolean wantsAppXML = response.accepts("Accept", "application/xml") ;
             
-            if ( query.isSelectType() && ( mimeType == null || mimeType.equals(Joseki.contentTypeXML) ) )
+            // Tests needed:
+            // is app/xml prefed over app/rdf+xml?
+            // test for is type X acceptable
+            // response.acceptable(
+            
+            // Browser tests:
+            // is text/* preferred over 
+            
+            if ( query.isSelectType() &&  wantsAppXML )
+            {
                 execQueryXML(query, response) ;
-            else if ( query.isAskType() )
+                log.info("OK - URI="+request.getModelURI()+" : "+queryStringLog) ;
+                return ;
+            }
+            
+            if ( query.isAskType() )
                 execQueryAsk(query, response) ;
             else
             {
@@ -182,9 +190,7 @@ public class SPARQL extends QueryProcessorCom
         try {
             QueryExecution qe = QueryFactory.createQueryExecution(query) ;
             boolean result = qe.execAsk() ;
-            // TODO Remove any HTTPisms
-            response.setMimeType(Joseki.contentTextPlain) ;
-            // See doResponse as well - more header setting?  How to abstract?
+            response.setMimeType(Joseki.contentTypeTextPlain) ;
             response.setResponseCode(Response.rcOK) ;
             response.startResponse() ;
             PrintWriter pw = FileUtils.asPrintWriterUTF8(response.getOutputStream()) ;
