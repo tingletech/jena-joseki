@@ -16,14 +16,11 @@ import com.hp.hpl.jena.rdf.model.*;
  * @see Processor
 
  * @author      Andy Seaborne
- * @version     $Id: ProcessorCom.java,v 1.6 2004-11-11 17:50:14 andy_seaborne Exp $
+ * @version     $Id: ProcessorCom.java,v 1.7 2004-11-11 18:10:15 andy_seaborne Exp $
  */
 public abstract class ProcessorCom implements Processor, Loadable
 {
     private static Log log = LogFactory.getLog(ProcessorCom.class) ;
-    
-    // Useful constant
-    static protected Model emptyModel = ModelFactory.createDefaultModel() ;
     
     protected String operationName = null ;
     protected boolean readOnly = false ;

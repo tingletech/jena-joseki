@@ -7,6 +7,7 @@ package org.joseki.server.processors;
 
 import org.apache.commons.logging.* ;
 import org.joseki.server.*;
+//import org.joseki.server.http.HttpUtils;
 
 import com.hp.hpl.jena.rdf.model.*;
 
@@ -19,12 +20,15 @@ import com.hp.hpl.jena.rdf.model.*;
  * @see ProcessorCom
  * 
  * @author      Andy Seaborne
- * @version     $Id: ProcessorModelCom.java,v 1.2 2004-11-11 17:50:14 andy_seaborne Exp $
+ * @version     $Id: ProcessorModelCom.java,v 1.3 2004-11-11 18:10:15 andy_seaborne Exp $
  */
 public abstract class ProcessorModelCom extends ProcessorCom implements ProcessorModel
 {
     Log logger = LogFactory.getLog(ProcessorModelCom.class) ;
+    // Useful constant
+    static protected Model emptyModel = ModelFactory.createDefaultModel() ;
     
+
     public ProcessorModelCom(String opName, int opType)
     {
         super(opName, opType) ;
@@ -40,11 +44,16 @@ public abstract class ProcessorModelCom extends ProcessorCom implements Processo
         try {
             Model resultModel = exec(request) ;
             response.setResponseCode(Response.rcOK) ;
+            //response.startWriting() ;
+            //HttpUtils.writeModel(resultModel, response.getOutput()) ;
+            //response.finishWriting() ;
             // Write model.
         } catch (ExecutionException ex)
         {
             response.setResponseCode(ex.returnCode) ;
-            // Write empty model.
+            //response.startWriting() ;
+            //HttpUtils.sendErrorMessage(ex) ;
+            //response.finishWriting() ;
         }
     }
 }
