@@ -21,7 +21,7 @@ import com.hp.hpl.jena.rdql.* ;
 /** Command line application to issue queries against a remote model.
  *
  * @author  Andy Seaborne
- * @version $Id: rdfqueryremote.java,v 1.1 2004-11-03 10:15:05 andy_seaborne Exp $
+ * @version $Id: rdfqueryremote.java,v 1.2 2004-11-03 14:28:28 andy_seaborne Exp $
  */
 
 
@@ -185,7 +185,7 @@ public class rdfqueryremote
                 System.exit(1);
             }
 
-            QueryEngineHTTP qHTTP = new QueryEngineHTTP(q, u, "RDQL");
+            QueryHTTP qHTTP = new QueryHTTP(q, u, "RDQL");
             QueryExecution qe = qHTTP;
             
             if ( VERBOSE )
@@ -233,7 +233,7 @@ public class rdfqueryremote
             if ( VERBOSE )
             {
                 System.out.println() ;
-                ((QueryEngineHTTP)qe).getResultModel().write(System.out,"N3") ;
+                ((QueryHTTP)qe).getResultModel().write(System.out,"N3") ;
             }
             fmt.close() ;   
             results.close() ;

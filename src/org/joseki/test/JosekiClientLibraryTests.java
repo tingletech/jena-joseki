@@ -13,7 +13,7 @@ import com.hp.hpl.jena.joseki.* ;
 
 import com.hp.hpl.jena.rdf.model.* ;
 import com.hp.hpl.jena.shared.*;
-import com.hp.hpl.jena.util.ModelLoader ;
+import com.hp.hpl.jena.util.FileManager ;
 import javax.servlet.http.HttpServletResponse ;
 
 /** Tests of the client library
@@ -23,7 +23,7 @@ import javax.servlet.http.HttpServletResponse ;
  *  Tests must leave the server and its models unchanged.
  * 
  * @author      Andy Seaborne
- * @version     $Id: JosekiClientLibraryTests.java,v 1.1 2004-11-03 10:15:03 andy_seaborne Exp $
+ * @version     $Id: JosekiClientLibraryTests.java,v 1.2 2004-11-03 14:28:28 andy_seaborne Exp $
  */
 public class JosekiClientLibraryTests extends TestSuite
 {
@@ -43,9 +43,9 @@ public class JosekiClientLibraryTests extends TestSuite
             writer = new PrintWriter(new BufferedWriter(new OutputStreamWriter(System.out, "UTF-8"))) ;
         } catch (java.io.UnsupportedEncodingException ex) {}
 
-        Model testData1 = ModelLoader.loadModel("Data/Test/test_data_1.nt") ;
-        Model testData2 = ModelLoader.loadModel("Data/Test/test_data_2.nt") ;
-        Model testData1_BV = ModelLoader.loadModel("Data/Test/test_data_1-results.n3") ;
+        Model testData1 = FileManager.get().loadModel("Data/Test/test_data_1.nt") ;
+        Model testData2 = FileManager.get().loadModel("Data/Test/test_data_2.nt") ;
+        Model testData1_BV = FileManager.get().loadModel("Data/Test/test_data_1-results.n3") ;
         
         String rdqlAll   = "SELECT * WHERE (?x ?y ?z)"; 
         //String rdqlPath2 = "SELECT * WHERE (?x, ?y, ?z), (?z, ?a, ?b)" ;
@@ -72,7 +72,7 @@ public class JosekiClientLibraryTests extends TestSuite
         
         addTest(new FetchTest("Fetch-"+(counter++), testServer.emptyModelURI, "http://anything/", empty)) ;
         
-        Model m = ModelLoader.loadModel("Data/Test/fetch-result-1.n3") ;
+        Model m = FileManager.get().loadModel("Data/Test/fetch-result-1.n3") ;
         // Fetch by URI
         addTest(new FetchTest("Fetch-"+(counter++), testServer.fetchModelURI, "http://jena/object#1", m)) ;
 
@@ -131,7 +131,7 @@ public class JosekiClientLibraryTests extends TestSuite
         
         // SPO tests
         {
-            Model results = ModelLoader.loadModel("Data/Test/test_data_SPO_1.nt") ;
+            Model results = FileManager.get().loadModel("Data/Test/test_data_SPO_1.nt") ;
             QueryTest t = new QueryTest("Query-" + (counter++) + "-SPO",
                              "SPO", null, 
                              new String[]{"p"},new String[]{"http://jena/property1"}, 
@@ -194,21 +194,21 @@ public class JosekiClientLibraryTests extends TestSuite
         // Workaround for bugs 803804 and 858163: using RDF/XML (not RDF/XML-ABBREV) writer  for inferred graph
         // If the model is immutable (i.e. GET just hands out the underlying model).
         
-        infResult = ModelLoader.loadModel("Data/Test/inf-rdfs-result-get.rdf") ;
+        infResult = FileManager.get().loadModel("Data/Test/inf-rdfs-result-get.rdf") ;
         addTest(new QueryTest("Inf-RDFS-GET-" + (counter++), null, null, testServer.infRDFSModelURI, infResult)) ;
         
-        infResult = ModelLoader.loadModel("Data/Test/inf-rdfs-result-fetch.n3") ;
+        infResult = FileManager.get().loadModel("Data/Test/inf-rdfs-result-fetch.n3") ;
         addTest(new FetchTest("Inf-RDFS-fetch-" + (counter++),
                     testServer.infRDFSModelURI, "http://example.com/resource", infResult)) ;
 
 
         // Inference: OWL
 
-        infResult = ModelLoader.loadModel("Data/Test/inf-owl-result-fetch.n3") ;
+        infResult = FileManager.get().loadModel("Data/Test/inf-owl-result-fetch.n3") ;
         addTest(new FetchTest("Inf-OWL-fetch-" + (counter++),
                               testServer.infOWLModelURI, "http://example.org/data/x", infResult)) ;
 
-        infResult = ModelLoader.loadModel("Data/Test/inf-owl-result-rdql.n3") ;
+        infResult = FileManager.get().loadModel("Data/Test/inf-owl-result-rdql.n3") ;
         addTest(new QueryTest("Inf-OWL-RDQL-" + (counter++), "RDQL",
                               "SELECT * WHERE (<http://example.org/data/x> rdf:type ?type)",
                               testServer.infOWLModelURI, infResult)) ;

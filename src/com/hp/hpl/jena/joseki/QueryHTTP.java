@@ -19,17 +19,17 @@ import com.hp.hpl.jena.rdql.* ;
  *  on a model over HTTP.
  *
  * @author  Andy Seaborne
- * @version $Id: QueryEngineHTTP.java,v 1.1 2004-11-03 10:14:56 andy_seaborne Exp $
+ * @version $Id: QueryHTTP.java,v 1.1 2004-11-03 14:28:28 andy_seaborne Exp $
  */
-public class QueryEngineHTTP implements QueryExecution
+public class QueryHTTP implements QueryExecution
 {
-    static final Log logger = LogFactory.getLog(QueryEngineHTTP.class.getName()) ;
+    static final Log logger = LogFactory.getLog(QueryHTTP.class.getName()) ;
     
     Query query ;
     HttpQuery qHTTP ;
     Model resultModel = null ;
     
-    public QueryEngineHTTP(Query q, String urlStr, String lang)
+    public QueryHTTP(Query q, String urlStr, String lang)
     {
         query = q ;
         String queryString = q.toString().replaceAll("\\s{2,}", " ") ;
@@ -37,7 +37,7 @@ public class QueryEngineHTTP implements QueryExecution
         qHTTP.addParam("query", queryString) ;
     }
 
-    public QueryEngineHTTP(Query q, URL u, String lang)
+    public QueryHTTP(Query q, URL u, String lang)
     {
         query = q ;
         String queryString = q.toString().replaceAll("\\s{2,}", " ") ;

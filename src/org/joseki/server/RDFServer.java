@@ -9,21 +9,21 @@ import java.util.* ;
 import org.mortbay.jetty.* ;
 import org.mortbay.util.MultiException;
 
-import org.mortbay.util.LoggerLogSink;
-import org.mortbay.util.LogSink;
-import org.mortbay.util.NullLogSink;
+//import org.mortbay.util.LoggerLogSink;
+//import org.mortbay.util.LogSink;
+//import org.mortbay.util.NullLogSink;
 import org.mortbay.jetty.servlet.* ;
 
 //import org.joseki.logging.LoggingControl;
 import org.joseki.server.http.*;
 import org.apache.commons.logging.* ;
 
-import org.apache.commons.logging.impl.Jdk14Logger;
+//import org.apache.commons.logging.impl.Jdk14Logger;
 //import org.apache.commons.logging.impl.Log4JLogger;
 
 /** Standalone server.
  * 
- * @version $Id: RDFServer.java,v 1.1 2004-11-03 10:15:01 andy_seaborne Exp $
+ * @version $Id: RDFServer.java,v 1.2 2004-11-03 14:28:28 andy_seaborne Exp $
  * @author  Andy Seaborne
  */
 
@@ -265,47 +265,48 @@ public class RDFServer
     
     private void setLogging(boolean setOn)
     {
-        LogSink logSink = null ; 
-        
-        if (setOn)
-            try
-            {
-                // Guess the logging system
-                if ( LogFactory.getLog(this.getClass()) instanceof Jdk14Logger )
-                {
-                    LoggerLogSink j14sink = new LoggerLogSink();
-                    j14sink.setLogger(java.util.logging.Logger.getLogger("org.mortbay"));
-                    logSink = j14sink ;
-                }
-                
-//                if ( LogFactory.getLog(this.getClass()) instanceof Log4JLogger )
+        // Jetty 5 uses Apache common logging.
+//        LogSink logSink = null ; 
+//        
+//        if (setOn)
+//            try
+//            {
+//                // Guess the logging system
+//                if ( LogFactory.getLog(this.getClass()) instanceof Jdk14Logger )
 //                {
-//                    logSink = new Log4jSink() ; 
+//                    LoggerLogSink j14sink = new LoggerLogSink();
+//                    j14sink.setLogger(java.util.logging.Logger.getLogger("org.mortbay"));
+//                    logSink = j14sink ;
 //                }
-            
-                // Create a log sink and initialize it.
-                //System.setProperty("LOG_DATE_FORMAT", "yyyy-mm-dd HH:mm:ss ");
-                //OutputStreamLogSink logSink = new OutputStreamLogSink();
-                //logSink.setOutputStream(System.out);
-
-                logSink.setOptions("tT");
-                logSink.start();
-
-                org.mortbay.util.Log.instance().add(logSink);
-            }
-            catch (Exception ioEx)
-            {
-                System.err.println("Exception starting Jetty: " + ioEx);
-            }
-        else
-        {
-            logSink = new NullLogSink() ;
-        }
-        
-        
-        org.mortbay.util.Log.instance().add(logSink) ;
-        try { logSink.start(); } catch (Exception ex) {}
-        //disableLog();
+//                
+////                if ( LogFactory.getLog(this.getClass()) instanceof Log4JLogger )
+////                {
+////                    logSink = new Log4jSink() ; 
+////                }
+//            
+//                // Create a log sink and initialize it.
+//                //System.setProperty("LOG_DATE_FORMAT", "yyyy-mm-dd HH:mm:ss ");
+//                //OutputStreamLogSink logSink = new OutputStreamLogSink();
+//                //logSink.setOutputStream(System.out);
+//
+//                logSink.setOptions("tT");
+//                logSink.start();
+//
+//                org.mortbay.util.Log.instance().add(logSink);
+//            }
+//            catch (Exception ioEx)
+//            {
+//                System.err.println("Exception starting Jetty: " + ioEx);
+//            }
+//        else
+//        {
+//            logSink = new NullLogSink() ;
+//        }
+//        
+//        
+//        org.mortbay.util.Log.instance().add(logSink) ;
+//        try { logSink.start(); } catch (Exception ex) {}
+//        //disableLog();
     }
 }
 

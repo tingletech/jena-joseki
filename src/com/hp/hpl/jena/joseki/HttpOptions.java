@@ -15,8 +15,9 @@ import java.net.* ;
  *  about query languages and operations supported.
  * 
  * @author  Andy Seaborne
- * @version $Id: HttpOptions.java,v 1.1 2004-11-03 10:14:56 andy_seaborne Exp $
+ * @version $Id: HttpOptions.java,v 1.2 2004-11-03 14:28:28 andy_seaborne Exp $
  */
+
 public class HttpOptions extends HttpExecute
 {
     public HttpOptions(URL u) throws MalformedURLException

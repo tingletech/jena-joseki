@@ -22,10 +22,10 @@ import java.util.* ;
  *  The client may then recreate the variable bindings if it so wishes.
  * 
  *  @see com.hp.hpl.jena.joseki.HttpQuery
- *  @see com.hp.hpl.jena.joseki.QueryEngineHTTP
+ *  @see com.hp.hpl.jena.joseki.QueryHTTP
  * 
  * @author  Andy Seaborne
- * @version $Id: QueryProcessorRDQL.java,v 1.1 2004-11-03 10:15:03 andy_seaborne Exp $
+ * @version $Id: QueryProcessorRDQL.java,v 1.2 2004-11-03 14:28:28 andy_seaborne Exp $
  */
 
 public class QueryProcessorRDQL extends QueryProcessorCom implements QueryProcessor
