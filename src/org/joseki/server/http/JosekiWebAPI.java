@@ -23,11 +23,13 @@ import org.joseki.Joseki ;
 
 /** The servlet class.
  * @author  Andy Seaborne
- * @version $Id: JosekiWebAPI.java,v 1.2 2004-11-05 18:18:58 andy_seaborne Exp $
+ * @version $Id: JosekiWebAPI.java,v 1.3 2004-11-08 17:44:20 andy_seaborne Exp $
  */
 
 public class JosekiWebAPI extends HttpServlet implements Connector
 {
+    private static final long serialVersionUID = 1L;  // Serializable.
+    
     // Use one logger.
     protected static Log log = null ; //LogFactory.getLog(HTTP_Execution.class.getName()) ;
     
@@ -161,7 +163,7 @@ public class JosekiWebAPI extends HttpServlet implements Connector
                 return ;
             }
 
-            uri = formDispatchURI(uri, httpRequest) ;
+            uri = chooseDispatchURI(uri, httpRequest) ;
             
             //msg(Level.FINE, "Get: URL= "+uri) ;
             //msg(Level.FINE, "  QueryString = "+request.getQueryString()) ;
@@ -214,7 +216,7 @@ public class JosekiWebAPI extends HttpServlet implements Connector
             String uri = httpRequest.getRequestURI() ;
             String httpQueryString = httpRequest.getQueryString() ;
             
-            uri = formDispatchURI(uri, httpRequest) ;
+            uri = chooseDispatchURI(uri, httpRequest) ;
             
             if ( httpQueryString == null )
             {
@@ -273,7 +275,7 @@ public class JosekiWebAPI extends HttpServlet implements Connector
             String requestURL = httpRequest.getRequestURL().toString() ;
             String uri = httpRequest.getRequestURI() ;
             
-            uri = formDispatchURI(uri, httpRequest) ;
+            uri = chooseDispatchURI(uri, httpRequest) ;
 
             
             //msg(Level.FINE, "Context path="+request.getContextPath()+" :: PathInfo="+request.getPathInfo()+" :: PathTranslated="+request.getPathTranslated()) ;
@@ -332,12 +334,8 @@ public class JosekiWebAPI extends HttpServlet implements Connector
     // ------------------------------------------
     // This should return a list of possibilities to allow for
     // future changes.
-    // e.g. Under Tomcat: http://server/joseki/books
-    // where as http://server/books us probably better.
-    // Don't want to break current deployed configurations. 
- 
 
-    private String formDispatchURI(String uri, HttpServletRequest httpRequest)
+    private String chooseDispatchURI(String uri, HttpServletRequest httpRequest)
     {
         String dispatchURI = uri ;
         String contextPath = httpRequest.getContextPath() ;
@@ -347,7 +345,9 @@ public class JosekiWebAPI extends HttpServlet implements Connector
         
         String servletPath = httpRequest.getServletPath() ;
 
-        // Suggested by Frank Hartman:
+        // Suggested by Frank Hartman: helps make conf files more portable
+        // between /joseki/myModel and /myModel but if the servlet is 
+        // explicitly named in web.xml, it strips that off
 //        if ( servletPath != null && servletPath.length() > 0 )
 //            dispatchURI = dispatchURI.substring(servletPath.length()) ;
 
@@ -627,11 +627,11 @@ public class JosekiWebAPI extends HttpServlet implements Connector
         {
             String tmp = servletConfig.getServletName() ;
             log.trace("Servlet = " + (tmp != null ? tmp : "<null>"));
-            Enumeration enum = servletConfig.getInitParameterNames();
+            Enumeration en = servletConfig.getInitParameterNames();
             
-            for (; enum.hasMoreElements();)
+            for (; en.hasMoreElements();)
             {
-                String s = (String) enum.nextElement();
+                String s = (String) en.nextElement();
                 log.trace("Servlet parameter: " + s + " = " + servletConfig.getInitParameter(s));
             }
         }
@@ -644,10 +644,10 @@ public class JosekiWebAPI extends HttpServlet implements Connector
 
             // NB This servlet may not have been loaded as part of a web app
 
-            Enumeration enum = servletContext.getInitParameterNames();
-            for (;enum.hasMoreElements();)
+            Enumeration en = servletContext.getInitParameterNames();
+            for (;en.hasMoreElements();)
             {
-                String s = (String) enum.nextElement();
+                String s = (String) en.nextElement();
                 log.debug("Webapp parameter: " + s + " = " + servletContext.getInitParameter(s));
             }
         }

@@ -6,11 +6,12 @@
 package org.joseki.server;
 
 /**
- * @version     $Id: ExecutionException.java,v 1.1 2004-11-03 10:15:01 andy_seaborne Exp $
+ * @version     $Id: ExecutionException.java,v 1.2 2004-11-08 17:44:19 andy_seaborne Exp $
  * @author      Andy Seaborne
  */
 public class ExecutionException extends java.lang.Exception
 {
+    private static final long serialVersionUID = 99L;  // Serilizable.
     public int returnCode;
     public String shortMessage;
     public String longMessage;

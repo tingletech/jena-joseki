@@ -10,12 +10,13 @@ package org.joseki.server;
 //import com.hp.hpl.jena.rdf.model.Model ;
 
 /**
- * @version     $Id: QueryExecutionException.java,v 1.1 2004-11-03 10:15:01 andy_seaborne Exp $
+ * @version     $Id: QueryExecutionException.java,v 1.2 2004-11-08 17:44:19 andy_seaborne Exp $
  * @author      Andy Seaborne
  */
 public class QueryExecutionException extends ExecutionException
 {
-
+    private static final long serialVersionUID = 99L;  // Serilizable.
+    
     public QueryExecutionException(int rc, String shortMessage)
     {
         super(rc, shortMessage) ;

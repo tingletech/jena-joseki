@@ -5,7 +5,7 @@
 
 /** Top of exception class hierarchy for Joseki library exceptions
  * @author     Andy Seaborne
- * @version    $Id: JosekiException.java,v 1.1 2004-11-03 10:14:56 andy_seaborne Exp $
+ * @version    $Id: JosekiException.java,v 1.2 2004-11-08 17:44:19 andy_seaborne Exp $
  */
  
 package com.hp.hpl.jena.joseki;
@@ -14,6 +14,7 @@ package com.hp.hpl.jena.joseki;
 
 public class JosekiException extends /*JenaException*/RuntimeException
 {
+    private static final long serialVersionUID = 99L;  // Serilizable.
     public JosekiException() { super() ; }
     public JosekiException(String msg) { super(msg) ; }
     

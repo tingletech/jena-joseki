@@ -8,11 +8,12 @@ package com.hp.hpl.jena.joseki;
 /** Exception class for all operations in the Joseki client library.
  *  Error codes are as HTTP statsus codes.
  * 
- * @version     $Id: HttpException.java,v 1.1 2004-11-03 10:14:56 andy_seaborne Exp $
+ * @version     $Id: HttpException.java,v 1.2 2004-11-08 17:44:19 andy_seaborne Exp $
  * @author      Andy Seaborne
  */
 public class HttpException extends JosekiException
 {
+    private static final long serialVersionUID = 99L;  // Serilizable.
     public static final int noResponseCode = -1234 ;
     private int responseCode = noResponseCode ;
     private String responseMessage = null ;

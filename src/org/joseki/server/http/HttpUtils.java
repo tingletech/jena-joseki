@@ -16,7 +16,7 @@ import org.joseki.Joseki;
 /** org.joseki.server.http.HttpUtils
  * 
  * @author Andy Seaborne
- * @version $Id: HttpUtils.java,v 1.1 2004-11-04 15:44:59 andy_seaborne Exp $
+ * @version $Id: HttpUtils.java,v 1.2 2004-11-08 17:44:20 andy_seaborne Exp $
  */
 
 public class HttpUtils
@@ -37,10 +37,10 @@ public class HttpUtils
         // See also: Accept-Charset
         // Currently, we ignore this and just do UTF-8.
         
-        Enumeration enum = httpRequest.getHeaders("Accept") ;
-        for ( ; enum.hasMoreElements() ; )
+        Enumeration en = httpRequest.getHeaders("Accept") ;
+        for ( ; en.hasMoreElements() ; )
         {
-            String s = (String)enum.nextElement() ;
+            String s = (String)en.nextElement() ;
             String m = Joseki.getWriterType(s) ;
             if ( m != null )
             {

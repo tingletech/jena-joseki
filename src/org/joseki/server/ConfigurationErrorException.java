@@ -7,11 +7,12 @@ package org.joseki.server;
 
 /**
  * @author      Andy Seaborne
- * @version     $Id: ConfigurationErrorException.java,v 1.1 2004-11-03 10:15:01 andy_seaborne Exp $
+ * @version     $Id: ConfigurationErrorException.java,v 1.2 2004-11-08 17:44:19 andy_seaborne Exp $
  */
 public class ConfigurationErrorException extends JosekiServerException
 {
-
+    private static final long serialVersionUID = 99L;  // Serilizable.
+    
     public ConfigurationErrorException()
     {
         super();

@@ -30,11 +30,12 @@ import java.util.*;
  * Was org.mortbay.http.handler.NotFoundHandler except I want the time/date as well
  * because it helps debugging.
  * 
- * @version $Id: NotFoundHandler2.java,v 1.1 2004-11-03 10:15:06 andy_seaborne Exp $
+ * @version $Id: NotFoundHandler2.java,v 1.2 2004-11-08 17:44:20 andy_seaborne Exp $
  * @author Greg Wilkins (gregw)
  */
 public class NotFoundHandler2 extends NotFoundHandler
 {
+    private static final long serialVersionUID = 99L;  // Serilizable.
     /* ------------------------------------------------------------ */
     public void handle(String pathInContext,
                        String pathParams,

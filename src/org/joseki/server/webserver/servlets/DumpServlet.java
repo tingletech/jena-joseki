@@ -18,6 +18,8 @@ import javax.servlet.* ;
 
 public class DumpServlet extends HttpServlet
 {
+    private static final long serialVersionUID = 99L;  // Serilizable.
+
 
     public DumpServlet()
     {
@@ -124,33 +126,33 @@ public class DumpServlet extends HttpServlet
                 }
             }
             // To do: create a string for the output so can send to console and return it.
-            Enumeration enum = req.getHeaderNames() ;
+            Enumeration en = req.getHeaderNames() ;
 
-            for ( ; enum.hasMoreElements() ; )
+            for ( ; en.hasMoreElements() ; )
             {
-                String name = (String)enum.nextElement() ;
+                String name = (String)en.nextElement() ;
                 String value = req.getHeader(name) ;
                 pw.println("Head: "+name + " = " + value) ;
             }
 
-            enum = req.getAttributeNames() ;
-            if ( enum.hasMoreElements() )
+            en = req.getAttributeNames() ;
+            if ( en.hasMoreElements() )
                 pw.println();
-            for ( ; enum.hasMoreElements() ; )
+            for ( ; en.hasMoreElements() ; )
             {
-                String name = (String)enum.nextElement() ;
+                String name = (String)en.nextElement() ;
                 String value = req.getAttribute(name).toString() ;
                 pw.println("Attr: "+name + " = " + value) ;
             }
 
             // Note that doing this on a form causes the forms content (body) to be read
             // and parsed as form variables.
-//            enum = req.getParameterNames() ;
-//            if ( enum.hasMoreElements() )
+//            en = req.getParameterNames() ;
+//            if ( en.hasMoreElements() )
 //                pw.println();
-//            for ( ; enum.hasMoreElements() ; )
+//            for ( ; en.hasMoreElements() ; )
 //            {
-//                String name = (String)enum.nextElement() ;
+//                String name = (String)en.nextElement() ;
 //                String value = req.getParameter(name) ;
 //                pw.println("Param: "+name + " = " + value) ;
 //            }
@@ -187,12 +189,12 @@ public class DumpServlet extends HttpServlet
                 }
             }
             
-            enum = req.getLocales();
-            if ( enum.hasMoreElements() )
+            en = req.getLocales();
+            if ( en.hasMoreElements() )
                 pw.println();
-            for ( ; enum.hasMoreElements() ; )
+            for ( ; en.hasMoreElements() ; )
             {
-                String name = ((Locale)enum.nextElement()).toString() ;
+                String name = ((Locale)en.nextElement()).toString() ;
                 pw.println("Locale: "+name) ;
             }
 
@@ -235,10 +237,10 @@ the value has
         Properties properties = System.getProperties();
         StringWriter sw = new StringWriter() ;
         PrintWriter pw = new PrintWriter(sw) ;
-        Enumeration enum = properties.keys();
-        while(enum.hasMoreElements())
+        Enumeration en = properties.keys();
+        while(en.hasMoreElements())
         {
-            String key = (String)enum.nextElement();
+            String key = (String)en.nextElement();
             pw.println(key+": '"+properties.getProperty(key)+"'");
         }
         pw.println() ;
@@ -263,14 +265,14 @@ the value has
         pw.println("servletInfo:  '"+getServletInfo()+"'");
         pw.println("serverInfo:  '"+sc.getServerInfo()+"'");
 
-        Enumeration enum = null ;
+        Enumeration en = null ;
         // Deprecated and will be removed - from Servlet API 2.0
-//        Enumeration enum = sc.getServlets();
-//        if (enum != null) {
+//        eneration en = sc.getServlets();
+//        if (en != null) {
 //            pw.println("servlets: ");
-//            while(enum.hasMoreElements())
+//            while(en.hasMoreElements())
 //            {
-//                String key = (String)enum.nextElement();
+//                String key = (String)en.nextElement();
 //                try {
 //                    pw.println(key+": '"+sc.getServlet(key)+"'");
 //                } catch (ServletException e1) {
@@ -278,21 +280,21 @@ the value has
 //                }
 //            }
 //        }
-        enum = sc.getInitParameterNames();
-        if (enum != null) {
+        en = sc.getInitParameterNames();
+        if (en != null) {
             pw.println("initParameters: ");
-            while(enum.hasMoreElements())
+            while(en.hasMoreElements())
             {
-                String key = (String)enum.nextElement();
+                String key = (String)en.nextElement();
                 pw.println(key+": '"+sc.getInitParameter(key)+"'");
             }
         }
-        enum = sc.getAttributeNames();
-        if (enum != null) {
+        en = sc.getAttributeNames();
+        if (en != null) {
             pw.println("attributes: ");
-            while(enum.hasMoreElements())
+            while(en.hasMoreElements())
             {
-                String key = (String)enum.nextElement();
+                String key = (String)en.nextElement();
                 pw.println(key+": '"+sc.getAttribute(key)+"'");
             }
         }
