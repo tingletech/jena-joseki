@@ -22,7 +22,7 @@ import javax.servlet.http.HttpServletResponse;
 
 /** Abstaction of an operation response
  * @author      Andy Seaborne
- * @version     $Id: Response.java,v 1.9 2004-11-14 18:16:19 andy_seaborne Exp $
+ * @version     $Id: Response.java,v 1.10 2004-11-14 18:38:59 andy_seaborne Exp $
  */
 public class Response extends ExecutionError
 {
@@ -109,15 +109,17 @@ public class Response extends ExecutionError
         responseSent = true ;
     }
 
-    public void doException(ExecutionException execEx) throws ExecutionException 
+    public void doException(ExecutionException execEx) 
     {
         if ( this.responseSent )
         {
             log.fatal("doException: Response already sent: "+request.getRequestURL()) ;
             return ;
         }
-
+        
         HttpResultSerializer httpSerializer = new HttpResultSerializer() ;
+        httpSerializer.setHttpResponse(httpRequest, httpResponse, null) ;
+        
         String httpMsg = ExecutionError.errorString(execEx.returnCode);
         //msg("Error in operation: URI = " + uri + " : " + httpMsg);
         log.info("Error: URI = " + request.getModelURI() + " : " + httpMsg);

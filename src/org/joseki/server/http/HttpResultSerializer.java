@@ -19,7 +19,7 @@ import com.hp.hpl.jena.shared.JenaException;
 /** Extracting operation data from HTTP servlet requests and formatting results for sending back.
  * 
  * @author      Andy Seaborne
- * @version     $Id: HttpResultSerializer.java,v 1.3 2004-11-14 12:00:56 andy_seaborne Exp $
+ * @version     $Id: HttpResultSerializer.java,v 1.4 2004-11-14 18:38:58 andy_seaborne Exp $
  */
 public class HttpResultSerializer
 {
@@ -142,9 +142,12 @@ public class HttpResultSerializer
         httpResponse.setHeader(Joseki.httpHeaderField, Joseki.httpHeaderValue) ;
 
         // See: http://www.w3.org/International/O-HTTP-charset.html
-        String contentType = mimeType+"; charset=UTF-8" ;
-        log.trace("Content-Type for response: "+contentType) ;
-        httpResponse.setContentType(contentType) ;
+        if ( mimeType != null )
+        {
+            String contentType = mimeType+"; charset=UTF-8" ;
+            log.trace("Content-Type for response: "+contentType) ;
+            httpResponse.setContentType(contentType) ;
+        }
     }
 
 
