@@ -23,7 +23,7 @@ import org.joseki.Joseki ;
 
 /** The servlet class.
  * @author  Andy Seaborne
- * @version $Id: JosekiWebAPI.java,v 1.1 2004-11-03 10:15:02 andy_seaborne Exp $
+ * @version $Id: JosekiWebAPI.java,v 1.2 2004-11-05 18:18:58 andy_seaborne Exp $
  */
 
 public class JosekiWebAPI extends HttpServlet implements Connector
@@ -345,10 +345,11 @@ public class JosekiWebAPI extends HttpServlet implements Connector
         if ( contextPath != null && contextPath.length() > 0 )
             dispatchURI = dispatchURI.substring(contextPath.length()) ;
         
-        // Suggested by Frank Hartman:
         String servletPath = httpRequest.getServletPath() ;
-        if ( servletPath != null && servletPath.length() > 0 )
-            dispatchURI = dispatchURI.substring(servletPath.length()) ;
+
+        // Suggested by Frank Hartman:
+//        if ( servletPath != null && servletPath.length() > 0 )
+//            dispatchURI = dispatchURI.substring(servletPath.length()) ;
 
         if ( log.isDebugEnabled() )
         {

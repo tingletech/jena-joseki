@@ -17,7 +17,7 @@ import org.apache.commons.logging.* ;
 /** Query processor that executes a SPARQL query on a model
  * 
  * @author  Andy Seaborne
- * @version $Id: QueryProcessorSPARQL.java,v 1.2 2004-11-04 15:44:52 andy_seaborne Exp $
+ * @version $Id: QueryProcessorSPARQL.java,v 1.3 2004-11-05 18:18:57 andy_seaborne Exp $
  */
 
 public class QueryProcessorSPARQL extends QueryProcessorCom implements QueryProcessor
@@ -69,7 +69,10 @@ public class QueryProcessorSPARQL extends QueryProcessorCom implements QueryProc
                 query = Query.create(queryString, Query.SyntaxSPARQL) ;
             } catch (Throwable thrown)
             {
-                logger.info("Query parse error: request failed") ;
+                String tmp = queryString ;
+                tmp = tmp.replace('\n', ' ') ;
+                tmp = tmp.replace('\r', ' ') ;
+                logger.info("Query parse error: "+tmp) ;
                 throw new QueryExecutionException(ExecutionError.rcQueryParseFailure, "Parse error") ;
             }
             
