@@ -14,7 +14,7 @@ import java.io.File;
  *  provide a place to configure things before calling the real main() 
  * 
  * @author Andy Seaborne
- * @version $Id: RunJoseki.java,v 1.1 2005-01-06 12:15:09 andy_seaborne Exp $
+ * @version $Id: RunJoseki.java,v 1.1 2005-01-10 11:48:19 andy_seaborne Exp $
  */ 
 
 public class RunJoseki

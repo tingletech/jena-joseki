@@ -1,4 +1,4 @@
-/* CVS $Id: JosekiMap.java,v 1.1 2005-01-06 12:15:09 andy_seaborne Exp $ */
+/* CVS $Id: JosekiMap.java,v 1.1 2005-01-10 11:48:19 andy_seaborne Exp $ */
  
 package dev;
 import com.hp.hpl.jena.rdf.model.*;

@@ -10,7 +10,7 @@ package dev;
 /** apps.ParseHttpHeaders
  * 
  * @author Andy Seaborne
- * @version $Id: ParseHttpHeaders.java,v 1.1 2005-01-06 12:15:09 andy_seaborne Exp $
+ * @version $Id: ParseHttpHeaders.java,v 1.1 2005-01-10 11:48:19 andy_seaborne Exp $
  */
 
 public class ParseHttpHeaders
