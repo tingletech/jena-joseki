@@ -22,7 +22,7 @@ import com.hp.hpl.jena.query.* ;
 /** SPARQL operations
  * 
  * @author  Andy Seaborne
- * @version $Id: SPARQL.java,v 1.20 2005-02-15 14:06:44 andy_seaborne Exp $
+ * @version $Id: SPARQL.java,v 1.21 2005-03-14 20:40:21 andy_seaborne Exp $
  */
 
 public class SPARQL extends QueryProcessorCom
@@ -70,7 +70,7 @@ public class SPARQL extends QueryProcessorCom
             
             Query query = null ;
             try {
-                query = Query.create(queryString, Query.SyntaxSPARQL) ;
+                query = QueryFactory.create(queryString, Syntax.syntaxSPARQL) ;
             } catch (QueryException ex)
             {
                 // TODO Enable errors to be sent as body
