@@ -9,7 +9,7 @@ import java.util.* ;
 
 /** Constants and other definitions.
  * @author      Andy Seaborne
- * @version     $Id: Joseki.java,v 1.12 2005-01-05 13:14:45 andy_seaborne Exp $
+ * @version     $Id: Joseki.java,v 1.13 2005-02-16 18:14:51 andy_seaborne Exp $
  */
 public class Joseki
 {
@@ -40,7 +40,7 @@ public class Joseki
     
     // Various control falgs and settings.
 
-    public static boolean serverHttpExplicitNoCache = false ;
+    public static boolean serverHttpExplicitNoCache = true ;
     //public static boolean serverDebug = false ;
     //public static boolean clientDebug = false ;
     

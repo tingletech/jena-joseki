@@ -22,7 +22,7 @@ import org.joseki.HttpParams;
 
 /** The servlet class.
  * @author  Andy Seaborne
- * @version $Id: JosekiWebAPI.java,v 1.16 2005-01-11 10:52:01 andy_seaborne Exp $
+ * @version $Id: JosekiWebAPI.java,v 1.17 2005-02-16 18:16:56 andy_seaborne Exp $
  */
 
 public class JosekiWebAPI extends HttpServlet implements Connector
@@ -384,7 +384,7 @@ public class JosekiWebAPI extends HttpServlet implements Connector
             log.debug(s) ;
             
             dispatcher.exec(request, response) ;
-            //log.info("OK - "+s) ;
+            log.info("OK - "+s) ;
         } catch (ExecutionException execEx)
         {
             //String s = httpResponseCode(execEx.returnCode) ;
