@@ -11,7 +11,7 @@ import org.apache.commons.logging.* ;
 /** A class to handle HTTP media types; includes static methods to handle media ranges.
  * 
  * @author Andy Seaborne
- * @version $Id: MediaType.java,v 1.2 2004-11-18 19:58:17 andy_seaborne Exp $
+ * @version $Id: MediaType.java,v 1.3 2004-11-19 15:26:16 andy_seaborne Exp $
  */
 
 public class MediaType
@@ -27,11 +27,17 @@ public class MediaType
     //        attribute      = token
     //        value          = token | quoted-string
     
-    // Example: 
+    // Examples:
+    // -- Firefox 1.0  
     // Accept           = text/xml,application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5
     // Accept-Language  = en-us,en;q=0.5
     // Accept-Encoding  = gzip,deflate
     // Accept-Charset   = ISO-8859-1,utf-8;q=0.7,*;q=0.7
+    // -- IE 6
+    // Accept           = image/gif, image/x-xbitmap, image/jpeg, image/pjpeg, application/x-shockwave-flash, application/vnd.ms-excel, application/vnd.ms-powerpoint, application/msword, */*
+    // Accept-Language  = en-gb
+    // Accept-Encoding  = gzip, deflate
+
     
     String mediaType  = null;
     
@@ -41,6 +47,9 @@ public class MediaType
     Map params = new HashMap() ;
     double q = 1.0 ;
     int posn = 0 ;
+    
+    /** Returns a list of headers, sorted so that the most significant is first
+     */
     
     static List multiMT(String s)
     {
@@ -59,6 +68,8 @@ public class MediaType
         Collections.sort(l, new MediaTypeCompare()) ;
         return l ;
     }
+
+    /** Debug form */
     
     static String multiToString(List x)
     {
@@ -76,12 +87,114 @@ public class MediaType
             first = false ;
         }
         return tmp ;
+        
+    }
+    
+    static String multiToHeaderString(List x)
+    {
+        if ( x.size() == 0)
+            return "" ;
+        
+        String tmp = "" ;
+        
+        boolean first = true ;
+        for ( Iterator iter = x.iterator() ; iter.hasNext() ; )
+        {
+            if ( ! first )
+                tmp = tmp +"," ;
+            tmp = tmp + ((MediaType)iter.next()).toHeaderString() ;
+            first = false ;
+        }
+        return tmp ;
     }
     
     public MediaType(String s)
     {
         process1(s) ;
     }
+    
+    private void process1(String s)
+    {
+        String[] x = split(s, ";") ;
+        mediaType = x[0] ;
+        
+        String[] t = split(mediaType, "/") ;
+        type = t[0] ;
+        if ( t.length > 1 )
+            subType = t[1] ;
+        
+        for ( int i = 1 ; i < x.length ; i++ )
+        {
+            // Each a parameter
+            String z[] = split(x[i], "=") ;
+            if ( z.length == 2 )
+            {
+                this.params.put(z[0], z[1]) ;
+                if ( z[0].equals("q") )
+                    try {
+                        q = Double.parseDouble(z[1]) ;
+                    } catch (NumberFormatException ex)
+                    {}
+            }
+            else
+                LogFactory.getLog(MediaType.class).warn("Duff parameter: "+x[i]+" in "+s) ;
+        }
+    }
+    
+    /** Format for use in HTTP header
+     */
+    
+    public String toHeaderString()
+    {
+        StringBuffer b = new StringBuffer() ;
+        b.append(mediaType) ;
+        for ( Iterator iter = params.keySet().iterator() ; iter.hasNext() ; )
+        {
+            String k = (String)iter.next() ;
+            String v = (String)params.get(k) ;
+            b.append(";") ;
+            b.append(k) ;
+            b.append("=") ;
+            b.append(v) ;
+        }
+        return b.toString() ;
+    }
+    
+    /** Format to show structure - intentionally different from header
+     *  form so you can tell parsing happned correctly
+     */  
+    
+    public String toString()
+    {
+        StringBuffer b = new StringBuffer() ;
+        b.append("[") ;
+        b.append(mediaType) ;
+        for ( Iterator iter = params.keySet().iterator() ; iter.hasNext() ; )
+        {
+            String k = (String)iter.next() ;
+            String v = (String)params.get(k) ;
+            b.append(" ") ;
+            b.append(k) ;
+            b.append("=") ;
+            b.append(v) ;
+        }
+        b.append("]") ;
+        return b.toString() ;
+    }
+
+    
+    private static String[] split(String s, String splitStr)
+    {
+        String[] x = s.split(splitStr) ;
+        for ( int i = 0 ; i < x.length ; i++ )
+        {
+            x[i] = x[i].trim() ;
+        }
+        return x ;
+    }
+    
+
+    
     
     // Sort - the rightmost element (highest) will be the preferred media type.
     
@@ -115,6 +228,8 @@ public class MediaType
                     r = -1 ;
             }
             
+            // The most significant sorts to the first in a list.
+            r = -r ;
             return r ;
         }
         
@@ -132,65 +247,8 @@ public class MediaType
                 return 1 ;
             return 0 ;
         }
-        
     }
     
-    
-    private void process1(String s)
-    {
-        String[] x = split(s, ";") ;
-        mediaType = x[0] ;
-        
-        String[] t = split(mediaType, "/") ;
-        type = t[0] ;
-        if ( t.length > 1 )
-            subType = t[1] ;
-        
-        for ( int i = 1 ; i < x.length ; i++ )
-        {
-            // Each a parameter
-            String z[] = split(x[i], "=") ;
-            if ( z.length == 2 )
-            {
-                this.params.put(z[0], z[1]) ;
-                if ( z[0].equals("q") )
-                    try {
-                        q = Double.parseDouble(z[1]) ;
-                    } catch (NumberFormatException ex)
-                    {}
-            }
-            else
-                LogFactory.getLog(MediaType.class).warn("Duff parameter: "+x[i]+" in "+s) ;
-        }
-    }
-    
-    public String toString()
-    {
-        StringBuffer b = new StringBuffer() ;
-        b.append("[") ;
-        b.append(mediaType) ;
-        for ( Iterator iter = params.keySet().iterator() ; iter.hasNext() ; )
-        {
-            String k = (String)iter.next() ;
-            String v = (String)params.get(k) ;
-            b.append(" ") ;
-            b.append(k) ;
-            b.append("=") ;
-            b.append(v) ;
-        }
-        b.append("]") ;
-        return b.toString() ;
-    }
-    
-    private static String[] split(String s, String splitStr)
-    {
-        String[] x = s.split(splitStr) ;
-        for ( int i = 0 ; i < x.length ; i++ )
-        {
-            x[i] = x[i].trim() ;
-        }
-        return x ;
-    }
     
     
     public static void main(String[] argv)
@@ -199,17 +257,19 @@ public class MediaType
         testOne("text/xml,  application/xml,  application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5") ;
         testOne("text/xml;charset=utf-8") ;
         testOne("text/*,text/plain;x=*,*/*,*/plain,text/*") ;
+        testOne("image/gif, image/x-xbitmap, image/jpeg, image/pjpeg, application/x-shockwave-flash, application/vnd.ms-excel, application/vnd.ms-powerpoint, application/msword, */*") ;
         testOne(" , a,,  ") ;
         
     }
-    
+
+
     public static void testOne(String s)
     {
         List l = MediaType.multiMT(s) ;
         System.out.println(MediaType.multiToString(l)) ;
+        System.out.println(MediaType.multiToHeaderString(l)) ;
         System.out.println() ;
     }
-    
 }
 
 /*

@@ -13,6 +13,7 @@ import org.joseki.Joseki ;
 import org.joseki.server.http.HttpResultSerializer ;
 import org.joseki.server.http.HttpUtils ;
 
+//import com.hp.hpl.jena.util.FileUtils ;
 import com.hp.hpl.jena.rdf.model.Model; 
 import com.hp.hpl.jena.shared.JenaException;
 
@@ -22,7 +23,7 @@ import javax.servlet.http.HttpServletResponse;
 
 /** Abstaction of an operation response
  * @author      Andy Seaborne
- * @version     $Id: Response.java,v 1.15 2004-11-17 18:27:46 andy_seaborne Exp $
+ * @version     $Id: Response.java,v 1.16 2004-11-19 15:26:16 andy_seaborne Exp $
  */
 public class Response extends ExecutionError
 {
@@ -162,6 +163,11 @@ public class Response extends ExecutionError
 
     }
 
+//    public PrintWriter getUTF8Writer()
+//    {
+//        return FileUtils.asPrintWriterUTF8(getOutputStream()) ;
+//    }
+    
     public OutputStream getOutputStream()
     { 
         try {

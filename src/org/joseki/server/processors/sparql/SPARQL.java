@@ -5,6 +5,7 @@
 
 package org.joseki.server.processors.sparql;
 
+import java.io.PrintWriter ;
 import org.apache.commons.logging.*;
 
 import com.hp.hpl.jena.rdf.model.*;
@@ -18,13 +19,15 @@ import org.joseki.server.SourceModel;
 import org.joseki.server.SourceModelJena;
 //import org.joseki.server.http.HttpResultSerializer;
 import org.joseki.vocabulary.JosekiVocab;
+import com.hp.hpl.jena.util.FileUtils ;
+
 
 import com.hp.hpl.jena.query.* ;
 
 /** SPARQL operations
  * 
  * @author  Andy Seaborne
- * @version $Id: SPARQL.java,v 1.8 2004-11-17 18:27:46 andy_seaborne Exp $
+ * @version $Id: SPARQL.java,v 1.9 2004-11-19 15:26:16 andy_seaborne Exp $
  */
 
 public class SPARQL extends QueryProcessorCom
@@ -100,8 +103,8 @@ public class SPARQL extends QueryProcessorCom
             
             if ( query.isAskType() )
             {
-                log.warn("Not implemented: ASK queries") ;
-                throw new QueryExecutionException(ExecutionError.rcOperationNotSupported, "ASK query") ;
+                execQueryAsk(query, response) ;
+                return ;
             }
 
             // SELECT / RDF results, CONSTRUCT or DESCRIBE
@@ -175,6 +178,33 @@ public class SPARQL extends QueryProcessorCom
         }
     }
 
+    public static void execQueryAsk(Query query, Response response)
+        throws QueryExecutionException
+    {
+        try {
+            QueryExecution qe = QueryFactory.createQueryExecution(query) ;
+            boolean result = qe.execAsk() ;
+            // TODO Remove any HTTPisms
+            response.setMimeType(Joseki.contentTextPlain) ;
+            // See doResponse as well - more header setting?  How to abstract?
+            response.setResponseCode(Response.rcOK) ;
+            response.startResponse() ;
+            PrintWriter pw = FileUtils.asPrintWriterUTF8(response.getOutputStream()) ;
+            pw.println(result?"yes":"no" ) ;
+            pw.flush() ;
+            response.finishResponse() ;
+        }
+        //throw new QueryExecutionException(Response.rcNotImplemented, "SPARQL.execQueryXML") ;
+        catch (QueryException qEx)
+        {
+            log.info("Query execution error: "+qEx) ;
+            throw new QueryExecutionException(ExecutionError.rcQueryExecutionFailure, null) ;
+        }
+        
+    }
+
+    
+    
     public String getInterfaceURI() { return JosekiVocab.queryOperationSPARQL ; }
 
     public void init(Resource binding, Resource implementation) {}
