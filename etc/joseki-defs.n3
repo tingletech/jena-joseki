@@ -9,6 +9,14 @@
 ## ------------------------------------------
 ## Modules for query language processors
 
+joseki:BindingSPARQL
+    a   joseki:QueryLanguageBinding ;
+    joseki:queryOperationName "SPARQL" ; 
+    joseki:queryOperationName "sparql" ;
+    joseki:queryOperationName ql:SPARQL ;
+    module:interface      joseki:QueryOperationSPARQL ;
+    module:implementation joseki:ImplQueryOperationSPARQL .
+
 joseki:BindingRDQL
     a   joseki:QueryLanguageBinding ;
     joseki:queryOperationName "RDQL" ; 
@@ -62,11 +70,18 @@ joseki:FetchModuleClosure
 ## ------------------------------------------
 ## Joseki implementations of the query processors.
 
+joseki:ImplQueryOperationSPARQL
+    a   joseki:QueryOperation ;
+    module:className
+        "org.joseki.server.processors.QueryProcessorSPARQL" ;
+    .
+
 joseki:ImplQueryOperationRDQL
     a   joseki:QueryOperation ;
     module:className
         "org.joseki.server.processors.QueryProcessorRDQL" ;
     .
+
 
 joseki:ImplQueryOperationGET
     a   joseki:QueryOperation ;

@@ -23,7 +23,7 @@ import javax.servlet.http.HttpServletResponse ;
  *  Tests must leave the server and its models unchanged.
  * 
  * @author      Andy Seaborne
- * @version     $Id: JosekiClientLibraryTests.java,v 1.2 2004-11-03 14:28:28 andy_seaborne Exp $
+ * @version     $Id: JosekiClientLibraryTests.java,v 1.3 2004-11-03 15:31:03 andy_seaborne Exp $
  */
 public class JosekiClientLibraryTests extends TestSuite
 {
@@ -131,7 +131,7 @@ public class JosekiClientLibraryTests extends TestSuite
         
         // SPO tests
         {
-            Model results = FileManager.get().loadModel("Data/Test/test_data_SPO_1.nt") ;
+            Model results = FileManager.get().loadModel("file:Data/Test/test_data_SPO_1.nt") ;
             QueryTest t = new QueryTest("Query-" + (counter++) + "-SPO",
                              "SPO", null, 
                              new String[]{"p"},new String[]{"http://jena/property1"}, 
@@ -197,18 +197,18 @@ public class JosekiClientLibraryTests extends TestSuite
         infResult = FileManager.get().loadModel("Data/Test/inf-rdfs-result-get.rdf") ;
         addTest(new QueryTest("Inf-RDFS-GET-" + (counter++), null, null, testServer.infRDFSModelURI, infResult)) ;
         
-        infResult = FileManager.get().loadModel("Data/Test/inf-rdfs-result-fetch.n3") ;
+        infResult = FileManager.get().loadModel("file:Data/Test/inf-rdfs-result-fetch.n3") ;
         addTest(new FetchTest("Inf-RDFS-fetch-" + (counter++),
                     testServer.infRDFSModelURI, "http://example.com/resource", infResult)) ;
 
 
         // Inference: OWL
 
-        infResult = FileManager.get().loadModel("Data/Test/inf-owl-result-fetch.n3") ;
+        infResult = FileManager.get().loadModel("file:Data/Test/inf-owl-result-fetch.n3") ;
         addTest(new FetchTest("Inf-OWL-fetch-" + (counter++),
                               testServer.infOWLModelURI, "http://example.org/data/x", infResult)) ;
 
-        infResult = FileManager.get().loadModel("Data/Test/inf-owl-result-rdql.n3") ;
+        infResult = FileManager.get().loadModel("file:Data/Test/inf-owl-result-rdql.n3") ;
         addTest(new QueryTest("Inf-OWL-RDQL-" + (counter++), "RDQL",
                               "SELECT * WHERE (<http://example.org/data/x> rdf:type ?type)",
                               testServer.infOWLModelURI, infResult)) ;

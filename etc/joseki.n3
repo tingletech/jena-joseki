@@ -53,46 +53,48 @@
 # Config:
 #   http://server/books
 
-<http://server/testdata>
-    a   joseki:AttachedModel ;
-    joseki:attachedModel        <file:Data/test_data.n3> ;
-    joseki:hasQueryOperation    joseki:BindingGET ;
-    joseki:hasQueryOperation    joseki:BindingFetchClosure ;
-    joseki:hasQueryOperation    joseki:BindingRDQL ;
-    joseki:hasQueryOperation    joseki:BindingSPO ;
-    # Allow query over POST
-    joseki:hasOperation         joseki:BindingQueryModel ;
-    joseki:isImmutable			"true" ;
-    # Not pingable
-    joseki:namespacePrefix
-        [ joseki:prefix "jd" ; joseki:nsURI <http://jena/> ] ;
-    rdfs:comment "Test data" ;
-    .
+## <http://server/testdata>
+##     a   joseki:AttachedModel ;
+##     joseki:attachedModel        <file:Data/test_data.n3> ;
+##     joseki:hasQueryOperation    joseki:BindingGET ;
+##     joseki:hasQueryOperation    joseki:BindingFetchClosure ;
+##     joseki:hasQueryOperation    joseki:BindingRDQL ;
+##     joseki:hasQueryOperation    joseki:BindingSPO ;
+##     # Allow query over POST
+##     joseki:hasOperation         joseki:BindingQueryModel ;
+##     joseki:isImmutable			"true" ;
+##     # Not pingable
+##     joseki:namespacePrefix
+##         [ joseki:prefix "jd" ; joseki:nsURI <http://jena/> ] ;
+##     rdfs:comment "Test data" ;
+##     .
 
-<http://server/empty>
-    a   joseki:AttachedModel ;
-    joseki:attachedModel        <file:Data/Test/empty.nt> ;
-    joseki:hasQueryOperation     joseki:BindingRDQL ;
-    joseki:hasQueryOperation     joseki:BindingGET ;
-    joseki:hasOperation         joseki:BindingQueryModel ;
-    joseki:hasOperation         joseki:BindingAdd ;
-    # Define the operation completely inline
-    joseki:hasOperation
-        [ joseki:operationName "ping" ; 
-          module:interface      joseki:OpPing ;
-          module:implementation
-            [ module:className
-                  "org.joseki.server.processors.PingProcessor" ]
-        ] ;
-    rdfs:comment "Initially empty model" ;
-    .
-
+## <http://server/empty>
+##     a   joseki:AttachedModel ;
+##     joseki:attachedModel        <file:Data/Test/empty.nt> ;
+##     joseki:hasQueryOperation    joseki:BindingRDQL ;
+##     joseki:hasQueryOperation    joseki:BindingSPARQL ;
+##     joseki:hasQueryOperation    joseki:BindingGET ;
+##     joseki:hasOperation         joseki:BindingQueryModel ;
+##     joseki:hasOperation         joseki:BindingAdd ;
+##     # Define the operation completely inline
+##     joseki:hasOperation
+##         [ joseki:operationName "ping" ; 
+##           module:interface      joseki:OpPing ;
+##           module:implementation
+##             [ module:className
+##                   "org.joseki.server.processors.PingProcessor" ]
+##         ] ;
+##     rdfs:comment "Initially empty model" ;
+##     .
+## 
 <http://server/books>
     a   joseki:AttachedModel ;
     joseki:attachedModel        <file:Data/books.n3> ;
     joseki:hasQueryOperation    joseki:BindingFetchClosure ;
-    joseki:hasQueryOperation    joseki:BindingRDQL ;
-    joseki:hasQueryOperation    joseki:BindingSPO ;
+##     joseki:hasQueryOperation    joseki:BindingRDQL ;
+    joseki:hasQueryOperation    joseki:BindingSPARQL ;
+##     joseki:hasQueryOperation    joseki:BindingSPO ;
     joseki:hasQueryOperation    joseki:BindingGET ;
     rdfs:comment "A collection of book details" ;
     .

@@ -1,0 +1,63 @@
+# Development test configuration
+
+@prefix rdfs:   <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix module: <http://joseki.org/2003/06/module#> .
+@prefix joseki: <http://joseki.org/2003/07/configuration#> .
+
+<> rdfs:comment "Server configuration and data source mapping".
+
+## Server configuration
+
+<>  a   joseki:JosekiServer ;
+    joseki:josekiSchema      joseki: ;
+    joseki:alsoInclude       <file:etc/joseki-defs.n3> ;
+    # Default content type if the client request does not
+    # specify one exactly.
+    # joseki:useContentType    "application/rdf+xml" ;
+    
+    joseki:useContentType    "application/n3" ;
+
+    ## Server debug:
+    # 1 - Must ask for exact MIME type else get text/plain
+    #     (i.e. from a web browser)
+    #     NB Browsers sniff the content anyway!
+    #     Try setting useContentType to "application/n3"
+    # 2 - HTTP GET responses are set no cache.
+    # Same as "--debug" to the rdfserver script.
+
+    joseki:serverDebug       "true" ;
+    .
+
+<http://server/testdata>
+    a   joseki:AttachedModel ;
+    joseki:attachedModel        <file:Data/test_data.n3> ;
+    joseki:hasQueryOperation    joseki:BindingGET ;
+##    joseki:hasQueryOperation    joseki:BindingFetchClosure ;
+##    joseki:hasQueryOperation    joseki:BindingRDQL ;
+    joseki:hasQueryOperation    joseki:BindingSPARQL ;
+##    joseki:hasQueryOperation    joseki:BindingSPO ;
+    # Allow query over POST
+    joseki:hasOperation         joseki:BindingQueryModel ;
+    joseki:isImmutable			"true" ;
+    # Not pingable
+    joseki:namespacePrefix
+        [ joseki:prefix "jd" ; joseki:nsURI <http://jena/> ] ;
+    rdfs:comment "Test data" ;
+    .
+
+<http://server/books>
+    a   joseki:AttachedModel ;
+    joseki:attachedModel        <file:Data/books.n3> ;
+##     joseki:hasQueryOperation    joseki:BindingFetchClosure ;
+##     joseki:hasQueryOperation    joseki:BindingRDQL ;
+    joseki:hasQueryOperation    joseki:BindingSPARQL ;
+##     joseki:hasQueryOperation    joseki:BindingSPO ;
+    joseki:hasQueryOperation    joseki:BindingGET ;
+    rdfs:comment "A collection of book details" ;
+    .
+
+# Local Variables:
+# tab-width: 4
+# indent-tabs-mode: nil
+# End:
