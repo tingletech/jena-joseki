@@ -5,17 +5,16 @@
 
 
 package org.joseki.server;
-import org.joseki.server.module.Loadable;
 
 /** Interface for all processors.
  *  @see QueryProcessorModel
  *  @see ProcessorModel
  * 
  * @author      Andy Seaborne
- * @version     $Id: Processor.java,v 1.4 2004-11-11 11:52:27 andy_seaborne Exp $
+ * @version     $Id: Processor.java,v 1.5 2004-11-11 17:50:23 andy_seaborne Exp $
  */
 
-public interface Processor extends Loadable
+public interface Processor extends Interface
 {
     /** Execute the operation in the Request object and
      *  send the answers via the Response object.   

@@ -25,7 +25,7 @@ import com.hp.hpl.jena.rdf.model.* ;
  *  model as property "joseki:queryOperationName".
  * 
  * @author      Andy Seaborne
- * @version     $Id: QueryProcessorPOST.java,v 1.1 2004-11-11 12:01:36 andy_seaborne Exp $
+ * @version     $Id: QueryProcessorPOST.java,v 1.2 2004-11-11 17:50:14 andy_seaborne Exp $
  */
 
 public class QueryProcessorPOST extends ProcessorModelCom
@@ -36,7 +36,7 @@ public class QueryProcessorPOST extends ProcessorModelCom
     
     public QueryProcessorPOST()
     {
-        super("QueryProcessorPOST", ReadOperation, NoChangeToModel) ;
+        super("QueryProcessorPOST", LockType.ReadOperation) ;
     }
     
     /** @see org.joseki.server.module#init(Resource, Resource)

@@ -14,13 +14,13 @@ import com.hp.hpl.jena.rdf.model.RDFException;
 /** ProcessorModel to add the statements in the argument model into the target model.
  *
  * @author      Andy Seaborne
- * @version     $Id: AddProcessor.java,v 1.3 2004-11-11 11:52:39 andy_seaborne Exp $
+ * @version     $Id: AddProcessor.java,v 1.4 2004-11-11 17:50:14 andy_seaborne Exp $
  */
 public class AddProcessor extends OneArgProcessor
 {
     public AddProcessor()
     {
-        super("add", ProcessorModelCom.WriteOperation, ProcessorModelCom.MutatesModel) ;
+        super("add", LockType.WriteOperation) ;
     }
 
     public String getInterfaceURI() { return JosekiVocab.opAdd ; }

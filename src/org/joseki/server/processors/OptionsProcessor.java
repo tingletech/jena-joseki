@@ -14,7 +14,7 @@ import com.hp.hpl.jena.rdf.model.*;
  *  This is not the processor for the options operation on the whole server.
  * 
  * @author      Andy Seaborne
- * @version     $Id: OptionsProcessor.java,v 1.3 2004-11-11 11:52:39 andy_seaborne Exp $
+ * @version     $Id: OptionsProcessor.java,v 1.4 2004-11-11 17:50:14 andy_seaborne Exp $
  */
 
 public class OptionsProcessor extends ZeroArgProcessor //implements ProcessorModel
@@ -25,7 +25,7 @@ public class OptionsProcessor extends ZeroArgProcessor //implements ProcessorMod
 
     public OptionsProcessor()
     {
-        super("options", ProcessorModelCom.ReadOperation, ProcessorModelCom.NoChangeToModel) ;
+        super("options", LockType.ReadOperation) ;
     }
     
     public String getInterfaceURI() { return JosekiVocab.opOptions ; }

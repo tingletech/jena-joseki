@@ -12,14 +12,14 @@ import com.hp.hpl.jena.rdf.model.*;
 
 /** Ping operation processor.  Returns an empty model.
  * @author      Andy Seaborne
- * @version     $Id: PingProcessor.java,v 1.2 2004-11-11 11:52:39 andy_seaborne Exp $
+ * @version     $Id: PingProcessor.java,v 1.3 2004-11-11 17:50:13 andy_seaborne Exp $
  */
 
 public class PingProcessor extends ZeroArgProcessor
 {
     public PingProcessor()
     {
-        super("ping", ProcessorModelCom.ReadOperation, ProcessorModelCom.NoChangeToModel) ;
+        super("ping", LockType.ReadOperation) ;
     }
     
     public String getInterfaceURI() { return JosekiVocab.opPing ; }

@@ -12,16 +12,16 @@ import com.hp.hpl.jena.rdf.model.*;
 
 /** General template for any operation that takes exactly one model as argument
  * @author      Andy Seaborne
- * @version     $Id: OneArgProcessor.java,v 1.5 2004-11-11 11:52:39 andy_seaborne Exp $
+ * @version     $Id: OneArgProcessor.java,v 1.6 2004-11-11 17:50:14 andy_seaborne Exp $
  */
 public abstract class OneArgProcessor extends ProcessorModelCom
 {
     static final Log logger = LogFactory.getLog(ZeroArgProcessor.class.getName()) ; 
 
     
-    public OneArgProcessor(String n, int lockNeeded, int mutating)
+    public OneArgProcessor(String n, int lockType)
     {
-        super(n, lockNeeded, mutating) ;
+        super(n, lockType) ;
     }
 
     public int argsNeeded() { return ProcessorModel.ARGS_ONE ; }
@@ -33,9 +33,6 @@ public abstract class OneArgProcessor extends ProcessorModelCom
     {
         SourceModel src = request.getSourceModel() ;
         try {
-            if ( super.mutatingOp && src.isImmutable() )
-                throw new ExecutionException(ExecutionError.rcImmutableModel, "Immutable Model") ;
-            
             List graphs = request.getDataArgs() ;
             if ( graphs.size() != 1 )
                 throw new ExecutionException(ExecutionError.rcArgumentError, "Wrong number of arguments") ;

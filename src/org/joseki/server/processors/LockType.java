@@ -1,47 +1,26 @@
 /*
- * (c) Copyright 2003, 2004 Hewlett-Packard Development Company, LP
+ * (c) Copyright 2004, Hewlett-Packard Development Company, LP
+ * All rights reserved.
  * [See end of file]
  */
- 
+
 package org.joseki.server.processors;
 
-//import org.apache.commons.logging.* ;
-import org.joseki.server.*;
-import org.joseki.vocabulary.*;
-
-import com.hp.hpl.jena.rdf.model.*;
-
-/** ProcessorModel to remove the statements in the argument model from the target model.
- * @author      Andy Seaborne
- * @version     $Id: RemoveProcessor.java,v 1.4 2004-11-11 17:50:14 andy_seaborne Exp $
+/** org.joseki.server.processors.LockType
+ * 
+ * @author Andy Seaborne
+ * @version $Id: LockType.java,v 1.1 2004-11-11 17:50:14 andy_seaborne Exp $
  */
-public class RemoveProcessor extends OneArgProcessor
+
+public interface LockType
 {
-
-    public RemoveProcessor()
-    {
-        super("remove", LockType.WriteOperation) ;
-    }
-
-    public String getInterfaceURI() { return JosekiVocab.opRemove ; }
-
-    public Model execOneArg(SourceModel src, Model graph, Request req)
-        throws RDFException, ExecutionException
-    {
-        if (!(src instanceof SourceModelJena))
-            throw new ExecutionException(
-                ExecutionError.rcOperationNotSupported,
-                "Wrong implementation - this Fetch processor works with Jena models");         
-        Model target = ((SourceModelJena)src).getModel() ;
-        target.remove(graph) ;
-        return super.emptyModel ;
-    }
-        
+    static public final int ReadOperation    = 100 ;
+    static public final int WriteOperation   = 101 ;
 }
 
 /*
- *  (c) Copyright 2003, 2004 Hewlett-Packard Development Company, LP
- *  All rights reserved.
+ * (c) Copyright 2004 Hewlett-Packard Development Company, LP
+ * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions

@@ -14,15 +14,15 @@ import com.hp.hpl.jena.rdf.model.*;
  *  (in the request body) as arguments - they can have parameters.
  * 
  * @author      Andy Seaborne
- * @version     $Id: ZeroArgProcessor.java,v 1.4 2004-11-11 11:52:39 andy_seaborne Exp $
+ * @version     $Id: ZeroArgProcessor.java,v 1.5 2004-11-11 17:50:14 andy_seaborne Exp $
  */
 public abstract class ZeroArgProcessor extends ProcessorModelCom
 {
     static final Log logger = LogFactory.getLog(ZeroArgProcessor.class.getName()) ; 
  
-    public ZeroArgProcessor(String n, int lockNeeded, int mutating)
+    public ZeroArgProcessor(String n, int lockType)
     {
-        super(n, lockNeeded, mutating) ;
+        super(n, lockType) ;
     }
 
     public int argsNeeded() { return ProcessorModel.ARGS_ZERO ; }
@@ -34,12 +34,8 @@ public abstract class ZeroArgProcessor extends ProcessorModelCom
     {
         SourceModel src = request.getSourceModel() ;
         try {
-            if ( super.mutatingOp && src.isImmutable() )
-                throw new ExecutionException(ExecutionError.rcImmutableModel, "Immutable Model") ;
-            
             Model r = execZeroArg(src, request) ;
             return r ;
-            
         } catch (RDFException ex)
         {
             logger.trace("RDFException: "+ex.getMessage() ) ;

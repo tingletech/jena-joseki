@@ -16,14 +16,14 @@ import com.hp.hpl.jena.rdf.model.*;
  *  on a live system.
  * 
  * @author      Andy Seaborne
- * @version     $Id: ClearModelProcessor.java,v 1.2 2004-11-11 11:52:39 andy_seaborne Exp $
+ * @version     $Id: ClearModelProcessor.java,v 1.3 2004-11-11 17:50:23 andy_seaborne Exp $
  */
 
 public class ClearModelProcessor extends ZeroArgProcessor
 {
     public ClearModelProcessor()
     {
-        super("clear", ProcessorModelCom.WriteOperation, ProcessorModelCom.MutatesModel) ;
+        super("clear", LockType.WriteOperation) ;
     }
     
     public String getInterfaceURI() { return JosekiVocab.getURI()+"OpClear" ; }
@@ -31,8 +31,6 @@ public class ClearModelProcessor extends ZeroArgProcessor
     public Model execZeroArg(SourceModel src, Request request)
         throws RDFException, ExecutionException
     {
-        if ( super.mutatingOp && src.isImmutable() )
-            throw new ExecutionException(ExecutionError.rcImmutableModel, "Immutable Model") ;
         Model target = ((SourceModelJena)src).getModel() ;
             
         // target.remove(target) gets a java.util.ConcurrentModificationException (Jena1)

@@ -9,12 +9,12 @@ package org.joseki.server.processors.sparql;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.joseki.server.*;
-import org.joseki.server.processors.ProcessorCom;
+import org.joseki.server.processors.*;
 
 /** QueryProcessorCom - the root of query processors.
  * 
  * @author Andy Seaborne
- * @version $Id: QueryProcessorCom.java,v 1.1 2004-11-11 17:03:36 andy_seaborne Exp $
+ * @version $Id: QueryProcessorCom.java,v 1.2 2004-11-11 17:50:24 andy_seaborne Exp $
  */
 
 public abstract class QueryProcessorCom extends ProcessorCom implements QueryProcessor
@@ -23,7 +23,7 @@ public abstract class QueryProcessorCom extends ProcessorCom implements QueryPro
     
     public QueryProcessorCom(String name)
     {
-        super(name, ProcessorCom.ReadOperation, ProcessorCom.NoChangeToModel) ;
+        super(name, LockType.ReadOperation) ;
     }
     
     public void execute(Request request, Response response) throws ExecutionException

@@ -16,30 +16,30 @@ import com.hp.hpl.jena.rdf.model.*;
  * @see Processor
 
  * @author      Andy Seaborne
- * @version     $Id: ProcessorCom.java,v 1.5 2004-11-11 11:52:39 andy_seaborne Exp $
+ * @version     $Id: ProcessorCom.java,v 1.6 2004-11-11 17:50:14 andy_seaborne Exp $
  */
 public abstract class ProcessorCom implements Processor, Loadable
 {
-    Log logger = LogFactory.getLog(ProcessorCom.class) ;
+    private static Log log = LogFactory.getLog(ProcessorCom.class) ;
     
     // Useful constant
     static protected Model emptyModel = ModelFactory.createDefaultModel() ;
     
-    static protected final int ReadOperation    = 100 ;
-    static protected final int WriteOperation   = 101 ;
+    protected String operationName = null ;
+    protected boolean readOnly = false ;
 
-    static protected final int MutatesModel     = 102 ;
-    static protected final int NoChangeToModel  = 103 ;
-    
-    protected String opName = null ;
-    protected boolean readOnlyLock = false ;
-    protected boolean mutatingOp = true ;
-
-    public ProcessorCom(String n, int lockNeeded, int mutating)
+    public ProcessorCom(String opName, int lockType)
     {
-        opName = n ;
-        readOnlyLock = (lockNeeded == ReadOperation) ;
-        mutatingOp = (mutating == MutatesModel) ;
+        switch (lockType)
+        {
+            case LockType.ReadOperation: readOnly = true ; break ;
+            case LockType.WriteOperation: readOnly = false ; break ;
+            default:
+                log.warn("Unknown lockType: "+lockType) ;
+                readOnly = false ;
+        }
+        
+        operationName = opName ;
     }
 
     
@@ -47,12 +47,12 @@ public abstract class ProcessorCom implements Processor, Loadable
     public void exec(Request request, Response response) throws ExecutionException
     {
         SourceModel src = request.getSourceModel() ;
-        if ( mutatingOp && src.isImmutable() )
+        if ( !readOnly && src.isImmutable() )
             throw new ExecutionException(ExecutionError.rcImmutableModel, "Immutable Model") ;
         
         boolean needsAbortOperation = false ; 
         try {
-            src.startOperation(readOnlyLock) ;
+            src.startOperation(readOnly) ;
             needsAbortOperation = true ;
             execute(request, response) ;
             src.endOperation() ;
@@ -63,18 +63,18 @@ public abstract class ProcessorCom implements Processor, Loadable
             response.setResponseCode(ex.returnCode) ;
             // Send error.
             // FIXME
-            logger.warn("NOT TRANSLATED: ExecutionException: "+ex.getMessage() ) ;
+            log.warn("NOT TRANSLATED: ExecutionException: "+ex.getMessage() ) ;
             try { response.getOutput().write(ex.getMessage().getBytes()) ; }
-            catch (java.io.IOException ex2) { logger.fatal("PANIC",ex2) ; return ; }
+            catch (java.io.IOException ex2) { log.fatal("PANIC",ex2) ; return ; }
             needsAbortOperation = true ;
-            logger.trace("ExecutionException: "+ex.getMessage() ) ;
+            log.trace("ExecutionException: "+ex.getMessage() ) ;
             throw ex ;
         }
         catch (Exception ex)
         {
             needsAbortOperation = false ;
             src.abortOperation() ;
-            logger.trace("Exception: "+ex.getMessage() ) ;
+            log.trace("Exception: "+ex.getMessage() ) ;
             throw new ExecutionException(ExecutionError.rcInternalError, null) ;
         }
         finally

@@ -15,7 +15,7 @@ import com.hp.hpl.jena.rdf.model.* ;
  * Understands the RDf properties for naming and initializing a new instance. 
  * 
  * @author  Andy Seaborne
- * @version $Id: Loadable.java,v 1.2 2004-11-04 15:44:58 andy_seaborne Exp $
+ * @version $Id: Loadable.java,v 1.3 2004-11-11 17:50:23 andy_seaborne Exp $
  */
 
 
@@ -25,7 +25,6 @@ public interface Loadable extends Interface
      *  Must agree with the URI specified on loading (if any).
      */
     public String getInterfaceURI() ;
-    
 
     /** Allow an implementation to initialise, based on configuration file */
      public void init(Resource binding, Resource implementation) ;
