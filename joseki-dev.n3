@@ -28,21 +28,13 @@
     joseki:serverDebug       "true" ;
     .
 
-<http://server/testdata>
+<http://server/service>
     a   joseki:AttachedModel ;
-    joseki:attachedModel        <file:Data/test_data.n3> ;
-    joseki:hasQueryOperation    joseki:BindingGET ;
-##    joseki:hasQueryOperation    joseki:BindingFetchClosure ;
-##    joseki:hasQueryOperation    joseki:BindingRDQL ;
+    joseki:attachedModel        <file:Data/empty.nt> ;
     joseki:hasQueryOperation    joseki:BindingSPARQL ;
-##    joseki:hasQueryOperation    joseki:BindingSPO ;
     # Allow query over POST
     joseki:hasOperation         joseki:BindingQueryPOST ;
-    joseki:isImmutable			"true" ;
-    # Not pingable
-    joseki:namespacePrefix
-        [ joseki:prefix "jd" ; joseki:nsURI <http://jena/> ] ;
-    rdfs:comment "Test data" ;
+    rdfs:comment "Empty data - service" ;
     .
 
 <http://server/books>

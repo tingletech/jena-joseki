@@ -15,6 +15,7 @@ import org.joseki.server.*;
 //import org.joseki.server.http.HttpResultSerializer;
 import org.joseki.vocabulary.JosekiVocab;
 import com.hp.hpl.jena.util.FileUtils ;
+import com.hp.hpl.jena.util.FileManager;
 
 
 import com.hp.hpl.jena.query.* ;
@@ -22,14 +23,22 @@ import com.hp.hpl.jena.query.* ;
 /** SPARQL operations
  * 
  * @author  Andy Seaborne
- * @version $Id: SPARQL.java,v 1.21 2005-03-14 20:40:21 andy_seaborne Exp $
+ * @version $Id: SPARQL.java,v 1.22 2005-03-15 13:06:14 andy_seaborne Exp $
  */
 
 public class SPARQL extends QueryProcessorCom
 {
     static private Log log = LogFactory.getLog(SPARQL.class) ;
     
-    public SPARQL() { super("SPARQL") ; }
+    FileManager fileManager ; 
+    
+    public SPARQL()
+    {
+        super("SPARQL") ;
+        fileManager = new FileManager() ;
+        // Only know how to handle http URLs 
+        fileManager.addLocatorURL() ;
+    }
 
 //    /** Processor.exec operation - provided by QueryProcessorCom*/
 //    public void exec(Request request, Response response) throws ExecutionException
@@ -46,8 +55,37 @@ public class SPARQL extends QueryProcessorCom
             if (!(src instanceof SourceModelJena))
                 throw new QueryExecutionException(
                     ExecutionError.rcOperationNotSupported,
-                    "Wrong implementation - this RDQL processor works with Jena models");         
-            Model model = ((SourceModelJena)src).getModel() ;
+                    "Wrong implementation - this RDQL processor works with Jena models");
+            
+            // Decide target for the query.
+            // Either graph-id parameter, FROM in query (ARQ) or default to
+            // the target model of the request. 
+
+            Model model = null ; 
+            
+            String graphURL = request.getParam("graph-id") ;
+            if ( graphURL == null )
+                // try again, alternative name
+                graphURL = request.getParam("graph-uri") ;
+            
+            
+            if ( graphURL != null && ! graphURL.equals(""))
+                try {
+                    model = fileManager.loadModel(graphURL) ;
+                    log.info("Load "+graphURL) ;
+                } catch (Exception ex)
+                {
+                    log.info("Failer to load "+graphURL+" : "+ex.getMessage()) ;
+                    throw new QueryExecutionException(
+                        ExecutionError.rcArgumentUnreadable,
+                        "Failed to load URL "+graphURL) ;
+                }
+            
+            if ( model == null )
+                // May yet be in query
+                model = ((SourceModelJena)src).getModel() ;
+            
+            // Sort out the query.
             
             if (queryString == null )
             {
@@ -68,9 +106,12 @@ public class SPARQL extends QueryProcessorCom
             String queryStringLog = formatForLog(queryString) ;
             log.debug("Query: "+queryStringLog) ;
             
+            // Build query
+            
             Query query = null ;
             try {
-                query = QueryFactory.create(queryString, Syntax.syntaxSPARQL) ;
+                // NB synatx is ARQ (a superset of SPARQL)
+                query = QueryFactory.create(queryString, Syntax.syntaxARQ) ;
             } catch (QueryException ex)
             {
                 // TODO Enable errors to be sent as body
