@@ -143,12 +143,14 @@ code {
 <form action="/books">
 SELECT - get variables (apply XSLT stylesheet)<br/>
 <input type="hidden" name="lang" value="SPARQL" />
-<input type="hidden" name="stylesheet" value="/xml-to-html.xsl" />
 <textarea name="query" cols="70" rows="5">
 PREFIX books:   <http://example.org/book/>
 PREFIX dc:      <http://purl.org/dc/elements/1.1/>
 SELECT $book $title WHERE ($book dc:title $title)
 </textarea>
+<br/>
+XSLT style sheet (leave blank for none): 
+<input name="stylesheet" size="25" value="/xml-to-html.xsl" />
 <br/>
 <input type="submit" value="Get Results" />
 </form>
