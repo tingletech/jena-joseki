@@ -22,7 +22,7 @@ import javax.servlet.http.HttpServletResponse;
 
 /** Abstaction of an operation response
  * @author      Andy Seaborne
- * @version     $Id: Response.java,v 1.10 2004-11-14 18:38:59 andy_seaborne Exp $
+ * @version     $Id: Response.java,v 1.11 2004-11-15 17:34:17 andy_seaborne Exp $
  */
 public class Response extends ExecutionError
 {
@@ -120,9 +120,12 @@ public class Response extends ExecutionError
         HttpResultSerializer httpSerializer = new HttpResultSerializer() ;
         httpSerializer.setHttpResponse(httpRequest, httpResponse, null) ;
         
-        String httpMsg = ExecutionError.errorString(execEx.returnCode);
-        //msg("Error in operation: URI = " + uri + " : " + httpMsg);
-        log.info("Error: URI = " + request.getModelURI() + " : " + httpMsg);
+        String httpMsg = execEx.shortMessage ;
+        if (execEx.shortMessage == null)
+            httpMsg = ExecutionError.errorString(execEx.returnCode);;
+
+            //msg("Error in operation: URI = " + uri + " : " + httpMsg);
+        log.info("Error: URI = " + request.getModelURI() + " : " + httpMsg) ;
         httpSerializer.sendError(execEx, httpResponse) ;
         responseSent = true ;
     }

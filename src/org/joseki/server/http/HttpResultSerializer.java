@@ -13,13 +13,14 @@ import javax.servlet.http.* ;
 import org.joseki.* ;
 import org.joseki.util.NullOutputStream; 
 import org.joseki.server.*;
+
 import com.hp.hpl.jena.rdf.model.*;
 import com.hp.hpl.jena.shared.JenaException;
 
 /** Extracting operation data from HTTP servlet requests and formatting results for sending back.
  * 
  * @author      Andy Seaborne
- * @version     $Id: HttpResultSerializer.java,v 1.6 2004-11-15 15:28:03 andy_seaborne Exp $
+ * @version     $Id: HttpResultSerializer.java,v 1.7 2004-11-15 17:34:36 andy_seaborne Exp $
  */
 public class HttpResultSerializer
 {
@@ -161,9 +162,9 @@ public class HttpResultSerializer
     {
         try {
             int httpRC = -1;
-            String httpMsg = ExecutionError.errorString(execEx.returnCode);
-            if (execEx.shortMessage != null)
-                httpMsg = execEx.shortMessage;
+            String httpMsg = execEx.shortMessage ;
+            if (execEx.shortMessage == null)
+                httpMsg = ExecutionError.errorString(execEx.returnCode);;
     
             // Map from internal error codes to HTTP ones.
             switch (execEx.returnCode)

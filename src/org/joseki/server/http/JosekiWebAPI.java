@@ -22,7 +22,7 @@ import org.joseki.Joseki ;
 
 /** The servlet class.
  * @author  Andy Seaborne
- * @version $Id: JosekiWebAPI.java,v 1.10 2004-11-15 15:28:03 andy_seaborne Exp $
+ * @version $Id: JosekiWebAPI.java,v 1.11 2004-11-15 17:34:36 andy_seaborne Exp $
  */
 
 public class JosekiWebAPI extends HttpServlet implements Connector
@@ -379,44 +379,10 @@ public class JosekiWebAPI extends HttpServlet implements Connector
                 log.debug("URI="+ uri + "  Query="+request.getParam("lang")) ;
             else
                 log.debug("URI="+ uri + "  Request="+request.getOpName()) ;
-    
-            // Find target and processor
-            SourceModel aModel = null ;
-            ProcessorModel proc = null ;
-            
-            
-            synchronized (dispatcher)
-            {
-                aModel = dispatcher.findModel(uri);
-        
-                if ( aModel == null )
-                    throw new ExecutionException(ExecutionError.rcNoSuchURI, "Not found: " + uri);
-                
-                if ( request.getOpName().equals("query") &&
-                     request.getQueryLanguage() != null )
-                {
-                    proc = dispatcher.findQueryProcessor(aModel, request.getQueryLanguage()) ;
-                    if ( proc == null )
-                        throw new ExecutionException(ExecutionError.rcNoSuchQueryLanguage,
-                                                     "No such query language: "+request.getQueryLanguage()) ;
-                }
-                else
-                {
-                    proc = dispatcher.findProcessor(aModel, request.getOpName()) ;
-                    if ( proc == null )
-                        throw new ExecutionException(ExecutionError.rcOperationNotSupported, "Request not found: " + request.getOpName());
-                }
-            }
-            
-            request.setDispatcher(dispatcher) ;
-            request.setSourceModel(aModel) ;
-            request.setProcessor(proc) ;
-            
-            // Execute
 
-            //dispatcher.exec(request, response) ;
-            Model resultModel = dispatcher.exec(request) ;
-            response.doResponse(resultModel) ;
+            dispatcher.exec(request, response) ;
+//            Model resultModel = dispatcher.exec(request) ;
+//            response.doResponse(resultModel) ;
             //doResponse(resultModel, req, httpRequest, httpResponse);
         } catch (ExecutionException execEx)
         {

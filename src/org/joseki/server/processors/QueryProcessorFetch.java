@@ -24,7 +24,7 @@ import org.joseki.util.PrintUtils;
  *  closure over the properties with this node as subject.
  * 
  * @author      Andy Seaborne
- * @version     $Id: QueryProcessorFetch.java,v 1.3 2004-11-11 17:03:23 andy_seaborne Exp $
+ * @version     $Id: QueryProcessorFetch.java,v 1.4 2004-11-15 17:34:36 andy_seaborne Exp $
  */
 public class QueryProcessorFetch extends QueryProcessorModelCom
 {
@@ -162,7 +162,6 @@ public class QueryProcessorFetch extends QueryProcessorModelCom
                 fetch.fetch(resource, types, resultModel) ; 
         }            
     }
-    
 }
 
 /*

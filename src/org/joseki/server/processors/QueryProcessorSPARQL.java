@@ -17,10 +17,10 @@ import org.apache.commons.logging.* ;
 /** Query processor that executes a SPARQL query on a model
  * 
  * @author  Andy Seaborne
- * @version $Id: QueryProcessorSPARQL.java,v 1.6 2004-11-11 17:03:23 andy_seaborne Exp $
+ * @version $Id: QueryProcessorSPARQL.java,v 1.7 2004-11-15 17:34:36 andy_seaborne Exp $
  */
 
-public class QueryProcessorSPARQL extends QueryProcessorModelCom implements QueryProcessorModel
+public class QueryProcessorSPARQL extends QueryProcessorModelCom implements QueryProcessor
 {
     static Log logger = LogFactory.getLog(QueryProcessorSPARQL.class.getName()) ;
     
@@ -124,6 +124,15 @@ public class QueryProcessorSPARQL extends QueryProcessorModelCom implements Quer
         }
     }
     
+    public void execQuery(SourceModel src, String queryString, Request request, Response response)
+    {
+        try {
+            Model m = execQuery(src, queryString, request) ;
+            response.doResponse(m) ;
+        }
+        catch (QueryExecutionException qEx) { response.doException(qEx) ; }
+    }
+
     public Model execQuery(SourceModel aModel, Model queryModel, Request request)
         throws RDFException, QueryExecutionException
     {

@@ -14,11 +14,12 @@ import com.hp.hpl.jena.rdf.model.* ;
 /** Registry for operation processors.
  * 
  * @author      Andy Seaborne
- * @version     $Id: ProcessorRegistry.java,v 1.4 2004-11-15 15:27:51 andy_seaborne Exp $
+ * @version     $Id: ProcessorRegistry.java,v 1.5 2004-11-15 17:34:17 andy_seaborne Exp $
  */
 
 public class ProcessorRegistry
 {
+    // Java 1.5 - replace with typed collections
     QueryOperationRegistry queryRegistry = new QueryOperationRegistry() ;
     OperationRegistry operationRegistry = new OperationRegistry() ;
     
@@ -36,36 +37,36 @@ public class ProcessorRegistry
     }
     
     
-    public ProcessorModel findProcessor(String opName)
+    public Processor findProcessor(String opName)
     {
         return operationRegistry.findProcessor(opName) ;
     }
 
 
-    public QueryProcessorModel findQueryProcessor(String queryLanguageName)
+    public QueryProcessor findQueryProcessor(String queryLanguageName)
     {
         return queryRegistry.findProcessor(queryLanguageName) ;
     }
 
 
-    public void registerProcessor(String shortName, ProcessorModel processor)
+    public void registerProcessor(String shortName, Processor processor)
     {
         operationRegistry.register(shortName, processor) ;
         processorURIs.add(processor.getInterfaceURI()) ;
     }
     
-    public void registerQueryProcessor(String langName, QueryProcessorModel queryProcessor)
+    public void registerQueryProcessor(String langName, QueryProcessor queryProcessor)
     {
         queryRegistry.register(langName, queryProcessor) ;
         queryLanguageURIs.add(queryProcessor.getInterfaceURI()) ;
     }
     
-    public void remove(ProcessorModel processor)
+    public void remove(Processor processor)
     {
         operationRegistry.remove(processor) ;
     }
 
-    public void remove(QueryProcessorModel queryProcessor)
+    public void remove(QueryProcessor queryProcessor)
     {
         queryRegistry.remove(queryProcessor) ;
     }
@@ -82,7 +83,7 @@ public class ProcessorRegistry
         for ( Iterator iter = processors.keySet().iterator() ; iter.hasNext() ; )
         {
             String name = (String)iter.next() ;
-            ProcessorModel proc = (ProcessorModel)processors.get(name) ;
+            Processor proc = (Processor)processors.get(name) ;
             Resource r = optModel.createResource() ; 
             r.addProperty(JosekiVocab.operationName, name) ;
             Resource opRes = optModel.createResource(proc.getInterfaceURI()) ;
@@ -95,7 +96,7 @@ public class ProcessorRegistry
         for ( Iterator iter = queryLanguages.keySet().iterator() ; iter.hasNext() ; )
         {
             String qlName = (String)iter.next() ;
-            QueryProcessorModel qproc = (QueryProcessorModel)queryLanguages.get(qlName) ;
+            QueryProcessor qproc = (QueryProcessor)queryLanguages.get(qlName) ;
             Resource r = optModel.createResource() ;
             r.addProperty(JosekiVocab.queryOperationName, qlName) ;
             Resource qRes = optModel.createResource(qproc.getInterfaceURI()) ;
@@ -114,25 +115,25 @@ public class ProcessorRegistry
         // Map from short name to processor.
         Map procRegistry = new HashMap() ;
 
-        void register(String shortName, ProcessorModel processor)
+        synchronized void register(String shortName, Processor processor)
         {
             procRegistry.put(shortName, processor) ;
         }
     
-        synchronized ProcessorModel findProcessor(String opName)
+        synchronized Processor findProcessor(String opName)
         {
-            ProcessorModel proc = (ProcessorModel)procRegistry.get(opName) ;
+            Processor proc = (Processor)procRegistry.get(opName) ;
             return proc ;
         }
 
 
     
-        void remove(ProcessorModel processor)
+        synchronized void remove(Processor processor)
         {
             for ( Iterator iter = procRegistry.entrySet().iterator() ; iter.hasNext() ; )
             {
                 Map.Entry entry = (Map.Entry)iter.next() ;
-                ProcessorModel proc = (ProcessorModel)entry.getValue() ;
+                Processor proc = (Processor)entry.getValue() ;
     
                 if ( processor.equals(proc) )
                     iter.remove() ;
@@ -145,25 +146,25 @@ public class ProcessorRegistry
         // Map from short name to processor.
         Map procRegistry = new HashMap() ;
 
-        void register(String languageName, QueryProcessorModel queryPprocessor)
+        synchronized void register(String languageName, QueryProcessor queryPprocessor)
         {
             procRegistry.put(languageName, queryPprocessor) ;
         }
     
-        synchronized QueryProcessorModel findProcessor(String languageName)
+        synchronized QueryProcessor findProcessor(String languageName)
         {
-            QueryProcessorModel proc = (QueryProcessorModel)procRegistry.get(languageName) ;
+            QueryProcessor proc = (QueryProcessor)procRegistry.get(languageName) ;
             return proc ;
         }
 
 
     
-        void remove(QueryProcessorModel queryProcessor)
+        synchronized void remove(QueryProcessor queryProcessor)
         {
             for ( Iterator iter = procRegistry.entrySet().iterator() ; iter.hasNext() ; )
             {
                 Map.Entry entry = (Map.Entry)iter.next() ;
-                QueryProcessorModel qProc = (QueryProcessorModel)entry.getValue() ;
+                QueryProcessor qProc = (QueryProcessor)entry.getValue() ;
     
                 if ( queryProcessor.equals(qProc) )
                     iter.remove() ;

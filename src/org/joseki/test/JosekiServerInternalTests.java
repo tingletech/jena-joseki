@@ -19,7 +19,7 @@ import com.hp.hpl.jena.rdf.model.*;
 /** Tests of the mechanisms (attach, dispatch) of the server side.
  * 
  * @author      Andy Seaborne
- * @version     $Id: JosekiServerInternalTests.java,v 1.2 2004-11-15 15:28:03 andy_seaborne Exp $
+ * @version     $Id: JosekiServerInternalTests.java,v 1.3 2004-11-15 17:34:36 andy_seaborne Exp $
  */
 public class JosekiServerInternalTests extends TestSuite
 {
@@ -97,11 +97,17 @@ public class JosekiServerInternalTests extends TestSuite
                 new RequestImpl(modelURI, requestURL, opName, null) ;
             SourceModel src = dispatcher.findModel(modelURI) ;
             request.setSourceModel(dispatcher.findModel(modelURI)) ;
-            request.setProcessor(dispatcher.findProcessor(src, opName)) ;
+            Processor proc = dispatcher.findProcessor(src, opName) ;
+            request.setProcessor(proc) ;
 
             if ( m != null )
                 request.addArg(m) ;
-            Model resultModel = dispatcher.exec(request) ;
+
+            assertTrue("Processors is not an instance of ProcessorModelCom",
+                       proc instanceof ProcessorModelCom) ;
+
+            ProcessorModelCom proc2 = (ProcessorModelCom)proc ;
+            Model resultModel = proc2.exec(request) ;
             return resultModel ;
         }
         
@@ -201,10 +207,16 @@ public class JosekiServerInternalTests extends TestSuite
                 Request request = new RequestImpl(modelURI, requestURL, "query", queryLang) ;
                 SourceModel src = dispatcher.findModel(modelURI) ;
                 request.setSourceModel(src) ;
+                QueryProcessor qProc = dispatcher.findQueryProcessor(src, queryLang) ;
                 request.setProcessor(dispatcher.findQueryProcessor(src, queryLang)) ;
                 request.setParam("lang", queryLang) ;
                 request.setParam("query", "SELECT * WHERE (?x, ?y, ?z)") ;
-                Model resultModel = dispatcher.exec(request) ;
+                
+                assertTrue("Processors is not an instance of QueryProcessorModelCom",
+                           qProc instanceof QueryProcessorModelCom) ;
+
+                ProcessorModelCom qProc2 = (QueryProcessorModelCom)qProc ;
+                Model resultModel = qProc2.exec(request) ;
                 assertNotNull(resultModel) ;
                 boolean passesTest = targetModel.isIsomorphicWith(resultModel) ;
                 if ( ! passesTest )

@@ -18,11 +18,11 @@ import com.hp.hpl.jena.vocabulary.* ;
  *  operation processors and keeps the mapping from URI to model.
  * 
  * @author      Andy Seaborne
- * @version     $Id: Dispatcher.java,v 1.5 2004-11-15 15:27:51 andy_seaborne Exp $
+ * @version     $Id: Dispatcher.java,v 1.6 2004-11-15 17:34:17 andy_seaborne Exp $
  */
 public class Dispatcher
 {
-    private static Log logger = LogFactory.getLog(Dispatcher.class.getName()) ;
+    private static Log log = LogFactory.getLog(Dispatcher.class.getName()) ;
     
     ModelSet modelSet = new ModelSet() ;
 
@@ -43,35 +43,68 @@ public class Dispatcher
     
     public Loader getLoader() { return loader ; }  
 
-    /** Actually do something!
-     * @param request                    Request to perform
-     * @throws ExecutionException
-     */
-    
-    public Model exec(Request request) throws ExecutionException
-    {
-        // FIXME Remove me!
-        return request.getProcessor().exec(request) ;
-    }
+//    /** Actually do something!
+//     * @param request                    Request to perform
+//     * @throws ExecutionException
+//     */
+//    
+//    public Model exec(Request request) throws ExecutionException
+//    {
+//        // FIXME Remove me!
+//        return request.getProcessor().exec(request) ;
+//    }
     
     public void exec(Request request, Response response) throws ExecutionException
     {
-        if ( request.getProcessor() == null )
-            throw new ExecutionException(Response.rcInternalError, "No processor given in Dispatcher.exec") ;
         
-        Model resultModel = request.getProcessor().exec(request) ;
-        response.doResponse(resultModel) ;
+        // Find target and processor
+        SourceModel aModel = null ;
+        Processor proc = null ;
+        String uri = request.getModelURI() ;
+        
+        synchronized (this)
+        {
+            aModel = findModel(uri);
+    
+            if ( aModel == null )
+                throw new ExecutionException(ExecutionError.rcNoSuchURI, "Not found: " + uri);
+            
+            if ( request.getOpName().equals("query") &&
+                 request.getQueryLanguage() != null )
+            {
+                proc = findQueryProcessor(aModel, request.getQueryLanguage()) ;
+                if ( proc == null )
+                    throw new ExecutionException(ExecutionError.rcNoSuchQueryLanguage,
+                                                 "No such query language: "+request.getQueryLanguage()) ;
+            }
+            else
+            {
+                proc = findProcessor(aModel, request.getOpName()) ;
+                if ( proc == null )
+                    throw new ExecutionException(ExecutionError.rcOperationNotSupported, "Request not found: " + request.getOpName());
+            }
+        }
+        
+        request.setDispatcher(this) ;
+        request.setSourceModel(aModel) ;
+        request.setProcessor(proc) ;
+        
+        // Execute
+
+        request.getProcessor().exec(request, response) ;
+//        Model resultModel = request.getProcessor().exec(request) ;
+//        response.doResponse(resultModel) ;
     }
     
-    public ProcessorModel findProcessor(SourceModel aModel, String opName)
+    public Processor findProcessor(SourceModel aModel, String opName)
     {
-        ProcessorModel proc = aModel.getProcessorRegistry().findProcessor(opName);
+        Processor proc = aModel.getProcessorRegistry().findProcessor(opName);
         return proc ;
     }
 
-    public QueryProcessorModel findQueryProcessor(SourceModel aModel, String langName)
+    public QueryProcessor findQueryProcessor(SourceModel aModel, String langName)
     {
-        QueryProcessorModel qProc = aModel.getProcessorRegistry().findQueryProcessor(langName);
+        QueryProcessor qProc = aModel.getProcessorRegistry().findQueryProcessor(langName);
         return qProc ;
     }
 
@@ -100,7 +133,7 @@ public class Dispatcher
             {
                 String uri = (String)iter.next() ;
                 uri = baseName+uri ;
-                logger.debug("Server options request: URI = "+uri) ;
+                log.debug("Server options request: URI = "+uri) ;
                 Resource r = optModel.createResource(uri) ;
                 optModel.add(r, RDF.type, JosekiVocab.AttachedModel) ;
             }
@@ -109,7 +142,7 @@ public class Dispatcher
             return optModel ;
         } catch (RDFException rdfEx)
         {
-            logger.warn("RDFException", rdfEx) ;
+            log.warn("RDFException", rdfEx) ;
             throw new ExecutionException(ExecutionError.rcInternalError, "Failed to create options model") ;
         }
         //return null ;
@@ -161,7 +194,7 @@ public class Dispatcher
                 return optModel ;
             } catch (RDFException rdfEx)
             {
-                logger.warn("RDFException", rdfEx) ;
+                log.warn("RDFException", rdfEx) ;
                 throw new ExecutionException(ExecutionError.rcInternalError, "Failed to create options model for "+aModel.getServerURI()) ;
             }
 //        } finally { aModel.endOperation() ; }
@@ -174,7 +207,7 @@ public class Dispatcher
     {
         if ( uri == null )
         {
-            logger.warn("No URI supplied for the model source") ;
+            log.warn("No URI supplied for the model source") ;
             return ;
         }
         modelSet.addModel(uri, aModel) ;
@@ -184,7 +217,7 @@ public class Dispatcher
     {
         if ( uri == null )
         {
-            logger.warn("No URI supplied for the model source") ;
+            log.warn("No URI supplied for the model source") ;
             return ;
         }
         modelSet.removeModel(uri) ;
@@ -195,11 +228,11 @@ public class Dispatcher
      * @param shortName Short name for the operation
      * @param proc The processor
      */
-    public synchronized void addProcessor(String aModelURI, String shortName, ProcessorModel proc)
+    public synchronized void addProcessor(String aModelURI, String shortName, Processor proc)
     {
         if ( aModelURI == null )
         {
-            logger.warn("No URI supplied for the attached model") ;
+            log.warn("No URI supplied for the attached model") ;
             return ;
         }
 
@@ -213,11 +246,11 @@ public class Dispatcher
      * @param langName        Language name
      * @param queryProc The query processor
      */
-    public synchronized void addQueryProcessor(String aModelURI, String langName, QueryProcessorModel queryProc)
+    public synchronized void addQueryProcessor(String aModelURI, String langName, QueryProcessor queryProc)
     {
         if ( aModelURI == null )
         {
-            logger.warn("No URI supplied for the attached model") ;
+            log.warn("No URI supplied for the attached model") ;
             return ;
         }
 
@@ -230,11 +263,11 @@ public class Dispatcher
      * @param aModelURI   The attached model URI that the processor is specific to.
      * @param processor   The processor
      */
-    public synchronized void removeProcessor(String aModelURI, ProcessorModel processor)
+    public synchronized void removeProcessor(String aModelURI, Processor processor)
     {
         if ( aModelURI == null )
         {
-            logger.warn("No URI supplied for the attached model") ;
+            log.warn("No URI supplied for the attached model") ;
             return ;
         }
         

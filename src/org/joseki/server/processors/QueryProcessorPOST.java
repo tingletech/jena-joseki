@@ -15,23 +15,17 @@ import com.hp.hpl.jena.rdf.model.* ;
  *  query processor.  Requests can can be specified by argument in the
  *  query string or specified by an RDF model.
  *  
- *  For compatibility.
- *  Only works for ProcessorModel operations.
- *  
- *  
  *  Large queries, or ones being forced to go to the model (e.g. no caching)
  *  are sent by HTTP POST.  This class takes that request and finds the right
  *  language processor for query.  The language is part of the argument
  *  model as property "joseki:queryOperationName".
  * 
  * @author      Andy Seaborne
- * @version     $Id: QueryProcessorPOST.java,v 1.3 2004-11-15 16:21:49 andy_seaborne Exp $
+ * @version     $Id: QueryProcessorPOST.java,v 1.4 2004-11-15 17:34:36 andy_seaborne Exp $
  */
 
-public class QueryProcessorPOST extends ProcessorModelCom
+public class QueryProcessorPOST extends ProcessorCom
 {
-    // TODO Remove when query-model removed 
-    
     Log log = LogFactory.getLog(QueryProcessorPOST.class) ;
     
     public QueryProcessorPOST()
@@ -43,18 +37,19 @@ public class QueryProcessorPOST extends ProcessorModelCom
       */
     public void init(Resource processor, Resource binding) { }
      
-    public Model exec(Request request) throws QueryExecutionException
+    public void execute(Request request, Response response)
+        throws ExecutionException
     {
         // Inside a lock from ProcessorCom by now.
         SourceModel aModel = request.getSourceModel() ;
-        QueryProcessorModel qProc = null ;
-
+        QueryProcessor qProc = null ;
+        
         Model queryModel = null ;
-        
         if ( request.getDataArgs().size() > 0 )
-            queryModel = (Model)request.getDataArgs().get(0);
-        
+          queryModel = (Model)request.getDataArgs().get(0);
+  
         if ( queryModel != null )
+        {
             try
             {
                 String queryLangName = getPropertyValue(queryModel, JosekiVocab.requestQueryLanguage) ;
@@ -64,8 +59,8 @@ public class QueryProcessorPOST extends ProcessorModelCom
                 if ( queryLangName == null )
                 {
                     log.warn("No query language name or URI found") ;
-                     throw new QueryExecutionException(ExecutionError.rcQueryExecutionFailure,
-                                                       "No query language name or URI found");
+                    throw new QueryExecutionException(ExecutionError.rcQueryExecutionFailure,
+                    "No query language name or URI found");
                 }
                 
                 qProc = aModel.getProcessorRegistry().findQueryProcessor(queryLangName);
@@ -73,33 +68,91 @@ public class QueryProcessorPOST extends ProcessorModelCom
             {
                 log.warn("Problems processing request", ex) ;
                 throw new QueryExecutionException(ExecutionError.rcQueryExecutionFailure,
-                    "Couldn't get query language name: "+ex.getMessage()); 
+                                                  "Couldn't get query language name: "+ex.getMessage()); 
             }
+        }
         
-            if (qProc == null )
-                throw new QueryExecutionException(ExecutionError.rcOperationNotSupported,
-                                             "No query language found") ;
+        if (qProc == null )
+            throw new QueryExecutionException(ExecutionError.rcOperationNotSupported,
+            "No query language found") ;
+        
+        // Get query string.
+        // If null (no string supplied) or empty, the query is in the model.
+        String queryString = request.getParam("query");
+        
+        if ( queryString != null && queryModel != null )
+            throw new QueryExecutionException(
+                                              ExecutionError.rcQueryExecutionFailure,
+            "Query has string and model arguments");
+        
+        if ( queryString == null && queryModel != null )
+        {
+            queryString = getPropertyValue(queryModel, JosekiVocab.queryScript) ;
+            if ( queryString.equals("") )
+                queryString = null ;
+        }
 
-            // Get query string.
-            // If null (no string supplied) or empty, the query is in the model.
-            String queryString = request.getParam("query");
-            
-            if ( queryString != null && queryModel != null )
-                throw new QueryExecutionException(
-                    ExecutionError.rcQueryExecutionFailure,
-                    "Query has string and model arguments");
-            
-            if ( queryString == null && queryModel != null )
-            {
-                queryString = getPropertyValue(queryModel, JosekiVocab.queryScript) ;
-                if ( queryString.equals("") )
-                    queryString = null ;
-            }
-            
-            // Execute via query string
-            // which may be null or "" 
-            return qProc.execQuery(aModel, queryString, request);
+        qProc.execQuery(aModel, queryString, request, response) ;
     }
+    
+//    public Model exec(Request request) throws QueryExecutionException
+//    {
+//        // Inside a lock from ProcessorCom by now.
+//        SourceModel aModel = request.getSourceModel() ;
+//        QueryProcessor qProc = null ;
+//
+//        Model queryModel = null ;
+//        
+//        if ( request.getDataArgs().size() > 0 )
+//            queryModel = (Model)request.getDataArgs().get(0);
+//        
+//        if ( queryModel != null )
+//            try
+//            {
+//                String queryLangName = getPropertyValue(queryModel, JosekiVocab.requestQueryLanguage) ;
+//                //if ( queryLangName == null )
+//                //    queryLangName = getPropertyValue(queryModel, JosekiVocab.queryOperationName) ;
+//                
+//                if ( queryLangName == null )
+//                {
+//                    log.warn("No query language name or URI found") ;
+//                     throw new QueryExecutionException(ExecutionError.rcQueryExecutionFailure,
+//                                                       "No query language name or URI found");
+//                }
+//                
+//                qProc = aModel.getProcessorRegistry().findQueryProcessor(queryLangName);
+//            } catch (RDFException ex)
+//            {
+//                log.warn("Problems processing request", ex) ;
+//                throw new QueryExecutionException(ExecutionError.rcQueryExecutionFailure,
+//                    "Couldn't get query language name: "+ex.getMessage()); 
+//            }
+//        
+//            if (qProc == null )
+//                throw new QueryExecutionException(ExecutionError.rcOperationNotSupported,
+//                                             "No query language found") ;
+//
+//            // Get query string.
+//            // If null (no string supplied) or empty, the query is in the model.
+//            String queryString = request.getParam("query");
+//            
+//            if ( queryString != null && queryModel != null )
+//                throw new QueryExecutionException(
+//                    ExecutionError.rcQueryExecutionFailure,
+//                    "Query has string and model arguments");
+//            
+//            if ( queryString == null && queryModel != null )
+//            {
+//                queryString = getPropertyValue(queryModel, JosekiVocab.queryScript) ;
+//                if ( queryString.equals("") )
+//                    queryString = null ;
+//            }
+//            
+//            // Execute via query string
+//            // which may be null or "" 
+//            qProc.exec(request, )
+//            return qProc.execQuery(aModel, queryString, request);
+//    }
 
     /**
      * @see org.joseki.server.ProcessorModel#getInterfaceURI()
@@ -107,14 +160,6 @@ public class QueryProcessorPOST extends ProcessorModelCom
     public String getInterfaceURI()
     {
         return JosekiVocab.opQueryPOST ;
-    }
-
-    /** A model is required.
-     * @see org.joseki.server.ProcessorModel#argsNeeded()
-     */
-    public int argsNeeded()
-    {
-        return ARGS_ONE ;
     }
 
     private String getPropertyValue(Model model, Property property)

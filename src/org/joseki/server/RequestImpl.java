@@ -14,12 +14,12 @@ import java.util.* ;
  *  provides methods to create the operation as well as meet
  *  the Request interface.
  * @author      Andy Seaborne
- * @version     $Id: RequestImpl.java,v 1.4 2004-11-15 12:18:02 andy_seaborne Exp $
+ * @version     $Id: RequestImpl.java,v 1.5 2004-11-15 17:34:17 andy_seaborne Exp $
  */
 public class RequestImpl implements Request
 {
     // Where and how the operation will be performed
-    ProcessorModel processor ;
+    Processor processor ;
     SourceModel sourceModel ;
     Dispatcher dispatcher ;
     
@@ -70,8 +70,8 @@ public class RequestImpl implements Request
     public SourceModel getSourceModel() { return sourceModel ;  }
     public void setSourceModel(SourceModel src) { sourceModel = src ;  }
     
-    public ProcessorModel getProcessor() { return processor ;  }
-    public void setProcessor(ProcessorModel proc) { processor = proc ;  }
+    public Processor getProcessor() { return processor ;  }
+    public void setProcessor(Processor proc) { processor = proc ;  }
 
     public Dispatcher getDispatcher() { return dispatcher ; }
     public void setDispatcher(Dispatcher d) { dispatcher = d ; }

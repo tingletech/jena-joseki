@@ -21,7 +21,7 @@ import com.hp.hpl.jena.query.* ;
 /** SPARQL operations
  * 
  * @author  Andy Seaborne
- * @version $Id: SPARQL.java,v 1.3 2004-11-11 21:15:02 andy_seaborne Exp $
+ * @version $Id: SPARQL.java,v 1.4 2004-11-15 17:34:36 andy_seaborne Exp $
  */
 
 public class SPARQL implements QueryProcessor
@@ -29,13 +29,24 @@ public class SPARQL implements QueryProcessor
     static Log logger = LogFactory.getLog(SPARQL.class) ;
     
     
-    /** Execute a query, output via response
-     * 
-     * @param model    Data to operate on
-     * @param response
-     */
+
+    /** QueryProcessor.execQuery */
+    public void execQuery(SourceModel aModel, String queryString,
+                          Request request, Response response)
+    {
+        try {
+            throw new QueryExecutionException(Response.rcNotImplemented, "SPARQL.execQuery") ;
+        } catch (QueryExecutionException qEx)
+        {
+            response.doException(qEx) ;
+        }
+    }
+
+
     
-    public static void execQuery(Model model, Query query, Response response)
+    
+    public static void execQuery(SourceModel model, Query query, Response response)
+        throws QueryExecutionException
     {
        if ( query.isSelectType() && response.getMimeType().equals("application/xml"))
        {
@@ -43,27 +54,21 @@ public class SPARQL implements QueryProcessor
            return ;
        }
        // Execute and get a model.
-       
+       throw new QueryExecutionException(Response.rcNotImplemented, "SPARQL.execQuery") ;
        
        // Serialize model to response.getOutput()
        
     }
     
-    public static void execQueryXML(Model model, Query query, Response response)
+    public static void execQueryXML(SourceModel model, Query query, Response response)
+        throws QueryExecutionException
     {
-        
-    }
-
-    public void execQuery(SourceModel aModel, String queryString, Request request, Response response) throws RDFException, QueryExecutionException
-    {
-        // TODO Auto-generated method stub
-        
+        throw new QueryExecutionException(Response.rcNotImplemented, "SPARQL.execQueryXML") ;
     }
 
     public void exec(Request request, Response response) throws ExecutionException
     {
-        // TODO Auto-generated method stub
-        
+        throw new QueryExecutionException(Response.rcNotImplemented, "SPARQL.execQuery") ;
     }
 
     public String getInterfaceURI() { return JosekiVocab.queryOperationSPARQL ; }

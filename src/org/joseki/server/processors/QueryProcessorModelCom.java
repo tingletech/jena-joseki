@@ -7,7 +7,7 @@ package org.joseki.server.processors;
 
 import org.apache.commons.logging.*;
 import org.joseki.server.*;
-import org.joseki.server.module.Loadable ; 
+
 import com.hp.hpl.jena.rdf.model.*;
 import com.hp.hpl.jena.rdf.model.RDFException;
 
@@ -16,16 +16,17 @@ import com.hp.hpl.jena.rdf.model.RDFException;
  *  ad a model (e.g. HTTP POST).
  * 
  * @author      Andy Seaborne
- * @version     $Id: QueryProcessorModelCom.java,v 1.2 2004-11-15 16:21:50 andy_seaborne Exp $
+ * @version     $Id: QueryProcessorModelCom.java,v 1.3 2004-11-15 17:34:36 andy_seaborne Exp $
  */
-public abstract class QueryProcessorModelCom implements QueryProcessorModel, Loadable
+public abstract class QueryProcessorModelCom
+    extends ProcessorModelCom
+    implements QueryProcessor
 {
-    // FIXME No lock!
     static final Log logger = LogFactory.getLog(QueryProcessorModelCom.class.getName()) ; 
 
     boolean readOnlyLock = true ;
 
-    public QueryProcessorModelCom() { }
+    public QueryProcessorModelCom() { super("query", LockType.ReadOperation) ;}
 
     /** @see org.joseki.server.module.Loadable#init(Resource, Resource)
      */
@@ -57,12 +58,25 @@ public abstract class QueryProcessorModelCom implements QueryProcessorModel, Loa
         return execQuery(aModel, queryString, request);
     }
 
+    public int argsNeeded() { return ARGS_ZERO ; }
+    
     /** Query processors supply this, rather than the <code>exec</code> method.
      *  The queryString may be null (no string supplied).
      *  @see QueryProcessorModel#execQuery
      */
 
     abstract public Model execQuery(SourceModel target, String queryString, Request request) throws RDFException, QueryExecutionException ;
+    
+    public void execQuery(SourceModel src, String queryString, Request request, Response response)
+    {
+        try {
+            Model m = execQuery(src, queryString, request) ;
+            response.doResponse(m) ;
+        }
+        catch (QueryExecutionException qEx) { response.doException(qEx) ; }
+    }
+
+
 }
 
 

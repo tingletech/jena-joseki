@@ -25,10 +25,11 @@ import java.util.* ;
  *  @see com.hp.hpl.jena.joseki.QueryHTTP
  * 
  * @author  Andy Seaborne
- * @version $Id: QueryProcessorRDQL.java,v 1.4 2004-11-11 17:03:23 andy_seaborne Exp $
+ * @version $Id: QueryProcessorRDQL.java,v 1.5 2004-11-15 17:34:36 andy_seaborne Exp $
  */
 
-public class QueryProcessorRDQL extends QueryProcessorModelCom implements QueryProcessorModel
+public class QueryProcessorRDQL extends QueryProcessorModelCom
+    implements QueryProcessor
 {
     static Log logger = LogFactory.getLog(QueryProcessorRDQL.class.getName()) ;
     
@@ -40,7 +41,7 @@ public class QueryProcessorRDQL extends QueryProcessorModelCom implements QueryP
     public String getInterfaceURI() { return JosekiVocab.queryOperationRDQL ; }
         
     public Model execQuery(SourceModel src, String queryString, Request request)
-        throws RDFException, QueryExecutionException
+        throws QueryExecutionException
     {
         if (!(src instanceof SourceModelJena))
             throw new QueryExecutionException(
@@ -129,6 +130,11 @@ public class QueryProcessorRDQL extends QueryProcessorModelCom implements QueryP
         {
             logger.info("Query execution error: "+qEx) ;
             throw new QueryExecutionException(ExecutionError.rcQueryExecutionFailure, null) ;
+        }
+        catch (RDFException rdfEx)
+        {
+            logger.info("RDFException in query execution: "+rdfEx) ;
+            throw new QueryExecutionException(ExecutionError.rcQueryExecutionFailure, "RDF Exception: "+rdfEx.getMessage()) ;
         }
         finally 
         {

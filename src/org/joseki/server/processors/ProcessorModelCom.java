@@ -21,9 +21,9 @@ import com.hp.hpl.jena.rdf.model.*;
  * @see ProcessorCom
  * 
  * @author      Andy Seaborne
- * @version     $Id: ProcessorModelCom.java,v 1.7 2004-11-15 16:21:50 andy_seaborne Exp $
+ * @version     $Id: ProcessorModelCom.java,v 1.8 2004-11-15 17:34:36 andy_seaborne Exp $
  */
-public abstract class ProcessorModelCom extends ProcessorCom implements ProcessorModel
+public abstract class ProcessorModelCom extends ProcessorCom
 {
     Log logger = LogFactory.getLog(ProcessorModelCom.class) ;
     // Useful constant
