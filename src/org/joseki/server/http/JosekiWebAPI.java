@@ -17,11 +17,12 @@ import com.hp.hpl.jena.rdf.model.*;
 
 import org.joseki.server.*;
 import org.joseki.Joseki ;
+import org.joseki.HttpParams;
 
 
 /** The servlet class.
  * @author  Andy Seaborne
- * @version $Id: JosekiWebAPI.java,v 1.15 2005-01-03 20:26:33 andy_seaborne Exp $
+ * @version $Id: JosekiWebAPI.java,v 1.16 2005-01-11 10:52:01 andy_seaborne Exp $
  */
 
 public class JosekiWebAPI extends HttpServlet implements Connector
@@ -166,7 +167,7 @@ public class JosekiWebAPI extends HttpServlet implements Connector
             //msg(Level.FINE, "Get: URL= "+uri) ;
             //msg(Level.FINE, "  QueryString = "+request.getQueryString()) ;
             
-            String queryLang = httpRequest.getParameter("lang");
+            String queryLang = httpRequest.getParameter(HttpParams.pQueryLang) ;
 
             if ( httpRequest.getParameterMap().size() == 0 )
                 // It's a plain GET
@@ -175,7 +176,7 @@ public class JosekiWebAPI extends HttpServlet implements Connector
             try {
                 //Request opRequest = dispatcher.createQueryRequest(uri, requestURL, queryLang) ;
                 Request opRequest =
-                        new RequestImpl(uri, requestURL, "query", queryLang) ;
+                        new RequestImpl(uri, requestURL, HttpParams.pQuery, queryLang) ;
                 if ( queryLang == null )
                     throw new ExecutionException(ExecutionError.rcArgumentError, "No query language name") ;
                 
@@ -185,7 +186,7 @@ public class JosekiWebAPI extends HttpServlet implements Connector
                     String k = (String)iter.next() ;
                     String[] v = (String[])m.get(k) ;
                     if ( k.equals("q") )
-                        k = "query" ;
+                        k = HttpParams.pQuery ;
                     for ( int vi = 0 ; vi < v.length ; vi++ )
                         opRequest.setParam(k,v[vi]) ;
                 }
@@ -375,8 +376,8 @@ public class JosekiWebAPI extends HttpServlet implements Connector
        try {
             String uri = request.getModelURI() ;
             String s = null ; 
-            if ( request.getOpName().equals("query") )
-                s = "URI="+ uri + "  Query="+request.getParam("lang") ;
+            if ( request.getOpName().equals(HttpParams.pQuery) )
+                s = "URI="+ uri + "  Query="+request.getParam(HttpParams.pQueryLang) ;
             else
                 s = "URI="+ uri + "  Request="+request.getOpName() ;
 

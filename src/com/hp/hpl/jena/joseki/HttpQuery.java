@@ -29,7 +29,7 @@ import com.hp.hpl.jena.shared.* ;
  *  If the query string is large, then HTTP POST?query is used.
 
  * @author  Andy Seaborne
- * @version $Id: HttpQuery.java,v 1.4 2005-01-03 20:26:32 andy_seaborne Exp $
+ * @version $Id: HttpQuery.java,v 1.5 2005-01-11 10:52:01 andy_seaborne Exp $
  */
 public class HttpQuery
 {
@@ -119,7 +119,7 @@ public class HttpQuery
             
         // If lang is null, then we should be doing a plain GET
         if (queryLang != null)
-            queryString = "?lang=" + Convert.encWWWForm(queryLang);
+            queryString = "?"+HttpParams.pQueryLang+"=" + Convert.encWWWForm(queryLang);
 
         // but for generality we'll still encode the string correctly
         boolean first = (queryString == null);
@@ -316,8 +316,8 @@ public class HttpQuery
             for ( Iterator iter = params.keySet().iterator() ; iter.hasNext() ; )
             {
                 String name = (String)iter.next() ;
-                if ( name.equals("query"))
-                    r.addProperty(JosekiVocab.queryScript, (String)params.get("query")) ;
+                if ( name.equals(HttpParams.pQuery))
+                    r.addProperty(JosekiVocab.queryScript, (String)params.get(HttpParams.pQuery)) ;
                 else
                     log.warn("execPost: Skipping parameter: "+name) ;
                 log.trace("Post: "+name+" = "+(String)params.get(name)) ;

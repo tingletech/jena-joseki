@@ -15,6 +15,7 @@ import org.joseki.server.processors.ops.AddProcessor;
 import org.joseki.server.processors.ops.RemoveProcessor;
 import org.joseki.server.processors.qmodel.QueryProcessorRDQL;
 import org.joseki.server.source.*;
+import org.joseki.HttpParams;
 
 
 import com.hp.hpl.jena.rdf.model.*;
@@ -22,7 +23,7 @@ import com.hp.hpl.jena.rdf.model.*;
 /** Tests of the mechanisms (attach, dispatch) of the server side.
  * 
  * @author      Andy Seaborne
- * @version     $Id: JosekiServerInternalTests.java,v 1.5 2005-01-03 20:26:36 andy_seaborne Exp $
+ * @version     $Id: JosekiServerInternalTests.java,v 1.6 2005-01-11 10:52:01 andy_seaborne Exp $
  */
 public class JosekiServerInternalTests extends TestSuite
 {
@@ -207,13 +208,13 @@ public class JosekiServerInternalTests extends TestSuite
             {
                 log.info(getName()+": query :: "+modelURI);
                 String queryLang = "RDQL" ;
-                Request request = new RequestImpl(modelURI, requestURL, "query", queryLang) ;
+                Request request = new RequestImpl(modelURI, requestURL, HttpParams.pQuery, queryLang) ;
                 SourceModel src = dispatcher.findModel(modelURI) ;
                 request.setSourceModel(src) ;
                 QueryProcessor qProc = dispatcher.findQueryProcessor(src, queryLang) ;
                 request.setProcessor(dispatcher.findQueryProcessor(src, queryLang)) ;
-                request.setParam("lang", queryLang) ;
-                request.setParam("query", "SELECT * WHERE (?x, ?y, ?z)") ;
+                request.setParam(HttpParams.pQueryLang, queryLang) ;
+                request.setParam(HttpParams.pQuery, "SELECT * WHERE (?x, ?y, ?z)") ;
                 
                 assertTrue("Processors is not an instance of QueryProcessorModelCom",
                            qProc instanceof QueryProcessorModelCom) ;

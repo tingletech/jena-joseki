@@ -8,6 +8,7 @@ package org.joseki.server;
 import java.util.* ;
 import org.apache.commons.logging.* ;
 
+import org.joseki.HttpParams;
 import org.joseki.vocabulary.*;
 import org.joseki.server.module.*;
 
@@ -18,7 +19,7 @@ import com.hp.hpl.jena.vocabulary.* ;
  *  operation processors and keeps the mapping from URI to model.
  * 
  * @author      Andy Seaborne
- * @version     $Id: Dispatcher.java,v 1.8 2005-01-03 20:26:34 andy_seaborne Exp $
+ * @version     $Id: Dispatcher.java,v 1.9 2005-01-11 10:51:31 andy_seaborne Exp $
  */
 public class Dispatcher
 {
@@ -57,7 +58,7 @@ public class Dispatcher
             if ( aModel == null )
                 throw new ExecutionException(ExecutionError.rcNoSuchURI, "Not found: " + uri);
             
-            if ( request.getOpName().equals("query") &&
+            if ( request.getOpName().equals(HttpParams.pQuery) &&
                  request.getQueryLanguage() != null )
             {
                 proc = findQueryProcessor(aModel, request.getQueryLanguage()) ;

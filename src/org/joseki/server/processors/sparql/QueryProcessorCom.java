@@ -8,6 +8,7 @@ package org.joseki.server.processors.sparql;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.joseki.HttpParams;
 import org.joseki.server.*;
 import org.joseki.server.processors.LockType;
 import org.joseki.server.processors.ProcessorCom;
@@ -15,7 +16,7 @@ import org.joseki.server.processors.ProcessorCom;
 /** QueryProcessorCom - the root of query processors.
  * 
  * @author Andy Seaborne
- * @version $Id: QueryProcessorCom.java,v 1.4 2005-01-03 20:26:34 andy_seaborne Exp $
+ * @version $Id: QueryProcessorCom.java,v 1.5 2005-01-11 10:52:02 andy_seaborne Exp $
  */
 
 public abstract class QueryProcessorCom extends ProcessorCom implements QueryProcessor
@@ -32,8 +33,8 @@ public abstract class QueryProcessorCom extends ProcessorCom implements QueryPro
         SourceModel aModel = request.getSourceModel() ;
         // Inside lock.
         // Convert from Processor.exec to QueryProcessor.execQuery
-        String queryLangName = request.getParam("lang") ;
-        String queryString = request.getParam("query") ;
+        String queryLangName = request.getParam(HttpParams.pQueryLang) ;
+        String queryString = request.getParam(HttpParams.pQuery) ;
         
         if ( queryLangName == null )
         {

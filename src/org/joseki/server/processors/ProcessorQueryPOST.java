@@ -8,6 +8,7 @@ package org.joseki.server.processors;
 import org.apache.commons.logging.*;
 import org.joseki.server.* ;
 import org.joseki.vocabulary.JosekiVocab;
+import org.joseki.HttpParams ;
 
 import com.hp.hpl.jena.rdf.model.* ;
 
@@ -21,7 +22,7 @@ import com.hp.hpl.jena.rdf.model.* ;
  *  model as property "joseki:queryOperationName".
  * 
  * @author      Andy Seaborne
- * @version     $Id: ProcessorQueryPOST.java,v 1.3 2005-01-03 20:26:33 andy_seaborne Exp $
+ * @version     $Id: ProcessorQueryPOST.java,v 1.4 2005-01-11 10:52:01 andy_seaborne Exp $
  */
 
 public class ProcessorQueryPOST extends ProcessorCom
@@ -78,7 +79,7 @@ public class ProcessorQueryPOST extends ProcessorCom
         
         // Get query string.
         // If null (no string supplied) or empty, the query is in the model.
-        String queryString = request.getParam("query");
+        String queryString = request.getParam(HttpParams.pQuery);
         
         if ( queryString != null && queryModel != null )
             throw new QueryExecutionException(
@@ -95,64 +96,6 @@ public class ProcessorQueryPOST extends ProcessorCom
         qProc.execQuery(aModel, queryString, request, response) ;
     }
     
-//    public Model exec(Request request) throws QueryExecutionException
-//    {
-//        // Inside a lock from ProcessorCom by now.
-//        SourceModel aModel = request.getSourceModel() ;
-//        QueryProcessor qProc = null ;
-//
-//        Model queryModel = null ;
-//        
-//        if ( request.getDataArgs().size() > 0 )
-//            queryModel = (Model)request.getDataArgs().get(0);
-//        
-//        if ( queryModel != null )
-//            try
-//            {
-//                String queryLangName = getPropertyValue(queryModel, JosekiVocab.requestQueryLanguage) ;
-//                //if ( queryLangName == null )
-//                //    queryLangName = getPropertyValue(queryModel, JosekiVocab.queryOperationName) ;
-//                
-//                if ( queryLangName == null )
-//                {
-//                    log.warn("No query language name or URI found") ;
-//                     throw new QueryExecutionException(ExecutionError.rcQueryExecutionFailure,
-//                                                       "No query language name or URI found");
-//                }
-//                
-//                qProc = aModel.getProcessorRegistry().findQueryProcessor(queryLangName);
-//            } catch (RDFException ex)
-//            {
-//                log.warn("Problems processing request", ex) ;
-//                throw new QueryExecutionException(ExecutionError.rcQueryExecutionFailure,
-//                    "Couldn't get query language name: "+ex.getMessage()); 
-//            }
-//        
-//            if (qProc == null )
-//                throw new QueryExecutionException(ExecutionError.rcOperationNotSupported,
-//                                             "No query language found") ;
-//
-//            // Get query string.
-//            // If null (no string supplied) or empty, the query is in the model.
-//            String queryString = request.getParam("query");
-//            
-//            if ( queryString != null && queryModel != null )
-//                throw new QueryExecutionException(
-//                    ExecutionError.rcQueryExecutionFailure,
-//                    "Query has string and model arguments");
-//            
-//            if ( queryString == null && queryModel != null )
-//            {
-//                queryString = getPropertyValue(queryModel, JosekiVocab.queryScript) ;
-//                if ( queryString.equals("") )
-//                    queryString = null ;
-//            }
-//            
-//            // Execute via query string
-//            // which may be null or "" 
-//            qProc.exec(request, )
-//            return qProc.execQuery(aModel, queryString, request);
-//    }
 
     /**
      * @see org.joseki.server.Interface#getInterfaceURI()

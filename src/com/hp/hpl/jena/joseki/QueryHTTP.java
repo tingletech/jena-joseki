@@ -8,19 +8,16 @@ package com.hp.hpl.jena.joseki;
 import org.apache.commons.logging.* ;
 import java.net.* ;
 
-//import com.hp.hpl.jena.common.* ;
 import com.hp.hpl.jena.rdf.model.* ;
 import com.hp.hpl.jena.util.FileManager;
-//import com.hp.hpl.jena.rdf.model.impl.* ;
-//import com.hp.hpl.jena.vocabulary.* ;
-
 import com.hp.hpl.jena.query.* ;
+import org.joseki.HttpParams;
 
 /** Create an execution object for performing an RDQL query
  *  on a model over HTTP.
  *
  * @author  Andy Seaborne
- * @version $Id: QueryHTTP.java,v 1.7 2005-01-03 20:26:32 andy_seaborne Exp $
+ * @version $Id: QueryHTTP.java,v 1.8 2005-01-11 10:52:00 andy_seaborne Exp $
  */
 public class QueryHTTP implements QueryExecution
 {
@@ -35,7 +32,7 @@ public class QueryHTTP implements QueryExecution
         query = q ;
         String queryString = q.toString().replaceAll("\\s{2,}", " ") ;
         qHTTP = new HttpQuery(urlStr, lang) ;
-        qHTTP.addParam("query", queryString) ;
+        qHTTP.addParam(HttpParams.pQuery, queryString) ;
     }
 
     public QueryHTTP(Query q, URL u, String lang)
@@ -43,7 +40,7 @@ public class QueryHTTP implements QueryExecution
         query = q ;
         String queryString = q.toString().replaceAll("\\s{2,}", " ") ;
         qHTTP = new HttpQuery(u, lang) ;
-        qHTTP.addParam("query", queryString) ;
+        qHTTP.addParam(HttpParams.pQuery, queryString) ;
     }
 
      /** Initialise a query execution.  May be called before exec.

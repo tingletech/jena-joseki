@@ -9,7 +9,7 @@ import java.io.* ;
 import org.apache.commons.logging.* ;
 import junit.framework.*;
 import com.hp.hpl.jena.joseki.* ;
-
+import org.joseki.HttpParams ;
 
 import com.hp.hpl.jena.rdf.model.* ;
 import com.hp.hpl.jena.shared.*;
@@ -23,7 +23,7 @@ import javax.servlet.http.HttpServletResponse ;
  *  Tests must leave the server and its models unchanged.
  * 
  * @author      Andy Seaborne
- * @version     $Id: JosekiClientLibraryTests.java,v 1.5 2005-01-03 20:26:35 andy_seaborne Exp $
+ * @version     $Id: JosekiClientLibraryTests.java,v 1.6 2005-01-11 10:52:01 andy_seaborne Exp $
  */
 public class JosekiClientLibraryTests extends TestSuite
 {
@@ -295,7 +295,7 @@ public class JosekiClientLibraryTests extends TestSuite
             String tmp = (queryString==null?"<<null>>":queryString) ;
             HttpQuery httpQuery = new HttpQuery(modelURI, queryLang) ;
             if ( queryString != null )
-                httpQuery.addParam("query", queryString) ;
+                httpQuery.addParam(HttpParams.pQuery, queryString) ;
 
             if ( queryParamNames != null )
             {

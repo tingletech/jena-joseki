@@ -7,6 +7,7 @@ package org.joseki.server.processors;
 
 import org.apache.commons.logging.*;
 import org.joseki.server.*;
+import org.joseki.HttpParams;
 
 import com.hp.hpl.jena.rdf.model.*;
 import com.hp.hpl.jena.rdf.model.RDFException;
@@ -16,7 +17,7 @@ import com.hp.hpl.jena.rdf.model.RDFException;
  *  ad a model (e.g. HTTP POST).
  * 
  * @author      Andy Seaborne
- * @version     $Id: QueryProcessorModelCom.java,v 1.5 2005-01-03 20:26:33 andy_seaborne Exp $
+ * @version     $Id: QueryProcessorModelCom.java,v 1.6 2005-01-11 10:52:01 andy_seaborne Exp $
  */
 public abstract class QueryProcessorModelCom
     extends ProcessorModelCom
@@ -39,7 +40,7 @@ public abstract class QueryProcessorModelCom
     {
         SourceModel aModel = request.getSourceModel() ;
         // May be null (no string supplied) in which case the query may be a model.
-        String queryString = request.getParam("query");
+        String queryString = request.getParam(HttpParams.pQuery);
         // Actually this will be "" for a POSTed query - fix.
         if (queryString != null && queryString.equals(""))
             queryString = null;
