@@ -9,7 +9,7 @@ import java.util.* ;
 
 /** Constants and other definitions.
  * @author      Andy Seaborne
- * @version     $Id: Joseki.java,v 1.11 2005-01-03 20:26:36 andy_seaborne Exp $
+ * @version     $Id: Joseki.java,v 1.12 2005-01-05 13:14:45 andy_seaborne Exp $
  */
 public class Joseki
 {
@@ -23,20 +23,20 @@ public class Joseki
     
     //public static final String baseURI = "http://joseki.org/" ;
 
-    public static final String contentTypeAppN3    = "application/n3" ;
-    public static final String contentTypeTurtle   = "application/turtle" ;
-    public static final String contentTypeRDFXML   = "application/rdf+xml" ;
-    public static final String contentTypeNTriples = "application/n-triples" ;
-    public static final String contentTypeXML      = "application/xml" ;
+    public static final String contentTypeAppN3        = "application/n3" ;
+    public static final String contentTypeTurtle       = "application/turtle" ;
+    public static final String contentTypeRDFXML       = "application/rdf+xml" ;
+    public static final String contentTypeNTriples     = "application/n-triples" ;
+    public static final String contentTypeXML          = "application/xml" ;
 
     public static final String contentTypeTextPlain    = "text/plain" ;
     public static final String contentTypeTextN3       = "text/n3" ;
-    public static final String contentTypeForText  = contentTypeTextPlain ;
+    public static final String contentTypeForText      = contentTypeTextPlain ;
     
-    public static final String charsetUTF8         = "utf-8" ;
+    public static final String charsetUTF8             = "utf-8" ;
     
-    public static String serverContentType = contentTypeRDFXML ;
-    public static String clientContentType = contentTypeRDFXML ;
+    public static String serverContentType             = contentTypeRDFXML ;
+    public static String clientContentType             = contentTypeRDFXML ;
     
     // Various control falgs and settings.
 

@@ -17,11 +17,11 @@ public class Run_rdfserver
     
     public static void main(String[] args)
     {
-        String a[] = {"joseki-dev.n3"} ;
+        if ( args == null || args.length == 0 )
+            args = new String[]{"joseki-dev.n3"} ;
+        rdfserver.main(args) ;
         
-        rdfserver.main(a) ;
-        
-        // One one of my machines, the web server seems to have daemon threads
+        // On one of my machines, the web server seems to have daemon threads
         // and so this exits now.  But why?
         // So the other threads must be daemon threads.  But why?
 

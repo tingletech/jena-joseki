@@ -23,7 +23,7 @@ import javax.servlet.http.HttpServletResponse;
 
 /** Abstaction of an operation response
  * @author      Andy Seaborne
- * @version     $Id: Response.java,v 1.24 2005-01-04 11:10:28 andy_seaborne Exp $
+ * @version     $Id: Response.java,v 1.25 2005-01-05 13:14:49 andy_seaborne Exp $
  */
 public class Response extends ExecutionError
 {
@@ -104,24 +104,13 @@ public class Response extends ExecutionError
         
         if ( textContentType != null )
         {
-            // TODO Send text/n3?
-            // Send text/plain
+            // Send to a browser.  Send as whatever the default type is for the 
             writerMimeType = Joseki.contentTypeForText ;
             setMimeType(Joseki.contentTypeForText) ;
             log.debug("MIME type (text-like): "+writerMimeType) ;
         }
         
-//        boolean wantsText = accepts("Accept", "text/*") ;
-//        if ( wantsText )
-//        {
-//            // TODO Send text/n3?
-//            // Send text/plain
-//            writerMimeType = Joseki.contentTypeForText ;
-//            setMimeType(Joseki.contentTypeTextPlain) ;
-//        }
-
-        
-        if ( mimeType == null )
+        if ( getMimeType() == null )
         {
             AcceptItem i = HttpUtils.chooseContentType(httpRequest, prefContentType, defaultContentType) ; 
             setMimeType(i.getAcceptType()) ;
