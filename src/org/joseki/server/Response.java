@@ -18,7 +18,7 @@ import javax.servlet.http.HttpServletResponse;
 
 /** Abstaction of an operation response
  * @author      Andy Seaborne
- * @version     $Id: Response.java,v 1.5 2004-11-12 16:41:47 andy_seaborne Exp $
+ * @version     $Id: Response.java,v 1.6 2004-11-12 16:58:45 andy_seaborne Exp $
  */
 public class Response extends ExecutionError
 {
@@ -46,6 +46,7 @@ public class Response extends ExecutionError
     public void startResponse() { committed = true ;}
     public void finishResponse() {}
     
+    // See also JosekiWebAPI.doResponse and friends
     
     public void serialize(Model m)
     {
