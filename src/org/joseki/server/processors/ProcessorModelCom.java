@@ -11,16 +11,17 @@ import org.joseki.server.*;
 
 import com.hp.hpl.jena.rdf.model.*;
 
-/** General purpose template for implementing ProcessorModel's.
- *  Use ProcessorCom for locking - this class provides translation
- *  between the general Processor Request=>Response framework and
- *  the model-based ProcessorModel Request=>Model framework.    
+/** General purpose template for implementing operations that 
+ *  return a single RDF graph.  Operations are Request => Model,
+ *  the turning of Modles into Reponses is handled here. 
+ *
+ *  Uses ProcessorCom for locking.    
  * 
  * @see Processor
  * @see ProcessorCom
  * 
  * @author      Andy Seaborne
- * @version     $Id: ProcessorModelCom.java,v 1.6 2004-11-12 20:01:02 andy_seaborne Exp $
+ * @version     $Id: ProcessorModelCom.java,v 1.7 2004-11-15 16:21:50 andy_seaborne Exp $
  */
 public abstract class ProcessorModelCom extends ProcessorCom implements ProcessorModel
 {
@@ -28,7 +29,11 @@ public abstract class ProcessorModelCom extends ProcessorCom implements Processo
     // Useful constant
     static protected Model emptyModel = ModelFactory.createDefaultModel() ;
     
-
+    static final int ARGS_ZERO         = 0 ;
+    static final int ARGS_ONE          = 1 ;
+    
+    static final int ARGS_ZERO_OR_ONE  = -1 ;
+    
     public ProcessorModelCom(String opName, int opType)
     {
         super(opName, opType) ;
@@ -38,6 +43,12 @@ public abstract class ProcessorModelCom extends ProcessorCom implements Processo
     /** @see org.joseki.server.module.Loadable#init(Resource, Resource)
      */
     public void init(Resource processor, Resource implementation) { }
+    
+    /** Execute the operation */
+    public abstract Model exec(Request request) throws ExecutionException ;
+    
+    /** Number of arguments (models) needed - operations also take parameters */
+    public abstract int argsNeeded() ; 
     
     /** Convert from Request/Response framework to Request/Model framework */ 
     public void execute(Request request, Response response)  throws ExecutionException

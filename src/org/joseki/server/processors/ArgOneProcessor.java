@@ -12,25 +12,29 @@ import com.hp.hpl.jena.rdf.model.*;
 
 /** General template for any operation that takes exactly one model as argument
  * @author      Andy Seaborne
- * @version     $Id: OneArgProcessor.java,v 1.6 2004-11-11 17:50:14 andy_seaborne Exp $
+ * @version     $Id: ArgOneProcessor.java,v 1.1 2004-11-15 16:21:49 andy_seaborne Exp $
  */
-public abstract class OneArgProcessor extends ProcessorModelCom
+public abstract class ArgOneProcessor extends ProcessorModelCom
 {
-    static final Log logger = LogFactory.getLog(ZeroArgProcessor.class.getName()) ; 
+    static final Log logger = LogFactory.getLog(ArgZeroProcessor.class.getName()) ; 
 
     
-    public OneArgProcessor(String n, int lockType)
+    public ArgOneProcessor(String n, int lockType)
     {
         super(n, lockType) ;
     }
 
-    public int argsNeeded() { return ProcessorModel.ARGS_ONE ; }
+    public int argsNeeded() { return ARGS_ONE ; }
 
     /**
      * @see org.joseki.server.processors.ProcessorModelCom#exec(Request)
      */
     public Model exec(Request request) throws ExecutionException
     {
+        if ( request.getDataArgs().size() != 1 )
+            throw new ExecutionException(Response.rcArgumentError,
+                                         "Wrong number of arguments: wanted 1, got "+request.getDataArgs().size()) ;
+        
         SourceModel src = request.getSourceModel() ;
         try {
             List graphs = request.getDataArgs() ;

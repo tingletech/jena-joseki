@@ -13,9 +13,9 @@ import com.hp.hpl.jena.rdf.model.*;
 
 /** ProcessorModel to remove the statements in the argument model from the target model.
  * @author      Andy Seaborne
- * @version     $Id: RemoveProcessor.java,v 1.4 2004-11-11 17:50:14 andy_seaborne Exp $
+ * @version     $Id: RemoveProcessor.java,v 1.5 2004-11-15 16:21:50 andy_seaborne Exp $
  */
-public class RemoveProcessor extends OneArgProcessor
+public class RemoveProcessor extends ArgOneProcessor
 {
 
     public RemoveProcessor()

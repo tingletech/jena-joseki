@@ -17,7 +17,7 @@ import com.hp.hpl.jena.rdf.model.*;
 /** Extracting of information from incomiong HTTP servlet request.
  * 
  * @author      Andy Seaborne
- * @version     $Id: HttpRequestParser.java,v 1.4 2004-11-15 12:18:15 andy_seaborne Exp $
+ * @version     $Id: HttpRequestParser.java,v 1.5 2004-11-15 16:22:06 andy_seaborne Exp $
  */
 public class HttpRequestParser
 {
@@ -25,23 +25,6 @@ public class HttpRequestParser
     
     public void setArgs(Request request, HttpServletRequest httpRequest) throws ExecutionException
     {
-        // Can run before processor is selected
-        // Hence number of arguments is a feature of the request, not the processor
-        
-//        // Must do own parameter parsing because standard Java code
-//        // may read body thinking it is a form.
-//        if ( request.getProcessor().argsNeeded() == 0)
-//            return;
-//    
-//        if (request.getProcessor().argsNeeded() > 1)
-//        {
-//            throw new ExecutionException(ExecutionError.rcOperationNotSupported,
-//                    "ProcessorModel error: needs more args",
-//                    "ProcessorModel needs "+request.getProcessor().argsNeeded()+" args - unsupported") ;
-//        }
-//    
-//    
-        // ( operation.getProcessor().argsNeeded() == 1)
         try{
             int len = httpRequest.getContentLength();
             if ( len == 0 )
@@ -56,7 +39,6 @@ public class HttpRequestParser
     
             // NB Error 406 if content encodings are not possible.
             // HttpServletResponse.SC_NOT_ACCEPTABLE
-            // Could do this work on request receipt.
             
             if ( !ct.getCharset().equalsIgnoreCase("UTF-8") )
                 log.warn("Request charset is "+ct.getCharset()) ;
@@ -116,8 +98,6 @@ public class HttpRequestParser
                 request.setParam(x[0], x[1]) ;
         }
     }
-    
-    
 }
 
 

@@ -25,7 +25,7 @@ import com.hp.hpl.jena.rdf.model.* ;
  *  model as property "joseki:queryOperationName".
  * 
  * @author      Andy Seaborne
- * @version     $Id: QueryProcessorPOST.java,v 1.2 2004-11-11 17:50:14 andy_seaborne Exp $
+ * @version     $Id: QueryProcessorPOST.java,v 1.3 2004-11-15 16:21:49 andy_seaborne Exp $
  */
 
 public class QueryProcessorPOST extends ProcessorModelCom
@@ -114,7 +114,7 @@ public class QueryProcessorPOST extends ProcessorModelCom
      */
     public int argsNeeded()
     {
-        return ProcessorModel.ARGS_ONE ;
+        return ARGS_ONE ;
     }
 
     private String getPropertyValue(Model model, Property property)

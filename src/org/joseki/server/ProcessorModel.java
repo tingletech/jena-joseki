@@ -13,7 +13,7 @@ import com.hp.hpl.jena.rdf.model.*;
  *  Processor interface and this more specialised one. 
  *  
  * @author      Andy Seaborne
- * @version     $Id: ProcessorModel.java,v 1.5 2004-11-14 12:05:37 andy_seaborne Exp $
+ * @version     $Id: ProcessorModel.java,v 1.6 2004-11-15 16:22:06 andy_seaborne Exp $
  */
 
 public interface ProcessorModel extends Interface
@@ -24,16 +24,6 @@ public interface ProcessorModel extends Interface
      */
 
     public Model exec(Request request) throws ExecutionException ;
-    
-    static final int ARGS_ZERO         = 0 ;
-    static final int ARGS_ONE          = 1 ;
-    
-    static final int ARGS_ZERO_OR_ONE  = -1 ;
-    
-    /** Return the number of argument models this operation
-     *  expects in the input request.  For HTTP, this is zero or one.
-     */
-    public int argsNeeded() ;
 }
 
 /*

@@ -14,9 +14,9 @@ import com.hp.hpl.jena.rdf.model.RDFException;
 /** ProcessorModel to add the statements in the argument model into the target model.
  *
  * @author      Andy Seaborne
- * @version     $Id: AddProcessor.java,v 1.4 2004-11-11 17:50:14 andy_seaborne Exp $
+ * @version     $Id: AddProcessor.java,v 1.5 2004-11-15 16:21:49 andy_seaborne Exp $
  */
-public class AddProcessor extends OneArgProcessor
+public class AddProcessor extends ArgOneProcessor
 {
     public AddProcessor()
     {

@@ -16,10 +16,10 @@ import com.hp.hpl.jena.rdf.model.*;
  *  on a live system.
  * 
  * @author      Andy Seaborne
- * @version     $Id: ClearModelProcessor.java,v 1.3 2004-11-11 17:50:23 andy_seaborne Exp $
+ * @version     $Id: ClearModelProcessor.java,v 1.4 2004-11-15 16:22:06 andy_seaborne Exp $
  */
 
-public class ClearModelProcessor extends ZeroArgProcessor
+public class ClearModelProcessor extends ArgZeroProcessor
 {
     public ClearModelProcessor()
     {
