@@ -11,7 +11,7 @@ import org.joseki.util.StringUtils ;
 /** A class to handle HTTP Accept types
  * 
  * @author Andy Seaborne
- * @version $Id: AcceptItem.java,v 1.2 2004-11-26 16:58:57 andy_seaborne Exp $
+ * @version $Id: AcceptItem.java,v 1.3 2004-11-27 19:35:28 andy_seaborne Exp $
  */
 
 public class AcceptItem
@@ -22,10 +22,12 @@ public class AcceptItem
     private String subType = null ;
     
     
+    protected AcceptItem() { }
+    
     public AcceptItem(String s)
     {
         acceptType = s ;
-        parse() ;
+        parseAndSet(s) ;
     }
     
     public AcceptItem(String type, String subType)
@@ -37,10 +39,10 @@ public class AcceptItem
             acceptType = type+"/"+subType ;
     }
     
-    private void parse()
+    protected void parseAndSet(String s)
     {
-        String[] t = StringUtils.split(acceptType, "/") ;
-        
+        acceptType = s ;
+        String[] t = StringUtils.split(s, "/") ;
         type = t[0] ;
         if ( t.length > 1 )
             subType = t[1] ;
@@ -64,6 +66,25 @@ public class AcceptItem
             return true ;
         
         return a.equals(b) ;
+    }
+
+    // Strictly more grounded than
+    public boolean moreGroundedThan(AcceptItem item)
+    {
+        if ( isStar(item.type) && ! isStar(this.type) )
+            return true ;
+        
+        // they are the same
+        
+        if ( isStar(item.subType) && ! isStar(this.subType) )
+            return true ;
+        
+        return false ;
+    }
+    
+    private boolean isStar(String x)
+    {
+        return x == null || x.equals("*") ;
     }
     
     // Rename as toHeaderString

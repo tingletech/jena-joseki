@@ -9,18 +9,16 @@ import java.util.* ;
 import org.apache.commons.logging.* ;
 import org.joseki.util.StringUtils ;
 
-/** A class to handle HTTP accept types and accept ranges and accept parameters 
+/** A class to handle HTTP accept items with parameters 
  * 
  * @author Andy Seaborne
- * @version $Id: AcceptRange.java,v 1.2 2004-11-26 16:58:57 andy_seaborne Exp $
+ * @version $Id: AcceptRange.java,v 1.3 2004-11-27 19:35:28 andy_seaborne Exp $
  */
 
-public class AcceptRange
+// Only used for parsing Accept: headers
+// Extends AcceptItem with space for "q" and other parameters.
+class AcceptRange extends AcceptItem
 {
-    // Documentation at end.
-    
-    AcceptItem acceptItem = null;
-    
     Map params = new HashMap() ;
     double q = 1.0 ;
     int posn = 0 ;
@@ -32,12 +30,12 @@ public class AcceptRange
         process1(s) ;
     }
     
-    public AcceptItem getAcceptItem() { return acceptItem ; } 
+    public AcceptItem getAcceptItem() { return this ; } 
     
     private void process1(String s)
     {
         String[] x = StringUtils.split(s, ";") ;
-        acceptItem = new AcceptItem(x[0]) ;
+        parseAndSet(x[0]) ;
         
         for ( int i = 1 ; i < x.length ; i++ )
         {
@@ -63,7 +61,7 @@ public class AcceptRange
     public String toHeaderString()
     {
         StringBuffer b = new StringBuffer() ;
-        b.append(acceptItem.toString()) ;
+        b.append(super.toString()) ;
         for ( Iterator iter = params.keySet().iterator() ; iter.hasNext() ; )
         {
             String k = (String)iter.next() ;
@@ -84,7 +82,7 @@ public class AcceptRange
     {
         StringBuffer b = new StringBuffer() ;
         b.append("[") ;
-        b.append(acceptItem.toString()) ;
+        b.append(super.toString()) ;
         for ( Iterator iter = params.keySet().iterator() ; iter.hasNext() ; )
         {
             String k = (String)iter.next() ;
@@ -98,45 +96,6 @@ public class AcceptRange
         return b.toString() ;
     }
  
-    // RFC 2068(HTTP 1.1) defines the format:
-    //        media-type     = type "/" subtype *( ";" parameter )
-    //        type           = token
-    //        subtype        = token
-    //
-    // Parameters may follow the type/subtype in the form of attribute/value pairs.
-    //
-    //        parameter      = attribute "=" value
-    //        attribute      = token
-    //        value          = token | quoted-string
-    
-    //    Accept         = "Accept" ":"
-    //        #( media-range [ accept-params ] )
-    //
-    //media-range    = ( "*/*"
-    //        | ( type "/" "*" )
-    //        | ( type "/" subtype )
-    //        ) *( ";" parameter )
-    //
-    //accept-params  = ";" "q" "=" qvalue *( accept-extension )
-    //
-    //accept-extension = ";" token [ "=" ( token | quoted-string ) ]
-    //
-    // Accept-Charset = "Accept-Charset" ":"
-    //                  1#( charset [ ";" "q" "=" qvalue ] )
-    
-    
-    
-    // Examples:
-    // -- Firefox 1.0  
-    // Accept           = text/xml,application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5
-    // Accept-Language  = en-us,en;q=0.5
-    // Accept-Encoding  = gzip,deflate
-    // Accept-Charset   = ISO-8859-1,utf-8;q=0.7,*;q=0.7
-    // -- IE 6
-    // Accept           = image/gif, image/x-xbitmap, image/jpeg, image/pjpeg, application/x-shockwave-flash, application/vnd.ms-excel, application/vnd.ms-powerpoint, application/msword, */*
-    // Accept-Language  = en-gb
-    // Accept-Encoding  = gzip, deflate
-
 
 }
 

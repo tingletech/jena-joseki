@@ -15,28 +15,40 @@ import org.apache.commons.logging.*;
 /** A class to handle a list of accept types
  * 
  * @author Andy Seaborne
- * @version $Id: AcceptList.java,v 1.2 2004-11-27 15:57:08 andy_seaborne Exp $
+ * @version $Id: AcceptList.java,v 1.3 2004-11-27 19:35:28 andy_seaborne Exp $
  */
 
 public class AcceptList
 {
+    // Documentation at end
     private static Log log = LogFactory.getLog(AcceptList.class) ;
-    List list ; // List of ranges
+    List list ; // List of AcceptItems
     
-    public AcceptList(String[]a)
+    
+    /**
+     * Create a list of accept items from the give strings.
+     * @param acceptStrings
+     */
+    
+    public AcceptList(String[] acceptStrings)
     {
         list = new ArrayList() ;
-        for ( int i = 0 ; i < a.length ; i++ )
-            list.add(new AcceptRange(a[i])) ;
+        for ( int i = 0 ; i < acceptStrings.length ; i++ )
+            list.add(new AcceptItem(acceptStrings[i])) ;
     }
     
-    public AcceptList(String s)
+    /**
+     * Parse an HTTP Accept (or etc) header string. 
+     * @param headerString
+     */
+    
+    public AcceptList(String headerString)
     {
         try {
-            list = stringToAcceptList(s) ;
+            list = stringToAcceptList(headerString) ;
         } catch (Exception ex)
         {
-            log.warn("Unrecognized accept string (ignored): "+s) ;
+            log.warn("Unrecognized accept string (ignored): "+headerString) ;
             list = new ArrayList() ;
         }
     }
@@ -50,15 +62,37 @@ public class AcceptList
     {
         for ( Iterator iter = list.iterator() ; iter.hasNext() ; )
         {
-            AcceptRange i = (AcceptRange)iter.next() ;
+            AcceptItem i = (AcceptItem)iter.next() ;
             //System.out.println("Check: "+i+" accepts "+aItem) ;
-            if ( i.getAcceptItem().accepts(aItem) )
-                return i.getAcceptItem() ;
+            if ( i.accepts(aItem) )
+            {
+                // Return the more grounded term
+                if ( i.moreGroundedThan(aItem) )
+                    return i ;
+                return aItem ;
+            }
         }
         return null ;
     }
     
+    /** Find the first thing in list2 (the offer) with the proposal  
+     * 
+     * @param proposalList Client list of possibilities
+     * @param offerList    Server list of possibilities
+     * @return
+     */
     
+    static public AcceptItem match(AcceptList proposalList, AcceptList offerList)
+    {
+        for ( Iterator iter = offerList.iterator() ; iter.hasNext() ; )
+        {
+            AcceptItem i2 = (AcceptItem)iter.next() ;
+            AcceptItem m = proposalList.match(i2) ;
+            if ( m != null )
+                return m ;
+        }
+        return null ;
+    }
     
     
     public AcceptItem first()
@@ -73,7 +107,7 @@ public class AcceptList
     
     // Sort - the leftmost element (lowest index) will be the preferred accept type.
     
-    public static class AcceptTypeCompare implements Comparator
+    private static class AcceptTypeCompare implements Comparator
     {
         public int compare(Object arg1, Object arg2)
         {
@@ -87,10 +121,10 @@ public class AcceptList
             int r = Double.compare(mType1.q, mType2.q) ;
             
             if ( r == 0 )
-                r = subCompare(mType1.acceptItem.getAcceptType(), mType2.acceptItem.getAcceptType()) ;
+                r = subCompare(mType1.getAcceptType(), mType2.getAcceptType()) ;
             
             if ( r == 0 )
-                r = subCompare(mType1.acceptItem.getAcceptType(), mType2.acceptItem.getAcceptType()) ;
+                r = subCompare(mType1.getAcceptType(), mType2.getAcceptType()) ;
             
             if ( r == 0 )
             {
@@ -197,6 +231,47 @@ public class AcceptList
 //        return r ;
 //    }
 }    
+
+// RFC 2068(HTTP 1.1) defines the format:
+//        media-type     = type "/" subtype *( ";" parameter )
+//        type           = token
+//        subtype        = token
+//
+// Parameters may follow the type/subtype in the form of attribute/value pairs.
+//
+//        parameter      = attribute "=" value
+//        attribute      = token
+//        value          = token | quoted-string
+
+//    Accept         = "Accept" ":"
+//        #( media-range [ accept-params ] )
+//
+//media-range    = ( "*/*"
+//        | ( type "/" "*" )
+//        | ( type "/" subtype )
+//        ) *( ";" parameter )
+//
+//accept-params  = ";" "q" "=" qvalue *( accept-extension )
+//
+//accept-extension = ";" token [ "=" ( token | quoted-string ) ]
+//
+// Accept-Charset = "Accept-Charset" ":"
+//                  1#( charset [ ";" "q" "=" qvalue ] )
+
+
+
+// Examples:
+// -- Firefox 1.0  
+// Accept           = text/xml,application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5
+// Accept-Language  = en-us,en;q=0.5
+// Accept-Encoding  = gzip,deflate
+// Accept-Charset   = ISO-8859-1,utf-8;q=0.7,*;q=0.7
+// -- IE 6
+// Accept           = image/gif, image/x-xbitmap, image/jpeg, image/pjpeg, application/x-shockwave-flash, application/vnd.ms-excel, application/vnd.ms-powerpoint, application/msword, */*
+// Accept-Language  = en-gb
+// Accept-Encoding  = gzip, deflate
+
+
 
 
 /*

@@ -11,7 +11,7 @@ import junit.framework.TestCase;
 /** org.joseki.server.http.TestContentNegotiation
  * 
  * @author Andy Seaborne
- * @version $Id: TestContentNegotiation.java,v 1.1 2004-11-27 15:57:08 andy_seaborne Exp $
+ * @version $Id: TestContentNegotiation.java,v 1.2 2004-11-27 19:35:28 andy_seaborne Exp $
  */
 
 public class TestContentNegotiation extends TestCase
@@ -27,29 +27,47 @@ public class TestContentNegotiation extends TestCase
     
     static final String ctStarStar           = "*/*" ;
     
-    public void testNeg1() { testMatch("application/xml", "text/plain", null) ; }
-    public void testNeg2() { testMatch("text/xml", "text/*", "text/xml") ; }
-    public void testNeg3() { testMatch("text/xml,text/*", "text/*", "text/xml") ; }
+    // It's easier to just write the content types in strings. 
+    public void testSimpleNeg1() { testMatch("text/plain", "text/plain", "text/plain") ; }
+    public void testSimpleNeg2() { testMatch("application/xml", "text/plain", null) ; }
+    public void testSimpleNeg3() { testMatch("text/*", "text/*", "text/*") ; }
+    
+    public void testSimpleNeg4() { testMatch("text/xml", "text/*", "text/xml") ; }
+    public void testSimpleNeg5() { testMatch("text/*", "text/xml", "text/xml") ; }
+    
+    
+    
+    public void testListItemNeg1() { testMatch("text/xml,text/*", "text/*", "text/xml") ; }
+    
+    public void testListListNeg1()
+    { testMatch("text/xml,text/*", "text/plain,text/*", "text/plain") ; }
+    
+    public void testListListNeg2()
+    { testMatch("text/xml,text/*", "text/*,text/plain", "text/xml") ; }
+
+    
+    public void testQualNeg1() { testMatch("text/xml;q=0.5,text/plain", "text/*", "text/plain") ; }
     
     
     // Worker.  Does request 'header' match server 'offer' with 'result'?
     private void testMatch(String header, String offer, String result)
     {
-        AcceptList list = new AcceptList(header) ;
-        AcceptItem item = new AcceptItem(offer) ;
-        AcceptItem item2 = list.match(item) ;
+        AcceptList list1 = new AcceptList(header) ;
+        AcceptList list2 = new AcceptList(offer) ;
+        AcceptItem matchItem = AcceptList.match(list1, list2) ;
+        
         
         if ( result == null )
         {
             assertNull("Match not null: from "+q(header)+" :: "+q(offer),
-                       item2) ;
+                       matchItem) ;
             return ;
         }
         
         
-        assertNotNull("Match is null: expected "+q(result), item2) ;
+        assertNotNull("Match is null: expected "+q(result), matchItem) ;
         
-        assertEquals("Match different", result, item2.getAcceptType()) ;
+        assertEquals("Match different", result, matchItem.getAcceptType()) ;
     }
     
     private String q(Object obj)

@@ -9,15 +9,15 @@ package org.joseki.server.http;
 /** org.joseki.server.http.MainAccept
  * 
  * @author Andy Seaborne
- * @version $Id: MainAccept.java,v 1.1 2004-11-26 16:58:57 andy_seaborne Exp $
+ * @version $Id: MainAccept.java,v 1.2 2004-11-27 19:35:28 andy_seaborne Exp $
  */
 
 public class MainAccept
 {
     public static void main(String[] argv)
     {
-        String ffAccept = "text/xml,  application/xml,  application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5" ;
-        String ieAccept = "image/gif, image/x-xbitmap, image/jpeg, image/pjpeg, application/x-shockwave-flash, application/vnd.ms-excel, application/vnd.ms-powerpoint, application/msword, */*" ;
+        String acceptFirefox = "text/xml,  application/xml,  application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5" ;
+        String acceptIE = "image/gif, image/x-xbitmap, image/jpeg, image/pjpeg, application/x-shockwave-flash, application/vnd.ms-excel, application/vnd.ms-powerpoint, application/msword, */*" ;
         String xAccept =  "image/gif,image/jpeg" ;
         
 //        testOne("ISO-8859-1,utf-8;q=0.7,*;q=0.7") ;
@@ -34,14 +34,14 @@ public class MainAccept
         AcceptList myPrefs1 = new AcceptList(new String[]{"application/xml","text/*"}) ;
         AcceptList myPrefs2 = new AcceptList(new String[]{"application/rdf+xml"}) ;
         
-        AcceptList alIE = new AcceptList(ieAccept) ;
-        AcceptList alFF = new AcceptList(ffAccept) ;
+        AcceptList alIE = new AcceptList(acceptIE) ;
+        AcceptList alFF = new AcceptList(acceptFirefox) ;
         AcceptList alX = new AcceptList(xAccept) ;
         
-        chooseTest(ieAccept, myPrefs1, dft) ;
-        chooseTest(ffAccept, myPrefs1, dft) ;
-        chooseTest(ieAccept, myPrefs2, dft) ;
-        chooseTest(ffAccept, myPrefs2, dft) ;
+        chooseTest(acceptIE, myPrefs1, dft) ;
+        chooseTest(acceptFirefox, myPrefs1, dft) ;
+        chooseTest(acceptIE, myPrefs2, dft) ;
+        chooseTest(acceptFirefox, myPrefs2, dft) ;
 
         acceptTest(alFF, aText) ;
         acceptTest(alIE, aText) ;

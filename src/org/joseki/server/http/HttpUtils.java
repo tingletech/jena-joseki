@@ -6,8 +6,6 @@
 
 package org.joseki.server.http;
 
-import java.util.* ;
-
 import javax.servlet.http.HttpServletRequest ;
 import javax.servlet.http.HttpServletResponse ;
 
@@ -17,7 +15,7 @@ import org.joseki.util.Convert;
 /** org.joseki.server.http.HttpUtils
  * 
  * @author Andy Seaborne
- * @version $Id: HttpUtils.java,v 1.10 2004-11-26 16:58:57 andy_seaborne Exp $
+ * @version $Id: HttpUtils.java,v 1.11 2004-11-27 19:35:28 andy_seaborne Exp $
  */
 
 public class HttpUtils
@@ -69,21 +67,17 @@ public class HttpUtils
         if ( headerString == null )
             return defaultAcceptItem ;
         
-        AcceptList l = new AcceptList(headerString) ;
-
-        if ( myPrefs == null )
-            return l.first() ;
-
-        for ( Iterator iter = myPrefs.iterator() ; iter.hasNext() ; )
-        {
-            AcceptItem aItem = ((AcceptRange)iter.next()).getAcceptItem() ;
-            
-            if ( l.accepts(aItem) )
-                return aItem ;
-        }
+        AcceptList headerList = new AcceptList(headerString) ;
         
-        return null ;
+        if ( myPrefs == null )
+            return headerList.first() ;
+
+        AcceptItem i = AcceptList.match(headerList, myPrefs) ;
+        if ( i == null )
+            return defaultAcceptItem ;
+        return i ;
     }
+    
     
     public static boolean accept(String headerString, String str)
     {
