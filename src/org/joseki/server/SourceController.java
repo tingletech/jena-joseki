@@ -1,5 +1,5 @@
 /*
- * (c) Copyright 2003, 2004 Hewlett-Packard Development Company, LP
+ * (c) Copyright 2003, 2004, 2005 Hewlett-Packard Development Company, LP
  * [See end of file]
  */
 
@@ -11,7 +11,7 @@ import com.hp.hpl.jena.rdf.model.* ;
  * system resources for datasources.  
  *   
  * @author Andy Seaborne
- * @version $Id: SourceController.java,v 1.1 2004-11-03 10:15:01 andy_seaborne Exp $
+ * @version $Id: SourceController.java,v 1.2 2005-01-03 20:26:34 andy_seaborne Exp $
  */ 
 
 public interface SourceController
@@ -35,7 +35,7 @@ public interface SourceController
 }
 
 /*
- * (c) Copyright 2003, 2004 Hewlett-Packard Development Company, LP
+ * (c) Copyright 2003, 2004, 2005 Hewlett-Packard Development Company, LP
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without

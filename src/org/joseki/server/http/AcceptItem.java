@@ -1,5 +1,5 @@
 /*
- * (c) Copyright 2004, Hewlett-Packard Development Company, LP
+ * (c) Copyright 2004, 2005 Hewlett-Packard Development Company, LP
  * All rights reserved.
  * [See end of file]
  */
@@ -11,7 +11,7 @@ import org.joseki.util.StringUtils ;
 /** A class to handle HTTP Accept types
  * 
  * @author Andy Seaborne
- * @version $Id: AcceptItem.java,v 1.3 2004-11-27 19:35:28 andy_seaborne Exp $
+ * @version $Id: AcceptItem.java,v 1.4 2005-01-03 20:26:34 andy_seaborne Exp $
  */
 
 public class AcceptItem
@@ -142,7 +142,7 @@ public class AcceptItem
 }
 
 /*
- * (c) Copyright 2004 Hewlett-Packard Development Company, LP
+ * (c) Copyright 2004, 2005 Hewlett-Packard Development Company, LP
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without

@@ -1,5 +1,5 @@
 /*
- * (c) Copyright 2003, 2004 Hewlett-Packard Development Company, LP
+ * (c) Copyright 2003, 2004, 2005 Hewlett-Packard Development Company, LP
  * [See end of file]
  */
 
@@ -22,7 +22,7 @@ import com.hp.hpl.jena.rdf.model.*;
 /** Tests of the mechanisms (attach, dispatch) of the server side.
  * 
  * @author      Andy Seaborne
- * @version     $Id: JosekiServerInternalTests.java,v 1.4 2004-11-17 14:47:35 andy_seaborne Exp $
+ * @version     $Id: JosekiServerInternalTests.java,v 1.5 2005-01-03 20:26:36 andy_seaborne Exp $
  */
 public class JosekiServerInternalTests extends TestSuite
 {
@@ -239,7 +239,7 @@ public class JosekiServerInternalTests extends TestSuite
 
 
 /*
- *  (c) Copyright 2003, 2004 Hewlett-Packard Development Company, LP
+ *  (c) Copyright 2003, 2004, 2005 Hewlett-Packard Development Company, LP
  *  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without

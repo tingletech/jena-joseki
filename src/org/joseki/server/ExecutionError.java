@@ -1,12 +1,12 @@
 /*
- * (c) Copyright 2003, 2004 Hewlett-Packard Development Company, LP
+ * (c) Copyright 2003, 2004, 2005 Hewlett-Packard Development Company, LP
  * [See end of file]
  */
 
 package org.joseki.server;
 
 /**
- * @version     $Id: ExecutionError.java,v 1.3 2004-11-12 20:00:35 andy_seaborne Exp $
+ * @version     $Id: ExecutionError.java,v 1.4 2005-01-03 20:26:34 andy_seaborne Exp $
  * @author      Andy Seaborne
  */
 
@@ -58,7 +58,7 @@ public class ExecutionError
 }
 
 /*
- *  (c) Copyright 2003, 2004 Hewlett-Packard Development Company, LP
+ *  (c) Copyright 2003, 2004, 2005 Hewlett-Packard Development Company, LP
  *  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without

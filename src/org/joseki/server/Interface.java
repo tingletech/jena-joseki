@@ -1,5 +1,5 @@
 /*
- * (c) Copyright 2003, 2004 Hewlett-Packard Development Company, LP
+ * (c) Copyright 2003, 2004, 2005 Hewlett-Packard Development Company, LP
  * [See end of file]
  */
 
@@ -9,7 +9,7 @@ package org.joseki.server;
  * Anything that has an operation that can say what it is. 
  * 
  * @author  Andy Seaborne
- * @version $Id: Interface.java,v 1.1 2004-11-04 15:44:58 andy_seaborne Exp $
+ * @version $Id: Interface.java,v 1.2 2005-01-03 20:26:34 andy_seaborne Exp $
  */
 
 
@@ -22,7 +22,7 @@ public interface Interface
 }
 
 /*
- *  (c) Copyright 2003, 2004 Hewlett-Packard Development Company, LP
+ *  (c) Copyright 2003, 2004, 2005 Hewlett-Packard Development Company, LP
  *  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without

@@ -1,6 +1,6 @@
 
 /*
- * (c) Copyright 2003, 2004 Hewlett-Packard Development Company, LP
+ * (c) Copyright 2003, 2004, 2005 Hewlett-Packard Development Company, LP
  * [See end of file]
  */
 
@@ -14,7 +14,7 @@ import java.util.* ;
  *  provides methods to create the operation as well as meet
  *  the Request interface.
  * @author      Andy Seaborne
- * @version     $Id: RequestImpl.java,v 1.5 2004-11-15 17:34:17 andy_seaborne Exp $
+ * @version     $Id: RequestImpl.java,v 1.6 2005-01-03 20:26:34 andy_seaborne Exp $
  */
 public class RequestImpl implements Request
 {
@@ -83,7 +83,7 @@ public class RequestImpl implements Request
 }
 
 /*
- *  (c) Copyright 2003, 2004 Hewlett-Packard Development Company, LP
+ *  (c) Copyright 2003, 2004, 2005 Hewlett-Packard Development Company, LP
  *  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without

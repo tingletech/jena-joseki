@@ -1,5 +1,5 @@
 /*
- * (c) Copyright 2003, 2004 Hewlett-Packard Development Company, LP
+ * (c) Copyright 2003, 2004, 2005 Hewlett-Packard Development Company, LP
  * [See end of file]
  */
 
@@ -29,7 +29,7 @@ import com.hp.hpl.jena.shared.* ;
  *  If the query string is large, then HTTP POST?query is used.
 
  * @author  Andy Seaborne
- * @version $Id: HttpQuery.java,v 1.3 2004-12-07 21:12:32 andy_seaborne Exp $
+ * @version $Id: HttpQuery.java,v 1.4 2005-01-03 20:26:32 andy_seaborne Exp $
  */
 public class HttpQuery
 {
@@ -419,7 +419,7 @@ public class HttpQuery
 }
 
 /*
- *  (c) Copyright 2003, 2004 Hewlett-Packard Development Company, LP
+ *  (c) Copyright 2003, 2004, 2005 Hewlett-Packard Development Company, LP
  *  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without

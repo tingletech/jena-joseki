@@ -1,5 +1,5 @@
 /*
- * (c) Copyright 2003, 2004 Hewlett-Packard Development Company, LP
+ * (c) Copyright 2003, 2004, 2005 Hewlett-Packard Development Company, LP
  * [See end of file]
  */
 
@@ -14,7 +14,7 @@ import com.hp.hpl.jena.rdf.model.*;
 
 /** General template for any operation that takes exactly one model as argument
  * @author      Andy Seaborne
- * @version     $Id: ArgOneProcessor.java,v 1.1 2004-11-17 14:47:34 andy_seaborne Exp $
+ * @version     $Id: ArgOneProcessor.java,v 1.2 2005-01-03 20:26:35 andy_seaborne Exp $
  */
 public abstract class ArgOneProcessor extends ProcessorModelCom
 {
@@ -66,7 +66,7 @@ public abstract class ArgOneProcessor extends ProcessorModelCom
 
 
 /*
- *  (c) Copyright 2003, 2004 Hewlett-Packard Development Company, LP
+ *  (c) Copyright 2003, 2004, 2005 Hewlett-Packard Development Company, LP
  *  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without

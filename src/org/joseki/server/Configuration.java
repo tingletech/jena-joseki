@@ -1,5 +1,5 @@
 /*
- * (c) Copyright 2003, 2004 Hewlett-Packard Development Company, LP
+ * (c) Copyright 2003, 2004, 2005 Hewlett-Packard Development Company, LP
  * [See end of file]
  */
 
@@ -28,7 +28,7 @@ import com.hp.hpl.jena.util.* ;
  * Parse and process a Joseki configuration file
  * 
  * @author  Andy Seaborne
- * @version $Id: Configuration.java,v 1.6 2004-12-07 21:12:33 andy_seaborne Exp $
+ * @version $Id: Configuration.java,v 1.7 2005-01-03 20:26:34 andy_seaborne Exp $
  */
 
 
@@ -582,7 +582,7 @@ public class Configuration
 }
 
 /*
- *  (c) Copyright 2003, 2004 Hewlett-Packard Development Company, LP
+ *  (c) Copyright 2003, 2004, 2005 Hewlett-Packard Development Company, LP
  *  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without

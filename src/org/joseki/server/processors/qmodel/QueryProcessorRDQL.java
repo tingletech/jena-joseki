@@ -1,5 +1,5 @@
 /*
- * (c) Copyright 2003, 2004 Hewlett-Packard Development Company, LP
+ * (c) Copyright 2003, 2004, 2005 Hewlett-Packard Development Company, LP
  * [See end of file]
  */
 
@@ -27,7 +27,7 @@ import java.util.* ;
  *  @see com.hp.hpl.jena.joseki.QueryHTTP
  * 
  * @author  Andy Seaborne
- * @version $Id: QueryProcessorRDQL.java,v 1.2 2004-11-21 20:54:38 andy_seaborne Exp $
+ * @version $Id: QueryProcessorRDQL.java,v 1.3 2005-01-03 20:26:36 andy_seaborne Exp $
  */
 
 public class QueryProcessorRDQL extends QueryProcessorModelCom
@@ -168,7 +168,7 @@ public class QueryProcessorRDQL extends QueryProcessorModelCom
 }
 
 /*
- *  (c) Copyright 2003, 2004 Hewlett-Packard Development Company, LP
+ *  (c) Copyright 2003, 2004, 2005 Hewlett-Packard Development Company, LP
  *  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without

@@ -1,11 +1,11 @@
 /*
- * (c) Copyright 2003, 2004 Hewlett-Packard Development Company, LP
+ * (c) Copyright 2003, 2004, 2005 Hewlett-Packard Development Company, LP
  * [See end of file]
  */
 
 /**
  * @author     Andy Seaborne
- * @version    $Id: FetchHandler.java,v 1.2 2004-11-17 14:47:36 andy_seaborne Exp $
+ * @version    $Id: FetchHandler.java,v 1.3 2005-01-03 20:26:33 andy_seaborne Exp $
  */
  
 package org.joseki.server.processors.fetch;
@@ -23,7 +23,7 @@ public interface FetchHandler
 
 
 /*
- *  (c) Copyright 2003, 2004 Hewlett-Packard Development Company, LP
+ *  (c) Copyright 2003, 2004, 2005 Hewlett-Packard Development Company, LP
  *  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without

@@ -1,5 +1,5 @@
 /*
- * (c) Copyright 2004, Hewlett-Packard Development Company, LP
+ * (c) Copyright 2004, 2005 Hewlett-Packard Development Company, LP
  * All rights reserved.
  * [See end of file]
  */
@@ -15,7 +15,7 @@ import org.apache.commons.logging.*;
 /** A class to handle a list of accept types
  * 
  * @author Andy Seaborne
- * @version $Id: AcceptList.java,v 1.3 2004-11-27 19:35:28 andy_seaborne Exp $
+ * @version $Id: AcceptList.java,v 1.4 2005-01-03 20:26:33 andy_seaborne Exp $
  */
 
 public class AcceptList
@@ -275,7 +275,7 @@ public class AcceptList
 
 
 /*
- * (c) Copyright 2004 Hewlett-Packard Development Company, LP
+ * (c) Copyright 2004, 2005 Hewlett-Packard Development Company, LP
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without

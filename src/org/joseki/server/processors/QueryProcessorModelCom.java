@@ -1,5 +1,5 @@
 /*
- * (c) Copyright 2003, 2004 Hewlett-Packard Development Company, LP
+ * (c) Copyright 2003, 2004, 2005 Hewlett-Packard Development Company, LP
  * [See end of file]
  */
 
@@ -16,7 +16,7 @@ import com.hp.hpl.jena.rdf.model.RDFException;
  *  ad a model (e.g. HTTP POST).
  * 
  * @author      Andy Seaborne
- * @version     $Id: QueryProcessorModelCom.java,v 1.4 2004-11-25 10:52:51 andy_seaborne Exp $
+ * @version     $Id: QueryProcessorModelCom.java,v 1.5 2005-01-03 20:26:33 andy_seaborne Exp $
  */
 public abstract class QueryProcessorModelCom
     extends ProcessorModelCom
@@ -80,7 +80,7 @@ public abstract class QueryProcessorModelCom
 
 
 /*
- *  (c) Copyright 2003, 2004 Hewlett-Packard Development Company, LP
+ *  (c) Copyright 2003, 2004, 2005 Hewlett-Packard Development Company, LP
  *  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without

@@ -1,12 +1,12 @@
 /*
- * (c) Copyright 2003, 2004 Hewlett-Packard Development Company, LP
+ * (c) Copyright 2003, 2004, 2005 Hewlett-Packard Development Company, LP
  * [See end of file]
  */
 
 package org.joseki.server;
 
 /**
- * @version     $Id: Connector.java,v 1.1 2004-11-03 10:15:01 andy_seaborne Exp $
+ * @version     $Id: Connector.java,v 1.2 2005-01-03 20:26:34 andy_seaborne Exp $
  * @author      Andy Seaborne
  */
 public interface Connector
@@ -15,7 +15,7 @@ public interface Connector
 }
 
 /*
- *  (c) Copyright 2003, 2004 Hewlett-Packard Development Company, LP
+ *  (c) Copyright 2003, 2004, 2005 Hewlett-Packard Development Company, LP
  *  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without

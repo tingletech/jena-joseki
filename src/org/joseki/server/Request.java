@@ -1,5 +1,5 @@
 /*
- * (c) Copyright 2003, 2004 Hewlett-Packard Development Company, LP
+ * (c) Copyright 2003, 2004, 2005 Hewlett-Packard Development Company, LP
  * [See end of file]
  */
 
@@ -11,7 +11,7 @@ import java.util.* ;
 /** Abstaction of an operation request on a model.
  *  The work is done by a processor that accepts the request.
  * @author      Andy Seaborne
- * @version     $Id: Request.java,v 1.4 2004-11-15 17:34:17 andy_seaborne Exp $
+ * @version     $Id: Request.java,v 1.5 2005-01-03 20:26:34 andy_seaborne Exp $
  */
 public interface Request
 {
@@ -54,7 +54,7 @@ public interface Request
 
 
 /*
- *  (c) Copyright 2003, 2004 Hewlett-Packard Development Company, LP
+ *  (c) Copyright 2003, 2004, 2005 Hewlett-Packard Development Company, LP
  *  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without

@@ -1,5 +1,5 @@
 /*
- * (c) Copyright 2003, 2004 Hewlett-Packard Development Company, LP
+ * (c) Copyright 2003, 2004, 2005 Hewlett-Packard Development Company, LP
  * [See end of file]
  */
 
@@ -26,7 +26,7 @@ import org.joseki.util.PrintUtils;
  *  closure over the properties with this node as subject.
  * 
  * @author      Andy Seaborne
- * @version     $Id: QueryProcessorFetch.java,v 1.1 2004-11-17 14:47:36 andy_seaborne Exp $
+ * @version     $Id: QueryProcessorFetch.java,v 1.2 2005-01-03 20:26:33 andy_seaborne Exp $
  */
 public class QueryProcessorFetch extends QueryProcessorModelCom
 {
@@ -167,7 +167,7 @@ public class QueryProcessorFetch extends QueryProcessorModelCom
 }
 
 /*
- *  (c) Copyright 2003, 2004 Hewlett-Packard Development Company, LP
+ *  (c) Copyright 2003, 2004, 2005 Hewlett-Packard Development Company, LP
  *  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without

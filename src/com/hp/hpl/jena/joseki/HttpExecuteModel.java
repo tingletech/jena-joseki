@@ -1,5 +1,5 @@
 /*
- * (c) Copyright 2003, 2004 Hewlett-Packard Development Company, LP
+ * (c) Copyright 2003, 2004, 2005 Hewlett-Packard Development Company, LP
  * [See end of file]
  */
 
@@ -14,7 +14,7 @@ import org.joseki.*;
 
 /**
  * @author Andy Seaborne
- * @version $Id: HttpExecuteModel.java,v 1.1 2004-11-03 10:14:56 andy_seaborne Exp $
+ * @version $Id: HttpExecuteModel.java,v 1.2 2005-01-03 20:26:32 andy_seaborne Exp $
  */
 /** Common code for performing an HTTP operation which takes a single
  *  model as argument.
@@ -23,7 +23,7 @@ import org.joseki.*;
  *  @see HttpRemove
  *  @see HttpQuery
  * @author      Andy Seaborne
- * @version     $Id: HttpExecuteModel.java,v 1.1 2004-11-03 10:14:56 andy_seaborne Exp $
+ * @version     $Id: HttpExecuteModel.java,v 1.2 2005-01-03 20:26:32 andy_seaborne Exp $
  */
 
 public class HttpExecuteModel extends HttpExecute
@@ -97,7 +97,7 @@ public class HttpExecuteModel extends HttpExecute
 
 
 /*
- *  (c) Copyright 2003, 2004 Hewlett-Packard Development Company, LP
+ *  (c) Copyright 2003, 2004, 2005 Hewlett-Packard Development Company, LP
  *  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without

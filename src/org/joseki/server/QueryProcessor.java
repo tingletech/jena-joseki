@@ -1,5 +1,5 @@
 /*
- * (c) Copyright 2003, 2004 Hewlett-Packard Development Company, LP
+ * (c) Copyright 2003, 2004, 2005 Hewlett-Packard Development Company, LP
  * [See end of file]
  */
  
@@ -7,7 +7,7 @@ package org.joseki.server;
 
 /** 
  * @author      Andy Seaborne
- * @version     $Id: QueryProcessor.java,v 1.7 2004-11-16 18:59:24 andy_seaborne Exp $
+ * @version     $Id: QueryProcessor.java,v 1.8 2005-01-03 20:26:34 andy_seaborne Exp $
  */
 public interface QueryProcessor extends Processor
 {
@@ -18,7 +18,7 @@ public interface QueryProcessor extends Processor
 
 
 /*
- *  (c) Copyright 2003, 2004 Hewlett-Packard Development Company, LP
+ *  (c) Copyright 2003, 2004, 2005 Hewlett-Packard Development Company, LP
  *  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without

@@ -1,12 +1,12 @@
 /*
- * (c) Copyright 2003, 2004 Hewlett-Packard Development Company, LP
+ * (c) Copyright 2003, 2004, 2005 Hewlett-Packard Development Company, LP
  * [See end of file]
  */
 
 /**
  * Test whether a 
  * @author     Andy Seaborne
- * @version    $Id: ClosureTest.java,v 1.1 2004-11-03 10:15:04 andy_seaborne Exp $
+ * @version    $Id: ClosureTest.java,v 1.2 2005-01-03 20:26:36 andy_seaborne Exp $
  */
  
 package org.joseki.util;
@@ -34,7 +34,7 @@ public interface ClosureTest
 }
 
 /*
- *  (c) Copyright 2003, 2004 Hewlett-Packard Development Company, LP
+ *  (c) Copyright 2003, 2004, 2005 Hewlett-Packard Development Company, LP
  *  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without

@@ -1,5 +1,5 @@
 /*
- * (c) Copyright 2003, 2004 Hewlett-Packard Development Company, LP
+ * (c) Copyright 2003, 2004, 2005 Hewlett-Packard Development Company, LP
  * [See end of file]
  */
 
@@ -16,7 +16,7 @@ import java.util.Set ;
  *  properties on bNodes (recursively, with loop detection).
  *  
  * @author     Andy Seaborne
- * @version    $Id: FetchClosure.java,v 1.1 2004-11-03 10:14:57 andy_seaborne Exp $
+ * @version    $Id: FetchClosure.java,v 1.2 2005-01-03 20:26:33 andy_seaborne Exp $
  * 
  */ 
 
@@ -36,7 +36,7 @@ public class FetchClosure implements FetchHandler, Loadable
 
 
 /*
- *  (c) Copyright 2003, 2004 Hewlett-Packard Development Company, LP
+ *  (c) Copyright 2003, 2004, 2005 Hewlett-Packard Development Company, LP
  *  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without

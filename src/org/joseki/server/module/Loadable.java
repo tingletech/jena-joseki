@@ -1,5 +1,5 @@
 /*
- * (c) Copyright 2003, 2004 Hewlett-Packard Development Company, LP
+ * (c) Copyright 2003, 2004, 2005 Hewlett-Packard Development Company, LP
  * [See end of file]
  */
 
@@ -15,7 +15,7 @@ import com.hp.hpl.jena.rdf.model.* ;
  * Understands the RDf properties for naming and initializing a new instance. 
  * 
  * @author  Andy Seaborne
- * @version $Id: Loadable.java,v 1.3 2004-11-11 17:50:23 andy_seaborne Exp $
+ * @version $Id: Loadable.java,v 1.4 2005-01-03 20:26:36 andy_seaborne Exp $
  */
 
 
@@ -32,7 +32,7 @@ public interface Loadable extends Interface
 }
 
 /*
- *  (c) Copyright 2003, 2004 Hewlett-Packard Development Company, LP
+ *  (c) Copyright 2003, 2004, 2005 Hewlett-Packard Development Company, LP
  *  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without

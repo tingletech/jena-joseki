@@ -1,5 +1,5 @@
 /*
- * (c) Copyright 2003, 2004 Hewlett-Packard Development Company, LP
+ * (c) Copyright 2003, 2004, 2005 Hewlett-Packard Development Company, LP
  * [See end of file]
  */
  
@@ -15,7 +15,7 @@ import com.hp.hpl.jena.rdf.model.RDFException;
 /** ProcessorModel to add the statements in the argument model into the target model.
  *
  * @author      Andy Seaborne
- * @version     $Id: AddProcessor.java,v 1.2 2004-12-02 10:17:16 andy_seaborne Exp $
+ * @version     $Id: AddProcessor.java,v 1.3 2005-01-03 20:26:35 andy_seaborne Exp $
  */
 public class AddProcessor extends ArgOneProcessor
 {
@@ -42,7 +42,7 @@ public class AddProcessor extends ArgOneProcessor
 
 
 /*
- *  (c) Copyright 2003, 2004 Hewlett-Packard Development Company, LP
+ *  (c) Copyright 2003, 2004, 2005 Hewlett-Packard Development Company, LP
  *  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without

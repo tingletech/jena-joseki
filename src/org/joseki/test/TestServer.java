@@ -1,5 +1,5 @@
 /*
- * (c) Copyright 2004, Hewlett-Packard Development Company, LP
+ * (c) Copyright 2004, 2005 Hewlett-Packard Development Company, LP
  * All rights reserved.
  * [See end of file]
  */
@@ -11,7 +11,7 @@ import org.joseki.server.*;
 /** org.joseki.test.TestServer
  * 
  * @author Andy Seaborne
- * @version $Id: TestServer.java,v 1.1 2004-11-03 10:15:03 andy_seaborne Exp $
+ * @version $Id: TestServer.java,v 1.2 2005-01-03 20:26:35 andy_seaborne Exp $
  */
 
 public class TestServer 
@@ -53,7 +53,7 @@ public class TestServer
 }
 
 /*
- * (c) Copyright 2004 Hewlett-Packard Development Company, LP
+ * (c) Copyright 2004, 2005 Hewlett-Packard Development Company, LP
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without

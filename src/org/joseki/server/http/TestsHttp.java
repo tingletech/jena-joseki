@@ -1,5 +1,5 @@
 /*
- * (c) Copyright 2004, Hewlett-Packard Development Company, LP
+ * (c) Copyright 2004, 2005 Hewlett-Packard Development Company, LP
  * All rights reserved.
  * [See end of file]
  */
@@ -12,7 +12,7 @@ import junit.framework.TestSuite;
 /** org.joseki.server.http.TestsHttp
  * 
  * @author Andy Seaborne
- * @version $Id: TestsHttp.java,v 1.1 2004-11-27 15:57:08 andy_seaborne Exp $
+ * @version $Id: TestsHttp.java,v 1.2 2005-01-03 20:26:33 andy_seaborne Exp $
  */
 
 public class TestsHttp
@@ -34,7 +34,7 @@ public class TestsHttp
 }
 
 /*
- * (c) Copyright 2004 Hewlett-Packard Development Company, LP
+ * (c) Copyright 2004, 2005 Hewlett-Packard Development Company, LP
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without

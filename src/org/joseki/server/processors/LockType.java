@@ -1,5 +1,5 @@
 /*
- * (c) Copyright 2004, Hewlett-Packard Development Company, LP
+ * (c) Copyright 2004, 2005 Hewlett-Packard Development Company, LP
  * All rights reserved.
  * [See end of file]
  */
@@ -9,7 +9,7 @@ package org.joseki.server.processors;
 /** org.joseki.server.processors.LockType
  * 
  * @author Andy Seaborne
- * @version $Id: LockType.java,v 1.1 2004-11-11 17:50:14 andy_seaborne Exp $
+ * @version $Id: LockType.java,v 1.2 2005-01-03 20:26:32 andy_seaborne Exp $
  */
 
 public interface LockType
@@ -19,7 +19,7 @@ public interface LockType
 }
 
 /*
- * (c) Copyright 2004 Hewlett-Packard Development Company, LP
+ * (c) Copyright 2004, 2005 Hewlett-Packard Development Company, LP
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without

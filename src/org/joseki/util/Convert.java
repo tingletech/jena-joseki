@@ -1,5 +1,5 @@
 /*
- * (c) Copyright 2003, 2004 Hewlett-Packard Development Company, LP
+ * (c) Copyright 2003, 2004, 2005 Hewlett-Packard Development Company, LP
  * [See end of file]
  */
  
@@ -10,7 +10,7 @@ import java.net.URLDecoder;
 import java.io.UnsupportedEncodingException ;
 
 /**
- * @version     $Id: Convert.java,v 1.3 2004-11-14 12:05:37 andy_seaborne Exp $
+ * @version     $Id: Convert.java,v 1.4 2005-01-03 20:26:36 andy_seaborne Exp $
  * @author      Andy Seaborne
  */
 public class Convert
@@ -76,7 +76,7 @@ public class Convert
 }
 
 /*
- *  (c) Copyright 2003, 2004 Hewlett-Packard Development Company, LP
+ *  (c) Copyright 2003, 2004, 2005 Hewlett-Packard Development Company, LP
  *  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without

@@ -1,5 +1,5 @@
 /*
- * (c) Copyright 2003, 2004 Hewlett-Packard Development Company, LP
+ * (c) Copyright 2003, 2004, 2005 Hewlett-Packard Development Company, LP
  * [See end of file]
  */
 
@@ -20,7 +20,7 @@ import java.util.* ;
 /** Query processor that returns the whole model.
  * 
  * @author      Andy Seaborne
- * @version     $Id: QueryProcessorSPO.java,v 1.1 2004-11-17 14:47:36 andy_seaborne Exp $
+ * @version     $Id: QueryProcessorSPO.java,v 1.2 2005-01-03 20:26:36 andy_seaborne Exp $
  */
 public class QueryProcessorSPO extends QueryProcessorModelCom
 {
@@ -105,7 +105,7 @@ public class QueryProcessorSPO extends QueryProcessorModelCom
 }
 
 /*
- *  (c) Copyright 2003, 2004 Hewlett-Packard Development Company, LP
+ *  (c) Copyright 2003, 2004, 2005 Hewlett-Packard Development Company, LP
  *  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without

@@ -9,7 +9,7 @@
 // ========================================================================
 
 /* This version:
- * (c) Copyright 2003, 2004 Hewlett-Packard Development Company, LP
+ * (c) Copyright 2003, 2004, 2005 Hewlett-Packard Development Company, LP
  * [See end of file]
  */
 
@@ -30,7 +30,7 @@ import java.util.*;
  * Was org.mortbay.http.handler.NotFoundHandler except I want the time/date as well
  * because it helps debugging.
  * 
- * @version $Id: NotFoundHandler2.java,v 1.2 2004-11-08 17:44:20 andy_seaborne Exp $
+ * @version $Id: NotFoundHandler2.java,v 1.3 2005-01-03 20:26:36 andy_seaborne Exp $
  * @author Greg Wilkins (gregw)
  */
 public class NotFoundHandler2 extends NotFoundHandler
@@ -58,7 +58,7 @@ public class NotFoundHandler2 extends NotFoundHandler
 }
 
 /*
- * (c) Copyright 2003, 2004 Hewlett-Packard Development Company, LP
+ * (c) Copyright 2003, 2004, 2005 Hewlett-Packard Development Company, LP
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without

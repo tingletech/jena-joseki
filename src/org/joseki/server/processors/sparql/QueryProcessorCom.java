@@ -1,5 +1,5 @@
 /*
- * (c) Copyright 2004, Hewlett-Packard Development Company, LP
+ * (c) Copyright 2004, 2005 Hewlett-Packard Development Company, LP
  * All rights reserved.
  * [See end of file]
  */
@@ -15,7 +15,7 @@ import org.joseki.server.processors.ProcessorCom;
 /** QueryProcessorCom - the root of query processors.
  * 
  * @author Andy Seaborne
- * @version $Id: QueryProcessorCom.java,v 1.3 2004-11-16 18:59:24 andy_seaborne Exp $
+ * @version $Id: QueryProcessorCom.java,v 1.4 2005-01-03 20:26:34 andy_seaborne Exp $
  */
 
 public abstract class QueryProcessorCom extends ProcessorCom implements QueryProcessor
@@ -52,7 +52,7 @@ public abstract class QueryProcessorCom extends ProcessorCom implements QueryPro
 }
 
 /*
- * (c) Copyright 2004 Hewlett-Packard Development Company, LP
+ * (c) Copyright 2004, 2005 Hewlett-Packard Development Company, LP
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without

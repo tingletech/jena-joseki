@@ -1,5 +1,5 @@
 /*
- * (c) Copyright 2003, 2004 Hewlett-Packard Development Company, LP
+ * (c) Copyright 2003, 2004, 2005 Hewlett-Packard Development Company, LP
  * [See end of file]
  */
 
@@ -16,7 +16,7 @@ import com.hp.hpl.jena.rdf.model.*;
  * @see Processor
 
  * @author      Andy Seaborne
- * @version     $Id: ProcessorCom.java,v 1.10 2004-11-19 15:56:24 andy_seaborne Exp $
+ * @version     $Id: ProcessorCom.java,v 1.11 2005-01-03 20:26:32 andy_seaborne Exp $
  */
 public abstract class ProcessorCom implements Processor, Loadable
 {
@@ -92,7 +92,7 @@ public abstract class ProcessorCom implements Processor, Loadable
 
 
 /*
- *  (c) Copyright 2003, 2004 Hewlett-Packard Development Company, LP
+ *  (c) Copyright 2003, 2004, 2005 Hewlett-Packard Development Company, LP
  *  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without

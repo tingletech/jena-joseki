@@ -1,5 +1,5 @@
 /*
- * (c) Copyright 2003, 2004 Hewlett-Packard Development Company, LP
+ * (c) Copyright 2003, 2004, 2005 Hewlett-Packard Development Company, LP
  * [See end of file]
  */
  
@@ -23,7 +23,7 @@ import javax.servlet.http.HttpServletResponse ;
  *  Tests must leave the server and its models unchanged.
  * 
  * @author      Andy Seaborne
- * @version     $Id: JosekiClientLibraryTests.java,v 1.4 2004-11-15 12:18:15 andy_seaborne Exp $
+ * @version     $Id: JosekiClientLibraryTests.java,v 1.5 2005-01-03 20:26:35 andy_seaborne Exp $
  */
 public class JosekiClientLibraryTests extends TestSuite
 {
@@ -536,7 +536,7 @@ public class JosekiClientLibraryTests extends TestSuite
 }
 
 /*
- *  (c) Copyright 2003,2004 Hewlett-Packard Development Company, LP
+ *  (c) Copyright 2003,2004, 2005 Hewlett-Packard Development Company, LP
  *  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without

@@ -1,5 +1,5 @@
 /*
- * (c) Copyright 2003, 2004 Hewlett-Packard Development Company, LP
+ * (c) Copyright 2003, 2004, 2005 Hewlett-Packard Development Company, LP
  * [See end of file]
  */
 
@@ -12,7 +12,7 @@ import org.apache.commons.logging.*;
  * Handle HTTP content type
  * 
  * @author Andy Seaborne
- * @version $Id: HttpContentType.java,v 1.1 2004-11-25 18:21:49 andy_seaborne Exp $
+ * @version $Id: HttpContentType.java,v 1.2 2005-01-03 20:26:33 andy_seaborne Exp $
  */
 
 public class HttpContentType
@@ -103,7 +103,7 @@ public class HttpContentType
 }
 
 /*
- * (c) Copyright 2003, 2004 Hewlett-Packard Development Company, LP All rights
+ * (c) Copyright 2003, 2004, 2005 Hewlett-Packard Development Company, LP All rights
  * reserved.
  * 
  * Redistribution and use in source and binary forms, with or without

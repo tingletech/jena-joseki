@@ -1,5 +1,5 @@
 /*
- * (c) Copyright 2003, 2004 Hewlett-Packard Development Company, LP
+ * (c) Copyright 2003, 2004, 2005 Hewlett-Packard Development Company, LP
  * [See end of file]
  */
 
@@ -9,7 +9,7 @@ package org.joseki.server;
 /** Interface for all processors.
  * 
  * @author      Andy Seaborne
- * @version     $Id: Processor.java,v 1.6 2004-11-25 10:52:51 andy_seaborne Exp $
+ * @version     $Id: Processor.java,v 1.7 2005-01-03 20:26:34 andy_seaborne Exp $
  */
 
 public interface Processor extends Interface
@@ -22,7 +22,7 @@ public interface Processor extends Interface
 }
 
 /*
- *  (c) Copyright 2003, 2004 Hewlett-Packard Development Company, LP
+ *  (c) Copyright 2003, 2004, 2005 Hewlett-Packard Development Company, LP
  *  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without

@@ -1,5 +1,5 @@
 /*
- * (c) Copyright 2003, 2004 Hewlett-Packard Development Company, LP
+ * (c) Copyright 2003, 2004, 2005 Hewlett-Packard Development Company, LP
  * [See end of file]
  */
  
@@ -17,7 +17,7 @@ import com.hp.hpl.jena.rdf.model.*;
  *  on a live system.
  * 
  * @author      Andy Seaborne
- * @version     $Id: ClearModelProcessor.java,v 1.6 2004-12-02 10:17:40 andy_seaborne Exp $
+ * @version     $Id: ClearModelProcessor.java,v 1.7 2005-01-03 20:26:36 andy_seaborne Exp $
  */
 
 public class ClearModelProcessor extends ArgZeroProcessor
@@ -45,7 +45,7 @@ public class ClearModelProcessor extends ArgZeroProcessor
 }
 
 /*
- *  (c) Copyright 2003, 2004 Hewlett-Packard Development Company, LP
+ *  (c) Copyright 2003, 2004, 2005 Hewlett-Packard Development Company, LP
  *  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
