@@ -25,10 +25,10 @@ import java.util.* ;
  *  @see com.hp.hpl.jena.joseki.QueryHTTP
  * 
  * @author  Andy Seaborne
- * @version $Id: QueryProcessorRDQL.java,v 1.2 2004-11-03 14:28:28 andy_seaborne Exp $
+ * @version $Id: QueryProcessorRDQL.java,v 1.3 2004-11-11 11:52:39 andy_seaborne Exp $
  */
 
-public class QueryProcessorRDQL extends QueryProcessorCom implements QueryProcessor
+public class QueryProcessorRDQL extends QueryProcessorCom implements QueryProcessorModel
 {
     static Log logger = LogFactory.getLog(QueryProcessorRDQL.class.getName()) ;
     
@@ -137,27 +137,7 @@ public class QueryProcessorRDQL extends QueryProcessorCom implements QueryProces
         }
     }
     
-    public Model execQuery(SourceModel aModel, Model queryModel, Request request)
-        throws RDFException, QueryExecutionException
-    {
-        Model resultModel = null ;
-        NodeIterator nIter = queryModel.listObjectsOfProperty(JosekiVocab.queryScript) ;
-        for ( ; nIter.hasNext() ; )
-        {
-            RDFNode n = nIter.nextNode() ;
-            if ( n instanceof Literal )
-            {
-                String queryString = ((Literal)n).getString() ;
-                Model m = execQuery(aModel, queryString, request) ;
-                if ( resultModel == null )
-                    resultModel = m ;
-                else
-                    resultModel.add(m) ;
-            }
-        }
-        return resultModel ;
-    }
-    
+
     private void doClosure(Query query, QueryResults results, Model resultModel)
     {
         for (; results.hasNext() ; )

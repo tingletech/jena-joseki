@@ -5,29 +5,26 @@
  
 package org.joseki.server;
 
-import com.hp.hpl.jena.rdf.model.Model ;
 import com.hp.hpl.jena.rdf.model.RDFException;
 
-/**
+/** 
  * @author      Andy Seaborne
- * @version     $Id: QueryProcessor.java,v 1.3 2004-11-04 15:44:58 andy_seaborne Exp $
+ * @version     $Id: QueryProcessor.java,v 1.4 2004-11-11 11:52:27 andy_seaborne Exp $
  */
-public interface QueryProcessor extends ProcessorModel
+public interface QueryProcessor extends Processor
 {
+    
 //    /** Map from short name for the query language (as used by GET dispatching)
 //     *  and the long URI.  String maps to String (not a URI object).
 //     */
     //public Map getQueryLanguages() ;
     
-    /* Execute a query and return a model (subgraph).
-     * The query argument supplied as string.
+    /** Execute a query - teh query string may be null or empty, depending on the
+     *  conventions for the query language. 
      */
-    public Model execQuery(SourceModel aModel, String queryString, Request request) throws RDFException, QueryExecutionException ;
-
-    /* Execute a query and return a model (subgraph).
-     * The query argument supplied as a model.
-     */
-    public Model execQuery(SourceModel aModel, Model queryModel, Request request) throws RDFException, QueryExecutionException ;
+    public void execQuery(SourceModel aModel, String queryString,
+                          Request request, Response response)
+        throws RDFException, QueryExecutionException ;
 }
 
 

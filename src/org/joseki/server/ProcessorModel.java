@@ -8,13 +8,12 @@ package org.joseki.server;
 
 import com.hp.hpl.jena.rdf.model.*;
 
-/** Interface to processors that return RDF graphs.
- *
- *  @see Processor
- *  @see QueryProcessor
+/** Interface to processors that take RDF graphs as arguments and return RDF graphs.
+ *  This should be wrapped in a converter class between the server's general purpose
+ *  Processor interface and this more specialised one. 
  *  
  * @author      Andy Seaborne
- * @version     $Id: ProcessorModel.java,v 1.2 2004-11-04 15:44:58 andy_seaborne Exp $
+ * @version     $Id: ProcessorModel.java,v 1.3 2004-11-11 11:52:27 andy_seaborne Exp $
  */
 
 public interface ProcessorModel extends Interface

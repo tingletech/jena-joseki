@@ -10,11 +10,15 @@ import org.joseki.server.*;
 import org.joseki.server.module.* ;
 import com.hp.hpl.jena.rdf.model.*;
 
-/** General template 
+/** General purpose template for implementing Processors.
+ *  Provides transaction or MRSW locking aroud a call to 
+ * 
+ * @see Processor
+
  * @author      Andy Seaborne
- * @version     $Id: ProcessorCom.java,v 1.4 2004-11-09 21:54:14 andy_seaborne Exp $
+ * @version     $Id: ProcessorCom.java,v 1.5 2004-11-11 11:52:39 andy_seaborne Exp $
  */
-public abstract class ProcessorCom implements ProcessorModel, Processor, Interface, Loadable
+public abstract class ProcessorCom implements Processor, Loadable
 {
     Log logger = LogFactory.getLog(ProcessorCom.class) ;
     
@@ -42,19 +46,6 @@ public abstract class ProcessorCom implements ProcessorModel, Processor, Interfa
     /** @see org.joseki.server.Processor */
     public void exec(Request request, Response response) throws ExecutionException
     {
-        logger.fatal("Not implemented") ;
-        throw new ExecutionException(ExecutionError.rcNotImplemented, 
-                                     "ProcessorCom.exec(Request, Response)") ;
-    }
-    
-    
-    /** @see org.joseki.server.module.Loadable#init(Resource, Resource)
-     */
-    public void init(Resource processor, Resource implementation) { }
-    
-    
-    public Model exec(Request request) throws ExecutionException
-    {
         SourceModel src = request.getSourceModel() ;
         if ( mutatingOp && src.isImmutable() )
             throw new ExecutionException(ExecutionError.rcImmutableModel, "Immutable Model") ;
@@ -63,15 +54,20 @@ public abstract class ProcessorCom implements ProcessorModel, Processor, Interfa
         try {
             src.startOperation(readOnlyLock) ;
             needsAbortOperation = true ;
-            Model resultModel = exec(src, request) ;
+            execute(request, response) ;
             src.endOperation() ;
             needsAbortOperation = false ;
-            return resultModel ;
         }
         catch (ExecutionException ex)
         {
+            response.setResponseCode(ex.returnCode) ;
+            // Send error.
+            // FIXME
+            logger.warn("NOT TRANSLATED: ExecutionException: "+ex.getMessage() ) ;
+            try { response.getOutput().write(ex.getMessage().getBytes()) ; }
+            catch (java.io.IOException ex2) { logger.fatal("PANIC",ex2) ; return ; }
             needsAbortOperation = true ;
-            logger.trace("RDFException: "+ex.getMessage() ) ;
+            logger.trace("ExecutionException: "+ex.getMessage() ) ;
             throw ex ;
         }
         catch (Exception ex)
@@ -89,11 +85,18 @@ public abstract class ProcessorCom implements ProcessorModel, Processor, Interfa
                 src.abortOperation();
             }
         }
-        //return emptyModel ;
     }
+    
+    /** @see org.joseki.server.module.Loadable#init(Resource, Resource)
+     */
+    public void init(Resource processor, Resource implementation) { }
 
-    /** Execute the operation - inside a transaction/MRSW lock when this is called */  
-    public abstract Model exec(SourceModel src, Request request)  throws ExecutionException ;
+    
+    /** Same as Processor.exec except that it is inside a
+     * transaction or MRSW lock when this is called
+     * @see Processor#exec(Request, Response)
+     */ 
+    public abstract void execute(Request request, Response response) throws ExecutionException ;
 }
 
 

@@ -8,11 +8,11 @@ package org.joseki.server;
 import org.joseki.server.module.Loadable;
 
 /** Interface for all processors.
- *  @see QueryProcessor
+ *  @see QueryProcessorModel
  *  @see ProcessorModel
  * 
  * @author      Andy Seaborne
- * @version     $Id: Processor.java,v 1.3 2004-11-04 15:44:58 andy_seaborne Exp $
+ * @version     $Id: Processor.java,v 1.4 2004-11-11 11:52:27 andy_seaborne Exp $
  */
 
 public interface Processor extends Loadable

@@ -4,20 +4,22 @@
  */
 
 package org.joseki.server;
-
+import org.apache.commons.logging.* ;
+import java.io.IOException;
 import java.io.OutputStream;
+//import javax.servlet.ServletOutputStream; 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /** Abstaction of an operation response
  * @author      Andy Seaborne
- * @version     $Id: Response.java,v 1.3 2004-11-09 17:26:24 andy_seaborne Exp $
+ * @version     $Id: Response.java,v 1.4 2004-11-11 11:52:27 andy_seaborne Exp $
  */
-public class Response
+public class Response extends ExecutionError
 {
     String mimeType = null ;
     OutputStream output ;
-    int responseCode = ExecutionError.rcOK ;
+    int responseCode = rcOK ;
     String responseMessage = null ;
     
     // Note whether we have started writing the reply.
@@ -29,6 +31,9 @@ public class Response
     {
         request = req ;
         response = resp ;
+        try { output = resp.getOutputStream() ;}
+        catch (IOException ex)
+        { LogFactory.getLog(Response.class).fatal("Can't get ServletOutputStream", ex) ; }
     }
     
     /**

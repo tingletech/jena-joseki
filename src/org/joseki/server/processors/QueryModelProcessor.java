@@ -5,77 +5,100 @@
 
 package org.joseki.server.processors;
 
+import org.apache.commons.logging.*;
 import org.joseki.server.* ;
-import org.joseki.server.module.* ;
 import org.joseki.vocabulary.JosekiVocab;
 
 import com.hp.hpl.jena.rdf.model.* ;
 
-/** This class is the indirection for queries that are specified by an RDF model.
- *  Large queries, or ones being forced to go to the model (no caching)
+/** This class translates incoming requests into calls on the appropriate
+ *  query processor.  Requests can can be specified by argument in the
+ *  query string or specified by an RDF model.
+ *  
+ *  For compatibility.
+ *  Only works for ProcessorModel operations.
+ *  
+ *  
+ *  Large queries, or ones being forced to go to the model (e.g. no caching)
  *  are sent by HTTP POST.  This class takes that request and finds the right
  *  language processor for query.  The language is part of the argument
  *  model as property "joseki:queryOperationName".
  * 
  * @author      Andy Seaborne
- * @version     $Id: QueryModelProcessor.java,v 1.3 2004-11-04 15:44:52 andy_seaborne Exp $
+ * @version     $Id: QueryModelProcessor.java,v 1.4 2004-11-11 11:52:39 andy_seaborne Exp $
  */
-public class QueryModelProcessor implements ProcessorModel, Loadable
+
+public class QueryModelProcessor extends ProcessorModelCom
 {
+    // TODO Remove when query-model removed 
+    
+    Log log = LogFactory.getLog(QueryModelProcessor.class) ;
+    
     public QueryModelProcessor()
     {
+        super("QueryModelProcessor", ReadOperation, NoChangeToModel) ;
     }
     
     /** @see org.joseki.server.module#init(Resource, Resource)
       */
-     public void init(Resource processor, Resource binding) { }
+    public void init(Resource processor, Resource binding) { }
      
-    /**
-     * @see org.joseki.server.ProcessorModel#exec(Request)
-     */
-    public Model exec(Request request) throws ExecutionException
+    public Model exec(Request request) throws QueryExecutionException
     {
-        SourceModel aModel = request.getSourceModel();
-        QueryProcessor qProc = null ;
-        try
-        {
-            aModel.startOperation(true);
-            Model queryModel = (Model) request.getDataArgs().get(0);
+        // Inside a lock from ProcessorCom by now.
+        SourceModel aModel = request.getSourceModel() ;
+        QueryProcessorModel qProc = null ;
 
+        Model queryModel = null ;
+        
+        if ( request.getDataArgs().size() > 0 )
+            queryModel = (Model)request.getDataArgs().get(0);
+        
+        if ( queryModel != null )
             try
             {
-                // Bug fix: old (up to 2.0) wrongly uses joseki:queryOperationName 
-                NodeIterator nIter =
-                    queryModel.listObjectsOfProperty(JosekiVocab.requestQueryLanguage) ;
+                String queryLangName = getPropertyValue(queryModel, JosekiVocab.requestQueryLanguage) ;
+                //if ( queryLangName == null )
+                //    queryLangName = getPropertyValue(queryModel, JosekiVocab.queryOperationName) ;
                 
-                // Not found : try again with old name.
-                if ( nIter == null || ! nIter.hasNext() ) 
-                        nIter = queryModel.listObjectsOfProperty(JosekiVocab.queryOperationName) ;
-
-                for (; nIter.hasNext();)
+                if ( queryLangName == null )
                 {
-                    RDFNode n = nIter.nextNode();
-                    if (n instanceof Literal)
-                    {
-                        String queryLangName = ((Literal) n).getString();
-                        qProc = aModel.getProcessorRegistry().findQueryProcessor(queryLangName);
-                    }
+                    log.warn("No query language name or URI found") ;
+                     throw new QueryExecutionException(ExecutionError.rcQueryExecutionFailure,
+                                                       "No query language name or URI found");
                 }
-            }
-            catch (RDFException ex)
+                
+                qProc = aModel.getProcessorRegistry().findQueryProcessor(queryLangName);
+            } catch (RDFException ex)
             {
-                aModel.abortOperation();
-                throw new ExecutionException(ExecutionError.rcArgumentUnreadable,
-                                             "Failed to extract query language name") ;
+                log.warn("Problems processing request", ex) ;
+                throw new QueryExecutionException(ExecutionError.rcQueryExecutionFailure,
+                    "Couldn't get query language name: "+ex.getMessage()); 
             }
-            // Re-execute 
-            if ( qProc == null )
-                throw new ExecutionException(ExecutionError.rcOperationNotSupported,
-                                             "No query language found") ;
-            return qProc.exec(request) ;
-        } finally { aModel.endOperation() ; }
         
-        //return null;
+            if (qProc == null )
+                throw new QueryExecutionException(ExecutionError.rcOperationNotSupported,
+                                             "No query language found") ;
+
+            // Get query string.
+            // If null (no string supplied) or empty, the query is in the model.
+            String queryString = request.getParam("query");
+            
+            if ( queryString != null && queryModel != null )
+                throw new QueryExecutionException(
+                    ExecutionError.rcQueryExecutionFailure,
+                    "Query has string and model arguments");
+            
+            if ( queryString == null && queryModel != null )
+            {
+                queryString = getPropertyValue(queryModel, JosekiVocab.queryScript) ;
+                if ( queryString.equals("") )
+                    queryString = null ;
+            }
+            
+            // Execute via query string
+            // which may be null or "" 
+            return qProc.execQuery(aModel, queryString, request);
     }
 
     /**
@@ -94,6 +117,20 @@ public class QueryModelProcessor implements ProcessorModel, Loadable
         return ProcessorModel.ARGS_ONE ;
     }
 
+    private String getPropertyValue(Model model, Property property)
+    {
+        NodeIterator nIter = model.listObjectsOfProperty(property) ;
+        for ( ; nIter.hasNext() ; )
+        {
+            RDFNode n = nIter.nextNode() ;
+            if ( n instanceof Literal )
+            {
+                String s = ((Literal)n).getString() ;
+                return s ;
+            }
+        }
+        return null ;
+    }
 }
 
 

@@ -18,7 +18,7 @@ import com.hp.hpl.jena.rdf.model.RDFException;
 /** Query processor that returns the whole model.
  * 
  * @author      Andy Seaborne
- * @version     $Id: QueryProcessorGET.java,v 1.1 2004-11-03 10:15:03 andy_seaborne Exp $
+ * @version     $Id: QueryProcessorGET.java,v 1.2 2004-11-11 11:52:39 andy_seaborne Exp $
  */
 public class QueryProcessorGET extends QueryProcessorCom
 {
@@ -53,14 +53,6 @@ public class QueryProcessorGET extends QueryProcessorCom
             resultModel.setNsPrefixes(src.getPrefixes()) ;
         return resultModel ;
     }
-
-    public Model execQuery(SourceModel aModel, Model queryModel, Request request)
-        throws RDFException, QueryExecutionException
-    {
-        throw new QueryExecutionException(ExecutionError.rcOperationNotSupported,
-                                     "Can't GET a model this way") ;
-    }
-
 }
 
 /*

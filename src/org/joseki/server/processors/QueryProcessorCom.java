@@ -16,9 +16,9 @@ import com.hp.hpl.jena.rdf.model.RDFException;
  *  ad a model (e.g. HTTP POST).
  * 
  * @author      Andy Seaborne
- * @version     $Id: QueryProcessorCom.java,v 1.4 2004-11-09 21:54:14 andy_seaborne Exp $
+ * @version     $Id: QueryProcessorCom.java,v 1.5 2004-11-11 11:52:39 andy_seaborne Exp $
  */
-public abstract class QueryProcessorCom implements QueryProcessor, Loadable
+public abstract class QueryProcessorCom implements QueryProcessorModel, Loadable
 {
     static final Log logger = LogFactory.getLog(QueryProcessorCom.class.getName()) ; 
 
@@ -39,67 +39,33 @@ public abstract class QueryProcessorCom implements QueryProcessor, Loadable
      */
     public Model exec(Request request) throws ExecutionException
     {
-        SourceModel aModel = request.getSourceModel();
-        boolean needsEndOperation = false ;
-        try
-        {
-            aModel.startOperation(readOnlyLock);
-            needsEndOperation = true ;
-            try
-            {
-                // May be null (no string supplied) in which case the query may be a model.
-                String queryString = request.getParam("query");
-                // Actually this will be "" for a POSTed query - fix.
-                if (queryString != null && queryString.equals(""))
-                    queryString = null;
+        SourceModel aModel = request.getSourceModel() ;
+        // May be null (no string supplied) in which case the query may be a model.
+        String queryString = request.getParam("query");
+        // Actually this will be "" for a POSTed query - fix.
+        if (queryString != null && queryString.equals(""))
+            queryString = null;
 
-                if (queryString != null && request.getDataArgs().size() > 0)
-                    throw new ExecutionException(
-                        ExecutionError.rcQueryExecutionFailure,
-                        "Query has string and model arguments");
+        if (queryString != null && request.getDataArgs().size() > 0)
+            throw new ExecutionException(
+                ExecutionError.rcQueryExecutionFailure,
+                "Query has string and model arguments");
 
-                if (request.getDataArgs().size() > 0)
-                    // Execute via model
-                    return execQuery(aModel, (Model) request.getDataArgs().get(0), request);
+        // Removed from Joseki3
+//        if (request.getDataArgs().size() > 0)
+//            // Execute via model - removed.
+//            return execQuery(aModel, (Model) request.getDataArgs().get(0), request);
 
-                // Execute via query string
-                return execQuery(aModel, queryString, request);
-
-            }
-            catch (RDFException ex)
-            {
-                needsEndOperation = false;
-                aModel.abortOperation();
-                logger.trace("RDFException: " + ex.getMessage());
-                throw new ExecutionException(ExecutionError.rcInternalError, null);
-            }
-            catch (ExecutionException exEx)
-            {
-                throw exEx;
-            }
-            catch (Exception ex)
-            {
-                aModel.abortOperation();
-                logger.trace("Exception : " + ex.getMessage());
-                throw new ExecutionException(ExecutionError.rcInternalError, null);
-            }
-        }
-        finally
-        {
-            if ( needsEndOperation )
-            {
-                needsEndOperation = false ;
-                aModel.endOperation();
-            }
-        }   //return emptyModel ;
+        // Execute via query string
+        return execQuery(aModel, queryString, request);
     }
 
     /** Query processors supply this, rather than the <code>exec</code> method.
      *  The queryString may be null (no string supplied).
+     *  @see QueryProcessorModel#execQuery
      */
 
     abstract public Model execQuery(SourceModel target, String queryString, Request request) throws RDFException, QueryExecutionException ;
-    abstract public Model execQuery(SourceModel target, Model queryModel, Request request) throws RDFException, QueryExecutionException ;
 }
 
 

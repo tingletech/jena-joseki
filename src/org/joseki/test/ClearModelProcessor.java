@@ -16,14 +16,14 @@ import com.hp.hpl.jena.rdf.model.*;
  *  on a live system.
  * 
  * @author      Andy Seaborne
- * @version     $Id: ClearModelProcessor.java,v 1.1 2004-11-03 10:15:03 andy_seaborne Exp $
+ * @version     $Id: ClearModelProcessor.java,v 1.2 2004-11-11 11:52:39 andy_seaborne Exp $
  */
 
 public class ClearModelProcessor extends ZeroArgProcessor
 {
     public ClearModelProcessor()
     {
-        super("clear", ProcessorCom.WriteOperation, ProcessorCom.MutatesModel) ;
+        super("clear", ProcessorModelCom.WriteOperation, ProcessorModelCom.MutatesModel) ;
     }
     
     public String getInterfaceURI() { return JosekiVocab.getURI()+"OpClear" ; }

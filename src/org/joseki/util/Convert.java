@@ -10,7 +10,7 @@ import java.net.URLDecoder;
 import java.io.UnsupportedEncodingException ;
 
 /**
- * @version     $Id: Convert.java,v 1.1 2004-11-03 10:15:04 andy_seaborne Exp $
+ * @version     $Id: Convert.java,v 1.2 2004-11-11 11:52:39 andy_seaborne Exp $
  * @author      Andy Seaborne
  */
 public class Convert
@@ -54,7 +54,7 @@ public class Convert
         } catch (UnsupportedEncodingException ex) { return null ;}
     }
 
-    // TODO: This is the inefficient way wround! 
+    // TODO: This is the inefficient way round! 
     
     public static String encWWWForm(StringBuffer sbuff)
     {

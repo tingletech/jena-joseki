@@ -24,7 +24,7 @@ import org.joseki.util.PrintUtils;
  *  closure over the properties with this node as subject.
  * 
  * @author      Andy Seaborne
- * @version     $Id: QueryProcessorFetch.java,v 1.1 2004-11-03 10:15:03 andy_seaborne Exp $
+ * @version     $Id: QueryProcessorFetch.java,v 1.2 2004-11-11 11:52:39 andy_seaborne Exp $
  */
 public class QueryProcessorFetch extends QueryProcessorCom
 {
@@ -140,12 +140,6 @@ public class QueryProcessorFetch extends QueryProcessorCom
         return resultModel ;
     }
 
-    public Model execQuery(SourceModel aModel, Model queryModel, Request request)
-        throws RDFException, QueryExecutionException
-    {
-        throw new QueryExecutionException(ExecutionError.rcOperationNotSupported,
-                                     "Can't 'fetch' this way") ;
-    }
 
     private void doOneResource(Resource resource, Model resultModel)
     {

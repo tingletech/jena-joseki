@@ -3,40 +3,28 @@
  * [See end of file]
  */
  
-package org.joseki.server.processors;
+package org.joseki.server;
 
-import org.joseki.server.*;
-import org.joseki.vocabulary.*;
-
-import com.hp.hpl.jena.rdf.model.Model;
+import com.hp.hpl.jena.rdf.model.Model ;
 import com.hp.hpl.jena.rdf.model.RDFException;
 
-/** ProcessorModel to add the statements in the argument model into the target model.
- *
+/** Legacy.
  * @author      Andy Seaborne
- * @version     $Id: AddProcessor.java,v 1.3 2004-11-11 11:52:39 andy_seaborne Exp $
+ * @version     $Id: QueryProcessorModel.java,v 1.1 2004-11-11 11:52:27 andy_seaborne Exp $
  */
-public class AddProcessor extends OneArgProcessor
+public interface QueryProcessorModel extends ProcessorModel
 {
-    public AddProcessor()
-    {
-        super("add", ProcessorModelCom.WriteOperation, ProcessorModelCom.MutatesModel) ;
-    }
-
-    public String getInterfaceURI() { return JosekiVocab.opAdd ; }
-
-    public Model execOneArg(SourceModel src, Model graph, Request req)
-        throws RDFException, ExecutionException
-    {
-        if (!(src instanceof SourceModelJena))
-            throw new ExecutionException(
-                ExecutionError.rcOperationNotSupported,
-                "Wrong implementation - this Fetch processor works with Jena models");         
-        Model target = ((SourceModelJena)src).getModel() ;
-        
-        target.add(graph) ;
-        return super.emptyModel ;
-    }
+    // TODO To be removed - all query processors should work to the Processor interface. 
+    
+//    /** Map from short name for the query language (as used by GET dispatching)
+//     *  and the long URI.  String maps to String (not a URI object).
+//     */
+    //public Map getQueryLanguages() ;
+    
+    /* Execute a query and return a model (subgraph).
+     * The query argument supplied as string.
+     */
+    public Model execQuery(SourceModel aModel, String queryString, Request request) throws RDFException, QueryExecutionException ;
 }
 
 

@@ -18,7 +18,7 @@ import com.hp.hpl.jena.vocabulary.* ;
  *  operation processors and keeps the mapping from URI to model.
  * 
  * @author      Andy Seaborne
- * @version     $Id: Dispatcher.java,v 1.2 2004-11-03 17:37:42 andy_seaborne Exp $
+ * @version     $Id: Dispatcher.java,v 1.3 2004-11-11 11:52:27 andy_seaborne Exp $
  */
 public class Dispatcher
 {
@@ -74,7 +74,7 @@ public class Dispatcher
 
     public Request createQueryRequest(String uri, String url, String langName) throws ExecutionException
     {
-        QueryProcessor qProc = null;
+        QueryProcessorModel qProc = null;
         SourceModel aModel = null;
         synchronized (this)
         {
@@ -111,9 +111,9 @@ public class Dispatcher
         return proc ;
     }
 
-    private QueryProcessor findQueryProcessor(SourceModel aModel, String langName)
+    private QueryProcessorModel findQueryProcessor(SourceModel aModel, String langName)
     {
-        QueryProcessor qProc = aModel.getProcessorRegistry().findQueryProcessor(langName);
+        QueryProcessorModel qProc = aModel.getProcessorRegistry().findQueryProcessor(langName);
         return qProc ;
     }
 
@@ -253,7 +253,7 @@ public class Dispatcher
      * @param langName        Language name
      * @param queryProc The query processor
      */
-    public synchronized void addQueryProcessor(String aModelURI, String langName, QueryProcessor queryProc)
+    public synchronized void addQueryProcessor(String aModelURI, String langName, QueryProcessorModel queryProc)
     {
         if ( aModelURI == null )
         {

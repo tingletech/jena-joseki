@@ -12,9 +12,9 @@ import com.hp.hpl.jena.rdf.model.*;
 
 /** General template for any operation that takes exactly one model as argument
  * @author      Andy Seaborne
- * @version     $Id: OneArgProcessor.java,v 1.4 2004-11-09 21:54:14 andy_seaborne Exp $
+ * @version     $Id: OneArgProcessor.java,v 1.5 2004-11-11 11:52:39 andy_seaborne Exp $
  */
-public abstract class OneArgProcessor extends ProcessorCom
+public abstract class OneArgProcessor extends ProcessorModelCom
 {
     static final Log logger = LogFactory.getLog(ZeroArgProcessor.class.getName()) ; 
 
@@ -27,10 +27,11 @@ public abstract class OneArgProcessor extends ProcessorCom
     public int argsNeeded() { return ProcessorModel.ARGS_ONE ; }
 
     /**
-     * @see org.joseki.server.processors.ProcessorCom#exec(SourceModel, Request)
+     * @see org.joseki.server.processors.ProcessorModelCom#exec(Request)
      */
-    public Model exec(SourceModel src, Request request) throws ExecutionException
+    public Model exec(Request request) throws ExecutionException
     {
+        SourceModel src = request.getSourceModel() ;
         try {
             if ( super.mutatingOp && src.isImmutable() )
                 throw new ExecutionException(ExecutionError.rcImmutableModel, "Immutable Model") ;

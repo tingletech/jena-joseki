@@ -2,40 +2,50 @@
  * (c) Copyright 2003, 2004 Hewlett-Packard Development Company, LP
  * [See end of file]
  */
- 
+
 package org.joseki.server.processors;
 
+import org.apache.commons.logging.* ;
 import org.joseki.server.*;
-import org.joseki.vocabulary.*;
 
-import com.hp.hpl.jena.rdf.model.Model;
-import com.hp.hpl.jena.rdf.model.RDFException;
+import com.hp.hpl.jena.rdf.model.*;
 
-/** ProcessorModel to add the statements in the argument model into the target model.
- *
+/** General purpose template for implementing ProcessorModel's.
+ *  Use ProcessorCom for locking - this clsass provides translation
+ *  between the general Processor Request=>Response framework and
+ *  the model-based ProcessorModel Request=>Model framework.    
+ * 
+ * @see Processor
+ * @see ProcessorCom
+ * 
  * @author      Andy Seaborne
- * @version     $Id: AddProcessor.java,v 1.3 2004-11-11 11:52:39 andy_seaborne Exp $
+ * @version     $Id: ProcessorModelCom.java,v 1.1 2004-11-11 11:52:39 andy_seaborne Exp $
  */
-public class AddProcessor extends OneArgProcessor
+public abstract class ProcessorModelCom extends ProcessorCom implements ProcessorModel
 {
-    public AddProcessor()
+    Log logger = LogFactory.getLog(ProcessorModelCom.class) ;
+    
+    public ProcessorModelCom(String n, int lockNeeded, int mutating)
     {
-        super("add", ProcessorModelCom.WriteOperation, ProcessorModelCom.MutatesModel) ;
+        super(n, lockNeeded, mutating) ;
     }
 
-    public String getInterfaceURI() { return JosekiVocab.opAdd ; }
-
-    public Model execOneArg(SourceModel src, Model graph, Request req)
-        throws RDFException, ExecutionException
+    
+    /** @see org.joseki.server.module.Loadable#init(Resource, Resource)
+     */
+    public void init(Resource processor, Resource implementation) { }
+    
+    public void execute(Request request, Response response)  throws ExecutionException
     {
-        if (!(src instanceof SourceModelJena))
-            throw new ExecutionException(
-                ExecutionError.rcOperationNotSupported,
-                "Wrong implementation - this Fetch processor works with Jena models");         
-        Model target = ((SourceModelJena)src).getModel() ;
-        
-        target.add(graph) ;
-        return super.emptyModel ;
+        try {
+            Model resultModel = exec(request) ;
+            response.setResponseCode(Response.rcOK) ;
+            // Write model.
+        } catch (ExecutionException ex)
+        {
+            response.setResponseCode(ex.returnCode) ;
+            // Write empty model.
+        }
     }
 }
 
