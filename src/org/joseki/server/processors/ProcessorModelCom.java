@@ -20,7 +20,7 @@ import com.hp.hpl.jena.rdf.model.*;
  * @see ProcessorCom
  * 
  * @author      Andy Seaborne
- * @version     $Id: ProcessorModelCom.java,v 1.4 2004-11-11 21:15:01 andy_seaborne Exp $
+ * @version     $Id: ProcessorModelCom.java,v 1.5 2004-11-12 16:41:38 andy_seaborne Exp $
  */
 public abstract class ProcessorModelCom extends ProcessorCom implements ProcessorModel
 {
@@ -39,21 +39,21 @@ public abstract class ProcessorModelCom extends ProcessorCom implements Processo
      */
     public void init(Resource processor, Resource implementation) { }
     
+    /** Convert from Request/Response framework to Request/Model framework */ 
     public void execute(Request request, Response response)  throws ExecutionException
     {
         try {
             Model resultModel = exec(request) ;
             response.setResponseCode(Response.rcOK) ;
-            //response.startWriting() ;
-            //HttpUtils.writeModel(resultModel, response.getOutput()) ;
-            //response.finishWriting() ;
-            // Write model.
+            response.startResponse() ;
+            response.serialize(resultModel) ;
+            response.finishResponse() ;
         } catch (ExecutionException ex)
         {
             response.setResponseCode(ex.returnCode) ;
-            //response.startWriting() ;
-            //HttpUtils.sendErrorMessage(ex) ;
-            //response.finishWriting() ;
+            response.startResponse() ;
+            response.serialize(ex) ;
+            response.finishResponse() ;
         }
     }
 }

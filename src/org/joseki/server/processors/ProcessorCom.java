@@ -16,7 +16,7 @@ import com.hp.hpl.jena.rdf.model.*;
  * @see Processor
 
  * @author      Andy Seaborne
- * @version     $Id: ProcessorCom.java,v 1.7 2004-11-11 18:10:15 andy_seaborne Exp $
+ * @version     $Id: ProcessorCom.java,v 1.8 2004-11-12 16:41:38 andy_seaborne Exp $
  */
 public abstract class ProcessorCom implements Processor, Loadable
 {
@@ -61,8 +61,8 @@ public abstract class ProcessorCom implements Processor, Loadable
             // Send error.
             // FIXME
             log.warn("NOT TRANSLATED: ExecutionException: "+ex.getMessage() ) ;
-            try { response.getOutput().write(ex.getMessage().getBytes()) ; }
-            catch (java.io.IOException ex2) { log.fatal("PANIC",ex2) ; return ; }
+            //try { response.getOutput().write(ex.getMessage().getBytes()) ; }
+            //catch (java.io.IOException ex2) { log.fatal("PANIC",ex2) ; return ; }
             needsAbortOperation = true ;
             log.trace("ExecutionException: "+ex.getMessage() ) ;
             throw ex ;

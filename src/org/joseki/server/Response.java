@@ -5,35 +5,78 @@
 
 package org.joseki.server;
 import org.apache.commons.logging.* ;
-import java.io.IOException;
-import java.io.OutputStream;
+//import java.io.IOException;
+
+import org.joseki.server.http.HttpResultSerializer ;
+import org.joseki.server.http.HttpUtils ;
+
+import com.hp.hpl.jena.rdf.model.Model; 
+
 //import javax.servlet.ServletOutputStream; 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /** Abstaction of an operation response
  * @author      Andy Seaborne
- * @version     $Id: Response.java,v 1.4 2004-11-11 11:52:27 andy_seaborne Exp $
+ * @version     $Id: Response.java,v 1.5 2004-11-12 16:41:47 andy_seaborne Exp $
  */
 public class Response extends ExecutionError
 {
+    static Log log = LogFactory.getLog(Response.class) ;
     String mimeType = null ;
-    OutputStream output ;
     int responseCode = rcOK ;
     String responseMessage = null ;
     
+    Request request ;
     // Note whether we have started writing the reply.
     boolean committed = false ;
-    HttpServletRequest request = null ;
-    HttpServletResponse response = null ;
+    HttpServletRequest httpRequest = null ;
+    HttpServletResponse httpResponse = null ;
     
-    public Response(HttpServletRequest req, HttpServletResponse resp)
+    public Response(Request request, HttpServletRequest httpRequest, HttpServletResponse httpResponse)
     {
-        request = req ;
-        response = resp ;
-        try { output = resp.getOutputStream() ;}
-        catch (IOException ex)
-        { LogFactory.getLog(Response.class).fatal("Can't get ServletOutputStream", ex) ; }
+        this.request = request ;
+        this.httpRequest = httpRequest ;
+        this.httpResponse = httpResponse ;
+//        try { output = resp.getOutputStream() ;}
+//        catch (IOException ex)
+//        { LogFactory.getLog(Response.class).fatal("Can't get ServletOutputStream", ex) ; }
+    }
+    
+    public void startResponse() { committed = true ;}
+    public void finishResponse() {}
+    
+    
+    public void serialize(Model m)
+    {
+        HttpResultSerializer ser = new HttpResultSerializer() ;
+        try {
+            ser.sendResponse(m, null, httpRequest, httpResponse) ;
+        } catch (Exception ex)
+        {
+            try {
+                log.warn("Internal server error", ex) ;
+                httpResponse.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR) ;
+                httpResponse.flushBuffer() ;
+                httpResponse.getOutputStream().close() ;
+            } catch (Exception e) {}
+        }        
+    }
+
+    public void serialize(ExecutionException ex) throws ExecutionException 
+    {
+        HttpResultSerializer ser = new HttpResultSerializer() ;
+        try {
+            ser.sendError(ex, httpResponse) ;
+        } catch (Exception ex2)
+        {
+            try {
+                log.warn("Internal server error", ex2) ;
+                httpResponse.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR) ;
+                httpResponse.flushBuffer() ;
+                httpResponse.getOutputStream().close() ;
+            } catch (Exception e) {}
+        }    
     }
     
     /**
@@ -51,20 +94,7 @@ public class Response extends ExecutionError
         this.mimeType = mimeType;
     }
     
-    /**
-     * @return Returns the output.
-     */
-    public OutputStream getOutput()
-    {
-        return output;
-    }
-    /**
-     * @param output The output to set.
-     */
-    public void setOutput(OutputStream output)
-    {
-        this.output = output;
-    }
+
     /**
      * @return Returns the responseCode.
      */
@@ -77,6 +107,12 @@ public class Response extends ExecutionError
      */
     public void setResponseCode(int responseCode)
     {
+        if ( committed )
+        {
+            log.warn("Response started - can't set responseCode to "+
+                     HttpUtils.httpResponseCode(responseCode)) ;
+            return ;
+        }
         this.responseCode = responseCode;
     }
     /**
