@@ -22,7 +22,7 @@ import javax.servlet.http.HttpServletResponse;
 
 /** Abstaction of an operation response
  * @author      Andy Seaborne
- * @version     $Id: Response.java,v 1.8 2004-11-14 12:01:10 andy_seaborne Exp $
+ * @version     $Id: Response.java,v 1.9 2004-11-14 18:16:19 andy_seaborne Exp $
  */
 public class Response extends ExecutionError
 {
@@ -39,7 +39,9 @@ public class Response extends ExecutionError
     HttpServletRequest httpRequest = null ;
     HttpServletResponse httpResponse = null ;
     
-    public Response(Request request, HttpServletRequest httpRequest, HttpServletResponse httpResponse)
+    public Response(Request request,
+                    HttpServletRequest httpRequest,
+                    HttpServletResponse httpResponse)
     {
         this.request = request ;
         this.httpRequest = httpRequest ;

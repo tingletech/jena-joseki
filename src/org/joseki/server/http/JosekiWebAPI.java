@@ -22,7 +22,7 @@ import org.joseki.Joseki ;
 
 /** The servlet class.
  * @author  Andy Seaborne
- * @version $Id: JosekiWebAPI.java,v 1.6 2004-11-14 12:05:37 andy_seaborne Exp $
+ * @version $Id: JosekiWebAPI.java,v 1.7 2004-11-14 18:16:14 andy_seaborne Exp $
  */
 
 public class JosekiWebAPI extends HttpServlet implements Connector
@@ -251,6 +251,7 @@ public class JosekiWebAPI extends HttpServlet implements Connector
                 execute(opRequest, httpRequest, httpResponse) ;  
             } catch (ExecutionException execEx)
             {
+                // Happens when dispatcher can't find the URI or requested operation.
                 doResponse(execEx, uri, httpResponse) ;
                 return ;
             }
@@ -365,14 +366,24 @@ public class JosekiWebAPI extends HttpServlet implements Connector
     protected void execute(Request req, HttpServletRequest httpRequest, HttpServletResponse httpResponse) throws ExecutionException
     {
         Model resultModel = null ;
-        
+        String uri = req.getModelURI() ;
+        Response r = new Response(req, httpRequest, httpResponse) ;
         if ( req.getName().equals("query") )
             log.debug("URI="+ req.getModelURI() + "  Query="+req.getParam("lang")) ;
         else
             log.debug("URI="+ req.getModelURI() + "  Request="+req.getName()) ;
 
-        resultModel = dispatcher.exec(req) ;
-        doResponse(resultModel, req, httpRequest, httpResponse);
+        try {
+            resultModel = dispatcher.exec(req) ;
+            r.doResponse(resultModel) ;
+            //doResponse(resultModel, req, httpRequest, httpResponse);
+        } catch (ExecutionException execEx)
+        {
+            r.doException(execEx) ;
+            //doResponse(execEx, uri, httpResponse) ;
+            return ;
+        }
+
     }
 
 
