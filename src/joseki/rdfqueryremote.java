@@ -21,7 +21,7 @@ import com.hp.hpl.jena.query.* ;
 /** Command line application to issue queries against a remote model.
  *
  * @author  Andy Seaborne
- * @version $Id: rdfqueryremote.java,v 1.3 2004-11-03 17:37:55 andy_seaborne Exp $
+ * @version $Id: rdfqueryremote.java,v 1.4 2004-11-21 20:54:26 andy_seaborne Exp $
  */
 
 
@@ -193,7 +193,7 @@ public class rdfqueryremote
                 System.out.println() ;
             }
             
-            QueryResults results = qe.execSelect();
+            ResultSet results = qe.execSelect();
 
             if (results == null)
             {
@@ -201,7 +201,7 @@ public class rdfqueryremote
                 return;
             }
 
-            QueryResultsFormatter fmt = new QueryResultsFormatter(results);
+            ResultSetTextFormatter fmt = new ResultSetTextFormatter(results);
             //ResultSetFormatter rsFmt = new ResultSetFormatter(results);
             PrintWriter pw = new PrintWriter(System.out);
 

@@ -19,7 +19,7 @@ import com.hp.hpl.jena.query.* ;
  *  on a model over HTTP.
  *
  * @author  Andy Seaborne
- * @version $Id: QueryHTTP.java,v 1.3 2004-11-14 12:05:37 andy_seaborne Exp $
+ * @version $Id: QueryHTTP.java,v 1.4 2004-11-21 20:54:37 andy_seaborne Exp $
  */
 public class QueryHTTP implements QueryExecution
 {
@@ -56,7 +56,7 @@ public class QueryHTTP implements QueryExecution
     }
     
     // Iterator of ResultBindings
-    public QueryResults execSelect()
+    public ResultSet execSelect()
     {
         try {
             

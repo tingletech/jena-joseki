@@ -13,6 +13,7 @@ import org.joseki.server.processors.QueryProcessorModelCom;
 
 import com.hp.hpl.jena.rdf.model.* ;
 
+// Use original Jena query system
 import com.hp.hpl.jena.rdql.* ;
 
 import org.apache.commons.logging.* ;
@@ -26,7 +27,7 @@ import java.util.* ;
  *  @see com.hp.hpl.jena.joseki.QueryHTTP
  * 
  * @author  Andy Seaborne
- * @version $Id: QueryProcessorRDQL.java,v 1.1 2004-11-17 14:47:36 andy_seaborne Exp $
+ * @version $Id: QueryProcessorRDQL.java,v 1.2 2004-11-21 20:54:38 andy_seaborne Exp $
  */
 
 public class QueryProcessorRDQL extends QueryProcessorModelCom

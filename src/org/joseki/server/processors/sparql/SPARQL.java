@@ -27,7 +27,7 @@ import com.hp.hpl.jena.query.* ;
 /** SPARQL operations
  * 
  * @author  Andy Seaborne
- * @version $Id: SPARQL.java,v 1.9 2004-11-19 15:26:16 andy_seaborne Exp $
+ * @version $Id: SPARQL.java,v 1.10 2004-11-21 20:54:38 andy_seaborne Exp $
  */
 
 public class SPARQL extends QueryProcessorCom
@@ -127,7 +127,7 @@ public class SPARQL extends QueryProcessorCom
             
             if ( query.isSelectType() )
             {
-                QueryResults results = qe.execSelect() ;
+                ResultSet results = qe.execSelect() ;
                 ResultSetFormatter rsFmt = new  ResultSetFormatter(results) ;
                 return rsFmt.toModel() ;
             }
