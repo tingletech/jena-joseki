@@ -23,7 +23,7 @@ import javax.servlet.http.HttpServletResponse;
 
 /** Abstaction of an operation response
  * @author      Andy Seaborne
- * @version     $Id: Response.java,v 1.21 2004-12-06 14:25:08 andy_seaborne Exp $
+ * @version     $Id: Response.java,v 1.22 2004-12-07 20:17:30 andy_seaborne Exp $
  */
 public class Response extends ExecutionError
 {
@@ -49,7 +49,8 @@ public class Response extends ExecutionError
     static String[] x = { //Joseki.contentTypeXML ,
                           Joseki.contentTypeRDFXML ,
                           Joseki.contentTypeTurtle ,
-                          Joseki.contentTypeN3 ,
+                          Joseki.contentTypeAppN3 ,
+                          Joseki.contentTypeTextN3 ,
                           Joseki.contentTypeNTriples } ;
 
     static AcceptList prefContentType     = new AcceptList(x) ;
@@ -98,13 +99,24 @@ public class Response extends ExecutionError
         // HTTP-isms
         // Set content-type
         
-        boolean wantsText = accepts("Accept", "text/*") ;
-        if ( wantsText )
+        String textContentType = match("Accept", "text/*") ;
+        
+        if ( textContentType != null )
         {
+            // TODO Send text/n3?
             // Send text/plain
             writerMimeType = Joseki.contentTypeForText ;
-            setMimeType(Joseki.contentTypeTextPlain) ;
+            setMimeType(Joseki.contentTypeForText) ;
         }
+        
+//        boolean wantsText = accepts("Accept", "text/*") ;
+//        if ( wantsText )
+//        {
+//            // TODO Send text/n3?
+//            // Send text/plain
+//            writerMimeType = Joseki.contentTypeForText ;
+//            setMimeType(Joseki.contentTypeTextPlain) ;
+//        }
 
         
         if ( mimeType == null )
@@ -201,7 +213,12 @@ public class Response extends ExecutionError
     {
         String f = httpRequest.getHeader(field) ;
         return HttpUtils.accept(f, cType) ;
-        
+    }
+
+    public String match(String field, String cType)
+    {
+        String f = httpRequest.getHeader(field) ;
+        return HttpUtils.match(f, cType) ;
     }
 
     public OutputStream getOutputStream()
