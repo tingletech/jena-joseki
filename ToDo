@@ -1,10 +1,6 @@
 Joseki3
 =======
 
-+ Upgrade to latest result set format
-    Renaming tags
-    bound="false"
-
 + Latest protocol
     Rename tags
     (centralize names)
@@ -37,6 +33,9 @@ Joseki3
   Need doing in ARQ first
 
 + SOAP connector (Axis)
+
++ Make IndentedWriter based on IndentedLineBuffer
+  Make IndentedLineBuffer a IndentedWriter(StringWriter)
 
 + Restructure the main server implementation
   ??
