@@ -2,11 +2,11 @@ Joseki3
 =======
 
 + Latest protocol
-    Rename tags
+    Rename params
     (centralize names)
-    Recognize (and ignore) new tags that don't mean much to Joseki
+    Recognize (and ignore) new params that don't mean much to Joseki
     Adding in "uri=" into protocol for SPARQL
-    Add private args "ctype" (result set type), and XSLT "stylesheet"
+    Add private params "ctype" (result set type), and XSLT "stylesheet"
 
 + Add joseki:textContentType
   If looks like a browser, then text/plain with this type as contents.
@@ -33,9 +33,6 @@ Joseki3
   Need doing in ARQ first
 
 + SOAP connector (Axis)
-
-+ Make IndentedWriter based on IndentedLineBuffer
-  Make IndentedLineBuffer a IndentedWriter(StringWriter)
 
 + Restructure the main server implementation
   ??
