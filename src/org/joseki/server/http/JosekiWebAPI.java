@@ -21,7 +21,7 @@ import org.joseki.Joseki ;
 
 /** The servlet class.
  * @author  Andy Seaborne
- * @version $Id: JosekiWebAPI.java,v 1.12 2004-11-17 14:47:36 andy_seaborne Exp $
+ * @version $Id: JosekiWebAPI.java,v 1.13 2004-11-19 15:56:40 andy_seaborne Exp $
  */
 
 public class JosekiWebAPI extends HttpServlet implements Connector
@@ -380,13 +380,9 @@ public class JosekiWebAPI extends HttpServlet implements Connector
                 log.debug("URI="+ uri + "  Request="+request.getOpName()) ;
 
             dispatcher.exec(request, response) ;
-//            Model resultModel = dispatcher.exec(request) ;
-//            response.doResponse(resultModel) ;
-            //doResponse(resultModel, req, httpRequest, httpResponse);
         } catch (ExecutionException execEx)
         {
             response.doException(execEx) ;
-            //doResponse(execEx, uri, httpResponse) ;
             return ;
         }
 
