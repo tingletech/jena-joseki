@@ -8,10 +8,10 @@ package org.joseki.server.http;
 import java.util.* ;
 import org.apache.commons.logging.* ;
 
-/** apps.ParseHttpHeaders
+/** A class to handle HTTP media types; includes static methods to handle media ranges.
  * 
  * @author Andy Seaborne
- * @version $Id: MediaType.java,v 1.1 2004-11-18 19:54:56 andy_seaborne Exp $
+ * @version $Id: MediaType.java,v 1.2 2004-11-18 19:58:17 andy_seaborne Exp $
  */
 
 public class MediaType
