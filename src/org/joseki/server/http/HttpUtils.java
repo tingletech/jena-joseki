@@ -11,18 +11,19 @@ import java.util.* ;
 import javax.servlet.http.HttpServletRequest ;
 import javax.servlet.http.HttpServletResponse ;
 
-import org.apache.commons.logging.LogFactory;
+import org.apache.commons.logging.*;
 import org.joseki.Joseki;
 import org.joseki.util.Convert;
 
 /** org.joseki.server.http.HttpUtils
  * 
  * @author Andy Seaborne
- * @version $Id: HttpUtils.java,v 1.6 2004-11-19 18:48:39 andy_seaborne Exp $
+ * @version $Id: HttpUtils.java,v 1.7 2004-11-21 16:43:03 andy_seaborne Exp $
  */
 
 public class HttpUtils
 {
+    private static Log log = LogFactory.getLog(HttpUtils.class) ;
     static public final String ENC_UTF8 = "utf-8" ;
 
     /// Relevant headers:
@@ -30,25 +31,23 @@ public class HttpUtils
     // Setting: Content-type, Content-Encoding
     
     
-//    public static String setContentHeaders(HttpServletRequest httpRequest, HttpServletResponse httpResponse)
-//    {
-//        
-//    }
-    
     public static String chooseCharset(HttpServletRequest httpRequest)
     {
         String a = httpRequest.getHeader("Accept-Charset") ;
+        if ( a == null )
+            return ENC_UTF8 ;
         List l = MediaRange.multiMediaRange(a) ;
-        
  
         for ( Iterator iter = l.listIterator() ; iter.hasNext() ; )
         {
             MediaRange r = (MediaRange)iter.next() ;
+            if ( log.isTraceEnabled() )
+                log.trace("Charset requested: "+r) ;
             if ( r.getMediaType().asString().equalsIgnoreCase(ENC_UTF8) )
                 return ENC_UTF8 ;
         }
         
-        LogFactory.getLog(HttpUtils.class).warn("Accept-Charset: "+a) ;
+        log.warn("Accept-Charset: "+a) ;
         // Negotiation!
         return ENC_UTF8 ;
     }
@@ -70,25 +69,42 @@ public class HttpUtils
         // There can be multiple headers.
         
         String a = httpRequest.getHeader("Accept") ;
+        if ( a == null )
+        {
+            if ( log.isTraceEnabled() )
+                log.trace("No accept header in request") ;
+            return mimeType ;
+        }
+            
         List l = MediaRange.multiMediaRange(a) ;
         
+        boolean found = false ;
         for ( Iterator iter = l.listIterator(); iter.hasNext(); )
         {
             MediaRange r = (MediaRange)iter.next() ;
             String s = r.getMediaType().asString() ;
             
+            if ( log.isTraceEnabled() )
+                log.trace("Content type requested: "+r) ;
+
             // Do we know about this media type as a writer?
             
             String m = Joseki.getWriterType(s) ;
             if ( m != null )
             {
                 mimeType = s ;
+                found = true ;
+                if ( log.isTraceEnabled() )
+                    log.trace("Choosing MIME type as "+mimeType) ;
                 break ;
             }
         }
         
+        if ( ! found && log.isTraceEnabled() )
+            log.trace("Defauling MIME type to "+mimeType) ;
         return mimeType;
     }
+    
     
     static String fmtRequest(HttpServletRequest request)
     {
@@ -109,15 +125,7 @@ public class HttpUtils
         return sbuff.toString() ;
     }
 
-    //static String fmtRequestLong(HttpServletRequest request) {}
-        //"Accept", "Accept-Encoding", "Accept-Charset"    
-    
-    
-    
-    
-    
-    
-    
+
     public static String httpResponseCode(int responseCode)
     {
         switch (responseCode)

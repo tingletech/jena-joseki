@@ -11,7 +11,7 @@ import org.apache.commons.logging.* ;
 /** A class to handle HTTP media types and media ranges and accept parameters 
  * 
  * @author Andy Seaborne
- * @version $Id: MediaRange.java,v 1.1 2004-11-19 18:48:39 andy_seaborne Exp $
+ * @version $Id: MediaRange.java,v 1.2 2004-11-21 16:43:03 andy_seaborne Exp $
  */
 
 public class MediaRange
@@ -32,6 +32,8 @@ public class MediaRange
     {
         //s = s.trim() ;
         List l = new ArrayList() ;
+        if ( s == null )
+            return l ;
         
         String[] x = split(s, ",") ;
         for ( int i = 0 ; i < x.length ; i++ )
