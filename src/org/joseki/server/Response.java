@@ -23,7 +23,7 @@ import javax.servlet.http.HttpServletResponse;
 
 /** Abstaction of an operation response
  * @author      Andy Seaborne
- * @version     $Id: Response.java,v 1.17 2004-11-19 18:48:39 andy_seaborne Exp $
+ * @version     $Id: Response.java,v 1.18 2004-11-25 12:56:49 andy_seaborne Exp $
  */
 public class Response extends ExecutionError
 {
@@ -66,6 +66,15 @@ public class Response extends ExecutionError
         responseSent = true ;
     }
     
+    public void chooseHttpHeaders()
+    {
+        String mimeType = HttpUtils.chooseContentType(httpRequest);
+        String charset = HttpUtils.chooseCharset(httpRequest) ;
+        
+        setMimeType(mimeType) ;
+        setCharset(charset) ;
+    }
+    
     // TODO Tidy up
     
     public void doResponse(Model resultModel)
@@ -87,11 +96,7 @@ public class Response extends ExecutionError
         // HTTP-isms
         // Set content-type
         
-        String mimeType = HttpUtils.chooseContentType(httpRequest);
-        String charset = HttpUtils.chooseCharset(httpRequest) ;
-        
-        setMimeType(mimeType) ;
-        setCharset(charset) ;
+        chooseHttpHeaders() ;
         startResponse() ;
         
         try {

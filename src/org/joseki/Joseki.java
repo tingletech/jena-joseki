@@ -9,7 +9,7 @@ import java.util.* ;
 
 /** Constants and other definitions.
  * @author      Andy Seaborne
- * @version     $Id: Joseki.java,v 1.6 2004-11-19 15:25:51 andy_seaborne Exp $
+ * @version     $Id: Joseki.java,v 1.7 2004-11-25 12:56:21 andy_seaborne Exp $
  */
 public class Joseki
 {
@@ -34,8 +34,11 @@ public class Joseki
     public static String serverContentType = contentTypeRDFXML ;
     public static String clientContentType = contentTypeRDFXML ;
     
-    public static boolean serverDebug = false ;
-    public static boolean clientDebug = false ;
+    // Various control falgs and settings.
+
+    public static boolean serverHttpExplicitNoCache = false ;
+    //public static boolean serverDebug = false ;
+    //public static boolean clientDebug = false ;
     
     public static String getReaderType(String contentType)
     {

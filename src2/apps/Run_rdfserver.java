@@ -5,11 +5,13 @@ import joseki.rdfserver;
 public class Run_rdfserver
 {
     static {
+//        setPropertyDefault("org.apache.commons.logging.Log",
+//                "org.apache.commons.logging.impl.Jdk14Logger");
         setPropertyDefault("org.apache.commons.logging.Log",
-                "org.apache.commons.logging.impl.Jdk14Logger");
+                "org.apache.commons.logging.impl.Log4JLogger");
         
         setPropertyDefault("java.util.logging.config.file", "etc/logging.properties");
-        setPropertyDefault("log4j.configuration", "file:etc/log4j-detail.properties") ;
+        setPropertyDefault("log4j.configuration", "file:log4j.properties") ;
     }
     
     

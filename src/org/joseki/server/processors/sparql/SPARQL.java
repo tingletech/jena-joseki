@@ -27,7 +27,7 @@ import com.hp.hpl.jena.query.* ;
 /** SPARQL operations
  * 
  * @author  Andy Seaborne
- * @version $Id: SPARQL.java,v 1.10 2004-11-21 20:54:38 andy_seaborne Exp $
+ * @version $Id: SPARQL.java,v 1.11 2004-11-25 12:56:50 andy_seaborne Exp $
  */
 
 public class SPARQL extends QueryProcessorCom
@@ -93,6 +93,7 @@ public class SPARQL extends QueryProcessorCom
             query.setSource(model) ;
             
             QueryExecution qe = QueryFactory.createQueryExecution(query) ;
+            response.chooseHttpHeaders() ;
             String mimeType = response.getMimeType() ; 
             
             if ( query.isSelectType() && ( mimeType == null || mimeType.equals(Joseki.contentTypeRDFXML) ) )

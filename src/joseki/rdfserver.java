@@ -13,7 +13,7 @@ import org.joseki.Joseki ;
 /** Command line application to run an RDF Server
  *
  * @author  Andy Seaborne
- * @version $Id: rdfserver.java,v 1.2 2004-11-04 15:44:59 andy_seaborne Exp $
+ * @version $Id: rdfserver.java,v 1.3 2004-11-25 12:56:50 andy_seaborne Exp $
  */
 
 
@@ -69,7 +69,6 @@ public class rdfserver
         if ( cmd.contains("--debug") )
         {    
             DEBUG = true ;
-            Joseki.serverDebug = true ;
             Joseki.serverContentType = "application/n3" ;
         }
         

@@ -20,7 +20,7 @@ import com.hp.hpl.jena.shared.JenaException;
 /** Extracting operation data from HTTP servlet requests and formatting results for sending back.
  * 
  * @author      Andy Seaborne
- * @version     $Id: HttpResultSerializer.java,v 1.10 2004-11-19 18:48:39 andy_seaborne Exp $
+ * @version     $Id: HttpResultSerializer.java,v 1.11 2004-11-25 12:56:50 andy_seaborne Exp $
  */
 public class HttpResultSerializer
 {
@@ -109,8 +109,8 @@ public class HttpResultSerializer
                                  String mimeType, String charset) 
     {
         // ---- Set up HTTP Response
-        // Stop caching when debugging (not that ?queryString URLs are cached)
-        if ( Joseki.serverDebug )
+        // Stop caching (not that ?queryString URLs are cached anyway)
+        if ( Joseki.serverHttpExplicitNoCache )
         {
             httpResponse.setHeader("Cache-Control", "no-cache") ;
             httpResponse.setHeader("Pragma", "no-cache") ;

@@ -18,7 +18,7 @@ import org.joseki.util.Convert;
 /** org.joseki.server.http.HttpUtils
  * 
  * @author Andy Seaborne
- * @version $Id: HttpUtils.java,v 1.7 2004-11-21 16:43:03 andy_seaborne Exp $
+ * @version $Id: HttpUtils.java,v 1.8 2004-11-25 12:56:50 andy_seaborne Exp $
  */
 
 public class HttpUtils
@@ -41,8 +41,8 @@ public class HttpUtils
         for ( Iterator iter = l.listIterator() ; iter.hasNext() ; )
         {
             MediaRange r = (MediaRange)iter.next() ;
-            if ( log.isTraceEnabled() )
-                log.trace("Charset requested: "+r) ;
+            if ( log.isDebugEnabled() )
+                log.debug("Charset requested: "+r) ;
             if ( r.getMediaType().asString().equalsIgnoreCase(ENC_UTF8) )
                 return ENC_UTF8 ;
         }
@@ -56,9 +56,6 @@ public class HttpUtils
     {
         String mimeType = Joseki.serverContentType ;
         
-        if ( Joseki.serverDebug )
-            mimeType = "text/plain" ;
-        
         // Decide MIME type.
         // Based on exact match - no */* stuff -
         // so browsers (text/plain) and the Joseki library works (application/???)
@@ -71,8 +68,8 @@ public class HttpUtils
         String a = httpRequest.getHeader("Accept") ;
         if ( a == null )
         {
-            if ( log.isTraceEnabled() )
-                log.trace("No accept header in request") ;
+            if ( log.isDebugEnabled() )
+                log.debug("No accept header in request") ;
             return mimeType ;
         }
             
@@ -85,7 +82,7 @@ public class HttpUtils
             String s = r.getMediaType().asString() ;
             
             if ( log.isTraceEnabled() )
-                log.trace("Content type requested: "+r) ;
+                log.debug("Content type requested: "+r) ;
 
             // Do we know about this media type as a writer?
             
@@ -94,14 +91,14 @@ public class HttpUtils
             {
                 mimeType = s ;
                 found = true ;
-                if ( log.isTraceEnabled() )
-                    log.trace("Choosing MIME type as "+mimeType) ;
+                if ( log.isDebugEnabled() )
+                    log.debug("Choosing MIME type as "+mimeType) ;
                 break ;
             }
         }
         
-        if ( ! found && log.isTraceEnabled() )
-            log.trace("Defauling MIME type to "+mimeType) ;
+        if ( ! found && log.isDebugEnabled() )
+            log.debug("Defauling MIME type to "+mimeType) ;
         return mimeType;
     }
     

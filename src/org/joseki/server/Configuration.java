@@ -28,7 +28,7 @@ import com.hp.hpl.jena.util.* ;
  * Parse and process a Joseki configuration file
  * 
  * @author  Andy Seaborne
- * @version $Id: Configuration.java,v 1.4 2004-11-15 17:34:17 andy_seaborne Exp $
+ * @version $Id: Configuration.java,v 1.5 2004-11-25 12:56:49 andy_seaborne Exp $
  */
 
 
@@ -157,10 +157,12 @@ public class Configuration
             {
                 Resource r = rIter.nextResource() ;
                 
-                if ( r.hasProperty(JosekiVocab.serverDebug) )
+                // Various controls
+                
+                if ( r.hasProperty(JosekiVocab.serverHttpExplicitNoCache) )
                 {
-                    Joseki.serverDebug = 
-                        r.getRequiredProperty(JosekiVocab.serverDebug).getString().equals("true") ;
+                    Joseki.serverHttpExplicitNoCache = 
+                        r.getRequiredProperty(JosekiVocab.serverHttpExplicitNoCache).getString().equals("true") ;
                 }
                 
                 if ( r.hasProperty(JosekiVocab.useContentType) )
@@ -192,8 +194,8 @@ public class Configuration
             throw new ConfigurationErrorException("Error in configuration file (server section)", rdfEx) ;
         }
         
-        if ( Joseki.serverDebug )
-            log.info("Server debug on") ;              
+        if ( Joseki.serverHttpExplicitNoCache )
+            log.debug("Server explicit 'no cache' set") ;              
 
         log.trace("Finish server configuration") ;
     }
