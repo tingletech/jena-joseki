@@ -13,7 +13,7 @@ import org.joseki.Joseki ;
 /** Command line application to run an RDF Server
  *
  * @author  Andy Seaborne
- * @version $Id: rdfserver.java,v 1.3 2004-11-25 12:56:50 andy_seaborne Exp $
+ * @version $Id: rdfserver.java,v 1.4 2005-01-06 12:15:10 andy_seaborne Exp $
  */
 
 
@@ -31,13 +31,6 @@ public class rdfserver
 
     public static void main (String args[])
     {
-        // Ensure there are logging configurations 
-        //if (System.getProperty("java.util.logging.config.file") == null)
-        //    System.setProperty("java.util.logging.config.file", "etc/logging.properties");
-
-        if ( System.getProperty("log4j.configuration") == null )
-            System.setProperty("log4j.configuration", "file:etc/log4j.properties") ;
-        
         port = Integer.parseInt(System.getProperty("jena.rdfserver.port", defaultPort+"")) ;
         
         String usageMessage = rdfserver.class.getName()+
@@ -106,6 +99,7 @@ public class rdfserver
         }
         // Server threads running elsewhere.
     }
+
 }
 
 /*
