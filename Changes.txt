@@ -1,0 +1,45 @@
+Joseki2 : Changes
+=================
+
+2.2 from 2.1
+------------
+
++ Moved to latest common logging (1.0.3) and log4j (1.2.8)
+
+
+
+2.1 from 2.0
+------------
+
+Configuration files for Joseki 2.0 work with Joseki 2.1.  There is no
+change of namespace nor of vocabulary.
+
+
+Logging::
+
+Logging now uses Jakarta commons logging.  This can be used with Java 1.4
+logging or Log4J.  The standalone server uses Java 1.4 logging even if
+Log4J is available (which it will be as it is part of Jena) by default.
+Set the system property "org.apache.commons.logging.Log" to either
+"org.apache.commons.logging.impl.Jdk14Logger" or
+"org.apache.commons.logging.impl.Log4JLogger" to choose your logging system.
+
+See http://jakarta.apache.org/commons/logging.html
+
+Two new (small) jars 
+    lib/commons-logging-api.jar
+    lib/commons-logging.jar*
+
+Robustness:
+
+Results with illegal URIs now cause an HTTP error code, not send a partial
+model.  Cost (in CPU) is the result shave to be checked before really
+written to the result stream.  This si done by writing the result model
+twice, first to a null output stream.
+
+
+Debugging::
+
+Server debug mode
+
+

@@ -1,0 +1,57 @@
+#!/bin/bash 
+
+# Get webapps from current directory
+
+TOMCAT=5
+
+CATALINA_BASE="$PWD"
+
+LOGCONFIG=${LOGCONFIG:-file:etc/log4j.properties}
+
+LOG1="-Dlog4j.configuration=${LOGCONFIG}"
+
+## LOG2="-Dorg.apache.commons.logging.Log=org.apache.commons.logging.impl.Log4JLogger"
+export JAVA_OPTS="$LOG1 $LOG2"
+
+#export CLASSPATH="$(joseki_path)"
+
+export CATALINA_BASE=$(cygpath --windows "$CATALINA_BASE")
+
+## ========
+
+case "$TOMCAT" in
+    4)
+    cp conf/server-4.xml conf/server.xml
+    export CATALINA_HOME="/home/afs/sys/Tomcat-4"
+    ;;
+    5)
+    cp conf/server-5.xml conf/server.xml
+    export CATALINA_HOME="/home/afs/sys/Tomcat-5"
+    ;;
+    esac
+
+export CATALINA_TMPDIR="$PWD/temp"
+
+# Check for common problem ...
+if [ ! -e "$CATALINA_TMPDIR" ]
+then
+    echo "CATALINA_TMPDIR must exist! (Apache Tomcat/4.1.2N)"
+    echo "CATALINA_TMPDIR=$CATALINA_TMPDIR"
+    exit 1
+    fi
+
+# Causes exception when used with Joseki's provided formatter/handlers.
+# See tomc at classloader HowTo.
+#export CATALINA_OPTS="-Djava.util.logging.config.file=etc/logging.properties"  
+
+# Args: "start" causes run in background
+#       stop with "shutdown"
+#       "run" in the foreground
+
+if [ "$1" = "" ] ; then
+    # Default: run
+    exec ${CATALINA_HOME}/bin/catalina.sh run
+else
+    exec ${CATALINA_HOME}/bin/catalina.sh "$@"
+    fi
+

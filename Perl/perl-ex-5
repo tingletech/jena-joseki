@@ -1,0 +1,39 @@
+#!/bin/env perl
+
+print "==== Example 5 - RDQL query: find author\n" ;
+print "==== NB we get matching subgraph - includes our anwser\n" ;
+
+require Joseki ;
+require RDF::Core::Model ;
+
+my $kbURL = 'http://jena.hpl.hp.com:2020/books' ;
+if ( $#ARGV != -1 )
+{
+    $kbURL = shift ;
+    print "Data source = $kbURL\n" ;
+}
+
+my $rdql = 
+    'SELECT ?z WHERE '. 
+    '(?x dc:title \'Harry Potter and the Philosopher\\\'s Stone\') '.
+    '(?x dc:creator ?z) ' .
+    'USING book for <http://example.org/book/> dc FOR <http://purl.org/dc/elements/1.1/>' ;
+
+my $m = Joseki->rdql($kbURL, $rdql) ;
+
+printModelStmts($m) ;
+
+sub printModelStmts
+{
+    my($model) = @_ ;
+    my $sIter = $model->getStmts;
+    my $stmt = $sIter->getFirst; 
+    for(; defined $stmt ; $stmt = $sIter->getNext )
+    {
+	print "[ ",$stmt->getSubject->getURI,
+              ",\n      ",$stmt->getPredicate->getURI,
+              ",\n      ",$stmt->getObject->getLabel," ]\n" ;
+	
+    }
+    $sIter->close ;
+}

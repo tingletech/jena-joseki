@@ -1,0 +1,120 @@
+<html>
+<head>
+
+  <meta name="author" content="Andy Seaborne"/>
+  <meta name="description" content="" />
+  <meta name="keywords" content="" />
+  <meta http-equiv="Content-Language" content="en-gb">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+
+  <meta name="DC.Creator"    content="Andy Seaborne">
+  <meta name="DC.Publisher"  content="">
+  <meta name="DC.Title"      content="Joseki Installation">
+  <meta name="DC.Rights"
+        content="Copyright 2003, 2004, Hewlett-Packard Development Company LP">
+  <meta name="DC.Identifier"
+        content="http://www.joseki.org/installation.html">
+  <meta name="DC.Format"     content="text/html; charset=iso-8859-1">
+  <meta name="DC.Date"       content="$Date: 2004-11-03 10:14:57 $">
+  <meta name="DC.Type"       content="web page">
+
+  <title>Joseki Installation</title>
+  <link rel="stylesheet" type="text/css" href="StyleSheets/joseki.css">
+
+</head>
+
+<body>
+<h1>Joseki Installation</h1>
+
+<p>The Joseki <a href="downloads.html">download</a> can be used to run Joseki in 
+serveral forms - as a standalone server, as a web application inside Tomcat or 
+Jetty or embedded in a larger application.</p>
+
+<p>There is a full, &quot;download-and-go&quot;
+form that contains everything you need running a standalone server; this
+includes copies of all the JARs files needed from other systems.&nbsp; Other
+packaging may be available. This page assumes you have downloaded the full version.</p>
+<h1>Download structure</h1>
+<p>The Joseki server is packaged under a single directory named &quot;Joseki-&lt;<span style="font-variant: small-caps">version</span>&gt;&quot;,
+where &quot;&lt;<span style="font-variant: small-caps">version</span>&gt;&quot; is the release
+version number. The main directories and files are:</p>
+<ul>
+  <li>lib/ : all the JARs files needed.</li>
+  <li>bin/ : helper scripts to build the classpath and run the server
+  standalone.</li>
+  <li>etc/ : configuration files</li>
+  <li>Data/ : a few data files</li>
+  <li>Examples/ : examples of clients (including scipts for wget and cwm).</li>
+  <li>src/ : the complete source code</li>
+  <li>build.xml : the <a href="http://jakarta.apache.org/ant/">ant</a> build
+  file.</li>
+</ul>
+<h1>Installation process</h1>
+
+<p>Having unpacked the download file, go to the root
+directory of the download.</p>
+
+<p>The default Joseki <a href="configuration.html">
+configuration file</a> is <code>etc/joseki.n3</code>.&nbsp; You wil need to
+write your own to identify the models you wish to publish.&nbsp; The
+installation can be tested with the configuration file in the download: the
+models are &quot;testdata&quot; and &quot;books&quot;.</p>
+
+<h2>Set up</h2>
+
+<p>Set the classpath: put all the JAR files in the <code>lib/</code>
+directory on your classpath.</p>
+
+<pre class="box"># Linux/Unix/Cygwin:
+cd &lt;the root directory&gt;
+export JOSEKIROOT=&quot;$PWD&quot;
+export CLASSPATH=&quot;$(bin/joseki_path)&quot;</pre>
+<pre>&nbsp;</pre>
+<pre class="box">@REM Windows
+cd &lt;the root directory&gt;
+set JOSEKIROOT=&lt;the root directory&gt;
+bin\joseki_path
+set CLASSPATH=%CP%
+</pre>
+<h2>Test</h2>
+<p>Still in that directory, run some of the test suite.</p>
+<pre class="box"> java junit.textui.TestRunner org.joseki.test.JosekiTests</pre>
+<p>This loads configuration from etc/.&nbsp; There should
+be the server log file output on the standard output stream.&nbsp; Some of the
+log messages say &quot;error&quot;; this is expected as the tests are of incorrect requests.</p>
+
+<h2>Publish your model</h2>
+
+<p>You should be able to write a configuration file and run the server:</p>
+
+<pre class="box">java joseki.rdfserver &lt;YourConfigurationFile&gt;</pre>
+<p>The server prints its log file to standard out and this process does not
+terminate until the server exits.</p>
+<p>The server can also be conveniently run with the script <code>rdfserver</code>.</p>
+<h2>Querying a model</h2>
+<p>From another shell or window, you can query the running server.&nbsp; A plain
+GET can be done using <a href="http://www.wget.org/">wget</a>:</p>
+<pre class="box">wget -q -O - http://localhost:2020/&lt;YourModel&gt;</pre>
+<p>and RDQL queries can be executed on the server with (making sure you have the
+classpath set):</p>
+<pre class="box"># Linux/Unix/Cygwin: NB Single quotes on the query
+java joseki.rdfqueryremote --model http://localhost:2020/books \
+     'SELECT * WHERE (?x, ?y, ?z)'
+
+REM Windows
+java joseki.rdfqueryremote --model http://localhost:2020/books \
+     &quot;SELECT * WHERE (?x, ?y, ?z)&quot;
+</pre>
+<h2>Helper Scripts</h2>
+<p>There are scripts in the <code>bin/</code> directory to run each of the applications.&nbsp;
+They need <code>JOSEKIROOT</code> environment variable set but will set the classpath
+themselves. They have not been widely tested.</p>
+<h1>Support</h1>
+<p>Please email <a href="mailto:jena-dev@groups.yahoo.com?subject=[joseki] ">
+jena-dev@groups.yahoo.com</a> with any questions you might have.</p>
+<hr>
+<div class="footer">
+<p align="right">$Date: 2004-11-03 10:14:57 $ // $Revision: 1.1 $ // $Author: andy_seaborne $</p>
+</div>
+</body>
+</html>

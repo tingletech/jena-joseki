@@ -1,0 +1,15 @@
+#!/bin/bash
+
+# Joseki example: get a published RDF model
+# Choose the syntax for the result.
+
+export http_proxy=
+
+MODEL="http://localhost:2020/joseki-example"
+
+## Choose the output format
+## Examples: application/rdf+xml, application/n-triples, application/n3
+
+FORMAT="application/n3"
+
+wget -q -O - --header "Accept: $FORMAT" "$MODEL"

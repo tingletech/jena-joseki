@@ -1,0 +1,19 @@
+#!/bin/bash
+
+## JETTY_HOME=${JETTY_HOME:-/home/afs/sys/Jetty-4}
+JETTY_HOME=${JETTY_HOME:-/home/afs/sys/Jetty-5}
+
+CP="$(joseki_path)"
+
+#DEBUG=-DDEBUG=true
+FIX=-Dorg.mortbay.util.FileResource.checkAliases=false 
+
+CONFIG="${1:-etc/jetty.xml}"
+echo "Configuration: $CONFIG"
+
+LOGCONFIG=${LOGCONFIG:-file:etc/log4j.properties}
+LOGGING="-Dlog4j.configuration=${LOGCONFIG}"
+
+## Run a basic server
+
+java -cp "$CP" $LOGGING $DEBUG $FIX org.mortbay.jetty.Server "$CONFIG"

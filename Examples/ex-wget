@@ -1,0 +1,12 @@
+#!/bin/bash
+
+# Joseki example: get a published RDF model
+
+# Don't use a web proxy for localhost ...
+export http_proxy=
+
+MODEL="http://localhost:2020/joseki-example"
+
+# Get the remote data model (whole thing), print it on stdout.
+
+wget -q -O - "$MODEL"

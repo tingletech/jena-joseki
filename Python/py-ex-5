@@ -1,0 +1,44 @@
+#!/bin/env python
+
+print "==== Example 5 - RDQL query: find author"
+print "==== NB we get matching subgraph - includes our anwser"
+
+import joseki
+import sys
+
+from joseki import JosekiRequest
+from rdflib.URIRef import URIRef
+from rdflib.Namespace import Namespace
+
+# A better name for the "wildcard" in a triple match
+ANY = None
+
+# Declare constants: better to use namespaces
+DC = Namespace("http://purl.org/dc/elements/1.1/")
+dcTitle = DC['title']
+
+# The target model URL
+# This is the Joseki online demo
+modelURL = "http://jena.hpl.hp.com:2020/books"
+if len(sys.argv) > 1:
+    modelURL = sys.argv[1]
+    print "Data source =", modelURL
+
+book1 = URIRef("http://example.org/book/book1")
+book2 = URIRef("http://example.org/book/book2")
+book3 = URIRef("http://example.org/book/book3")
+book4 = URIRef("http://example.org/book/book4")
+book5 = URIRef("http://example.org/book/book5")
+
+# ----------------------------------------
+
+# NB escaping of quote in literal value.
+rdql="SELECT ?z WHERE "+\
+        "(?x dc:title 'Harry Potter and the Philosopher\\'s Stone')"+ \
+        "(?x dc:creator ?z)" + \
+    "USING book for <http://example.org/book/> dc FOR <http://purl.org/dc/elements/1.1/>"
+
+store = joseki.queryRDQL(modelURL, rdql)
+
+for s, p, o in store.triples((ANY,ANY,ANY)):
+   print s, "->" ,p, "->", o

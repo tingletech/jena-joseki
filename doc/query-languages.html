@@ -1,0 +1,263 @@
+<html>
+<head>
+
+  <meta name="author" content="Andy Seaborne"/>
+  <meta name="description" content="" />
+  <meta name="keywords" content="" />
+  <meta http-equiv="Content-Language" content="en-gb">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+
+  <meta name="DC.Creator"    content="Andy Seaborne">
+  <meta name="DC.Publisher"  content="">
+  <meta name="DC.Title"      content="Joseki: Query Languages">
+  <meta name="DC.Rights"
+        content="Copyright 2003, 2004, Hewlett-Packard Development Company LP">
+  <meta name="DC.Identifier"
+        content="http://www.joseki.org/query-languages.html">
+  <meta name="DC.Format"     content="text/html; charset=iso-8859-1">
+  <meta name="DC.Date"       content="$Date: 2004-11-03 10:14:58 $">
+  <meta name="DC.Type"       content="web page">
+
+  <link rel="stylesheet" type="text/css" href="StyleSheets/joseki.css">
+  <title>Joseki Query Languages</title>
+</head>
+
+<body>
+<h1>Joseki: Query Languages</h1>
+
+<p>Joseki supports the dynamic loading of query language
+processors when the server starts.&nbsp; These query modules can be provided
+externally by the application or by some other party.&nbsp; The functionally 
+provided with the Joseki distribution is just such modules dynamically loaded 
+according to teh standard Joseki definitions file.</p>
+
+<p>This page gives the HTTP binding of the query languages. All queries
+return a 
+matching subgraph by default.&nbsp; See also: the Joseki
+<a href="protocol.html">RDF WebAPI</a> description.</p>
+
+<p>The Joseki distribution supports HTTP GET and provides the following query
+languages:</p>
+
+<ul>
+<li>RDQL</li>
+<li>Fetch</li>
+<li>SPO</li>
+</ul>
+
+<p>There are classes in the Java and Python client-libraries to make queries in these
+various query languages without needing to understand the HTTP encoding of them.</p>
+
+<h2>HTTP GET</h2>
+
+<p>A plain HTTP GET (no query string) is handled internally as a query request 
+for the whole model.</p>
+
+<h2>RDQL</h2>
+
+<p>URI: <a href="http://jena.hpl.hp.com/2003/07/query/fetch">
+http://jena.hpl.hp.com/2003/07/query/RDQL</a></p>
+
+<p>See also: <a href="http://jena.sourceforge.net/tutorial/RDQL/index.html">The Jena RDQL Tutorial</a></p>
+
+<table>
+<tr>
+<th>Parameter Name</th>
+<th>Parameter Type/Value</th>
+<th>Description</th>
+</tr>
+<tr>
+<td>lang<br>
+(required)</td>
+<td>Id. of query language </td>
+<td>
+<p style="text-align: left">URI: <a href="http://jena.hpl.hp.com/2003/07/query/RDQL">http://jena.hpl.hp.com/2003/07/query/RDQL</a><br>
+Short forms: &quot;RDQL&quot;, &quot;rdql&quot;</td>
+</tr>
+<tr>
+<td>query<br>
+(required)</td>
+<td>The query, as %encoded string</td>
+<td>
+<p style="text-align: left">The RDQL query to be executed.&nbsp; As with all 
+parameter values, this must be %-encoded.</td>
+</tr>
+<tr>
+<td>format<br>
+(optional)</td>
+<td>&quot;BV&quot;</td>
+<td>
+<p style="text-align: left">Other RDF graphs for the output formats for the 
+result graph.<br>
+The only additional format currently supported is a description of the bound 
+variables, according to
+<a href="http://www.w3.org/2003/03/rdfqr-tests/recording-query-results.html">
+result set vocabulary</a>.<br>
+A Joseki server negotiates the serialization of the&nbsp; RDF by MIME type.</td>
+</tr>
+<tr>
+<td>closure<br>
+(optional)</td>
+<td>&quot;true&quot; or &quot;false&quot;</td>
+<td>
+<p style="text-align: left">
+For each binding of a variable mentioned in the SELECT clause,
+which is bound to a bNode, the graph is augmented with the bNode
+closure from this point.</td>
+</tr>
+</table>
+
+<p>The bNode closure from a bNode is formed by adding all the statement
+with that node as subject, then recursing over any additional bNodes added
+as objects of those statements.  Recursion stops where literals or labelled
+nodes are encountered.  Cycles are detected and handled by
+avoiding infinite loops.</p>
+
+<p>Only one  format&quot; parameter may be given.&nbsp; &quot;BV&quot; is alternatively
+<a href="http://jena.hpl.hp.com/2003/07/query/BV">
+http://jena.hpl.hp.com/2003/07/query/BV</a> </p>
+
+<h2>Fetch</h2>
+
+<p>URI: <a href="http://jena.hpl.hp.com/2003/07/query/fetch">
+http://jena.hpl.hp.com/2003/07/query/fetch</a></p>
+
+<p>The fetch query language implements the idea of
+<a href="RDF_data_objects.html">RDF data objects</a>.
+A query consists of single "r" parameter, whose value is the URIref of the
+data object. Alternatively, a &quot;p&quot; parameter and an object value (&quot;o&quot; for URIref, 
+&quot;v&quot; for string literal) can be used to identify the resource: if there is more 
+than one, fetches on all the resource s are merged.</p>
+
+<p>The exact extent of the RDF returned is dependent on the server.
+Joseki provides a module that provides all statements with the resource as
+subject, then calculates the bNode closure of all objects of 
+these statements. This is used in the
+<a href="examples.html">book database examples<a>.
+</p>
+<table>
+<tr>
+<th>Parameter Name</th>
+<th>Parameter Value</th>
+<th>Description</th>
+</tr>
+<tr>
+<td>lang<br>
+(required)</td>
+<td>Id. of query language </td>
+<td>
+<p style="text-align: left">URI: <a href="http://jena.hpl.hp.com/2003/07/query/fetch">http://jena.hpl.hp.com/2003/07/query/fetch</a><br>
+Short forms: &quot;fetch&quot;</td>
+</tr>
+<tr>
+<td>r<br>
+<a>(either 'p' or 'r')</td>
+<td>URIref</td>
+<td> <p style="text-align: left">
+URIref of the resource</p></td>
+</tr>
+<tr>
+<td>p<br>
+(either 'p' or 'r')</td>
+<td>URIref</td>
+<td> <p style="text-align: left">
+URIref of the property</p></td>
+</tr>
+<tr>
+<td>o<br>
+(either 'o' or 'v' with 'p')</td>
+<td>URIref</td>
+<td style="text-align: left">URIref of the object of the triple pattern.<br>
+Only one of &quot;o&quot; and &quot;v&quot; may be given</td>
+</tr>
+<tr>
+<td>v<br>
+<a>(either 'o' or 'v' with 'p')</td>
+<td>String</td>
+<td style="text-align: left">Literal value as a string.<br>
+Absence or &quot;o&quot; and&quot;v&quot; implies a wildcard match.</td>
+</tr>
+
+
+
+
+</table>
+
+<p>There are two forms of a fetch request: </p>
+
+<h2>SPO</h2>
+
+<p>URI:
+
+<a href="http://jena.hpl.hp.com/2003/07/query/SPO">http://jena.hpl.hp.com/2003/07/query/SPO</a></p>
+
+<p>SPO (also known as "Triples") is an experimental minimal query language.
+An SPO query is a single triple pattern, with optional subject
+(parameter "s"), predicate (parameter "p"), and object (parameter "o", if
+a URIref, parameter "v" for a string literal).  Absence of a parameter
+implies "any" for matching that slot of the triple pattern.</p>
+
+<p>Such a query language is not suitable for all situations but is convenient
+some record oriented vocabularies, for example,
+<a href="http://dublincore.org/documents/2002/07/31/dcmes-xml/">simple Dublin Core</a>.</p>
+
+
+<table>
+<tr>
+<th>Parameter Name</th>
+<th>Parameter Value</th>
+<th>Description</th>
+</tr>
+<tr>
+<td>lang<br>
+(required)</td>
+<td>Id. of query language </td>
+<td style="text-align: left">
+<p style="text-align: left">URI: <a href="http://jena.hpl.hp.com/2003/07/query/SPO">http://jena.hpl.hp.com/2003/07/query/SPO</a><br>
+Short forms: &quot;SPO&quot;, &quot;spo&quot;</td>
+</tr>
+<tr>
+<td>s<br>
+(optional)</td>
+<td>URIref</td>
+<td style="text-align: left">
+URIref of the subject of the triple pattern.<br>
+Absence implies a wildcard match.</td>
+</tr>
+<tr>
+<td>p<br>
+(optional)</td>
+<td>URIref</td>
+<td style="text-align: left">URIref of the subject of the triple pattern.<br>
+Absence implies a wildcard match.</td>
+</tr>
+<tr>
+<td>o<br>
+(optional)</td>
+<td>URIref</td>
+<td style="text-align: left">URIref of the object of the triple pattern.<br>
+Only one of &quot;o&quot; and &quot;v&quot; may be given</td>
+</tr>
+<tr>
+<td>v<br>
+(optional)</td>
+<td>String</td>
+<td style="text-align: left">Literal value as a string.<br>
+Absence or &quot;o&quot; and&quot;v&quot; implies a wildcard match.</td>
+</tr>
+<tr>
+<td>closure<br>
+(optional)</td>
+<td>&quot;true&quot; or &quot;false&quot;</td>
+<td style="text-align: left">Calculate the bNode closure of the matched subgraph.</td>
+</tr>
+</table>
+
+<p>&nbsp;</p>
+
+<hr>
+<div class="footer">
+<p align="right">$Date: 2004-11-03 10:14:58 $ // $Revision: 1.1 $ // $Author: andy_seaborne $</p>
+</div>
+</body>
+</html>

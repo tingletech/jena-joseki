@@ -1,0 +1,40 @@
+#!/bin/env perl
+
+print "==== Example 3 - do a \"triples\" query match on a fixed subject\n" ;
+
+require Joseki ;
+require RDF::Core::Model ;
+require RDF::Core::Resource ;
+
+my $DC = 'http://purl.org/dc/elements/1.1/' ;
+my $dcTitle = $DC.'title' ;
+
+my $kbURL = 'http://jena.hpl.hp.com:2020/books' ;
+if ( $#ARGV != -1 )
+{
+    $kbURL = shift ;
+    print "Data source = $kbURL\n" ;
+}
+
+my $book = 'http://example.org/book/book1' ;
+my $bookRef = new RDF::Core::Resource($book) ;
+
+my $model = Joseki->triples($kbURL, $bookRef, undef, undef) ;
+
+my $dcTitleR = new RDF::Core::Resource($dcTitle) ;
+
+# What statements did we get?
+my $sIter = $model->getStmts(undef, undef, undef) ;
+
+my $statement = $sIter->getFirst; 
+print "Subject: ",$bookRef->getURI, "\n" ;
+for(; defined $statement ; $statement = $sIter->getNext )
+{
+    print $statement->getSubject->getURI," ->"
+	if ( $statement->getSubject->getURI ne $book ) ;
+    print " " ;
+    print $statement->getPredicate->getLabel ;
+    print " ==> " ;
+    print $statement->getObject->getLabel."\n";
+}
+$sIter->close;

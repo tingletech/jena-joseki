@@ -1,0 +1,32 @@
+#!/bin/bash
+
+LIBDIR="$1"
+
+CYGWIN=0
+SEP=':'
+if [ "$(uname -o)" = "Cygwin" ]
+then
+    CYGWIN=1
+    SEP=';'
+    fi
+
+if [ "$LIBDIR" = "" ]
+then
+    echo "No argument passed to make_path" 1>&2
+    exit 1
+    fi
+
+CP="${CP:-}"
+first=1
+[ "$CP" != "" ] && first=0
+
+for jar in "$LIBDIR"/*.jar
+do
+  #echo "Path: $jar"
+  # Order matters here
+  [ "$first" == 0 ] && CP="${CP}${SEP}"
+  [ "$first" == 1 ] && first=0
+  CP="${CP}$jar"
+done
+
+echo $CP

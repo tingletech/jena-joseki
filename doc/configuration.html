@@ -1,0 +1,277 @@
+<html>
+
+<head>
+
+  <meta name="author" content="Andy Seaborne"/>
+  <meta name="description" content="" />
+  <meta name="keywords" content="" />
+  <meta http-equiv="Content-Language" content="en-gb">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+
+  <meta name="DC.Creator"    content="Andy Seaborne">
+  <meta name="DC.Publisher"  content="">
+  <meta name="DC.Title"      content="Joseki Configuration">
+  <meta name="DC.Rights"
+        content="Copyright 2003, 2004, Hewlett-Packard Development Company LP">
+  <meta name="DC.Identifier"
+        content="http://www.joseki.org/configuration.html">
+  <meta name="DC.Format"     content="text/html; charset=iso-8859-1">
+  <meta name="DC.Date"       content="$Date: 2004-11-03 10:14:57 $">
+  <meta name="DC.Type"       content="web page">
+<title>Joseki Configuration</title>
+<link rel="stylesheet" type="text/css" href="StyleSheets/joseki.css">
+
+</head>
+
+<body>
+
+<h1>Joseki Configuration</h1>
+<p>The configuration file states which models this server is hosting, what their 
+external URL should be, what operations can be performed on each model as well 
+as defining some properties of the server itself.&nbsp; The functionality of a 
+server is controlled by the additional <a href="modules.html">modules</a> it 
+loads during start up.</p>
+<p>The important concepts are:</p>
+<ul>
+  <li>Attached Models: details of hosted RDF models.</li>
+  <li>Query processors: functions to execute request in the various the query 
+  languages available.</li>
+</ul>
+<p>See also the page on <a href="running.html">running a Joseki server</a> for 
+how a Joseki server finds it configuration file.&nbsp; The simplest way is to 
+place it in the <code>etc/</code> directory.</p>
+<h2>The Configuration file</h2>
+<p>The configuration file is  in RDF. This document walks through an example below, 
+discussing each of the features. The example uses
+<a href="http://www.w3.org/DesignIssues/Notation3.html">N3</a> because it can give 
+a more readable layout but the server determines the syntax of its actual configuration file 
+based on the file extension: .n3 for N3, .nt for N-TRIPLES, and RDF/XML for anything 
+else. See also <a href="http://notabug.com/2002/n3/spec">Notation3 specification</a>.</p>
+<h3>Header Section</h3>
+<pre class="box">@prefix rdfs:    &lt;http://www.w3.org/2000/01/rdf-schema#&gt; .
+@prefix rdf:     &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt; .
+@prefix module:  &lt;http://joseki.org/2003/06/module#&gt; .
+@prefix joseki:  &lt;http://joseki.org/2003/07/configuration#&gt; .
+
+&lt;&gt; rdfs:comment &quot;Server configuration and data source mapping&quot;.
+</pre>
+<p>Some initial declaration of namespaces and a comment about this file. The 
+namespace for terms defined is <a href="http://joseki.org/2003/07/configuration">
+http://joseki.org/2003/07/configuration</a>; the namespace
+<a href="http://joseki.org/2003/06/module">http://joseki.org/2003/06/module</a> 
+is for <a href="modules.html">loadable modules</a>.</p>
+<h3>Server Section</h3>
+<pre class="box">## Server configuration
+
+&lt;&gt;  rdf:type   joseki:JosekiServer ;
+    joseki:josekiSchema     joseki: ;
+    joseki:alsoInclude      &lt;file:etc/joseki-defs.n3&gt; ;
+    joseki:serverDebug      &quot;true&quot; ;
+    joseki:useContentType   &quot;application/rdf+xml&quot; ;
+    .
+</pre>
+<p>The description of the server itself &ndash; &lt;&gt; is &quot;this&quot; document. The server configuration 
+is a resource with type <code>joseki:JosekiServer</code>.</p>
+<p>The <code>joseki:alsoInclude</code> property identifies another file of convenience 
+declarations; this is an import mechanism and the referenced RDF is also read 
+into the configuration model.</p>
+<p><code>joseki:useContentType</code> sets the default MIME type to be used when 
+the client does not specify one.&nbsp; Known MIME types are 
+&quot;application/rdf+xml&quot;, &quot;application/n3&quot; and &quot;application/n-triples&quot;.</p>
+<p>Debugging mode currently controls:</p>
+<ul>
+  <li>The server will return N3 with MIME type text/plain unless the client 
+  specifically asks for a known type.&nbsp; This means a web browser will 
+  display the results of a query request in text form.</li>
+  <li>The HTTP response has cache-control set to &quot;no-cache&quot; so that intermediate 
+  web proxies and web caches should not keep copies of responses.&nbsp; 
+  Restarting a server, with a changed configuration will immediately show up.</li>
+</ul>
+<h3>Model Section</h3>
+<p>Having set up the server we attach the models to the server:</p>
+<pre class="box">&lt;http://server/model&gt;
+    a   joseki:AttachedModel ;
+    joseki:attachedModel        &lt;file:Data/test_data.n3&gt; ;
+</pre>
+<p>These statements identify the type ('a' is N3 shorthand for <code>rdf:type</code>) and describe where the data for the model 
+should come from. In this case, it is a file which expected to be in 
+<a href="http://www.w3.org/TR/rdf-testcases/#ntriples">N-Triples syntax</a> 
+(the file extension is &quot;.nt&quot;).</p>
+<p>The URL for the model will depend on how and where the web server was run. The <code>
+&quot;http://server/&quot;</code> 
+is replaced by the root of the URLs for this web application or the host name for 
+a standalone server (the standalone server mounts the Joseki web application at 
+&quot;/&quot;). It's like <code>http://localhost/</code>.</p>
+<p>Next, we define the query operations this model supports:</p>
+<pre class="box">    joseki:hasQueryOperation    joseki:BindingGET ;
+    joseki:hasQueryOperation    joseki:BindingFetchClosure ;
+    joseki:hasQueryOperation    joseki:BindingRDQL ;
+</pre>
+<p>Each attached model has a number of query and other operation bindings. A query 
+language binding defines the local name for the query language and the processor code to 
+be used in processing queries in that language. We use the common definitions here 
+for three query processors over HTTP GET, first plain GET which will return the whole 
+model (just as if you had put the RDF file at this URL with a regular web server); 
+the second allows a fetch request on a resource in the model and wil return all 
+the information (the bNode closure of the graph rooted at the resource) about 
+the resource, 
+and the third allows RDQL queries on the model.</p>
+<p>Suppose we are running standalone on host josekihost port 2020. The URL for this 
+model is http://josekihost:2020/model. A fetch request might look like:</p>
+<pre class="box">GET /model?lang=fetch&amp;r=http://example.org/jena/resource1 HTTP/1.1
+Host:josekihost:2020 
+</pre>
+<p>See <a href="protocol.html">the section on the protocol</a>.</p>
+<p>Next, we add some other operations: we allow queries to be done by HTTP POST 
+(such as ones too large for a GET) and to allow a &quot;ping&quot; of the model:</p>
+<pre class="box">     joseki:hasOperation         joseki:BindingQueryModel ;
+     joseki:hasOperation         joseki:BindingPing ;
+     .
+</pre>
+<p>and there's a final '.' because that&#39;s the end of statements about this resource.</p>
+<p>So the complete configuration for this model is:</p>
+<pre class="box">&lt;http://server/model&gt;
+    a   joseki:AttachedModel ;
+    joseki:attachedModel        &lt;file:Data/test_data.n3&gt; ;
+    joseki:hasQueryOperation    joseki:BindingGET ;
+    joseki:hasQueryOperation    joseki:BindingFetchClosure ;
+    joseki:hasQueryOperation    joseki:BindingRDQL ;
+    joseki:hasOperation         joseki:BindingQueryModel ;
+    joseki:hasOperation         joseki:BindingPing ;
+    .
+</pre>
+<h2>External URLs for models</h2>
+<p>The configuration name for a model is <code>http://server/modelname</code> 
+(mode name may be a path). This not the external URL that the client will use.&nbsp; 
+In fact, there are several URLs that will go to the same model because the host 
+server in a URL can be identified as a DNS name, a full DNS name, IP address or 
+be <code>localhost</code>.&nbsp; For example, <code>http://jena/</code> (if DNS domain is hpl.hp.com), 
+<code>http://jena.hpl.hp.com/</code>, <code>http://jena.hpl.hp.com./</code> (final dot)
+and <code>http://192.6.10.31/</code> all go to the same place.  DNS CNAMEs and URL redirection
+complicate the matter still further.<p>When Joseki is deployed under a web 
+application server, the web application name and the server path are inserted 
+into the name.&nbsp; Typically under Tomcat, the URL will look like:<blockquote>
+<p><code>http://host/joseki/model</code></blockquote>
+<p>because the web application name is &quot;joseki&quot; by default. If it is deployed as 
+the root web application, as is the case in the standalone server, no webapp 
+name appears in the external URL.<h2>Adding databases</h2>
+<p>A persistent Jena store can be used as the source of the RDF:</p>
+
+<pre class="box">&lt;http://server/db&gt;
+    a joseki:AttachedModel ;
+    joseki:attachedModel      &lt;jdbc:mysql://host/db&gt; ;
+    joseki:user               &quot;test&quot; ;
+    joseki:password           &quot;password&quot; ;
+    joseki:dbModelName        &quot;model_name&quot; ;
+    joseki:dbType             &quot;MySQL&quot; ;
+    joseki:dbDriver           &quot;com.mysql.jdbc.Driver&quot; ;
+    joseki:hasQueryOperation  joseki:BindingRDQL ;
+   joseki:hasOperation       joseki:BindingPing ;
+    joseki:hasOperation       joseki:BindingQueryModel ;
+    .
+</pre>
+<p>It is probably not a good idea to allow plain GET requests on a database.&nbsp; 
+It might result in <i>very</i> large results.</p>
+
+<h2>RDFS and OWL data</h2>
+<p>So far, attached models have just provided RDF data. If an RDFS vocabulary or 
+OWL ontology is associated with the attached model, then a suitable reasoner is 
+choosen to wrap the data and the attached model has both ground and inferred RDF 
+statements.&nbsp; Queries then execute against the inference model, not the ground 
+data.</p>
+<p>If the <code>joseki:vocabulary</code> property is used, it is an RDFS model:</p>
+<pre class="box">&lt;http://server/model&gt;
+&nbsp;&nbsp;&nbsp; a&nbsp;&nbsp; joseki:AttachedModel ;
+&nbsp;&nbsp;&nbsp;&nbsp;joseki:attachedModel&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;file:somedata.nt&gt; ;
+    joseki:vocabulary           &lt;file:vocab.n3&gt; ;
+    . . .</pre>
+<p>If the <code>joseki:ontology</code> property is used, it is an OWL model:</p>
+<pre class="box">&lt;http://server/model&gt;
+&nbsp;&nbsp;&nbsp; a&nbsp;&nbsp; joseki:AttachedModel ;
+&nbsp;&nbsp;&nbsp;&nbsp;joseki:attachedModel&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;file:somedata.nt&gt; ;
+    joseki:ontology             &lt;file:ontology.rdf&gt; ;
+    . . .</pre>
+<p>Only one of <code>joseki:vocabulary</code> and <code>joseki:ontology</code> 
+can be used on a single attached model. An explicit ontology document manager 
+can be specified (see&nbsp;
+<a href="http://jena.sourceforge.net/ontology/index.html">Jena ontology 
+documentation</a> for full details of Jena Ontology and Reasoning support).</p>
+<pre class="box">&lt;http://server/model&gt;
+&nbsp;&nbsp;&nbsp; a&nbsp;&nbsp; joseki:AttachedModel ;
+&nbsp;&nbsp;&nbsp;&nbsp;joseki:attachedModel&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;file:somedata.nt&gt; ;
+    joseki:ontology             &lt;file:ontology.rdf&gt; ;
+    joseki:ontDocumentManager   &lt;file:ontdocmgr.rdf&gt; ;
+    . . .</pre>
+<p>&nbsp;</p>
+<h2>Defining a binding and a processor inline</h2>
+<p>A configuration does not have to use the standard terms in <code>joseki-defs.n3</code>. Here 
+is an example of  a binding and a processor defined inline.</p>
+<pre class="box">    joseki:hasOperation
+         [ joseki:operationName &quot;ping&quot; ; 
+           module:interface joseki:OpPing ;
+           module:implementation
+               [ module:className
+                  &quot;org.joseki.server.processors.PingProcessor&quot; ]
+         ] ;</pre>
+
+<p>This is a &quot;ping&quot; over HTTP POST on a model.&nbsp; This inline verstion is 
+illustrative.&nbsp; There is a defintion of this in the standard definitions 
+file.</p>
+
+<h2>More on Fetch Operations</h2>
+<p>The RDF to return about a resource is determined by the exact fetch modules 
+loaded.&nbsp; <a href="modules.html">Modules</a> are the extension mechanism 
+whereby a Joseki server can load additional functionality.&nbsp; A few fetch 
+modules are provided in the distribution.</p>
+<p>There is a general fetch query operation handler, which takes descriptions of 
+fetch modules to load:</p>
+<pre class="box">&lt;http://server/model&gt;
+&nbsp;&nbsp;&nbsp; a&nbsp;&nbsp; joseki:AttachedModel ;
+&nbsp;&nbsp;&nbsp;&nbsp;joseki:attachedModel&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;file:Data/test_data.n3&gt; ;
+    joseki:hasQueryOperation    joseki:BindingFetchClosure ;
+    . . .
+
+# From joseki-defs.n3 ...
+joseki:BindingFetchClosure
+    a module:ModuleBinding ;
+    joseki:queryOperationName  &quot;fetch&quot; ;
+    module:implementation      joseki:ImplQueryOperationFetch ;
+    module:interface           joseki:QueryOperationFetch ;
+    module:module              joseki:FetchModuleClosure ;
+    .
+
+joseki:FetchModuleClosure
+    a module:ModuleBinding ;
+    module:interface joseki:FetchClosure ;
+    module:implementation
+        [ module:className
+             &quot;org.joseki.server.processors.fetch.FetchClosure&quot; ] ;
+    .
+</pre>
+<p>Inline, the same functionality can be specified as:</p>
+<pre class="box">&lt;http://server/model&gt;
+&nbsp;&nbsp;&nbsp; a&nbsp;&nbsp; joseki:AttachedModel ;
+&nbsp;&nbsp;&nbsp;&nbsp;joseki:attachedModel&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &lt;file:data.nt&gt; ;
+    joseki:hasQueryOperation
+      [ joseki:queryOperationName  &quot;fetch&quot; ;
+        module:implementation      joseki:ImplQueryOperationFetch ;
+        module:interface           joseki:QueryOperationFetch ;
+        module:module              
+          [ module:interface joseki:FetchClosure ;
+            module:implementation
+                [ module:className
+                    &quot;org.joseki.server.processors.fetch.FetchClosure&quot;
+                ] ;
+      ] ;
+    . . .
+</pre>
+<p>This declares the standard fetch engine implementation &ndash; <code>
+joseki:ImplQueryOperationFetch</code> &ndash; as a query operation of a model.&nbsp; 
+The fetch engine will load the additional module with class FetchClosure. </p>
+
+<hr>
+<div class="footer">
+<p align="right">$Date: 2004-11-03 10:14:57 $ // $Revision: 1.1 $ // $Author: andy_seaborne $</p>
+</div>
+</body>
+</html>

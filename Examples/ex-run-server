@@ -1,0 +1,13 @@
+#!/bin/bash
+
+# Run Joseki with the examples 
+
+# Joseki example: query a remote model.
+
+CONF="$PWD/joseki-examples.n3"
+CP="$(./joseki_path)"
+
+( # Change to Joseki directory to find all the files it needs
+  cd .. ; 
+  java -cp "$CP" joseki.rdfserver "$CONF"
+)

@@ -1,0 +1,140 @@
+@prefix rdfs:   <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix module: <http://joseki.org/2003/06/module#> .
+@prefix joseki: <http://joseki.org/2003/07/configuration#> .
+
+<> rdfs:comment "Server configuration and data source mapping".
+
+## Server configuration
+
+<>  a   joseki:JosekiServer ;
+    joseki:josekiSchema joseki: ;
+    joseki:alsoInclude  <file:etc/joseki-defs.n3> ;
+    joseki:useContentType "application/n3" ;
+    .
+
+# In the servlet interface HttpServletRequest.getURI() returns
+# a string WITHOUT the host name (its a relative URI).
+# so "http://server/" is replaced by "/" 
+# This configuration system does not allow different
+# URIs to be support on different virtual servers (yet).
+
+<http://server/testdata>
+    a   joseki:AttachedModel ;
+    joseki:attachedModel        <file:Data/Test/test_data.nt> ;
+    joseki:hasQueryOperation    joseki:BindingRDQL ;
+    joseki:hasQueryOperation    joseki:BindingGET ;
+    joseki:hasQueryOperation    joseki:BindingFetchClosure ;
+    joseki:hasOperation         joseki:BindingQueryModel ;
+    joseki:hasOperation         joseki:BindingOptions ;
+    joseki:hasOperation         joseki:BindingPing ;
+
+    joseki:namespacePrefix
+        [ joseki:prefix "jena" ; joseki:nsURI <http://jena/> ] ;
+    rdfs:comment "Test data" ;
+    .
+
+# Same except an XML source
+<http://server/testdata2>
+    a   joseki:AttachedModel ;
+    joseki:attachedModel        <file:Data/Test/test_data.rdf> ;
+    joseki:hasQueryOperation    joseki:BindingRDQL ;
+    joseki:hasQueryOperation    joseki:BindingGET ;
+    joseki:hasQueryOperation    joseki:BindingFetchClosure ;
+    joseki:hasQueryOperation    joseki:BindingSPO ;
+    joseki:hasOperation         joseki:BindingQueryModel ;
+    joseki:hasOperation         joseki:BindingOptions ;
+    joseki:hasOperation         joseki:BindingPing ;
+
+    joseki:namespacePrefix
+        [ joseki:prefix "j" ; joseki:nsURI <http://jena/> ] ;
+    rdfs:comment "Test data" ;
+    .
+
+<http://server/empty>
+    a   joseki:AttachedModel ;
+    joseki:attachedModel        <file:Data/Test/empty.nt> ;
+    joseki:hasQueryOperation    joseki:BindingRDQL ;
+    joseki:hasQueryOperation    joseki:BindingGET ;
+    joseki:hasQueryOperation    joseki:BindingFetchClosure ;
+    ## No queries over POST
+    ##joseki:hasOperation         joseki:BindingQueryModel ;
+    joseki:hasOperation         joseki:BindingOptions ;
+    # Define the operation completely inline
+    joseki:hasOperation
+        [ joseki:operationName "ping" ; 
+          module:interface      joseki:OpPing ;
+          module:implementation
+            [ module:className
+                  "org.joseki.server.processors.PingProcessor" ]
+        ] ;    .
+
+
+<http://server/scratch>
+    a   joseki:AttachedModel ;
+    joseki:attachedModel        <file:Data/Test/empty.nt> ;
+    joseki:hasQueryOperation     joseki:BindingRDQL ;
+    joseki:hasQueryOperation     joseki:BindingGET ;
+    ## No queries over POST
+    ##joseki:hasOperation         joseki:BindingQueryModel ;
+    joseki:hasOperation         joseki:BindingAdd ;
+    joseki:hasOperation         joseki:BindingRemove ;
+    joseki:hasOperation         joseki:BindingOptions ;
+
+    # Define the operation completely inline
+    joseki:hasOperation
+        [ joseki:operationName "clear" ; 
+          module:interface      joseki:OpClear ;
+          module:implementation
+            [ a joseki:Operation ;
+              module:className
+                  "org.joseki.test.ClearModelProcessor"
+            ]
+        ] ;
+    rdfs:comment "Initially empty model" ;
+    .
+
+<http://server/fetch-1>
+    a   joseki:AttachedModel ;
+    joseki:attachedModel        <file:Data/Test/fetch-data-1.n3> ;
+    joseki:hasQueryOperation    joseki:BindingFetchClosure ;
+    rdfs:comment "Model for fetch testing" ;
+    .
+
+<http://server/inf-rdfs>
+   a   joseki:AttachedModel ;
+    joseki:attachedModel        <file:Data/Test/inf-rdfs-data.n3> ;
+
+    ## Implies RDFS
+    joseki:vocabulary           <file:Data/Test/inf-rdfs-vocab.n3>  ;
+
+    joseki:hasQueryOperation    joseki:BindingRDQL ;
+    joseki:hasQueryOperation    joseki:BindingFetchClosure ;
+    joseki:hasQueryOperation    joseki:BindingGET ;
+    joseki:hasQueryOperation    joseki:BindingSPO ;
+
+    # Cause test warning because of a Jena bug.
+    # joseki:isImmutable			"true" ;
+    rdfs:comment "Test data for RDFS inferencing" ;
+    .
+    
+<http://server/inf-owl>
+   a   joseki:AttachedModel ;
+    joseki:attachedModel        <file:Data/Test/inf-owl-data.n3> ;
+
+    ## Implies OWL
+    joseki:ontology           <file:Data/Test/inf-owl-ont.n3>  ;
+
+    joseki:hasQueryOperation    joseki:BindingRDQL ;
+    joseki:hasQueryOperation    joseki:BindingFetchClosure ;
+    joseki:hasQueryOperation    joseki:BindingGET ;
+    joseki:hasQueryOperation    joseki:BindingSPO ;
+    # Cause test warning because of a Jena bug.
+    # joseki:isImmutable			"true" ;
+    rdfs:comment "Test data for OWL inferencing" ;
+    .    
+
+# Local Variables:
+# tab-width: 4
+# indent-tabs-mode: nil
+# End:

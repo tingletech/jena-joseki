@@ -1,0 +1,200 @@
+<html>
+
+<head>
+  <meta name="author" content="Andy Seaborne"/>
+  <meta name="description" content="" />
+  <meta name="keywords" content="" />
+  <meta http-equiv="Content-Language" content="en-gb">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+
+  <meta name="DC.Creator"    content="Andy Seaborne">
+  <meta name="DC.Publisher"  content="">
+  <meta name="DC.Title"      content="Joseki RDF Server">
+  <meta name="DC.Rights"
+        content="Copyright 2003, 2004, Hewlett-Packard Development Company LP">
+  <meta name="DC.Identifier"
+        content="http://www.joseki.org/running.html">
+  <meta name="DC.Format"     content="text/html; charset=iso-8859-1">
+  <meta name="DC.Date"       content="$Date: 2004-11-03 10:14:57 $">
+  <meta name="DC.Type"       content="web page">
+
+<title>Running a Joseki Server</title>
+
+<link rel="stylesheet" type="text/css" href="StyleSheets/joseki.css">
+</head>
+
+<body>
+<h1>Running a Joseki Server</h1>
+
+<p>A Joseki server can be run as a standalone server, inside a web application 
+server such as
+<a href="http://jakarta.apache.org/tomcat/">Tomcat</a> or
+<a href="http://jetty.mortbay.org/">Jetty</a> , or embedded inside a larger system.</p>
+
+<p>The Joseki server is a web application so you will need a web application 
+directory structure, or just the WAR file, where your web application server 
+expects it.&nbsp; Joseki comes with
+<a href="http://jetty.mortbay.org/">Jetty</a> and configuration files for the
+<code>webapps/</code> directory and also works with
+<a href="http://jakarta.apache.org/tomcat/">Tomcat</a> as well.</p>
+
+<h2>Running Standalone</h2>
+<p>To run as a standalone server:</p>
+<pre class="box">java -cp ... joseki.rdfserver [--port N] [configFile]</pre>
+<p>Put all the JAR files in the lib/ directory on the classpath. Run like this, the servlet that implements the protocol is running inside a
+<a href="http://jetty.mortbay.org/">Jetty web server</a>.&nbsp; The appropriate 
+JAR files for Jetty are provided in the full distribution or you can download 
+your own.</p>
+<h2>Simple Configuration</h2>
+<p>This section is a brief description of the <a href="configuration.html">
+configuration file</a>.&nbsp; It is fully described <a href="configuration.html">
+elsewhere</a>.&nbsp; Examples are in the directory <code>etc/</code>.</p>
+<pre class="box">@prefix joseki: &lt;http://joseki.org/2003/07/configuration#&gt; .
+
+&lt;http://server/externalURL&gt;
+    a joseki:AttachedModel ;
+    joseki:attachedModel     &lt;file:test_data.rdf&gt; ;
+    joseki:hasQueryOperation joseki:BindingRDQL ;
+    joseki:hasQueryOperation joseki:BindingGET
+    .
+</pre>
+<p>Suppose the server is run at host example.com</p>
+<p>This example puts a single RDF model at URL http://example.com:2020/externalURL 
+(note the http://server/ has been replaced - this keeps configuration files 
+portable). The default port of the server is 2020 - you can change it from the 
+command line with the --port.</p>
+<p>The data for the model comes from a file: test_data.rdf which is assumed to 
+be in XML syntax as the suffix is &quot;.rdf&quot;.</p>
+<p>The operations allowed are queries over HTTP GET: plain GET and RDQL queries.&nbsp; 
+No other operations are allowed.</p>
+<h2>Logging</h2>
+<p>Joseki uses <a href="http://jakarta.apache.org/commons/logging.html">Jakarta 
+Commons logging</a>. You can choose between log4j or Java 1.4 logging. See the
+<a href="logging.html">Joseki logging page</a> for further information.</p>
+<h2>Running as a Web Application</h2>
+<p>Joseki is a single servlet which can be added as a separate web application 
+or within some other web application. In order to limit the size of the download, Joseki does not come fully 
+packaged as a web application but there is support for assembling the right 
+directory layout in the ant build file.</p>
+<h3>Ant Build Targets</h3>
+<p>The following ant targets create the necessary web application, calling it 
+&quot;joseki&quot;.</p>
+<ul>
+  <li><code>ant webapp-deploy</code>: Build the web application in <code>
+  webapps.build/joseki</code> and copy to&nbsp; <code>webapps/joseki</code>.</li>
+  <li><code>ant webapp-clean</code>: Remove the web application but leave in 
+  place the minimal configuration for the standalone server.</li>
+</ul>
+<p>These ant build targets do not recompile Joseki &ndash; they take <code>joseki.jar</code> from 
+the <code>lib/</code> directory. </p>
+<h4>Web application servers and model URLs</h4>
+<p>Note also that the URL for your models is unlikely to be the same as for the 
+standalone server. In the standalone case, Joseki is deployed as the root webapp 
+so there is no webapp name in the URL; under Tomcat (unless you change the 
+configuration in server.xml) it will be deployed as webapp &quot;joseki&quot;, and not the 
+root app, making the URLs look like <a href="http://host:port/joseki/model">
+http://host:port/joseki/model</a>.</p>
+<p></p>
+<h3>Web Application server: Jetty</h3>
+<p>Joseki can run inside <a href="http://jetty.mortbay.org/">Jetty</a>.&nbsp; 
+The standalone server uses Jetty as its embedded web application server. The 
+Joseki and Jena JAR files just need to be included on the classpath.</p>
+<h3>Web Application server: Tomcat</h3>
+<p>Tomcat does not pass CLASSPATH information onto web applications.&nbsp; See 
+the Tomcat 4.1
+<a href="http://jakarta.apache.org/tomcat/tomcat-4.1-doc/class-loader-howto.html">
+Class Loader How-to</a>.&nbsp; You need to construct a web application using ant, or manual 
+lay out the files.&nbsp; The configuration file can be put in <code>etc/</code> 
+or in the web application area under <code>webapps/joseki/etc/</code>.&nbsp; There is an example server.xml file in the <code>conf/</code> directory. The 
+default port number is 2525.</p>
+<p>On first request, the servlet initialises. The standalone server has already 
+constructed a dispatcher and passes it to the servlet; in a web application 
+container, servlet initialization finds no prebuilt dispatcher and builds one 
+itself. This happens on when you first do a query - you will not see any output 
+during tomcat start-up.</p>
+<p>There are some environment variables that control Tomcat (this applies to v4 
+and v5).</p>
+<ul>
+  <li><code>CATALINA_HOME</code> is the root of all the files the server needs to run (e.g. jars 
+files).</li>
+  <li><code>CATALINA_BASE</code> is the current directory for the running server. If you do not set <code>CATALINA_BASE</code>, it defaults to <code>CATALINA_HOME</code>. Tomcat 
+  will look in the <code>webapps/</code> directory in its own installation; 
+  finding the configuration file will be based on that directory.</li>
+  <li>Make sure <code>CATALINA_TMPDIR</code> names an existing, writable 
+  directory &ndash; there are strange errors if Tomcat can't use it.
+  </li>
+</ul>
+
+<p>A simple setup is to run in the Joseki directory with <code>CATALINA_BASE</code> 
+set to the current directory.&nbsp; The provided configuration file is in the 
+right place in <code>etc/joseki.n3</code>.&nbsp; The minium steps needed are:</p>
+
+<ul>
+  <li>Run <code>ant webapp-deploy</code></li>
+  <li>Set <code>CATALINA_BASE</code> to the current directory and export it</li>
+  <li>For logging, set and export<br>
+  <code>JAVA_OPTS=-Dlog4j.configuration=file:etc/log4j.properties</code></li>
+  <li>Run the Tomcat provided <code>startup.bat</code> or <code>startup.sh.</code> 
+  </li>
+</ul>
+
+<p>If you are deploying Joseki in a larger Tomcat installation, it is easier to 
+put the configuration file in the webapp directory area itself: <code>
+???/webapps/joseki/etc/joseki.n3</code>.</p>
+
+<p>You can change the name and location of the configuration file by editting
+<code>web.xml</code>.</p>
+
+<h3>Finding the Joseki Configuration file</h3>
+<p>The Joseki configuration file is a file read from the local filing system.&nbsp; 
+If it is a relative file name, it is searched for in the following places, in 
+order:</p>
+<ol>
+  <li>relative to the current directory (for Tomcat, that is where CATALINA_BASE 
+  identifies)</li>
+  <li>relative to the web application area via the servlet context</li>
+  <li>using the classpath using the Java class loader mechanism</li>
+</ol>
+<p>The default name is <code>etc/joseki.n3</code>.</p>
+<h3>Manual Construction</h3>
+<p>It is easier to use <a href="http://ant.apache.org/">ant</a> to do this but if you do not have ant installed then 
+you can construct the web application manually. The necessary JARs files are in the <code>lib/</code> directory of the 
+distribution.&nbsp; Copy the JARs to <code>webapps/joseki/WEB_INF/lib</code>.&nbsp; 
+Copy <code>etc/webapp-web.xml</code> to <code>webapps/joseki/WEB_INF/web.xml</code></p>
+<p>Include the JARs:
+<code>antlr.jar</code>,
+<code>concurrent.jar</code>,
+<code>icu4j.jar</code>,
+<code>jakarta-oro-2.0.5.jar</code>,
+<code>jena.jar</code>,
+<code>joseki.jar</code>,
+<code>junit.jar</code>,
+<code>log4j-1.2.7.jar</code>,
+<code>rdf-api-2001-01-19.jar</code>,
+<code>xercesImpl.jar</code>,
+<code>xmlParserAPIs.jar</code>.
+</p>
+
+<p>Do <b>not</b> include
+<code>org.mortbay.jetty.jar</code>,
+<code>org.mortbay.jmx.jar</code> (the Jetty runtime),
+<code>jasper-compiler.jar</code>,
+<code>jasper-runtime.jar</code>, (the JSP engine, already part of your web application server),
+nor <code>javax.servlet.jar</code>.</p>
+
+<h3>Differences in the way Joseki is run</h3>
+
+<p>The only difference is when the configuration file is loaded. When run as a 
+standalone server, the configuration file is read during start-up. When run as a 
+web application it is read when the web application is initialised, usually at 
+the time of the first request. </p>
+<h2>Running as an Embedded Server</h2>
+<p>See the class <code>org.joseki.server.RDFServer</code>.&nbsp; The standalone server 
+application is a command line wrapper to creating an instance of this class.</p>
+
+<hr>
+<div class="footer">
+<p align="right">$Date: 2004-11-03 10:14:57 $ // $Revision: 1.1 $ // $Author: andy_seaborne $</p>
+</div>
+</body>
+</html>

@@ -1,0 +1,110 @@
+#!/bin/env perl
+
+print "==== Example 6 - RDQL query / bound variable results\n" ;
+print "==== Get the titles of the books\n" ;
+
+require Joseki ;
+require Joseki::ResultSet ;
+require RDF::Core::Model ;
+require RDF::Core::Resource ;
+require RDF::Core::Literal ;
+require RDF::Core::Model::Serializer ;
+
+my $kbURL = 'http://jena.hpl.hp.com:2020/books' ;
+if ( $#ARGV != -1 )
+{
+    $kbURL = shift ;
+    print "Data source = $kbURL\n" ;
+}
+
+my $rdql = 
+    'SELECT ?book, ?title WHERE '.
+    '(?book dc:title ?title)'.
+    'USING dc FOR <http://purl.org/dc/elements/1.1/>' ;
+
+# Use the underlying classes, not the convenience wrapper functions,
+# and add the format argument to control the presentation/
+
+# Either will do
+$BV="http://jena.hpl.hp.com/2003/07/query/BV" ;
+#$BV="BV" ;
+
+my $request = new Joseki::Request($kbURL, 'RDQL',
+				  query=>$rdql, format=>$BV ) ;
+my $response =$request->execute() ;
+$response->is_success || die "Request to $r$kbURL failed\n" ;
+
+## print $response->content ;
+## print "\n" ;
+
+my $m = $response->model() ;
+
+## Read locally
+## require RDF::Core::Model::Parser ;
+## 
+## my $storage = new RDF::Core::Storage::Memory;
+## my $m = new RDF::Core::Model(Storage => $storage) ;
+## my $parser = new RDF::Core::Model::Parser(Model => $m ,
+## 					  Source=>'data.rdf', 
+## 					  SourceType=>'file',
+## 					  BaseURI=>'urn:unknown#');
+## $parser->parse ;
+
+
+
+## ## Write put model.
+## my $xml = '' ;
+## my $serializer = new RDF::Core::Model::Serializer(Model=>$m,
+## 						  Output=>\$xml,
+## 						  BaseURI => 'URI://BASE/'
+## 						  );
+# Fails to indent the XML - why?
+## $serializer->serialize;
+## print "$xml\n";
+## 
+
+# Print result set
+
+my $rs = new Joseki::ResultSet($m) ;
+$rs->iter ;
+
+for (  ; $rs->hasNext ; )
+{
+    my $rb = $rs->next ;
+
+    my $book = $rb->get('book') ;
+    my $title = $rb->get('title')->getValue ;
+
+    print $book->getURI,"  has title\n" ;
+    print "    '$title'\n" ;
+
+##     for $var ($rb->vars())
+##     {
+## 	my $val = $rb->get($var) ;
+## 	print '  ' ;
+## 	print "$var = " ;
+## 	print $val->getLabel ; 
+## 	print "\n" ;	
+##     }
+}
+
+
+
+## 
+## printModelStmts($m) ;
+## 
+## sub printModelStmts
+## {
+##     my($model) = @_ ;
+##     my $sIter = $model->getStmts;
+##     my $stmt = $sIter->getFirst; 
+##     for(; defined $stmt ; $stmt = $sIter->getNext )
+##     {
+## 	print "[ ",$stmt->getSubject->getURI,
+##               ",\n      ",$stmt->getPredicate->getURI,
+##               ",\n      ",$stmt->getObject->getLabel," ]\n" ;
+## 	
+##     }
+##     $sIter->close ;
+## }
+

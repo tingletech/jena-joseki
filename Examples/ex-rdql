@@ -1,0 +1,9 @@
+#!/bin/bash
+
+# Joseki example: query a remote model.
+MODEL="http://localhost:2020/joseki-example"
+QUERY="SELECT * WHERE (?x dc:title ?y) USING dc FOR <http://purl.org/dc/elements/1.1/>"
+
+# Ask the query
+
+java -cp "$(./joseki_path)" joseki.rdfqueryremote --model "$MODEL" "$QUERY"
