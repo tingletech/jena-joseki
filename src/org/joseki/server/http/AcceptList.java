@@ -15,7 +15,7 @@ import org.apache.commons.logging.*;
 /** A class to handle a list of accept types
  * 
  * @author Andy Seaborne
- * @version $Id: AcceptList.java,v 1.1 2004-11-26 16:58:57 andy_seaborne Exp $
+ * @version $Id: AcceptList.java,v 1.2 2004-11-27 15:57:08 andy_seaborne Exp $
  */
 
 public class AcceptList
@@ -43,16 +43,23 @@ public class AcceptList
     
     public boolean accepts(AcceptItem aItem)
     {
+        return match(aItem) != null ;
+    }
+    
+    public AcceptItem match(AcceptItem aItem)
+    {
         for ( Iterator iter = list.iterator() ; iter.hasNext() ; )
         {
             AcceptRange i = (AcceptRange)iter.next() ;
             //System.out.println("Check: "+i+" accepts "+aItem) ;
-            // Not commutative
             if ( i.getAcceptItem().accepts(aItem) )
-                return true ;
+                return i.getAcceptItem() ;
         }
-        return false ;
+        return null ;
     }
+    
+    
+    
     
     public AcceptItem first()
     {

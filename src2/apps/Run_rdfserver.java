@@ -18,8 +18,17 @@ public class Run_rdfserver
     public static void main(String[] args)
     {
         String a[] = {"joseki-dev.n3"} ;
-        
+        boolean x = Thread.currentThread().isDaemon() ;
         rdfserver.main(a) ;
+        
+        // Hmm -- exiting causes an exit even though other treads are around on some systems.
+        // So the other threads must be daemon threads.  But why?
+        
+        
+//        for ( ; ; )
+//            try {
+//                Runtime.getRuntime().wait(10000) ;
+//            } catch (Exception ex) {}
     }
     
     static void setPropertyDefault(String name, String value)
