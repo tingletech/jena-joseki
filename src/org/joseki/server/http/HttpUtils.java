@@ -18,14 +18,30 @@ import org.joseki.util.Convert;
 /** org.joseki.server.http.HttpUtils
  * 
  * @author Andy Seaborne
- * @version $Id: HttpUtils.java,v 1.4 2004-11-12 20:01:02 andy_seaborne Exp $
+ * @version $Id: HttpUtils.java,v 1.5 2004-11-17 18:27:46 andy_seaborne Exp $
  */
 
 public class HttpUtils
 {
-    static public final String ENC_UTF8 = "UTF-8" ;
+    static public final String ENC_UTF8 = "utf-8" ;
+
+    /// Relevant headers:
+    //  "Accept", "Accept-Encoding", "Accept-Charset"
+    // Setting: Content-type, Content-Encoding
     
-    public static String chooseMimeType(HttpServletRequest httpRequest)
+    
+//    public static String setContentHeaders(HttpServletRequest httpRequest, HttpServletResponse httpResponse)
+//    {
+//        
+//    }
+    
+    public static String chooseCharset(HttpServletRequest httpRequest)
+    {
+        // Negotiation!
+        return ENC_UTF8 ;
+    }
+    
+    public static String chooseContentType(HttpServletRequest httpRequest)
     {
         String mimeType = Joseki.serverContentType ;
         
@@ -79,6 +95,15 @@ public class HttpUtils
         return sbuff.toString() ;
     }
 
+    //static String fmtRequestLong(HttpServletRequest request) {}
+        //"Accept", "Accept-Encoding", "Accept-Charset"    
+    
+    
+    
+    
+    
+    
+    
     public static String httpResponseCode(int responseCode)
     {
         switch (responseCode)

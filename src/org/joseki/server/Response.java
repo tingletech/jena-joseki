@@ -22,7 +22,7 @@ import javax.servlet.http.HttpServletResponse;
 
 /** Abstaction of an operation response
  * @author      Andy Seaborne
- * @version     $Id: Response.java,v 1.14 2004-11-17 14:47:35 andy_seaborne Exp $
+ * @version     $Id: Response.java,v 1.15 2004-11-17 18:27:46 andy_seaborne Exp $
  */
 public class Response extends ExecutionError
 {
@@ -82,7 +82,10 @@ public class Response extends ExecutionError
             return ;                  
         }
 
-        String mimeType = HttpUtils.chooseMimeType(httpRequest);
+        // HTTP-isms
+        // Set content-type
+        
+        String mimeType = HttpUtils.chooseContentType(httpRequest);
         setMimeType(mimeType) ;
         startResponse() ;
         

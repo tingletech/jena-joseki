@@ -5,27 +5,24 @@
 
 package org.joseki.util;
 
-//import com.hp.hpl.jena.rdf.model.* ;
+
 import org.apache.commons.logging.*;
 
 /**
  * Handle HTTP content type
  * 
  * @author Andy Seaborne
- * @version $Id: HttpContentType.java,v 1.1 2004-11-03 10:15:04 andy_seaborne Exp $
+ * @version $Id: HttpContentType.java,v 1.2 2004-11-17 18:27:46 andy_seaborne Exp $
  */
 
 public class HttpContentType
 {
-    static Log logger = LogFactory.getLog(HttpContentType.class);
+    static Log log = LogFactory.getLog(HttpContentType.class);
 
     String mediaType = null;
     String params[] = null;
     String charset = null;
 
-    // See Accept/Accept-Charset: http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html
-    // See http://www.w3.org/Protocols/rfc2616/rfc2616-sec3.html (3.4 and 3.7)
-    
     public HttpContentType(String s)
     {
         parse(s);
@@ -40,15 +37,26 @@ public class HttpContentType
             charset = defaultCharset;
     }
 
-    public String getMediaType()
-    {
-        return mediaType;
-    }
+    /**
+     * @return Media type as string
+     */
+    public String getMediaType() { return mediaType; }
 
-    public String getCharset()
-    {
-        return charset;
-    }
+    /**
+     * @param charset The charset to set.
+     */
+    public void setCharset(String charset) { this.charset = charset; }
+    
+    /**
+     * @return charset as string
+     */
+    public String getCharset() { return charset; }
+
+    /**
+     * @param mediaType The mediaType to set.
+     */
+    public void setMediaType(String mediaType) { this.mediaType = mediaType; }
+    
     
     // Ignore misc params.
     public String toString()

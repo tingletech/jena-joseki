@@ -24,7 +24,7 @@ import com.hp.hpl.jena.query.* ;
 /** SPARQL operations
  * 
  * @author  Andy Seaborne
- * @version $Id: SPARQL.java,v 1.7 2004-11-17 14:47:36 andy_seaborne Exp $
+ * @version $Id: SPARQL.java,v 1.8 2004-11-17 18:27:46 andy_seaborne Exp $
  */
 
 public class SPARQL extends QueryProcessorCom
@@ -106,7 +106,7 @@ public class SPARQL extends QueryProcessorCom
 
             // SELECT / RDF results, CONSTRUCT or DESCRIBE
             
-            Model results = queryToModel(query) ;
+            Model results = execQueryModel(query) ;
             response.doResponse(results) ;
         }
         catch (QueryException qEx)
@@ -117,7 +117,7 @@ public class SPARQL extends QueryProcessorCom
         }
     }
 
-    private Model queryToModel(Query query) throws QueryExecutionException
+    private Model execQueryModel(Query query) throws QueryExecutionException
     {
         try {
             QueryExecution qe = QueryFactory.createQueryExecution(query) ;
