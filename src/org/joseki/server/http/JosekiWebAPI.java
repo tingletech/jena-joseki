@@ -22,7 +22,7 @@ import org.joseki.Joseki ;
 
 /** The servlet class.
  * @author  Andy Seaborne
- * @version $Id: JosekiWebAPI.java,v 1.8 2004-11-14 18:38:58 andy_seaborne Exp $
+ * @version $Id: JosekiWebAPI.java,v 1.9 2004-11-15 12:18:15 andy_seaborne Exp $
  */
 
 public class JosekiWebAPI extends HttpServlet implements Connector
@@ -245,11 +245,13 @@ public class JosekiWebAPI extends HttpServlet implements Connector
                 reqName = reqName.substring("op=".length()) ;
             
             try {
+                
                 Request opRequest =
-                    dispatcher.createOperation(uri, requestURL, reqName) ;
+                //    dispatcher.createOperation(uri, requestURL, reqName) ;
+                    new RequestImpl(uri, requestURL, reqName, null) ;
+                Response opResponse = new Response(opRequest, httpRequest, httpResponse) ;
                 httpRequestParser.setParameters(opRequest, httpRequest) ;
                 httpRequestParser.setArgs(opRequest, httpRequest) ;
-                Response opResponse = new Response(opRequest, httpRequest, httpResponse) ;
                 execute(opRequest, opResponse) ;  
             } catch (ExecutionException execEx)
             {
@@ -306,7 +308,7 @@ public class JosekiWebAPI extends HttpServlet implements Connector
                         Response opResponse = new Response(opRequest, httpRequest, httpResponse) ;
                         opRequest.setParam("baseURL", baseURL) ;
                         //msg("Options: URI="+ req.getModelURI() + "  Request="+req.getName()) ;
-                        log.info("Options: URI="+ opRequest.getModelURI() + "  Request="+opRequest.getName()) ;
+                        log.info("Options: URI="+ opRequest.getModelURI() + "  Request="+opRequest.getOpName()) ;
                         Model resultModel = dispatcher.getOptionsModel(baseURL);
                         opResponse.doResponse(resultModel) ;
                         //doResponse(resultModel, opHostRequest, httpRequest, httpResponse) ;
@@ -371,15 +373,40 @@ public class JosekiWebAPI extends HttpServlet implements Connector
     
     protected void execute(Request request, Response response)
     {
-        Model resultModel = null ;
-        String uri = request.getModelURI() ;
-        if ( request.getName().equals("query") )
-            log.debug("URI="+ uri + "  Query="+request.getParam("lang")) ;
-        else
-            log.debug("URI="+ uri + "  Request="+request.getName()) ;
+       try {
+            String uri = request.getModelURI() ;
+            if ( request.getOpName().equals("query") )
+                log.debug("URI="+ uri + "  Query="+request.getParam("lang")) ;
+            else
+                log.debug("URI="+ uri + "  Request="+request.getOpName()) ;
+    
+            // Find target and processor
+            
+            SourceModel aModel = dispatcher.findModel(uri);
+    
+            if ( aModel == null )
+                throw new ExecutionException(ExecutionError.rcNoSuchURI, "Not found: " + uri);
+            
+            ProcessorModel proc = null ; 
+            if ( request.getOpName().equals("query") && request.getQueryLanguage() != null )
+                proc = dispatcher.findQueryProcessor(aModel, request.getQueryLanguage()) ;
+            else
+                proc = dispatcher.findProcessor(aModel, request.getOpName()) ;
+            
+            if ( proc == null )
+            {
+                proc = dispatcher.findProcessor(aModel, request.getOpName()) ; // DEBUG
+                throw new ExecutionException(ExecutionError.rcOperationNotSupported, "Request not found: " + request.getOpName());
+            }
+    
+            request.setDispatcher(dispatcher) ;
+            request.setSourceModel(aModel) ;
+            request.setProcessor(proc) ;
+            
+            // Execute
 
-        try {
-            resultModel = dispatcher.exec(request) ;
+            //dispatcher.exec(request, response) ;
+            Model resultModel = dispatcher.exec(request) ;
             response.doResponse(resultModel) ;
             //doResponse(resultModel, req, httpRequest, httpResponse);
         } catch (ExecutionException execEx)
@@ -426,7 +453,7 @@ public class JosekiWebAPI extends HttpServlet implements Connector
     {
         try
         {
-            log.debug("Successful operation: URI = " + opRequest.getModelURI()+" : Request = "+opRequest.getName() ) ;
+            log.debug("Successful operation: URI = " + opRequest.getModelURI()+" : Request = "+opRequest.getOpName() ) ;
             try
             {
                 if ( httpSerializer.sendResponse(resultModel, opRequest,

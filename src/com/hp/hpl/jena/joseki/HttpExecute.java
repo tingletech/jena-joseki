@@ -11,6 +11,7 @@ import java.io.* ;
 
 import com.hp.hpl.jena.rdf.model.*;
 import org.joseki.*;
+import org.joseki.util.HttpContentType ;
 
 /** Common code for performing an HTTP operation (not query) on a remote model.
  *  
@@ -20,7 +21,7 @@ import org.joseki.*;
  *  @see HttpOptions
  *  @see HttpQuery
  * @author      Andy Seaborne
- * @version     $Id: HttpExecute.java,v 1.1 2004-11-03 10:14:56 andy_seaborne Exp $
+ * @version     $Id: HttpExecute.java,v 1.2 2004-11-15 12:18:12 andy_seaborne Exp $
  */
 
 public class HttpExecute
@@ -158,9 +159,11 @@ public class HttpExecute
     
     protected Model onResult(String mediaType, InputStream in)
     {
+        HttpContentType cType = new HttpContentType(mediaType) ;
+        
         // Normal result is a model.
         Model resultModel = ModelFactory.createDefaultModel() ;
-        String rType = Joseki.getWriterType(mediaType) ;
+        String rType = Joseki.getWriterType(cType.getMediaType()) ;
         
         if ( false )
         {
@@ -185,7 +188,7 @@ public class HttpExecute
             }        
             catch (IOException ioEx) { System.err.println("IOException: "+ioEx) ; return null ; }
         }
-        resultModel.read(in, "http://somewhere/", Joseki.getWriterType(mediaType)) ;
+        resultModel.read(in, "http://somewhere/", Joseki.getWriterType(cType.getMediaType())) ;
         hasExecuted = true ;
         return resultModel ;
     }

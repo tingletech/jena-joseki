@@ -18,7 +18,7 @@ import com.hp.hpl.jena.vocabulary.* ;
  *  operation processors and keeps the mapping from URI to model.
  * 
  * @author      Andy Seaborne
- * @version     $Id: Dispatcher.java,v 1.3 2004-11-11 11:52:27 andy_seaborne Exp $
+ * @version     $Id: Dispatcher.java,v 1.4 2004-11-15 12:18:02 andy_seaborne Exp $
  */
 public class Dispatcher
 {
@@ -49,11 +49,13 @@ public class Dispatcher
     
     public Request createOperation(String uri, String url, String opName) throws ExecutionException
     {
+        // FIXME Remove this - dispatcher shoudl not create requests
         return createRequest(uri, url, opName, true) ;
     }
     
     public synchronized Request createRequest(String uri, String url, String opName, boolean modelMustExist) throws ExecutionException
     {
+        // FIXME Remove this - dispatcher shoudl not create requests
         SourceModel aModel = findModel(uri);
         ProcessorModel proc = null ;
         if ( aModel == null )
@@ -67,7 +69,10 @@ public class Dispatcher
             if ( proc == null )
                   throw new ExecutionException(ExecutionError.rcOperationNotSupported, "Request not found: " + opName);
         }
-        Request req = new RequestImpl(uri, url, opName, this, aModel, proc) ;
+        Request req = new RequestImpl(uri, url, opName, null) ;
+        req.setDispatcher(this) ;
+        req.setSourceModel(aModel) ;
+        req.setProcessor(proc) ;
         return req ;
     }
     
@@ -90,7 +95,10 @@ public class Dispatcher
                 throw new ExecutionException(ExecutionError.rcQueryExecutionFailure, "Null query language name") ;
             throw new ExecutionException(ExecutionError.rcNoSuchQueryLanguage, "No such query language: "+langName) ;
         }
-        Request req = new RequestImpl(uri, url, "query", this, aModel, qProc) ;
+        Request req = new RequestImpl(uri, url, "query", langName) ;
+        req.setDispatcher(this) ;
+        req.setSourceModel(aModel) ;
+        req.setProcessor(qProc) ;
         req.setParam("lang", langName) ;
         return req ;
     }
@@ -102,16 +110,26 @@ public class Dispatcher
     
     public Model exec(Request request) throws ExecutionException
     {
+        // FIXME Remove me!
         return request.getProcessor().exec(request) ;
     }
     
-    private ProcessorModel findProcessor(SourceModel aModel, String opName)
+    public void exec(Request request, Response response) throws ExecutionException
+    {
+        if ( request.getProcessor() == null )
+            throw new ExecutionException(Response.rcInternalError, "No processor given in Dispatcher.exec") ;
+        
+        Model resultModel = request.getProcessor().exec(request) ;
+        response.doResponse(resultModel) ;
+    }
+    
+    public ProcessorModel findProcessor(SourceModel aModel, String opName)
     {
         ProcessorModel proc = aModel.getProcessorRegistry().findProcessor(opName);
         return proc ;
     }
 
-    private QueryProcessorModel findQueryProcessor(SourceModel aModel, String langName)
+    public QueryProcessorModel findQueryProcessor(SourceModel aModel, String langName)
     {
         QueryProcessorModel qProc = aModel.getProcessorRegistry().findQueryProcessor(langName);
         return qProc ;
@@ -146,6 +164,8 @@ public class Dispatcher
                 Resource r = optModel.createResource(uri) ;
                 optModel.add(r, RDF.type, JosekiVocab.AttachedModel) ;
             }
+            optModel.setNsPrefix("rdf", RDF.getURI()) ;
+            optModel.setNsPrefix("joseki", JosekiVocab.getURI()) ;
             return optModel ;
         } catch (RDFException rdfEx)
         {

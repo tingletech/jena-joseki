@@ -23,7 +23,7 @@ import javax.servlet.http.HttpServletResponse ;
  *  Tests must leave the server and its models unchanged.
  * 
  * @author      Andy Seaborne
- * @version     $Id: JosekiClientLibraryTests.java,v 1.3 2004-11-03 15:31:03 andy_seaborne Exp $
+ * @version     $Id: JosekiClientLibraryTests.java,v 1.4 2004-11-15 12:18:15 andy_seaborne Exp $
  */
 public class JosekiClientLibraryTests extends TestSuite
 {
@@ -507,7 +507,8 @@ public class JosekiClientLibraryTests extends TestSuite
         {
             HttpOptions httpOptions = new HttpOptions(modelURI) ;
             Model  resultModel = httpOptions.exec() ;
-            assertTrue(resultModel.size() != 0 ) ;
+            assertNotNull( "Result model is null", resultModel) ;
+            assertTrue( "Zero size OPTIONs model: "+resultModel.size(), resultModel.size() != 0 ) ;
             return resultModel ;    
         }
     }

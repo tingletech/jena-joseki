@@ -14,17 +14,18 @@ import java.util.* ;
  *  provides methods to create the operation as well as meet
  *  the Request interface.
  * @author      Andy Seaborne
- * @version     $Id: RequestImpl.java,v 1.3 2004-11-12 20:00:34 andy_seaborne Exp $
+ * @version     $Id: RequestImpl.java,v 1.4 2004-11-15 12:18:02 andy_seaborne Exp $
  */
 public class RequestImpl implements Request
 {
     // Where and how the operation will be performed
     ProcessorModel processor ;
-    SourceModel modelSource ;
+    SourceModel sourceModel ;
     Dispatcher dispatcher ;
     
     // How the operation was described.
     String opName = null;
+    String queryLang = null;
     String modelURI = null ;
     String requestURL = null ;
 
@@ -34,14 +35,16 @@ public class RequestImpl implements Request
     List args = new ArrayList();
     Map params = new HashMap();
 
-    public RequestImpl(String uri, String url, String name, Dispatcher d, SourceModel aModel, ProcessorModel proc)
+    public RequestImpl(String uri, String url, String name, String qName)
+                       //, Dispatcher d, SourceModel aModel, ProcessorModel proc)
     {
         modelURI = uri ;
         requestURL = url ;
         opName = name ;
-        dispatcher = d ;
-        modelSource = aModel ;
-        processor = proc ;
+        queryLang = qName ;
+        //dispatcher = d ;
+        //sourceModel = aModel ;
+        //processor = proc ;
     }
 
     public boolean  takesArg() { return true ; }
@@ -58,14 +61,20 @@ public class RequestImpl implements Request
     
     public void addArg(Object m) { args.add(m) ; }
 
-    public String getName() { return opName ; }
+    public String getOpName() { return opName ; }
+    public String getQueryLanguage() { return queryLang ; }
+
     public String getModelURI() { return modelURI ; }
     public String getRequestURL() { return requestURL ; }
 
-    public SourceModel getSourceModel() { return modelSource ;  }
+    public SourceModel getSourceModel() { return sourceModel ;  }
+    public void setSourceModel(SourceModel src) { sourceModel = src ;  }
+    
     public ProcessorModel getProcessor() { return processor ;  }
     public void setProcessor(ProcessorModel proc) { processor = proc ;  }
+
     public Dispatcher getDispatcher() { return dispatcher ; }
+    public void setDispatcher(Dispatcher d) { dispatcher = d ; }
 
     public Map getParams() { return params ; }
     public String getParam(String param) { return (String)params.get(param); }

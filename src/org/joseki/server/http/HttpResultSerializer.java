@@ -19,7 +19,7 @@ import com.hp.hpl.jena.shared.JenaException;
 /** Extracting operation data from HTTP servlet requests and formatting results for sending back.
  * 
  * @author      Andy Seaborne
- * @version     $Id: HttpResultSerializer.java,v 1.4 2004-11-14 18:38:58 andy_seaborne Exp $
+ * @version     $Id: HttpResultSerializer.java,v 1.5 2004-11-15 12:18:15 andy_seaborne Exp $
  */
 public class HttpResultSerializer
 {
@@ -119,7 +119,10 @@ public class HttpResultSerializer
         // Managed to write it.
         
         log.trace("HTTP response 200") ;
-        try { rdfw.write(resultModel, httpResponse.getOutputStream(), null) ; }
+        try {
+            rdfw.write(resultModel, httpResponse.getOutputStream(), null) ;
+            httpResponse.getOutputStream().flush() ;
+        }
         catch (IOException ex) { log.warn("Failed to write response", ex) ; }
         return true ;
     }

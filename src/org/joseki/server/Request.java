@@ -11,12 +11,15 @@ import java.util.* ;
 /** Abstaction of an operation request on a model.
  *  The work is done by a processor that accepts the request.
  * @author      Andy Seaborne
- * @version     $Id: Request.java,v 1.2 2004-11-03 17:37:42 andy_seaborne Exp $
+ * @version     $Id: Request.java,v 1.3 2004-11-15 12:18:02 andy_seaborne Exp $
  */
 public interface Request
 {
-    public String getName() ;
+    public String getOpName() ;
+    public String getQueryLanguage() ;
     public SourceModel getSourceModel() ;
+    public void setSourceModel(SourceModel srcModel) ;
+    
     public ProcessorModel getProcessor() ;
     public void setProcessor(ProcessorModel proc) ;
     
@@ -31,7 +34,9 @@ public interface Request
      * @return String The URL used in the request
      */
     public String getRequestURL() ;
+    
     public Dispatcher getDispatcher() ;
+    public void setDispatcher(Dispatcher dispatcher) ;
 
     // The named parameters to the operation
     // Map is String => String

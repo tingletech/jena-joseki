@@ -17,7 +17,7 @@ import com.hp.hpl.jena.rdf.model.*;
 /** Extracting of information from incomiong HTTP servlet request.
  * 
  * @author      Andy Seaborne
- * @version     $Id: HttpRequestParser.java,v 1.3 2004-11-04 15:44:59 andy_seaborne Exp $
+ * @version     $Id: HttpRequestParser.java,v 1.4 2004-11-15 12:18:15 andy_seaborne Exp $
  */
 public class HttpRequestParser
 {
@@ -25,25 +25,28 @@ public class HttpRequestParser
     
     public void setArgs(Request request, HttpServletRequest httpRequest) throws ExecutionException
     {
-        // Must do own parameter parsing because standard Java code
-        // may read body thinking it is a form.
-        if ( request.getProcessor().argsNeeded() == 0)
-            return;
-    
-        if (request.getProcessor().argsNeeded() > 1)
-        {
-            throw new ExecutionException(ExecutionError.rcOperationNotSupported,
-                    "ProcessorModel error: needs more args",
-                    "ProcessorModel needs "+request.getProcessor().argsNeeded()+" args - unsupported") ;
-        }
-    
-    
+        // Can run before processor is selected
+        // Hence number of arguments is a feature of the request, not the processor
+        
+//        // Must do own parameter parsing because standard Java code
+//        // may read body thinking it is a form.
+//        if ( request.getProcessor().argsNeeded() == 0)
+//            return;
+//    
+//        if (request.getProcessor().argsNeeded() > 1)
+//        {
+//            throw new ExecutionException(ExecutionError.rcOperationNotSupported,
+//                    "ProcessorModel error: needs more args",
+//                    "ProcessorModel needs "+request.getProcessor().argsNeeded()+" args - unsupported") ;
+//        }
+//    
+//    
         // ( operation.getProcessor().argsNeeded() == 1)
         try{
             int len = httpRequest.getContentLength();
             if ( len == 0 )
-                // No content
-                log.warn("No data supplied - Content-length: "+len) ;
+                return ;
+                //log.warn("No data supplied - Content-length: "+len) ;
             
             HttpContentType ct = new HttpContentType(httpRequest.getContentType(),
                                                      "RDF/XML", HttpUtils.ENC_UTF8) ;
@@ -92,9 +95,10 @@ public class HttpRequestParser
                 "Argument error",
                 null);
         }
-        if ( request.getDataArgs().size() != request.getProcessor().argsNeeded() )
-            log.warn("Failed to get the argument(s)") ;
+//        if ( request.getDataArgs().size() != request.getProcessor().argsNeeded() )
+//            log.warn("Failed to get the argument(s)") ;
     }
+    
     public void setParameters(Request request, HttpServletRequest httpRequest)
     {
         String s = httpRequest.getQueryString() ;
