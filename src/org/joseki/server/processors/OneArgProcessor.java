@@ -12,7 +12,7 @@ import com.hp.hpl.jena.rdf.model.*;
 
 /** General template for any operation that takes exactly one model as argument
  * @author      Andy Seaborne
- * @version     $Id: OneArgProcessor.java,v 1.1 2004-11-03 10:15:03 andy_seaborne Exp $
+ * @version     $Id: OneArgProcessor.java,v 1.2 2004-11-03 17:37:55 andy_seaborne Exp $
  */
 public abstract class OneArgProcessor extends ProcessorCom
 {
@@ -24,10 +24,10 @@ public abstract class OneArgProcessor extends ProcessorCom
         super(n, lockNeeded, mutating) ;
     }
 
-    public int argsNeeded() { return Processor.ARGS_ONE ; }
+    public int argsNeeded() { return ProcessorModel.ARGS_ONE ; }
 
     /**
-     * @see org.joseki.server.Processor#exec(Request)
+     * @see org.joseki.server.ProcessorModel#exec(Request)
      */
     public Model exec(Request request) throws ExecutionException
     {

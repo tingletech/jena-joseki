@@ -16,12 +16,12 @@ import com.hp.hpl.jena.joseki.* ;
 import com.hp.hpl.jena.rdf.model.* ;
 //import com.hp.hpl.jena.rdf.model.impl.* ;
 //import com.hp.hpl.jena.vocabulary.* ;
-import com.hp.hpl.jena.rdql.* ;
+import com.hp.hpl.jena.query.* ;
 
 /** Command line application to issue queries against a remote model.
  *
  * @author  Andy Seaborne
- * @version $Id: rdfqueryremote.java,v 1.2 2004-11-03 14:28:28 andy_seaborne Exp $
+ * @version $Id: rdfqueryremote.java,v 1.3 2004-11-03 17:37:55 andy_seaborne Exp $
  */
 
 
@@ -169,7 +169,9 @@ public class rdfqueryremote
         try
         {
             boolean doBlank = false;
-            Query q = new Query(queryString);
+            
+            
+            Query q = Query.create(queryString) ;
             
             if ( VERBOSE )
                 System.out.println(q.toString()) ;
@@ -177,15 +179,12 @@ public class rdfqueryremote
             String u = modelURLStr;
 
             if (u == null)
-                u = q.getSourceURL();
-
-            if (u == null)
             {
                 System.err.println("No target model for query");
                 System.exit(1);
             }
 
-            QueryHTTP qHTTP = new QueryHTTP(q, u, "RDQL");
+            QueryHTTP qHTTP = new QueryHTTP(q, u, "SPARQL");
             QueryExecution qe = qHTTP;
             
             if ( VERBOSE )
@@ -194,7 +193,7 @@ public class rdfqueryremote
                 System.out.println() ;
             }
             
-            QueryResults results = qe.exec();
+            QueryResults results = qe.execSelect();
 
             if (results == null)
             {
@@ -203,10 +202,11 @@ public class rdfqueryremote
             }
 
             QueryResultsFormatter fmt = new QueryResultsFormatter(results);
+            //ResultSetFormatter rsFmt = new ResultSetFormatter(results);
             PrintWriter pw = new PrintWriter(System.out);
 
             if (outputFormat == FMT_NONE)
-                fmt.consume();
+                ;
             else
             {
                 if (doBlank)
@@ -215,9 +215,6 @@ public class rdfqueryremote
                 {
                     case FMT_TEXT :
                         fmt.printAll(pw);
-                        break;
-                    case FMT_HTML :
-                        fmt.printHTML(pw);
                         break;
                     case FMT_TUPLES :
                         fmt.dump(pw, true);

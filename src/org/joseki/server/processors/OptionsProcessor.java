@@ -10,14 +10,14 @@ import org.joseki.vocabulary.JosekiVocab;
 
 import com.hp.hpl.jena.rdf.model.*;
 
-/** Processor that produces the meta-data for an attached model.
+/** ProcessorModel that produces the meta-data for an attached model.
  *  This is not the processor for the options operation on the whole server.
  * 
  * @author      Andy Seaborne
- * @version     $Id: OptionsProcessor.java,v 1.1 2004-11-03 10:15:03 andy_seaborne Exp $
+ * @version     $Id: OptionsProcessor.java,v 1.2 2004-11-03 17:37:55 andy_seaborne Exp $
  */
 
-public class OptionsProcessor extends ZeroArgProcessor //implements Processor
+public class OptionsProcessor extends ZeroArgProcessor //implements ProcessorModel
 {
     static protected Model emptyModel = ModelFactory.createDefaultModel() ;
     String acceptsOpName = "options" ;

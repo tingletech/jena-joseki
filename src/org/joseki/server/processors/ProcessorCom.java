@@ -11,9 +11,9 @@ import com.hp.hpl.jena.rdf.model.*;
 
 /** General template 
  * @author      Andy Seaborne
- * @version     $Id: ProcessorCom.java,v 1.1 2004-11-03 10:15:03 andy_seaborne Exp $
+ * @version     $Id: ProcessorCom.java,v 1.2 2004-11-03 17:37:55 andy_seaborne Exp $
  */
-public abstract class ProcessorCom implements Processor, Loadable
+public abstract class ProcessorCom implements ProcessorModel, Loadable
 {
     // Useful constant
     static protected Model emptyModel = ModelFactory.createDefaultModel() ;
@@ -35,7 +35,7 @@ public abstract class ProcessorCom implements Processor, Loadable
         mutatingOp = (mutating == MutatesModel) ;
     }
 
-    /** @see org.joseki.server.Processor#init(Resource, Resource)
+    /** @see org.joseki.server.ProcessorModel#init(Resource, Resource)
      */
     public void init(Resource processor, Resource implementation) { }
 }

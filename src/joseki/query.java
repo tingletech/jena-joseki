@@ -19,7 +19,7 @@ import java.util.*;
  * A simple application that builds and executes a Joseki-style GET query.
  * 
  * @author Andy Seaborne
- * @version $Id: query.java,v 1.1 2004-11-03 10:15:05 andy_seaborne Exp $
+ * @version $Id: query.java,v 1.2 2004-11-03 17:37:55 andy_seaborne Exp $
  */
 
 public class query
@@ -96,8 +96,8 @@ public class query
         
         String format = "N3" ;
         
-        if ( cmd.contains("format") )
-            format = cmd.getArg("format").getValue() ;
+        if ( cmd.contains(formatDecl) )
+            format = cmd.getArg(formatDecl).getValue() ;
         
         // Now process remainder.
         
@@ -161,7 +161,7 @@ public class query
     {
         out.println("Usage: "+query.class.getName()+" --model URL [--lang queryLang] httpQueryString");
         out.println("   --help        Print this message") ;
-        out.println("   -n            No action (don't do teh query - just build it") ;
+        out.println("   -n            No action (don't do the query - just build it") ;
         out.println("   -v            Verbose - print the request") ;
         out.println("   --format fmt  Print model using RDF syntax N3, RDF/XML, RDF/XML-ABBREV or N-TRIPLES") ;
     }

@@ -28,7 +28,7 @@ import com.hp.hpl.jena.util.* ;
  * Parse and process a Joseki configuration file
  * 
  * @author  Andy Seaborne
- * @version $Id: Configuration.java,v 1.1 2004-11-03 10:15:01 andy_seaborne Exp $
+ * @version $Id: Configuration.java,v 1.2 2004-11-03 17:37:42 andy_seaborne Exp $
  */
 
 
@@ -474,7 +474,7 @@ public class Configuration
         for (; operationBindings.hasNext();)
         {
             Resource binding = operationBindings.nextStatement().getResource();
-            Processor proc = (Processor)moduleLoader.loadAndInstantiate(binding, Processor.class) ; 
+            ProcessorModel proc = (ProcessorModel)moduleLoader.loadAndInstantiate(binding, ProcessorModel.class) ; 
             
             if (proc == null)
                 continue;

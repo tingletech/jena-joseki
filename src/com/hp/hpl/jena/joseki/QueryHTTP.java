@@ -13,13 +13,13 @@ import com.hp.hpl.jena.rdf.model.* ;
 //import com.hp.hpl.jena.rdf.model.impl.* ;
 //import com.hp.hpl.jena.vocabulary.* ;
 
-import com.hp.hpl.jena.rdql.* ;
+import com.hp.hpl.jena.query.* ;
 
 /** Create an execution object for performing an RDQL query
  *  on a model over HTTP.
  *
  * @author  Andy Seaborne
- * @version $Id: QueryHTTP.java,v 1.1 2004-11-03 14:28:28 andy_seaborne Exp $
+ * @version $Id: QueryHTTP.java,v 1.2 2004-11-03 17:37:55 andy_seaborne Exp $
  */
 public class QueryHTTP implements QueryExecution
 {
@@ -56,7 +56,7 @@ public class QueryHTTP implements QueryExecution
     }
     
     // Iterator of ResultBindings
-    public QueryResults exec()
+    public QueryResults execSelect()
     {
         try {
             
@@ -74,8 +74,8 @@ public class QueryHTTP implements QueryExecution
 
             // Execute the query locally to build result binding.
             query.setSource(resultModel);
-            QueryExecution qexec = new QueryEngine(query);
-            return qexec.exec() ;
+            QueryExecution qexec = QueryFactory.createQueryExecution(query);
+            return qexec.execSelect() ;
         } 
         catch (RDFException rdfEx)
         {
@@ -100,6 +100,25 @@ public class QueryHTTP implements QueryExecution
     public void releaseResultModel() { resultModel = null ; }
     
     public HttpQuery getHttpQuery() { return qHTTP ; }
+
+    
+    public Model execConstruct()
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    public Model execDescribe()
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    public boolean execAsk()
+    {
+        // TODO Auto-generated method stub
+        return false;
+    }
 }
 
 /*

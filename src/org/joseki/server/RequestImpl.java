@@ -14,12 +14,12 @@ import java.util.* ;
  *  provides methods to create the operation as well as meet
  *  the Request interface.
  * @author      Andy Seaborne
- * @version     $Id: RequestImpl.java,v 1.1 2004-11-03 10:15:01 andy_seaborne Exp $
+ * @version     $Id: RequestImpl.java,v 1.2 2004-11-03 17:37:42 andy_seaborne Exp $
  */
 public class RequestImpl implements Request
 {
     // Where and how the operation will be performed
-    Processor processor ;
+    ProcessorModel processor ;
     SourceModel modelSource ;
     Dispatcher dispatcher ;
     
@@ -34,7 +34,7 @@ public class RequestImpl implements Request
     List args = new ArrayList();
     Map params = new HashMap();
 
-    public RequestImpl(String u, String url, String name, Dispatcher d, SourceModel aModel, Processor proc)
+    public RequestImpl(String u, String url, String name, Dispatcher d, SourceModel aModel, ProcessorModel proc)
     {
         modelURI = u ;
         requestURL = url ;
@@ -63,8 +63,8 @@ public class RequestImpl implements Request
     public String getRequestURL() { return requestURL ; }
 
     public SourceModel getSourceModel() { return modelSource ;  }
-    public Processor getProcessor() { return processor ;  }
-    public void setProcessor(Processor proc) { processor = proc ;  }
+    public ProcessorModel getProcessor() { return processor ;  }
+    public void setProcessor(ProcessorModel proc) { processor = proc ;  }
     public Dispatcher getDispatcher() { return dispatcher ; }
 
     public Map getParams() { return params ; }

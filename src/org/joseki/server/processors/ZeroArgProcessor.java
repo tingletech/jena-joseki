@@ -13,7 +13,7 @@ import com.hp.hpl.jena.rdf.model.*;
  *  (in the request body) as arguments - they can have parameters.
  * 
  * @author      Andy Seaborne
- * @version     $Id: ZeroArgProcessor.java,v 1.1 2004-11-03 10:15:03 andy_seaborne Exp $
+ * @version     $Id: ZeroArgProcessor.java,v 1.2 2004-11-03 17:37:55 andy_seaborne Exp $
  */
 public abstract class ZeroArgProcessor extends ProcessorCom
 {
@@ -24,10 +24,10 @@ public abstract class ZeroArgProcessor extends ProcessorCom
         super(n, lockNeeded, mutating) ;
     }
 
-    public int argsNeeded() { return Processor.ARGS_ZERO ; }
+    public int argsNeeded() { return ProcessorModel.ARGS_ZERO ; }
     
     /**
-     * @see org.joseki.server.Processor#exec(Request)
+     * @see org.joseki.server.ProcessorModel#exec(Request)
      */
     public Model exec(Request request) throws ExecutionException
     {

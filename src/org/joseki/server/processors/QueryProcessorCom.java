@@ -15,7 +15,7 @@ import com.hp.hpl.jena.rdf.model.RDFException;
  *  ad a model (e.g. HTTP POST).
  * 
  * @author      Andy Seaborne
- * @version     $Id: QueryProcessorCom.java,v 1.1 2004-11-03 10:15:03 andy_seaborne Exp $
+ * @version     $Id: QueryProcessorCom.java,v 1.2 2004-11-03 17:37:55 andy_seaborne Exp $
  */
 public abstract class QueryProcessorCom implements QueryProcessor
 {
@@ -25,16 +25,16 @@ public abstract class QueryProcessorCom implements QueryProcessor
 
     public QueryProcessorCom() { }
 
-    /** @see org.joseki.server.Processor#init(Resource, Resource)
+    /** @see org.joseki.server.ProcessorModel#init(Resource, Resource)
      */
     public void init(Resource processor, Resource implementation) { }
 
     // Not exactly true! This is for when the processor
     // is invoked via POST
-    public int argsNeeded() { return Processor.ARGS_ONE ; }
+    public int argsNeeded() { return ProcessorModel.ARGS_ONE ; }
 
     /**
-     * @see org.joseki.server.Processor#exec(Request)
+     * @see org.joseki.server.ProcessorModel#exec(Request)
      */
     public Model exec(Request request) throws ExecutionException
     {

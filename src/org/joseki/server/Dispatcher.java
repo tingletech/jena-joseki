@@ -18,7 +18,7 @@ import com.hp.hpl.jena.vocabulary.* ;
  *  operation processors and keeps the mapping from URI to model.
  * 
  * @author      Andy Seaborne
- * @version     $Id: Dispatcher.java,v 1.1 2004-11-03 10:15:01 andy_seaborne Exp $
+ * @version     $Id: Dispatcher.java,v 1.2 2004-11-03 17:37:42 andy_seaborne Exp $
  */
 public class Dispatcher
 {
@@ -55,7 +55,7 @@ public class Dispatcher
     public synchronized Request createRequest(String uri, String url, String opName, boolean modelMustExist) throws ExecutionException
     {
         SourceModel aModel = findModel(uri);
-        Processor proc = null ;
+        ProcessorModel proc = null ;
         if ( aModel == null )
         {
             if (modelMustExist)
@@ -105,9 +105,9 @@ public class Dispatcher
         return request.getProcessor().exec(request) ;
     }
     
-    private Processor findProcessor(SourceModel aModel, String opName)
+    private ProcessorModel findProcessor(SourceModel aModel, String opName)
     {
-        Processor proc = aModel.getProcessorRegistry().findProcessor(opName);
+        ProcessorModel proc = aModel.getProcessorRegistry().findProcessor(opName);
         return proc ;
     }
 
@@ -235,7 +235,7 @@ public class Dispatcher
      * @param shortName Short name for the operation
      * @param proc The processor
      */
-    public synchronized void addProcessor(String aModelURI, String shortName, Processor proc)
+    public synchronized void addProcessor(String aModelURI, String shortName, ProcessorModel proc)
     {
         if ( aModelURI == null )
         {
@@ -270,7 +270,7 @@ public class Dispatcher
      * @param aModelURI   The attached model URI that the processor is specific to.
      * @param processor   The processor
      */
-    public synchronized void removeProcessor(String aModelURI, Processor processor)
+    public synchronized void removeProcessor(String aModelURI, ProcessorModel processor)
     {
         if ( aModelURI == null )
         {

@@ -2,34 +2,39 @@
  * (c) Copyright 2003, 2004 Hewlett-Packard Development Company, LP
  * [See end of file]
  */
- 
+
+
 package org.joseki.server;
 
-import com.hp.hpl.jena.rdf.model.Model ;
-import com.hp.hpl.jena.rdf.model.RDFException;
+import org.joseki.server.module.* ;
+import com.hp.hpl.jena.rdf.model.*;
 
-/**
+/** Interface for all processors.
+ *  Query processors have their own, specialised interface.
+ *  @see QueryProcessor
+ * 
  * @author      Andy Seaborne
- * @version     $Id: QueryProcessor.java,v 1.2 2004-11-03 17:37:42 andy_seaborne Exp $
+ * @version     $Id: ProcessorModel.java,v 1.1 2004-11-03 17:37:42 andy_seaborne Exp $
  */
-public interface QueryProcessor extends ProcessorModel
+
+public interface ProcessorModel extends Loadable
 {
-    /** Map from short name for the query language (as used by GET dispatching)
-     *  and the long URI.  String maps to String (not a URI object).
+    /** Execute the operation.  
+     * @return Model    Should not be null.
      */
-    //public Map getQueryLanguages() ;
+
+    public Model exec(Request request) throws ExecutionException ;
     
-    /* Execute a query and return a model (subgraph).
-     * The query argument supplied as string.
+    static final int ARGS_ZERO         = 0 ;
+    static final int ARGS_ONE          = 1 ;
+    
+    static final int ARGS_ZERO_OR_ONE  = -1 ;
+    
+    /** Return the number of argument models this operation
+     *  expects in the input request.  For HTTP, this is zero or one.
      */
-    public Model execQuery(SourceModel aModel, String queryString, Request request) throws RDFException, QueryExecutionException ;
-
-    /* Execute a query and return a model (subgraph).
-     * The query argument supplied as a model.
-     */
-    public Model execQuery(SourceModel aModel, Model queryModel, Request request) throws RDFException, QueryExecutionException ;
+    public int argsNeeded() ;
 }
-
 
 /*
  *  (c) Copyright 2003, 2004 Hewlett-Packard Development Company, LP

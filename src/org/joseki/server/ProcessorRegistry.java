@@ -14,7 +14,7 @@ import com.hp.hpl.jena.rdf.model.* ;
 /** Registry for operation processors.
  * 
  * @author      Andy Seaborne
- * @version     $Id: ProcessorRegistry.java,v 1.1 2004-11-03 10:15:01 andy_seaborne Exp $
+ * @version     $Id: ProcessorRegistry.java,v 1.2 2004-11-03 17:37:42 andy_seaborne Exp $
  */
 
 public class ProcessorRegistry
@@ -36,7 +36,7 @@ public class ProcessorRegistry
     }
     
     
-    public Processor findProcessor(String opName)
+    public ProcessorModel findProcessor(String opName)
     {
         return operationRegistry.findProcessor(opName) ;
     }
@@ -48,7 +48,7 @@ public class ProcessorRegistry
     }
 
 
-    public void registerProcessor(String shortName, Processor processor)
+    public void registerProcessor(String shortName, ProcessorModel processor)
     {
         operationRegistry.register(shortName, processor) ;
         processorURIs.add(processor.getInterfaceURI()) ;
@@ -60,7 +60,7 @@ public class ProcessorRegistry
         queryLanguageURIs.add(queryProcessor.getInterfaceURI()) ;
     }
     
-    public void remove(Processor processor)
+    public void remove(ProcessorModel processor)
     {
         operationRegistry.remove(processor) ;
     }
@@ -82,7 +82,7 @@ public class ProcessorRegistry
         for ( Iterator iter = processors.keySet().iterator() ; iter.hasNext() ; )
         {
             String name = (String)iter.next() ;
-            Processor proc = (Processor)processors.get(name) ;
+            ProcessorModel proc = (ProcessorModel)processors.get(name) ;
             Resource r = optModel.createResource() ; 
             r.addProperty(JosekiVocab.operationName, name) ;
             Resource opRes = optModel.createResource(proc.getInterfaceURI()) ;
@@ -114,25 +114,25 @@ public class ProcessorRegistry
         // Map from short name to processor.
         Map procRegistry = new HashMap() ;
 
-        void register(String shortName, Processor processor)
+        void register(String shortName, ProcessorModel processor)
         {
             procRegistry.put(shortName, processor) ;
         }
     
-        Processor findProcessor(String opName)
+        ProcessorModel findProcessor(String opName)
         {
-            Processor proc = (Processor)procRegistry.get(opName) ;
+            ProcessorModel proc = (ProcessorModel)procRegistry.get(opName) ;
             return proc ;
         }
 
 
     
-        void remove(Processor processor)
+        void remove(ProcessorModel processor)
         {
             for ( Iterator iter = procRegistry.entrySet().iterator() ; iter.hasNext() ; )
             {
                 Map.Entry entry = (Map.Entry)iter.next() ;
-                Processor proc = (Processor)entry.getValue() ;
+                ProcessorModel proc = (ProcessorModel)entry.getValue() ;
     
                 if ( processor.equals(proc) )
                     iter.remove() ;

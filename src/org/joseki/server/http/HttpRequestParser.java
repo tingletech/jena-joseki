@@ -17,7 +17,7 @@ import com.hp.hpl.jena.rdf.model.*;
 /** Extracting of information from incomiong HTTP servlet request.
  * 
  * @author      Andy Seaborne
- * @version     $Id: HttpRequestParser.java,v 1.1 2004-11-03 10:15:02 andy_seaborne Exp $
+ * @version     $Id: HttpRequestParser.java,v 1.2 2004-11-03 17:37:55 andy_seaborne Exp $
  */
 public class HttpRequestParser
 {
@@ -34,8 +34,8 @@ public class HttpRequestParser
         if (request.getProcessor().argsNeeded() > 1)
         {
             throw new ExecutionException(ExecutionError.rcOperationNotSupported,
-                    "Processor error: needs more args",
-                    "Processor needs "+request.getProcessor().argsNeeded()+" args - unsupported") ;
+                    "ProcessorModel error: needs more args",
+                    "ProcessorModel needs "+request.getProcessor().argsNeeded()+" args - unsupported") ;
         }
     
     

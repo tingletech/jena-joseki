@@ -7,14 +7,14 @@
 package org.joseki.server;
 
 import org.joseki.server.module.* ;
-import com.hp.hpl.jena.rdf.model.*;
+import java.io.OutputStream ;
 
 /** Interface for all processors.
  *  Query processors have their own, specialised interface.
  *  @see QueryProcessor
  * 
  * @author      Andy Seaborne
- * @version     $Id: Processor.java,v 1.1 2004-11-03 10:15:01 andy_seaborne Exp $
+ * @version     $Id: Processor.java,v 1.2 2004-11-03 17:37:42 andy_seaborne Exp $
  */
 
 public interface Processor extends Loadable
@@ -23,7 +23,7 @@ public interface Processor extends Loadable
      * @return Model    Should not be null.
      */
 
-    public Model exec(Request request) throws ExecutionException ;
+    public void exec(Request request, OutputStream out) throws ExecutionException ;
     
     static final int ARGS_ZERO         = 0 ;
     static final int ARGS_ONE          = 1 ;

@@ -11,10 +11,10 @@ import org.joseki.vocabulary.*;
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.RDFException;
 
-/** Processor to add the statements in the argument model into the target model.
+/** ProcessorModel to add the statements in the argument model into the target model.
  *
  * @author      Andy Seaborne
- * @version     $Id: AddProcessor.java,v 1.1 2004-11-03 10:15:03 andy_seaborne Exp $
+ * @version     $Id: AddProcessor.java,v 1.2 2004-11-03 17:37:55 andy_seaborne Exp $
  */
 public class AddProcessor extends OneArgProcessor
 {

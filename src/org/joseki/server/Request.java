@@ -11,14 +11,14 @@ import java.util.* ;
 /** Abstaction of an operation request on a model.
  *  The work is done by a processor that accepts the request.
  * @author      Andy Seaborne
- * @version     $Id: Request.java,v 1.1 2004-11-03 10:15:01 andy_seaborne Exp $
+ * @version     $Id: Request.java,v 1.2 2004-11-03 17:37:42 andy_seaborne Exp $
  */
 public interface Request
 {
     public String getName() ;
     public SourceModel getSourceModel() ;
-    public Processor getProcessor() ;
-    public void setProcessor(Processor proc) ;
+    public ProcessorModel getProcessor() ;
+    public void setProcessor(ProcessorModel proc) ;
     
     /** Get the URI for the source for the operation - the request URI local to the webapp 
      * 

@@ -11,9 +11,9 @@ import org.joseki.vocabulary.*;
 
 import com.hp.hpl.jena.rdf.model.*;
 
-/** Processor to remove the statements in the argument model from the target model.
+/** ProcessorModel to remove the statements in the argument model from the target model.
  * @author      Andy Seaborne
- * @version     $Id: RemoveProcessor.java,v 1.1 2004-11-03 10:15:03 andy_seaborne Exp $
+ * @version     $Id: RemoveProcessor.java,v 1.2 2004-11-03 17:37:55 andy_seaborne Exp $
  */
 public class RemoveProcessor extends OneArgProcessor
 {
