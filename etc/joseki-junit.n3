@@ -66,7 +66,7 @@
           module:interface      joseki:OpPing ;
           module:implementation
             [ module:className
-                  "org.joseki.server.processors.PingProcessor" ]
+                  "org.joseki.server.processors.ops.PingProcessor" ]
         ] ;    .
 
 
