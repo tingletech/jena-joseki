@@ -40,11 +40,10 @@ PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.2//EN"
   </servlet>
 
   <!-- MAPPINGS -->
+  <!-- servlet named "StaticPage" is a Jetty supplied servlet that
+       yields the page so named.
+    -->
 
-  <!-- Warning: using /* for Joseki services 
-       means that the welcome page is not handled.
-       Nor other mappings like /*.html 
-   -->
 
   <servlet-mapping>
     <servlet-name>StaticPage</servlet-name>
@@ -53,18 +52,18 @@ PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.2//EN"
 
   <servlet-mapping>
     <servlet-name>StaticPage</servlet-name>
-    <!-- Style sheet that truns XML results into an HTML table -->
+    <!-- Style sheet that turns XML results into an HTML table -->
     <url-pattern>/xml-to-html.xsl</url-pattern>
   </servlet-mapping>
 
   <servlet-mapping>
     <servlet-name>StaticPage</servlet-name>
-    <url-pattern>/index.html</url-pattern>
+    <url-pattern>*.css</url-pattern>
   </servlet-mapping>
 
   <servlet-mapping>
     <servlet-name>StaticPage</servlet-name>
-    <url-pattern>/query.html</url-pattern>
+    <url-pattern>*.html</url-pattern>
   </servlet-mapping>
 
   <servlet-mapping>
@@ -75,6 +74,12 @@ PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.2//EN"
   <servlet-mapping>
     <servlet-name>Dumper</servlet-name>
     <url-pattern>/dump</url-pattern>
+  </servlet-mapping>
+
+  <!-- "Default servlet" -->
+  <servlet-mapping>
+    <servlet-name>StaticPage</servlet-name>
+    <url-pattern>/</url-pattern>
   </servlet-mapping>
 
   <!-- Note: the URL pattern is very general -->
