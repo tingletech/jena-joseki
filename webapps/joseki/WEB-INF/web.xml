@@ -12,6 +12,11 @@ PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.2//EN"
 
   <!-- A well-known servlet for testing -->
 
+  <!-- The servlet "default" serves static pages.
+       It is define in webdefault.xml which is applied by
+       the servlet container first (Jetty, Tomcat)
+  -->
+
   <servlet>
     <servlet-name>Dumper</servlet-name>
     <servlet-class>
@@ -20,18 +25,10 @@ PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.2//EN"
   </servlet>
 
   <servlet>
-    <servlet-name>StaticPage</servlet-name>
-    <servlet-class>
-      org.mortbay.jetty.servlet.Default
-    </servlet-class>
-  </servlet>
-
-  <servlet>
-    <!-- NOT rdfserver (the application name) -->
     <servlet-name>Jena RDF Server</servlet-name>
     <servlet-class>org.joseki.server.http.JosekiWebAPI</servlet-class>
 
-    <!-- Configuration file -->
+    <!-- Joseki configuration file -->
     <init-param>
       <param-name>jena.rdfserver.modelset</param-name>
       <param-value>etc/joseki.n3</param-value>
@@ -40,34 +37,30 @@ PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.2//EN"
   </servlet>
 
   <!-- MAPPINGS -->
-  <!-- servlet named "StaticPage" is a Jetty supplied servlet that
-       yields the page so named.
-    -->
-
 
   <servlet-mapping>
-    <servlet-name>StaticPage</servlet-name>
+    <servlet-name>default</servlet-name>
     <url-pattern>/favicon.ico</url-pattern>
   </servlet-mapping>
 
   <servlet-mapping>
-    <servlet-name>StaticPage</servlet-name>
+    <servlet-name>default</servlet-name>
     <!-- Style sheet that turns XML results into an HTML table -->
     <url-pattern>/xml-to-html.xsl</url-pattern>
   </servlet-mapping>
 
   <servlet-mapping>
-    <servlet-name>StaticPage</servlet-name>
-    <url-pattern>*.css</url-pattern>
+    <servlet-name>default</servlet-name>
+    <url-pattern>/*.css</url-pattern>
   </servlet-mapping>
 
   <servlet-mapping>
-    <servlet-name>StaticPage</servlet-name>
-    <url-pattern>*.html</url-pattern>
+    <servlet-name>default</servlet-name>
+    <url-pattern>/*.html</url-pattern>
   </servlet-mapping>
 
   <servlet-mapping>
-    <servlet-name>StaticPage</servlet-name>
+    <servlet-name>default</servlet-name>
     <url-pattern>/robots.txt</url-pattern>
   </servlet-mapping>
 
@@ -76,21 +69,28 @@ PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.2//EN"
     <url-pattern>/dump</url-pattern>
   </servlet-mapping>
 
-  <!-- "Default servlet" -->
+  <!-- "Default servlet" is the URL-pattern "/"
+       Do not confuse with servlet called "default"
+       Standard:
   <servlet-mapping>
-    <servlet-name>StaticPage</servlet-name>
+    <servlet-name>default</servlet-name>
     <url-pattern>/</url-pattern>
   </servlet-mapping>
+    -->
 
-  <!-- Note: the URL pattern is very general -->
+  <!-- Note: the URL pattern is very general
+       If it is / or /* then the welcome file is not applied 
+       as this servlet-mapping will match first -->
   <servlet-mapping>
     <servlet-name>Jena RDF Server</servlet-name>
     <url-pattern>/*</url-pattern>
   </servlet-mapping>
 
+  <!-- Does not work - gets served by the rule above.
   <welcome-file-list>
     <welcome-file>index.html</welcome-file>
   </welcome-file-list>
+  -->
 
 
   <!-- SECURIY -->
