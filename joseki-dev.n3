@@ -12,11 +12,9 @@
 <>  a   joseki:JosekiServer ;
     joseki:josekiSchema      joseki: ;
     joseki:alsoInclude       <file:etc/joseki-defs.n3> ;
-    # Default content type if the client request does not
-    # specify one exactly.
-    # joseki:useContentType    "application/rdf+xml" ;
     
-    joseki:useContentType    "application/n3" ;
+    joseki:useContentType    "application/rdf+xml" ;
+    #joseki:useContentType    "application/n3" ;
 
     
     ## Server debug:

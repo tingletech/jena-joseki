@@ -46,6 +46,12 @@ PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.2//EN"
     <url-pattern>/favicon.ico</url-pattern>
   </servlet-mapping>
 
+  <servlet-mapping>
+    <servlet-name>StaticPage</servlet-name>
+    <!-- Style sheet that truns XML results into an HTML table -->
+    <url-pattern>/xml-to-html.xsl</url-pattern>
+  </servlet-mapping>
+
   <!-- Warning: using /* for Joseki services 
        means that the welcome page is not handled.
        Nor other mappings like /*.html 

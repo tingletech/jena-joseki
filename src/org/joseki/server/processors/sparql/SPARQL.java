@@ -22,7 +22,7 @@ import com.hp.hpl.jena.query.* ;
 /** SPARQL operations
  * 
  * @author  Andy Seaborne
- * @version $Id: SPARQL.java,v 1.16 2005-01-04 11:10:28 andy_seaborne Exp $
+ * @version $Id: SPARQL.java,v 1.17 2005-01-07 16:00:54 andy_seaborne Exp $
  */
 
 public class SPARQL extends QueryProcessorCom
@@ -102,7 +102,7 @@ public class SPARQL extends QueryProcessorCom
             
             if ( query.isSelectType() && wantsAppXML )
             {
-                execQueryXML(query, response) ;
+                execQuerySelectXML(query, request, response) ;
                 log.info("OK - URI="+request.getModelURI()+" : "+queryStringLog) ;
                 return ;
             }
@@ -160,11 +160,15 @@ public class SPARQL extends QueryProcessorCom
         }
     }
     
+    static final String paramStyleSheet = "stylesheet" ;
     
-    
-    public static void execQueryXML(Query query, Response response)
+    private void execQuerySelectXML(Query query, Request request, Response response)
         throws QueryExecutionException
     {
+        String stylesheetURL = null ;
+        if ( request.containsParam(paramStyleSheet) )
+            stylesheetURL = request.getParam(paramStyleSheet) ;
+        
         try {
             QueryExecution qe = QueryFactory.createQueryExecution(query) ;
             ResultSetFormatter fmt = new ResultSetFormatter(qe.execSelect()) ;
@@ -173,7 +177,7 @@ public class SPARQL extends QueryProcessorCom
             // See doResponse as well - more header setting?  How to abstract?
             response.setResponseCode(Response.rcOK) ;
             response.startResponse() ;
-            fmt.outputAsXML(response.getOutputStream()) ;
+            fmt.outputAsXML(response.getOutputStream(), stylesheetURL) ;
             response.finishResponse() ;
         }
         //throw new QueryExecutionException(Response.rcNotImplemented, "SPARQL.execQueryXML") ;
@@ -184,7 +188,7 @@ public class SPARQL extends QueryProcessorCom
         }
     }
 
-    public static void execQueryAsk(Query query, Response response)
+    private void execQueryAsk(Query query, Response response)
         throws QueryExecutionException
     {
         try {

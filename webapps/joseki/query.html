@@ -141,8 +141,9 @@ code {
 
 
 <form action="/books">
-SELECT - get variables<br/>
+SELECT - get variables (apply XSLT stylesheet)<br/>
 <input type="hidden" name="lang" value="SPARQL" />
+<input type="hidden" name="stylesheet" value="/xml-to-html.xsl" />
 <textarea name="query" cols="70" rows="5">
 PREFIX books:   <http://example.org/book/>
 PREFIX dc:      <http://purl.org/dc/elements/1.1/>

@@ -9,10 +9,12 @@
     <property name="dist.root"       value="dist"/>
     <property name="dist.dir"        value="${dist.root}/${Name}-${version}"/>
 
-    <property name="debug"           value="true"/>
-    <property name="debuglevel"      value="source,lines"/>
-    <property name="deprecation"     value="true"/>
-    <property name="optimize"        value="true"/>
+    <property name="java.debug"      value="true"/>
+    <property name="java.debuglevel" value="source,lines"/>
+    <property name="java.deprecation"   value="false"/>
+    <property name="java.optimize"   value="true"/>
+    <property name="java.source"     value="1.4"/>
+    <property name="java.target"     value="1.4"/>
 
     <property name="src.dir"         value="src"/>
     <property name="build.dir"       value="classes.build"/>
@@ -70,14 +72,16 @@
     </target>
 
     <target name="compile-java">
-        <javac srcdir="${src.dir}"
-               destdir="${build.dir}"
-               debug="${debug}"
-               debuglevel="${debuglevel}"
-               deprecation="${deprecation}"
-               optimize="${optimize}">
-        <classpath refid="buildClasspath" />
-        </javac>
+      <javac srcdir="${src.dir}"
+	     destdir="${build.dir}"
+	     debug="${java.debug}"
+	     debuglevel="${java.debuglevel}"
+	     deprecation="${java.deprecation}"
+	     optimize="${java.optimize}"
+	     source="${java.source}"
+	     target="${java.target}">
+	<classpath refid="buildClasspath" />
+      </javac>
     </target>
 
     <!-- ============================================== -->

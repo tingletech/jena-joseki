@@ -15,11 +15,11 @@ import org.apache.commons.logging.* ;
 import java.util.*;
 
 
-/** lib2.Query
+/** joseki.query
  * A simple application that builds and executes a Joseki-style GET query.
  * 
  * @author Andy Seaborne
- * @version $Id: query.java,v 1.2 2004-11-03 17:37:55 andy_seaborne Exp $
+ * @version $Id: query.java,v 1.3 2005-01-07 16:00:55 andy_seaborne Exp $
  */
 
 public class query
@@ -128,7 +128,7 @@ public class query
         {
             String name = (String)iter.next();
             String value = (String)params.get(name) ;
-            //log.debug("Name = "+name+" :: Value = "+value) ;
+            log.debug("Name = "+name+" :: Value = "+value) ;
                 
             q.addParam(name,value) ;
         }

@@ -6,4 +6,24 @@ then
     exit 1
     fi
 
-make_classpath "$JOSEKIROOT/lib"
+if [ -e "$JOSEKIROOT/classes" ]
+then
+  CP2="$JOSEKIROOT/classes"
+  fi
+
+if [ "$CP" != "" ]
+then
+  export CP="$CP;$CP2"
+else
+  export CP="$CP2"
+  fi
+
+unset CP2
+
+CP=$(make_classpath "$JOSEKIROOT/lib")
+
+# Set SOCKS if needed
+SOCKS="${SOCKS:-}"
+
+# bin/print_classpath "$CP"
+echo "$CP"
