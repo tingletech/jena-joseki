@@ -23,7 +23,7 @@ import javax.servlet.http.HttpServletResponse;
 
 /** Abstaction of an operation response
  * @author      Andy Seaborne
- * @version     $Id: Response.java,v 1.20 2004-11-26 16:58:58 andy_seaborne Exp $
+ * @version     $Id: Response.java,v 1.21 2004-12-06 14:25:08 andy_seaborne Exp $
  */
 public class Response extends ExecutionError
 {
@@ -65,9 +65,6 @@ public class Response extends ExecutionError
         this.request = request ;
         this.httpRequest = httpRequest ;
         this.httpResponse = httpResponse ;
-//        try { output = resp.getOutputStream() ;}
-//        catch (IOException ex)
-//        { LogFactory.getLog(Response.class).fatal("Can't get ServletOutputStream", ex) ; }
     }
     
     public void startResponse()
@@ -81,17 +78,6 @@ public class Response extends ExecutionError
         try { getOutputStream().flush() ; } catch (Exception ex) {}
         responseSent = true ;
     }
-    
-//    public void chooseHttpHeaders()
-//    {
-//        String mimeType = HttpUtils.chooseContentType(httpRequest, prefContentType, defaultContentType).getAcceptType() ;
-//        String charset = HttpUtils.chooseCharset(httpRequest,  prefCharset, defaultCharset).getAcceptType() ;
-//        
-//        setMimeType(mimeType) ;
-//        setCharset(charset) ;
-//    }
-//    
-    // TODO Tidy up
     
     public void doResponse(Model resultModel)
     {
@@ -218,11 +204,6 @@ public class Response extends ExecutionError
         
     }
 
-//    public PrintWriter getUTF8Writer()
-//    {
-//        return FileUtils.asPrintWriterUTF8(getOutputStream()) ;
-//    }
-    
     public OutputStream getOutputStream()
     { 
         try {

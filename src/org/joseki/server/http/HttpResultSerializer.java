@@ -20,7 +20,7 @@ import com.hp.hpl.jena.shared.JenaException;
 /** Extracting operation data from HTTP servlet requests and formatting results for sending back.
  * 
  * @author      Andy Seaborne
- * @version     $Id: HttpResultSerializer.java,v 1.11 2004-11-25 12:56:50 andy_seaborne Exp $
+ * @version     $Id: HttpResultSerializer.java,v 1.12 2004-12-06 14:25:29 andy_seaborne Exp $
  */
 public class HttpResultSerializer
 {
@@ -75,7 +75,7 @@ public class HttpResultSerializer
                 rdfw.setProperty("blockRules", "propertyAttr") ;
         }
         
-        // TODO: Allow a mode of write to buffer (memory, disk), write buffer later.
+        // TODO Allow a mode of write to buffer (memory, disk), write buffer later.
         // Time/space tradeoff.
         try {
             OutputStream out = new NullOutputStream() ;
