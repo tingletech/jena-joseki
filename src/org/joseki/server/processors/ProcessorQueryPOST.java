@@ -21,7 +21,7 @@ import com.hp.hpl.jena.rdf.model.* ;
  *  model as property "joseki:queryOperationName".
  * 
  * @author      Andy Seaborne
- * @version     $Id: ProcessorQueryPOST.java,v 1.1 2004-11-17 14:47:35 andy_seaborne Exp $
+ * @version     $Id: ProcessorQueryPOST.java,v 1.2 2004-11-25 10:52:51 andy_seaborne Exp $
  */
 
 public class ProcessorQueryPOST extends ProcessorCom
@@ -155,7 +155,7 @@ public class ProcessorQueryPOST extends ProcessorCom
 //    }
 
     /**
-     * @see org.joseki.server.ProcessorModel#getInterfaceURI()
+     * @see org.joseki.server.Interface#getInterfaceURI()
      */
     public String getInterfaceURI()
     {

@@ -7,11 +7,9 @@
 package org.joseki.server;
 
 /** Interface for all processors.
- *  @see QueryProcessorModel
- *  @see ProcessorModel
  * 
  * @author      Andy Seaborne
- * @version     $Id: Processor.java,v 1.5 2004-11-11 17:50:23 andy_seaborne Exp $
+ * @version     $Id: Processor.java,v 1.6 2004-11-25 10:52:51 andy_seaborne Exp $
  */
 
 public interface Processor extends Interface
