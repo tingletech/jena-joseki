@@ -14,7 +14,7 @@ import org.joseki.server.http.HttpResultSerializer ;
 import org.joseki.server.http.HttpUtils ;
 
 import com.hp.hpl.jena.rdf.model.Model; 
-import com.hp.hpl.jena.rdf.model.RDFException;
+import com.hp.hpl.jena.shared.JenaException;
 
 //import javax.servlet.ServletOutputStream; 
 import javax.servlet.http.HttpServletRequest;
@@ -22,10 +22,11 @@ import javax.servlet.http.HttpServletResponse;
 
 /** Abstaction of an operation response
  * @author      Andy Seaborne
- * @version     $Id: Response.java,v 1.7 2004-11-12 20:00:35 andy_seaborne Exp $
+ * @version     $Id: Response.java,v 1.8 2004-11-14 12:01:10 andy_seaborne Exp $
  */
 public class Response extends ExecutionError
 {
+    // This is really "ResponseHttp" - will become that and have an interface for Response. 
     static Log log = LogFactory.getLog(Response.class) ;
     String mimeType = null ;
     int responseCode = rcOK ;
@@ -53,26 +54,38 @@ public class Response extends ExecutionError
     
     // TODO Tidy up
     
-    public void doResponse(Model m)
+    public void doResponse(Model resultModel)
     {
         if ( this.responseSent )
         {
             log.fatal("doResponse: Response already sent: "+request.getRequestURL()) ;
             return ;
         }
+        
         HttpResultSerializer ser = new HttpResultSerializer() ;
+        if (resultModel == null)
+        {
+            log.warn("Result is null pointer for result model") ;
+            ser.sendPanic(request, httpRequest, httpResponse, null,
+                      "Server internal error: processor returned a null pointer, not a model") ;
+            return ;                  
+        }
+
+        String mimeType = HttpUtils.chooseMimeType(httpRequest);
+
+        ser.setHttpResponse(httpRequest, httpResponse, mimeType);        
         try {
             try {
-                ser.sendResponse(m, null, httpRequest, httpResponse) ;
+                ser.writeModel(resultModel, request, httpRequest, httpResponse, mimeType) ;
             }
-            catch (RDFException rdfEx)
+            catch (JenaException jEx)
             {
                 //msg(Level.WARNING, "RDFException", rdfEx);
-                log.warn("RDFException", rdfEx);
+                log.warn("JenaException", jEx);
                 //printStackTrace(printName + "(execute)", rdfEx);
                 httpResponse.sendError(
                         HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
-                        "RDFException: " + rdfEx);
+                        "JenaException: " + jEx);
                 return;
             } catch (Exception ex)
             {
@@ -103,23 +116,11 @@ public class Response extends ExecutionError
         }
 
         HttpResultSerializer httpSerializer = new HttpResultSerializer() ;
-        try {
-            String httpMsg = ExecutionError.errorString(execEx.returnCode);
-            //msg("Error in operation: URI = " + uri + " : " + httpMsg);
-            log.info("Error: URI = " + request.getModelURI() + " : " + httpMsg);
-            httpSerializer.sendError(execEx, httpResponse) ;
-            return;
-        } catch (IOException ioEx)
-        {
-            log.warn("IOException in exception response") ;
-            try {
-                httpResponse.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-                httpResponse.flushBuffer();
-                httpResponse.getWriter().close();
-            } catch (Exception e) { }
-        }
+        String httpMsg = ExecutionError.errorString(execEx.returnCode);
+        //msg("Error in operation: URI = " + uri + " : " + httpMsg);
+        log.info("Error: URI = " + request.getModelURI() + " : " + httpMsg);
+        httpSerializer.sendError(execEx, httpResponse) ;
         responseSent = true ;
-
     }
     
     // Desparate way to reply

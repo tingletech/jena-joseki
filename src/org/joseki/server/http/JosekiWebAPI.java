@@ -22,7 +22,7 @@ import org.joseki.Joseki ;
 
 /** The servlet class.
  * @author  Andy Seaborne
- * @version $Id: JosekiWebAPI.java,v 1.4 2004-11-12 20:01:02 andy_seaborne Exp $
+ * @version $Id: JosekiWebAPI.java,v 1.5 2004-11-14 12:00:55 andy_seaborne Exp $
  */
 
 public class JosekiWebAPI extends HttpServlet implements Connector
@@ -472,22 +472,11 @@ public class JosekiWebAPI extends HttpServlet implements Connector
 
     protected void doResponse(ExecutionException execEx, String uri, HttpServletResponse response)
     {
-        
-        try {
-            String httpMsg = ExecutionError.errorString(execEx.returnCode);
-            //msg("Error in operation: URI = " + uri + " : " + httpMsg);
-            log.info("Error: URI = " + uri + " : " + httpMsg);
-            httpSerializer.sendError(execEx, response) ;
-            return;
-        } catch (IOException ioEx)
-        {
-            log.warn("IOException in exception response") ;
-            try {
-                response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-                response.flushBuffer();
-                response.getWriter().close();
-            } catch (Exception e) { }
-        }
+        String httpMsg = ExecutionError.errorString(execEx.returnCode);
+        //msg("Error in operation: URI = " + uri + " : " + httpMsg);
+        log.info("Error: URI = " + uri + " : " + httpMsg);
+        httpSerializer.sendError(execEx, response) ;
+        return;
     }
 
     // Desparate way to reply

@@ -14,11 +14,12 @@ import org.joseki.* ;
 import org.joseki.util.NullOutputStream; 
 import org.joseki.server.*;
 import com.hp.hpl.jena.rdf.model.*;
+import com.hp.hpl.jena.shared.JenaException;
 
 /** Extracting operation data from HTTP servlet requests and formatting results for sending back.
  * 
  * @author      Andy Seaborne
- * @version     $Id: HttpResultSerializer.java,v 1.2 2004-11-04 15:44:59 andy_seaborne Exp $
+ * @version     $Id: HttpResultSerializer.java,v 1.3 2004-11-14 12:00:56 andy_seaborne Exp $
  */
 public class HttpResultSerializer
 {
@@ -32,14 +33,13 @@ public class HttpResultSerializer
      * @param httpRequest
      * @param httpResponse
      * @return true for a successful send, false for any problem (ie.e HTTP repsonse if not 200)
-     * @throws IOException
      */
     
     public boolean sendResponse(Model resultModel, Request request,
                              HttpServletRequest httpRequest,
                              HttpServletResponse httpResponse)
-        throws IOException
     {
+        // FIXME - Remove this when call code in Response
         // Shouldn't be null - should be empty model
         if (resultModel == null)
         {
@@ -49,9 +49,17 @@ public class HttpResultSerializer
             return false;                 
         }
 
-        String mimeType = setHttpResponse(httpRequest, httpResponse);        
-        String writerType = Joseki.getWriterType(mimeType) ; 
+        String mimeType = HttpUtils.chooseMimeType(httpRequest);
 
+        setHttpResponse(httpRequest, httpResponse, mimeType);        
+        return writeModel(resultModel, request, httpRequest, httpResponse, mimeType) ;
+    }
+    
+    public boolean writeModel(Model resultModel, Request request,
+                             HttpServletRequest httpRequest,
+                             HttpServletResponse httpResponse, String mimeType)
+    {
+        String writerType = Joseki.getWriterType(mimeType) ;
         if ( writerType == null )
         {
             // No writer found.  Default it ...
@@ -60,11 +68,11 @@ public class HttpResultSerializer
         }   
              
         if (false)
-        {
-            FileOutputStream out = new FileOutputStream("response.n3");
-            resultModel.write(out, "N3");
-            out.close() ;
-        }
+            try {
+                FileOutputStream out = new FileOutputStream("response.n3");
+                resultModel.write(out, "N3");
+                out.close() ;
+            } catch (IOException ex) { log.fatal("Failed to write 'response.n3'", ex) ; }
         
         if ( false )
         {
@@ -98,30 +106,33 @@ public class HttpResultSerializer
         try {
             OutputStream out = new NullOutputStream() ;
             rdfw.write(resultModel, out, null) ;
-            out.flush() ;
-        } catch (Exception ex)
+            try { out.flush() ; } catch (IOException ioEx) {}
+        } catch (JenaException ex)
         {
             // Failed to write the model :-(
             log.warn("Exception test writing model: "+ex.getMessage(), ex) ;
             sendPanic(request, httpRequest, httpResponse, ex,
                     "Server internal error: can't write the model.") ;
-            return false;
+            throw ex ;
         }
         
         // Managed to write it.
         
         log.trace("HTTP response 200") ;
-        rdfw.write(resultModel, httpResponse.getOutputStream(), null) ;
+        try { rdfw.write(resultModel, httpResponse.getOutputStream(), null) ; }
+        catch (IOException ex) { log.warn("Failed to write response", ex) ; }
         return true ;
     }
 
     
-
-    private String setHttpResponse(HttpServletRequest httpRequest, HttpServletResponse httpResponse)
+    /** Set HTTP header */
+    
+    public void setHttpResponse(HttpServletRequest httpRequest,
+                                 HttpServletResponse httpResponse,
+                                 String mimeType) 
     {
         // ---- Set up HTTP Response
-        String mimeType = HttpUtils.chooseMimeType(httpRequest);
-        // Stop caching when debugging!
+        // Stop caching when debugging (not that ?queryString URLs are cached)
         if ( Joseki.serverDebug )
         {
             httpResponse.setHeader("Cache-Control", "no-cache") ;
@@ -134,9 +145,6 @@ public class HttpResultSerializer
         String contentType = mimeType+"; charset=UTF-8" ;
         log.trace("Content-Type for response: "+contentType) ;
         httpResponse.setContentType(contentType) ;
-        // ---- Set up HTTP Response
-
-        return mimeType;
     }
 
 
@@ -144,92 +152,97 @@ public class HttpResultSerializer
     
     
     public void sendError(ExecutionException execEx, HttpServletResponse response)
-        throws IOException
     {
-        int httpRC = -1;
-        String httpMsg = ExecutionError.errorString(execEx.returnCode);
-        if (execEx.shortMessage != null)
-            httpMsg = execEx.shortMessage;
-
-        // Map from internal error codes to HTTP ones.
-        switch (execEx.returnCode)
-        {
-            case ExecutionError.rcOK :
-                httpRC = 200;
-                break;
-            case ExecutionError.rcQueryParseFailure :
-                httpRC = HttpServletResponse.SC_BAD_REQUEST;
-                break;
-            case ExecutionError.rcQueryExecutionFailure :
-                httpRC = HttpServletResponse.SC_BAD_REQUEST;
-                break;
-            case ExecutionError.rcNoSuchQueryLanguage :
-                httpRC = HttpServletResponse.SC_NOT_IMPLEMENTED ;
-                break;
-            case ExecutionError.rcInternalError :
-                httpRC = HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
-                break;
-            case ExecutionError.rcRDFException :
-                httpRC = HttpServletResponse.SC_BAD_REQUEST ;
-                break ;
-            case ExecutionError.rcNoSuchURI:
-                httpRC = HttpServletResponse.SC_NOT_FOUND ;
-                break ;
-            case ExecutionError.rcSecurityError:
-                httpRC = HttpServletResponse.SC_FORBIDDEN ;
-                break ;
-            case ExecutionError.rcOperationNotSupported:
-                httpRC = HttpServletResponse.SC_NOT_IMPLEMENTED ;
-                break ;
-            case ExecutionError.rcArgumentUnreadable:
-                httpRC = HttpServletResponse.SC_BAD_REQUEST ;
-                break ;
-            case ExecutionError.rcImmutableModel:
-                httpRC = HttpServletResponse.SC_METHOD_NOT_ALLOWED ;
-                break ;
-            case ExecutionError.rcConfigurationError:
-                httpRC = HttpServletResponse.SC_INTERNAL_SERVER_ERROR ;
-                break ;
-            case ExecutionError.rcArgumentError:
-                httpRC = HttpServletResponse.SC_BAD_REQUEST ;
-            case ExecutionError.rcNotImplemented:
-                httpRC = HttpServletResponse.SC_NOT_IMPLEMENTED ;
-                break ;
-            default :
-                httpRC = HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
-                break;
-        }
-        response.setHeader(Joseki.httpHeaderField, Joseki.httpHeaderValue) ;
-        response.sendError(httpRC, httpMsg) ;
+        try {
+            int httpRC = -1;
+            String httpMsg = ExecutionError.errorString(execEx.returnCode);
+            if (execEx.shortMessage != null)
+                httpMsg = execEx.shortMessage;
+    
+            // Map from internal error codes to HTTP ones.
+            switch (execEx.returnCode)
+            {
+                case ExecutionError.rcOK :
+                    httpRC = 200;
+                    break;
+                case ExecutionError.rcQueryParseFailure :
+                    httpRC = HttpServletResponse.SC_BAD_REQUEST;
+                    break;
+                case ExecutionError.rcQueryExecutionFailure :
+                    httpRC = HttpServletResponse.SC_BAD_REQUEST;
+                    break;
+                case ExecutionError.rcNoSuchQueryLanguage :
+                    httpRC = HttpServletResponse.SC_NOT_IMPLEMENTED ;
+                    break;
+                case ExecutionError.rcInternalError :
+                    httpRC = HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
+                    break;
+                case ExecutionError.rcRDFException :
+                    httpRC = HttpServletResponse.SC_BAD_REQUEST ;
+                    break ;
+                case ExecutionError.rcNoSuchURI:
+                    httpRC = HttpServletResponse.SC_NOT_FOUND ;
+                    break ;
+                case ExecutionError.rcSecurityError:
+                    httpRC = HttpServletResponse.SC_FORBIDDEN ;
+                    break ;
+                case ExecutionError.rcOperationNotSupported:
+                    httpRC = HttpServletResponse.SC_NOT_IMPLEMENTED ;
+                    break ;
+                case ExecutionError.rcArgumentUnreadable:
+                    httpRC = HttpServletResponse.SC_BAD_REQUEST ;
+                    break ;
+                case ExecutionError.rcImmutableModel:
+                    httpRC = HttpServletResponse.SC_METHOD_NOT_ALLOWED ;
+                    break ;
+                case ExecutionError.rcConfigurationError:
+                    httpRC = HttpServletResponse.SC_INTERNAL_SERVER_ERROR ;
+                    break ;
+                case ExecutionError.rcArgumentError:
+                    httpRC = HttpServletResponse.SC_BAD_REQUEST ;
+                case ExecutionError.rcNotImplemented:
+                    httpRC = HttpServletResponse.SC_NOT_IMPLEMENTED ;
+                    break ;
+                default :
+                    httpRC = HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
+                    break;
+            }
+            response.setHeader(Joseki.httpHeaderField, Joseki.httpHeaderValue) ;
+            response.sendError(httpRC, httpMsg) ;
+        } catch (Exception ex2) { log.warn("Problems sending error", ex2) ; } 
     }
     
     
     // Things are going very badly 
-    private void sendPanic( Request request,
-                            HttpServletRequest httpRequest,
-                            HttpServletResponse httpResponse,
-                            Exception ex,
-                            String msg)
-        throws IOException
+    public void sendPanic( Request request,
+                           HttpServletRequest httpRequest,
+                           HttpServletResponse httpResponse,
+                           Exception ex,
+                           String msg)
     {
-        httpResponse.setContentType("text/plain");
-        httpResponse.setHeader(Joseki.httpHeaderField, Joseki.httpHeaderValue);
-        httpResponse.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-
-        PrintWriter pw = httpResponse.getWriter();
-        pw.println(msg);
-        pw.println();
-        pw.println("URI = " + request.getModelURI());
-        for (Iterator iter = request.getParams().keySet().iterator(); iter.hasNext();)
-        {
-            String p = (String)iter.next();
-            pw.println(p + " = " + request.getParam(p));
-        }
-        pw.println() ;
-        if ( ex != null )
-            ex.printStackTrace(pw) ;
-        pw.flush();
-        return;
+        try {
+            httpResponse.setContentType("text/plain");
+            httpResponse.setHeader(Joseki.httpHeaderField, Joseki.httpHeaderValue);
+            httpResponse.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+    
+            PrintWriter pw = httpResponse.getWriter();
+            pw.println(msg);
+            pw.println();
+            pw.println("URI = " + request.getModelURI());
+            if ( request != null )
+            {
+                for (Iterator iter = request.getParams().keySet().iterator(); iter.hasNext();)
+                {
+                    String p = (String)iter.next();
+                    pw.println(p + " = " + request.getParam(p));
+                }
+                pw.println() ;
+            }
+            if ( ex != null )
+                ex.printStackTrace(pw) ;
+            pw.flush();
+            return;
+        } catch (Exception ex2) { log.warn("Problems sending panic", ex2) ; }
     }
 }
 
