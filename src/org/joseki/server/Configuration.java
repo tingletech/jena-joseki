@@ -28,7 +28,7 @@ import com.hp.hpl.jena.util.* ;
  * Parse and process a Joseki configuration file
  * 
  * @author  Andy Seaborne
- * @version $Id: Configuration.java,v 1.7 2005-01-03 20:26:34 andy_seaborne Exp $
+ * @version $Id: Configuration.java,v 1.8 2005-01-04 11:10:28 andy_seaborne Exp $
  */
 
 
@@ -172,7 +172,8 @@ public class Configuration
                     if ( contentType.equals(Joseki.contentTypeAppN3) ||
                          contentType.equals(Joseki.contentTypeTextN3) ||
                          contentType.equals(Joseki.contentTypeRDFXML) ||
-                         contentType.equals(Joseki.contentTypeNTriples) )
+                         contentType.equals(Joseki.contentTypeNTriples) ||
+                         contentType.equals(Joseki.contentTypeTurtle) ) 
                     {
                         log.debug("Content type: "+contentType) ;
                         Joseki.serverContentType = contentType ;

@@ -22,7 +22,7 @@ import com.hp.hpl.jena.query.* ;
 /** SPARQL operations
  * 
  * @author  Andy Seaborne
- * @version $Id: SPARQL.java,v 1.15 2005-01-03 20:26:34 andy_seaborne Exp $
+ * @version $Id: SPARQL.java,v 1.16 2005-01-04 11:10:28 andy_seaborne Exp $
  */
 
 public class SPARQL extends QueryProcessorCom
@@ -100,7 +100,7 @@ public class SPARQL extends QueryProcessorCom
             // Browser tests:
             // is text/* preferred over 
             
-            if ( query.isSelectType() &&  wantsAppXML )
+            if ( query.isSelectType() && wantsAppXML )
             {
                 execQueryXML(query, response) ;
                 log.info("OK - URI="+request.getModelURI()+" : "+queryStringLog) ;
