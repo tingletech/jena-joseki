@@ -8,12 +8,15 @@ import java.io.* ;
 
 /** Abstaction of an operation response
  * @author      Andy Seaborne
- * @version     $Id: Response.java,v 1.1 2004-11-04 15:44:58 andy_seaborne Exp $
+ * @version     $Id: Response.java,v 1.2 2004-11-09 11:33:27 andy_seaborne Exp $
  */
 public class Response
 {
     String mimeType = null ;
     OutputStream output ;
+    int responseCode = ExecutionError.rcOK ;
+    String responseMessage = null ;
+    
     
     /**
      * @return Returns the mimeType.
@@ -43,6 +46,34 @@ public class Response
     public void setOutput(OutputStream output)
     {
         this.output = output;
+    }
+    /**
+     * @return Returns the responseCode.
+     */
+    public int getResponseCode()
+    {
+        return responseCode;
+    }
+    /**
+     * @param responseCode The responseCode to set.
+     */
+    public void setResponseCode(int responseCode)
+    {
+        this.responseCode = responseCode;
+    }
+    /**
+     * @return Returns the responseMessage.
+     */
+    public String getResponseMessage()
+    {
+        return responseMessage;
+    }
+    /**
+     * @param responseMessage The responseMessage to set.
+     */
+    public void setResponseMessage(String responseMessage)
+    {
+        this.responseMessage = responseMessage;
     }
 }
 
