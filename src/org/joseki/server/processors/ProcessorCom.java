@@ -12,7 +12,7 @@ import com.hp.hpl.jena.rdf.model.*;
 
 /** General template 
  * @author      Andy Seaborne
- * @version     $Id: ProcessorCom.java,v 1.3 2004-11-04 15:44:52 andy_seaborne Exp $
+ * @version     $Id: ProcessorCom.java,v 1.4 2004-11-09 21:54:14 andy_seaborne Exp $
  */
 public abstract class ProcessorCom implements ProcessorModel, Processor, Interface, Loadable
 {
@@ -48,7 +48,7 @@ public abstract class ProcessorCom implements ProcessorModel, Processor, Interfa
     }
     
     
-    /** @see org.joseki.module.Loadable#init(Resource, Resource)
+    /** @see org.joseki.server.module.Loadable#init(Resource, Resource)
      */
     public void init(Resource processor, Resource implementation) { }
     
