@@ -81,20 +81,22 @@
     rdfs:comment    "code to load".
     
 
-##-------------------------------------------------------------
-## Symbols for possible operations.
-
-:opQueryModel   rdf:type    :Operation ;  rdfs:label    "query" .
-:opAdd          rdf:type    :Operation ;  rdfs:label    "add"   .
-:opRemove       rdf:type    :Operation ;  rdfs:label    "remove" .
-:opOptions      rdf:type    :Operation ;  rdfs:label    "options" .
-
-:opUpdate       rdf:type    :Operation ;  rdfs:label    "update" .
-:opLock         rdf:type    :Operation ;  rdfs:label    "lock" .
-:opUnlock       rdf:type    :Operation ;  rdfs:label    "unlock" .
-
-:queryRDQL      a   :QueryOperation ;   rdfs:label    "RDQL" .
-:queryGET       a   :QueryOperation ;   rdfs:label    "HTTP GET" .
+## ##-------------------------------------------------------------
+## ## Symbols for possible operations.
+## Now done as URIs (strings, not classes)
+## 
+## :opQuery        rdf:type    :Operation ;  rdfs:label    "query" .
+## :opQueryModel   rdf:type    :Operation ;  rdfs:label    "query model" .
+## :opAdd          rdf:type    :Operation ;  rdfs:label    "add"   .
+## :opRemove       rdf:type    :Operation ;  rdfs:label    "remove" .
+## :opOptions      rdf:type    :Operation ;  rdfs:label    "options" .
+## 
+## :opUpdate       rdf:type    :Operation ;  rdfs:label    "update" .
+## :opLock         rdf:type    :Operation ;  rdfs:label    "lock" .
+## :opUnlock       rdf:type    :Operation ;  rdfs:label    "unlock" .
+## 
+## :queryRDQL      a   :QueryOperation ;   rdfs:label    "RDQL" .
+## :queryGET       a   :QueryOperation ;   rdfs:label    "HTTP GET" .
 
 ##-------------------------------------------------------------
 ## Properties used in a query request encoded in RDF
