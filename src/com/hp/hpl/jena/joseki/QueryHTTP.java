@@ -17,7 +17,7 @@ import org.joseki.HttpParams;
  *  on a model over HTTP.
  *
  * @author  Andy Seaborne
- * @version $Id: QueryHTTP.java,v 1.8 2005-01-11 10:52:00 andy_seaborne Exp $
+ * @version $Id: QueryHTTP.java,v 1.9 2005-02-15 14:06:09 andy_seaborne Exp $
  */
 public class QueryHTTP implements QueryExecution
 {
@@ -25,6 +25,7 @@ public class QueryHTTP implements QueryExecution
     
     Query query ;
     HttpQuery qHTTP ;
+    boolean finished = false ;
     Model resultModel = null ;
     
     public QueryHTTP(Query q, String urlStr, String lang)
@@ -53,6 +54,8 @@ public class QueryHTTP implements QueryExecution
         return ;
     }
     
+    public Query getQuery() { return query ; }
+    
     // Iterator of ResultBindings
     public ResultSet execSelect()
     {
@@ -71,8 +74,7 @@ public class QueryHTTP implements QueryExecution
                 logger.debug("Model size is zero") ;
 
             // Execute the query locally to build result binding.
-            query.setDataSet(resultModel) ;
-            QueryExecution qexec = QueryFactory.createQueryExecution(query);
+            QueryExecution qexec = QueryExecutionFactory.create(query, resultModel);
             return qexec.execSelect() ;
         } 
         catch (RDFException rdfEx)
@@ -86,10 +88,12 @@ public class QueryHTTP implements QueryExecution
      * No guarantee that the concrete implementation actual will stop or
      * that it will do so immediately.
      */
-    public void abort() { }
+    public void abort() { close() ; }
     
     /** Normal end of use of this execution  */
-    public void close() { resultModel = null ; }
+    public void close() { resultModel = null ; finished = true ; }
+    
+    public boolean isActive() { return ! finished ; }
     
     /** Get the last result model */ 
     public Model getResultModel() { return resultModel ; }

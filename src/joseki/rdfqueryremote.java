@@ -21,7 +21,7 @@ import com.hp.hpl.jena.query.* ;
 /** Command line application to issue queries against a remote model.
  *
  * @author  Andy Seaborne
- * @version $Id: rdfqueryremote.java,v 1.5 2005-02-11 13:36:02 andy_seaborne Exp $
+ * @version $Id: rdfqueryremote.java,v 1.6 2005-02-15 14:05:50 andy_seaborne Exp $
  */
 
 
@@ -232,8 +232,6 @@ public class rdfqueryremote
                 System.out.println() ;
                 ((QueryHTTP)qe).getResultModel().write(System.out,"N3") ;
             }
-            fmt.close() ;   
-            results.close() ;
             qe.close() ;
         }
         catch (QueryException qEx)

@@ -22,7 +22,7 @@ import com.hp.hpl.jena.query.* ;
 /** SPARQL operations
  * 
  * @author  Andy Seaborne
- * @version $Id: SPARQL.java,v 1.19 2005-02-04 21:45:24 andy_seaborne Exp $
+ * @version $Id: SPARQL.java,v 1.20 2005-02-15 14:06:44 andy_seaborne Exp $
  */
 
 public class SPARQL extends QueryProcessorCom
@@ -85,11 +85,13 @@ public class SPARQL extends QueryProcessorCom
                 throw new QueryExecutionException(ExecutionError.rcQueryParseFailure, "Unknown Parse error") ;
             }
 
-            if ( ! query.hasDataSetDescription() )
-                query.setDataSet(model) ;
+            QueryExecution qexec = null ;
             
-            QueryExecution qe = QueryFactory.createQueryExecution(query) ;
-
+            if ( query.hasDataSetDescription() )
+                qexec = QueryExecutionFactory.create(query) ;
+            else
+                qexec = QueryExecutionFactory.create(query, model) ;
+                
             // Test for SELECT in XML result set form
             boolean wantsAppXML = response.accepts("Accept", "application/xml") ;
             
@@ -103,17 +105,17 @@ public class SPARQL extends QueryProcessorCom
             
             if ( query.isSelectType() && wantsAppXML )
             {
-                execQuerySelectXML(query, request, response) ;
+                execQuerySelectXML(qexec, request, response) ;
                 log.info("OK - URI="+request.getModelURI()+" : "+queryStringLog) ;
                 return ;
             }
             
             if ( query.isAskType() )
-                execQueryAsk(query, response) ;
+                execQueryAsk(qexec, response) ;
             else
             {
                 // SELECT / RDF results, CONSTRUCT or DESCRIBE
-                Model results = execQueryModel(query) ;
+                Model results = execQueryModel(qexec) ;
                 response.doResponse(results) ;
             }
             log.info("OK - URI="+request.getModelURI()+" : "+queryStringLog) ;
@@ -127,23 +129,23 @@ public class SPARQL extends QueryProcessorCom
         }
     }
 
-    private Model execQueryModel(Query query) throws QueryExecutionException
+    private Model execQueryModel(QueryExecution qexec) throws QueryExecutionException
     {
         try {
-            QueryExecution qe = QueryFactory.createQueryExecution(query) ;
+            Query query = qexec.getQuery() ;
             
             if ( query.isSelectType() )
             {
-                ResultSet results = qe.execSelect() ;
+                ResultSet results = qexec.execSelect() ;
                 ResultSetFormatter rsFmt = new  ResultSetFormatter(results, query.getPrefixMap()) ;
                 return rsFmt.toModel() ;
             }
             
             if ( query.isConstructType() )
-                return qe.execConstruct() ;
+                return qexec.execConstruct() ;
             
             if ( query.isDescribeType() )
-                return qe.execDescribe() ; 
+                return qexec.execDescribe() ; 
             
             if ( query.isAskType() )
             {
@@ -163,9 +165,10 @@ public class SPARQL extends QueryProcessorCom
     
     static final String paramStyleSheet = "stylesheet" ;
     
-    private void execQuerySelectXML(Query query, Request request, Response response)
+    private void execQuerySelectXML(QueryExecution qexec, Request request, Response response)
         throws QueryExecutionException
     {
+        Query query = qexec.getQuery() ;
         String stylesheetURL = null ;
         if ( request.containsParam(paramStyleSheet) )
         {
@@ -179,8 +182,7 @@ public class SPARQL extends QueryProcessorCom
         }
         
         try {
-            QueryExecution qe = QueryFactory.createQueryExecution(query) ;
-            ResultSetFormatter fmt = new ResultSetFormatter(qe.execSelect(), query.getPrefixMap()) ;
+            ResultSetFormatter fmt = new ResultSetFormatter(qexec.execSelect(), query.getPrefixMap()) ;
             // TODO Remove any HTTPisms
             response.setMimeType(Joseki.contentTypeXML) ;
             // See doResponse as well - more header setting?  How to abstract?
@@ -197,12 +199,11 @@ public class SPARQL extends QueryProcessorCom
         }
     }
 
-    private void execQueryAsk(Query query, Response response)
+    private void execQueryAsk(QueryExecution qexec, Response response)
         throws QueryExecutionException
     {
         try {
-            QueryExecution qe = QueryFactory.createQueryExecution(query) ;
-            boolean result = qe.execAsk() ;
+            boolean result = qexec.execAsk() ;
             response.setMimeType(Joseki.contentTypeTextPlain) ;
             response.setResponseCode(Response.rcOK) ;
             response.startResponse() ;
