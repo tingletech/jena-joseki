@@ -9,7 +9,7 @@ package org.joseki;
 /** Constants related to SPARQL over HTTP  
  * 
  * @author Andy Seaborne
- * @version $Id: HttpParams.java,v 1.1 2005-01-11 10:52:00 andy_seaborne Exp $
+ * @version $Id: HttpParams.java,v 1.2 2005-01-11 18:06:01 andy_seaborne Exp $
  */
 
 public class HttpParams
@@ -20,10 +20,15 @@ public class HttpParams
     public static final String pQueryUri       = "query-uri" ;
     
     /** Parameter for a URI identifying the graph (or one of the graphs) */
-    public static final String pGraph          = "graph" ;
+    public static final String pGraph          = "graph-id" ;
+    
+    /** Parameter for SELECT queries to control whether solutions should be unique */
+    public static final String pDistinct       = "distinct" ;
+    /** Parameter for SELECT queries to limit the number of solutions returned */
+    public static final String pLimit          = "limit" ;
     
     /** Parameter for query language URI */
-    //public static final String pQueryLang      = "query-language" ;
+    //public static final String pQueryLang      = "query-lang" ;
     public static final String pQueryLang      = "lang" ;
     
     // Alterative forms (Joseki compatibility)
