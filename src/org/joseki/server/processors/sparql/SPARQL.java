@@ -23,7 +23,7 @@ import com.hp.hpl.jena.query.* ;
 /** SPARQL operations
  * 
  * @author  Andy Seaborne
- * @version $Id: SPARQL.java,v 1.22 2005-03-15 13:06:14 andy_seaborne Exp $
+ * @version $Id: SPARQL.java,v 1.23 2005-04-28 10:36:40 andy_seaborne Exp $
  */
 
 public class SPARQL extends QueryProcessorCom
@@ -178,7 +178,7 @@ public class SPARQL extends QueryProcessorCom
             if ( query.isSelectType() )
             {
                 ResultSet results = qexec.execSelect() ;
-                ResultSetFormatter rsFmt = new  ResultSetFormatter(results, query.getPrefixMap()) ;
+                ResultSetFormatter rsFmt = new  ResultSetFormatter(results, query.getPrefixMapping()) ;
                 return rsFmt.toModel() ;
             }
             
@@ -223,7 +223,7 @@ public class SPARQL extends QueryProcessorCom
         }
         
         try {
-            ResultSetFormatter fmt = new ResultSetFormatter(qexec.execSelect(), query.getPrefixMap()) ;
+            ResultSetFormatter fmt = new ResultSetFormatter(qexec.execSelect(), query.getPrefixMapping()) ;
             // TODO Remove any HTTPisms
             response.setMimeType(Joseki.contentTypeXML) ;
             // See doResponse as well - more header setting?  How to abstract?
