@@ -140,35 +140,38 @@ code {
 <div class="moreindent">
 
 
-<form action="books">
+<form action="/service">
 SELECT - get variables (apply XSLT stylesheet)<br/>
 <input type="hidden" name="lang" value="SPARQL" />
 <textarea name="query" cols="70" rows="5">
 PREFIX books:   <http://example.org/book/>
 PREFIX dc:      <http://purl.org/dc/elements/1.1/>
-SELECT $book $title WHERE ($book dc:title $title)
+SELECT ?book ?title WHERE { ?book dc:title ?title }
 </textarea>
 <br/>
 XSLT style sheet (leave blank for none): 
-<input name="stylesheet" size="25" value="xml-to-html.xsl" />
+<input name="stylesheet" size="25" value="/xml-to-html.xsl" />
+<br/>
+Graph id (leave blank for none): 
+<input name="graph-id" size="25" value="http://sparql.net/books" />
 <br/>
 <input type="submit" value="Get Results" />
 </form>
 <hr/>
 
-<form action="books">
-CONSTRUCT * - return a subgraph<br/>
+<form action="/books">
+CONSTRUCT - return a graph<br/>
 <input type="hidden" name="lang" value="SPARQL" />
 <textarea name="query" cols="70" rows="5">
 PREFIX dc:      <http://purl.org/dc/elements/1.1/>
-CONSTRUCT * WHERE ($book dc:title $title)
+CONSTRUCT { $book dc:title $title } WHERE { $book dc:title $title }
 </textarea>
 <br/>
 <input type="submit" value="Get Results" />
 </form>
 <hr/>
 
-<form action="books">
+<form action="/books">
 DESCRIBE - get information about something<br/>
 <input type="hidden" name="lang" value="SPARQL" />
 <textarea name="query" cols="70" rows="6">
@@ -177,7 +180,7 @@ PREFIX dc:      <http://purl.org/dc/elements/1.1/>
 
 DESCRIBE books:book3
 # Try also ... comment the above, uncomment below:
-# DESCRIBE ?b WHERE (?b dc:title ?v) AND ?v =~ /Secret/
+# DESCRIBE ?b WHERE { ?b dc:title ?v . FILTER regex(?v, "Secret") }
 </textarea>
 <br/>
 <input type="submit" value="Get Results" />
