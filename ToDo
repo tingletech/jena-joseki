@@ -1,19 +1,33 @@
 Joseki3
 =======
 
++ Deprecate Joseki2 in Joseki3 codebase
+  Time to fix/remove the Joseki2 client library
+     Withdraw add/remove for now
+     Client library => SPARQL => ARQ.engineHTTP
+
++ Option for server side XSLT
+  Firefox refuses to execute from a different server?
+
++ Request/RequestIpl => Request
+  ditto Response
+  Multiple args for Request
+  Formalize the parameters accepted.
+
++ Design new configuration file.
+  Leave POST processing open.
+
++ Use ModelSpecs
+
 + "Accept: */*" matches text/* and gets readable form.
   Should be application/rdf+xml.
-  mayeb tst for application/rdf+xml, application/xml first?
+  maybe test for application/rdf+xml, application/xml first?
 
 + Testing 
   Include Tomcat in JUnit test cycle?  Or too heavy?
 
 + Latest protocol
-    Rename params
-    (centralize names)
-    Recognize (and ignore) new params that don't mean much to Joseki
-    Adding in "uri=" into protocol for SPARQL
-    Add private params "ctype" (result set type), and XSLT "stylesheet"
+    Add private params "ctype" (force MIME type of return), and XSLT "stylesheet"
 
 + Add joseki:textContentType
   If looks like a browser, then text/plain with this type as contents.
@@ -31,11 +45,6 @@ Joseki3
 
 + Query only version?  No operations.
 
-+ Attach named collections (awaiting DAWG design first)
-  attachedModel [ :graphName   ,  :resource <file:> ]
-  or attachedModel <foo>
-  <foo> a :namedCollection ;
-
 + Allow fetch handlers (renamed) for DESCRIBE
   Need doing in ARQ first
 
@@ -46,7 +55,6 @@ Joseki3
   May be JMX (later), 
   javax.management in 1.5.0 MBean
   
-
 + SOAP connector (Axis)
 
 + Restructure the main server implementation
