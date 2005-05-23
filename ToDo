@@ -1,6 +1,21 @@
 Joseki3
 =======
 
++ SPARQLer in CVS as asuuplied app
+  Need ant support
+
++ Multiple value parameters - redo "Request" to allow multivalues.
+
++ XSLT update to latest
+
++ Config file
+   separate models from service
+   ops assigned to service
+   
++ DataSets
+  ModelSpec++
+  Dynamic Models - i.e. construct model as URI comes in
+
 + Deprecate Joseki2 in Joseki3 codebase
   Time to fix/remove the Joseki2 client library
      Withdraw add/remove for now

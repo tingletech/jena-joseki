@@ -23,12 +23,16 @@ import com.hp.hpl.jena.query.* ;
 /** SPARQL operations
  * 
  * @author  Andy Seaborne
- * @version $Id: SPARQL.java,v 1.23 2005-04-28 10:36:40 andy_seaborne Exp $
+ * @version $Id: SPARQL.java,v 1.24 2005-05-23 10:21:46 andy_seaborne Exp $
  */
 
 public class SPARQL extends QueryProcessorCom
 {
     static private Log log = LogFactory.getLog(SPARQL.class) ;
+    
+    static final String P_QUERY          = "query" ;
+    static final String P_NAMED_GRAPH    = "named-graph-uri" ;
+    static final String P_DEFAULT_GRAPH  = "default-graph-uri" ;
     
     FileManager fileManager ; 
     
@@ -63,11 +67,13 @@ public class SPARQL extends QueryProcessorCom
 
             Model model = null ; 
             
-            String graphURL = request.getParam("graph-id") ;
+            String graphURL = request.getParam(P_DEFAULT_GRAPH) ;
             if ( graphURL == null )
                 // try again, alternative name
                 graphURL = request.getParam("graph-uri") ;
-            
+            if ( graphURL == null )
+                // try again, alternative name
+                graphURL = request.getParam("graph-id") ;
             
             if ( graphURL != null && ! graphURL.equals(""))
                 try {
