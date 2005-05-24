@@ -3,7 +3,7 @@
  * [See end of file]
  */
 
-package com.hp.hpl.jena.joseki;
+package com.hp.hpl.jena.joseki2;
 
 import org.apache.commons.logging.* ;
 
@@ -18,7 +18,7 @@ import com.hp.hpl.jena.rdf.model.* ;
  * or by a property/value that identifies the resource.   
  * 
  * @author  Andy Seaborne
- * @version $Id: HttpFetch.java,v 1.2 2005-01-03 20:26:32 andy_seaborne Exp $
+ * @version $Id$
  */
 
 public class HttpFetch extends HttpQuery

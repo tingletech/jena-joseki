@@ -8,7 +8,8 @@ package org.joseki.test;
 import java.io.* ;
 import org.apache.commons.logging.* ;
 import junit.framework.*;
-import com.hp.hpl.jena.joseki.* ;
+
+import com.hp.hpl.jena.joseki2.*;
 
 import com.hp.hpl.jena.rdf.model.* ;
 
@@ -18,7 +19,7 @@ import com.hp.hpl.jena.rdf.model.* ;
  * operation: model->model) or an HttpExpection.
  * 
  * @author      Andy Seaborne
- * @version     $Id: ClientLibraryTest.java,v 1.2 2005-01-03 20:26:35 andy_seaborne Exp $
+ * @version     $Id: ClientLibraryTest.java,v 1.3 2005-05-24 13:22:28 andy_seaborne Exp $
  */
 
 abstract class ClientLibraryTest extends TestCase

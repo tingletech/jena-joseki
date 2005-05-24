@@ -3,57 +3,58 @@
  * [See end of file]
  */
 
-package com.hp.hpl.jena.joseki;
+package org.joseki.server;
 
-import java.net.* ;
-import com.hp.hpl.jena.rdf.model.*;
 
-/** Add statements to a remote model.
- *  A typical code sequence might be:
- *  <pre>
- *    HttpAdd addOp = new HttpAdd(URL of target) ;
- *    addOp.setModel(your model);
- *    addOp.exec() ;
- *    // resultModel should be an empty model
- *  </pre>
- * or
- *  <pre>
- *    HttpAdd addOp = new HttpAdd(URL of target) ;
- *    // Collect statements to be added
- *    addOp.add(statement) ;
- *    addOp.add(model) ;  // Adds all the statements in a model
- *    addOp.exec() ;      // Result is an empty model
- *  </pre>
- * 
- * The result model will be an empty model for a successful operation.
- * Any problems cause {@link HttpException} to be thrown on .exec()
- * 
+import java.util.* ;
+
+/** Abstaction of an operation request on a model.
+ *  The work is done by a processor that accepts the request.
  * @author      Andy Seaborne
- * @version     $Id: HttpAdd.java,v 1.2 2005-01-03 20:26:32 andy_seaborne Exp $
+ * @version     $Id$
  */
-public class HttpAdd extends HttpExecuteModel
+public interface RequestI
 {
-    /** Create an operation for adding statements to a remote model */
-    public HttpAdd(URL url) throws MalformedURLException
-    {
-        this(url.toString()) ;
-    }
+    public String getOpName() ;
+    public String getQueryLanguage() ;
+    public SourceModel getSourceModel() ;
+    public void setSourceModel(SourceModel srcModel) ;
     
-    /** Create an operation for adding statements to a remote model */
-    public HttpAdd(String urlStr) throws MalformedURLException
-    {
-        super(urlStr, "add") ;
-    }
+    public Processor getProcessor() ;
+    public void setProcessor(Processor proc) ;
+    
+    /** Get the URI for the source for the operation - the request URI local to the webapp 
+     * 
+     * @return String
+     */
+    public String getModelURI() ;
+    
+    /** The URL used in the request
+     * 
+     * @return String The URL used in the request
+     */
+    public String getRequestURL() ;
+    
+    public Dispatcher getDispatcher() ;
+    public void setDispatcher(Dispatcher dispatcher) ;
 
-    /** Accumulate statements to be added when the operations is executed
-     *  @param model            A set of statements to be added on execution
-     */
-    public void add(Model model) { collect(model) ; }
+    // The named parameters to the operation
+    // Map is String => String
+    public Map getParams() ;
+    public String getParam(String param) ;
     
-    /** Accumulate statements to be added when the operations is executed
-     *  @param statement         A statement to be added on execution
-     */
-    public void add(Statement statement) { collect(statement) ; }
+    public boolean takesArg() ;
+    public void addArg(Object m) ;
+    public boolean containsParam(String name) ;
+    
+    /** Set and override any previous value */
+    public void setParam(String name, String value)  ;
+    
+    /** Add a paramr - may now be multivalued */
+    public void addParam(String name, String value)  ;
+    
+    // Data args : Jena models.  Usually at most one.
+    public List getDataArgs() ;
 }
 
 

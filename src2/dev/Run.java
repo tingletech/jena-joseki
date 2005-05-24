@@ -9,11 +9,20 @@ package dev;
 import java.net.* ;
 
 import org.joseki.server.http.HttpContentType;
+import org.joseki.util.Params;
 
 public class Run
 {
 
     public static void main(String[] args)
+    {
+        runJosekiServer(args) ; System.exit(0) ;
+        runParamsTest() ;
+        
+    }
+    
+    
+    public static void runJosekiServer(String[] args) 
     {
         if ( args == null || args.length == 0 )
             args = new String[]{"joseki-dev.n3"} ;
@@ -21,16 +30,17 @@ public class Run
         System.exit(0) ;
         
         return ;
-        
-        //String a[] = {} ;
-        //rdfserver.main(a) ;
+    }
 
-//        ct("  RDF/XML; charset=UTF-8" ) ;
-//        ct("  RDF/XML" ) ;
-//        ct("  RDF/XML;p=57;charset =UTF-8" ) ;
-        
-        
-        //dwim() ;
+    public static void runParamsTest()
+    {
+        Params p = new Params() ;
+        p.add("query", "SELECT ?x WHERE {}") ;
+        p.add("default-graph-uri", "http://example.org/model1") ;
+        p.add("named-graph-uri", "http://example.org/n1") ;
+        p.add("named-graph-uri", "http://example.org/n2") ;
+        String x = p.httpString() ;
+        System.out.println(x) ;
     }
     
     public static void ct(String s)

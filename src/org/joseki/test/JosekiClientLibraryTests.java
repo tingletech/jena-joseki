@@ -8,7 +8,9 @@ package org.joseki.test;
 import java.io.* ;
 import org.apache.commons.logging.* ;
 import junit.framework.*;
-import com.hp.hpl.jena.joseki.* ;
+
+import com.hp.hpl.jena.joseki2.*;
+
 import org.joseki.HttpParams ;
 
 import com.hp.hpl.jena.rdf.model.* ;
@@ -23,7 +25,7 @@ import javax.servlet.http.HttpServletResponse ;
  *  Tests must leave the server and its models unchanged.
  * 
  * @author      Andy Seaborne
- * @version     $Id: JosekiClientLibraryTests.java,v 1.7 2005-01-14 18:17:31 andy_seaborne Exp $
+ * @version     $Id: JosekiClientLibraryTests.java,v 1.8 2005-05-24 13:22:28 andy_seaborne Exp $
  */
 public class JosekiClientLibraryTests extends TestSuite
 {

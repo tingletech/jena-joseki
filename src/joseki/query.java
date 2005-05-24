@@ -6,7 +6,7 @@
 
 package joseki;
 
-import com.hp.hpl.jena.joseki.*;
+import com.hp.hpl.jena.joseki2.*;
 import com.hp.hpl.jena.rdf.model.*;
 
 import jena.cmdline.*;
@@ -19,7 +19,7 @@ import java.util.*;
  * A simple application that builds and executes a Joseki-style GET query.
  * 
  * @author Andy Seaborne
- * @version $Id: query.java,v 1.3 2005-01-07 16:00:55 andy_seaborne Exp $
+ * @version $Id: query.java,v 1.4 2005-05-24 13:22:27 andy_seaborne Exp $
  */
 
 public class query

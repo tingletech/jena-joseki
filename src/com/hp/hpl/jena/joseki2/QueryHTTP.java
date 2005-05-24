@@ -3,7 +3,7 @@
  * [See end of file]
  */
 
-package com.hp.hpl.jena.joseki;
+package com.hp.hpl.jena.joseki2;
 
 import org.apache.commons.logging.* ;
 import java.net.* ;
@@ -11,13 +11,14 @@ import java.net.* ;
 import com.hp.hpl.jena.rdf.model.* ;
 import com.hp.hpl.jena.util.FileManager;
 import com.hp.hpl.jena.query.* ;
+
 import org.joseki.HttpParams;
 
 /** Create an execution object for performing an RDQL query
  *  on a model over HTTP.
  *
  * @author  Andy Seaborne
- * @version $Id: QueryHTTP.java,v 1.9 2005-02-15 14:06:09 andy_seaborne Exp $
+ * @version $Id$
  */
 public class QueryHTTP implements QueryExecution
 {
@@ -125,6 +126,11 @@ public class QueryHTTP implements QueryExecution
     public void setFileManager(FileManager arg0)
     {
         throw new java.lang.UnsupportedOperationException(this.getClass().getName()+"setFileManager()") ;
+    }
+
+    public void setInitialBinding(QuerySolution binding)
+    {
+       throw new JosekiException("HTTP does not support intial bindings") ;
     }
 }
 

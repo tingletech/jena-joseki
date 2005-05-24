@@ -3,7 +3,7 @@
  * [See end of file]
  */
 
-package com.hp.hpl.jena.joseki;
+package com.hp.hpl.jena.joseki2;
 
 import org.apache.commons.logging.* ;
 import java.net.* ;
@@ -21,7 +21,7 @@ import org.joseki.server.http.HttpContentType;
  *  @see HttpOptions
  *  @see HttpQuery
  * @author      Andy Seaborne
- * @version     $Id: HttpExecute.java,v 1.5 2005-01-03 20:26:32 andy_seaborne Exp $
+ * @version     $Id$
  */
 
 public class HttpExecute

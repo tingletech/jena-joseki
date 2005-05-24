@@ -3,40 +3,28 @@
  * [See end of file]
  */
 
-package com.hp.hpl.jena.joseki;
-
-
-import java.net.* ;
-
-/** Create an execution object for performing an HTTP OPTIONS
- *  operation.  The result is an RDF model.  If asked of
- *  the server itself this will usually list the URLs of
- *  supported models.  If asked of a model, there will be further
- *  about query languages and operations supported.
- * 
- * @author  Andy Seaborne
- * @version $Id: HttpOptions.java,v 1.3 2005-01-03 20:26:32 andy_seaborne Exp $
+/** Top of exception class hierarchy for Joseki library exceptions
+ * @author     Andy Seaborne
+ * @version    $Id$
  */
+ 
+package com.hp.hpl.jena.query.engineHTTP;
 
-public class HttpOptions extends HttpExecute
+//import com.hp.hpl.jena.shared.JenaException;
+
+public class JosekiException extends /*JenaException*/RuntimeException
 {
-    public HttpOptions(URL u) throws MalformedURLException
-    {
-        this(u.toString()) ;
-    }
+    private static final long serialVersionUID = 99L;  // Serilizable.
+    public JosekiException() { super() ; }
+    public JosekiException(String msg) { super(msg) ; }
     
-    
-    public HttpOptions(String urlStr) throws MalformedURLException
-    {
-        super() ;
-        super.setURL(urlStr) ; 
-        super.setRequestMethod("OPTIONS", false) ;
-    }
-}   
+    public JosekiException(Throwable cause) { super(cause) ; }
+    public JosekiException(String msg, Throwable cause) { super(msg, cause) ; }
+}
 
 /*
- *  (c) Copyright 2003, 2004, 2005 Hewlett-Packard Development Company, LP
- *  All rights reserved.
+ * (c) Copyright 2003, 2004, 2005 Hewlett-Packard Development Company, LP
+ * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions

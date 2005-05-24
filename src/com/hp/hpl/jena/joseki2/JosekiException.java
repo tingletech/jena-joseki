@@ -5,10 +5,10 @@
 
 /** Top of exception class hierarchy for Joseki library exceptions
  * @author     Andy Seaborne
- * @version    $Id: JosekiException.java,v 1.3 2005-01-03 20:26:32 andy_seaborne Exp $
+ * @version    $Id$
  */
  
-package com.hp.hpl.jena.joseki;
+package com.hp.hpl.jena.joseki2;
 
 //import com.hp.hpl.jena.shared.JenaException;
 

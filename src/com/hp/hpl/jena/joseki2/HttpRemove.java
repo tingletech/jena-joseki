@@ -3,30 +3,55 @@
  * [See end of file]
  */
 
-package org.joseki.test;
+package com.hp.hpl.jena.joseki2;
 
 import java.net.* ;
+import com.hp.hpl.jena.rdf.model.*;
 
-import com.hp.hpl.jena.joseki2.HttpExecute;
+/** Remove statements to a remote model.
+ *  A typical code sequence might be:
+ *  <pre>
+ *    HttpRemove removeOp = new HttpRemove(URL of target) ;
+ *    removeOp.setModel(your model);
+ *    addOp.exec() ;        // Result is an empty model
+ *  </pre>
+ * or
+ *  <pre>
+ *    HttpRemove removeOp = new HttpRemove(URL of target) ;
+ *    // Collect statements to be added
+ *    removeOp.remove(statement) ;
+ *    removeOp.remove(model) ;  // Remove all the statements as given in a model
+ *    removeOp.remove() ;       // Result is an empty model
+ *  </pre>
 
-/** Execute a "clear model" operation ona remote model (that allows such).
+ * Any problems cause {@link HttpException} to be thrown on .exec()
+ * 
  * @author      Andy Seaborne
- * @version     $Id: HttpClear.java,v 1.3 2005-05-24 13:22:28 andy_seaborne Exp $
+ * @version     $Id$
  */
-public class HttpClear extends HttpExecute
+public class HttpRemove extends HttpExecuteModel
 {
-    
-    public HttpClear(URL url) throws MalformedURLException
+    /** Create an operation for removing statements to a remote model */
+    public HttpRemove(URL url) throws MalformedURLException
     {
         this(url.toString()) ;
     }
     
-    public HttpClear(String urlStr) throws MalformedURLException
+    public HttpRemove(String urlStr) throws MalformedURLException
     {
-        super(urlStr, "clear") ;
+        super(urlStr, "remove") ;
     }
+    
+    /** Accumulate statements to be removed when the operations is executed
+     *  @param model            A set of statements to be removed on execution
+     */
+   public void remove(Model model) { collect(model) ; }
+    
+    /** Accumulate statements to be removed when the operations is executed
+     *  @param statement         A statement to be removed on execution
+     */
+    public void remove(Statement statement) { collect(statement) ; }
 }
-
 
 /*
  *  (c) Copyright 2003, 2004, 2005 Hewlett-Packard Development Company, LP

@@ -23,11 +23,11 @@ import java.util.* ;
  *  and returns the smallest subgraph that gives the same query results.
  *  The client may then recreate the variable bindings if it so wishes.
  * 
- *  @see com.hp.hpl.jena.joseki.HttpQuery
- *  @see com.hp.hpl.jena.joseki.QueryHTTP
+ *  @see com.hp.hpl.jena.joseki2.HttpQuery
+ *  @see com.hp.hpl.jena.joseki2.QueryHTTP
  * 
  * @author  Andy Seaborne
- * @version $Id: QueryProcessorRDQL.java,v 1.3 2005-01-03 20:26:36 andy_seaborne Exp $
+ * @version $Id: QueryProcessorRDQL.java,v 1.4 2005-05-24 13:22:28 andy_seaborne Exp $
  */
 
 public class QueryProcessorRDQL extends QueryProcessorModelCom

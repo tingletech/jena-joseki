@@ -3,7 +3,7 @@
  * [See end of file]
  */
 
-package com.hp.hpl.jena.joseki;
+package com.hp.hpl.jena.joseki2;
 
 import org.apache.commons.logging.* ;
 import java.net.* ;
@@ -14,7 +14,7 @@ import org.joseki.*;
 
 /**
  * @author Andy Seaborne
- * @version $Id: HttpExecuteModel.java,v 1.2 2005-01-03 20:26:32 andy_seaborne Exp $
+ * @version $Id$
  */
 /** Common code for performing an HTTP operation which takes a single
  *  model as argument.
@@ -23,7 +23,7 @@ import org.joseki.*;
  *  @see HttpRemove
  *  @see HttpQuery
  * @author      Andy Seaborne
- * @version     $Id: HttpExecuteModel.java,v 1.2 2005-01-03 20:26:32 andy_seaborne Exp $
+ * @version     $Id$
  */
 
 public class HttpExecuteModel extends HttpExecute

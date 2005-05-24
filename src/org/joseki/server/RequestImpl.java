@@ -14,9 +14,10 @@ import java.util.* ;
  *  provides methods to create the operation as well as meet
  *  the Request interface.
  * @author      Andy Seaborne
- * @version     $Id: RequestImpl.java,v 1.6 2005-01-03 20:26:34 andy_seaborne Exp $
+ * @version     $Id: RequestImpl.java,v 1.7 2005-05-24 13:22:49 andy_seaborne Exp $
  */
-public class RequestImpl implements Request
+public class RequestImpl implements RequestI
+
 {
     // Where and how the operation will be performed
     Processor processor ;
@@ -80,6 +81,8 @@ public class RequestImpl implements Request
     public String getParam(String param) { return (String)params.get(param); }
     
     public List getDataArgs() { return args ; }
+
+    public void addParam(String name, String value) { setParam(name, value) ; }
 }
 
 /*

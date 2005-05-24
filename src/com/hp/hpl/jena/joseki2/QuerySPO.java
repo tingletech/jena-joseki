@@ -14,10 +14,10 @@
  *  operation.
  * 
  * @author     Andy Seaborne
- * @version    $Id: QuerySPO.java,v 1.2 2005-01-03 20:26:32 andy_seaborne Exp $
+ * @version    $Id$
  */
  
-package com.hp.hpl.jena.joseki;
+package com.hp.hpl.jena.joseki2;
 
 import org.apache.commons.logging.* ;
 import com.hp.hpl.jena.rdf.model.* ;

@@ -11,7 +11,7 @@ import java.net.* ;
 
 import jena.cmdline.*;
 
-import com.hp.hpl.jena.joseki.* ;
+import com.hp.hpl.jena.joseki2.*;
 
 import com.hp.hpl.jena.rdf.model.* ;
 //import com.hp.hpl.jena.rdf.model.impl.* ;
@@ -21,7 +21,7 @@ import com.hp.hpl.jena.query.* ;
 /** Command line application to issue queries against a remote model.
  *
  * @author  Andy Seaborne
- * @version $Id: rdfqueryremote.java,v 1.7 2005-03-14 20:39:57 andy_seaborne Exp $
+ * @version $Id: rdfqueryremote.java,v 1.8 2005-05-24 13:22:27 andy_seaborne Exp $
  */
 
 

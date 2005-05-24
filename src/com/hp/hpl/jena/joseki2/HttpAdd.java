@@ -3,55 +3,59 @@
  * [See end of file]
  */
 
-package com.hp.hpl.jena.joseki;
+package com.hp.hpl.jena.joseki2;
 
 import java.net.* ;
 import com.hp.hpl.jena.rdf.model.*;
 
-/** Remove statements to a remote model.
+/** Add statements to a remote model.
  *  A typical code sequence might be:
  *  <pre>
- *    HttpRemove removeOp = new HttpRemove(URL of target) ;
- *    removeOp.setModel(your model);
- *    addOp.exec() ;        // Result is an empty model
+ *    HttpAdd addOp = new HttpAdd(URL of target) ;
+ *    addOp.setModel(your model);
+ *    addOp.exec() ;
+ *    // resultModel should be an empty model
  *  </pre>
  * or
  *  <pre>
- *    HttpRemove removeOp = new HttpRemove(URL of target) ;
+ *    HttpAdd addOp = new HttpAdd(URL of target) ;
  *    // Collect statements to be added
- *    removeOp.remove(statement) ;
- *    removeOp.remove(model) ;  // Remove all the statements as given in a model
- *    removeOp.remove() ;       // Result is an empty model
+ *    addOp.add(statement) ;
+ *    addOp.add(model) ;  // Adds all the statements in a model
+ *    addOp.exec() ;      // Result is an empty model
  *  </pre>
-
+ * 
+ * The result model will be an empty model for a successful operation.
  * Any problems cause {@link HttpException} to be thrown on .exec()
  * 
  * @author      Andy Seaborne
- * @version     $Id: HttpRemove.java,v 1.2 2005-01-03 20:26:32 andy_seaborne Exp $
+ * @version     $Id$
  */
-public class HttpRemove extends HttpExecuteModel
+public class HttpAdd extends HttpExecuteModel
 {
-    /** Create an operation for removing statements to a remote model */
-    public HttpRemove(URL url) throws MalformedURLException
+    /** Create an operation for adding statements to a remote model */
+    public HttpAdd(URL url) throws MalformedURLException
     {
         this(url.toString()) ;
     }
     
-    public HttpRemove(String urlStr) throws MalformedURLException
+    /** Create an operation for adding statements to a remote model */
+    public HttpAdd(String urlStr) throws MalformedURLException
     {
-        super(urlStr, "remove") ;
+        super(urlStr, "add") ;
     }
-    
-    /** Accumulate statements to be removed when the operations is executed
-     *  @param model            A set of statements to be removed on execution
+
+    /** Accumulate statements to be added when the operations is executed
+     *  @param model            A set of statements to be added on execution
      */
-   public void remove(Model model) { collect(model) ; }
+    public void add(Model model) { collect(model) ; }
     
-    /** Accumulate statements to be removed when the operations is executed
-     *  @param statement         A statement to be removed on execution
+    /** Accumulate statements to be added when the operations is executed
+     *  @param statement         A statement to be added on execution
      */
-    public void remove(Statement statement) { collect(statement) ; }
+    public void add(Statement statement) { collect(statement) ; }
 }
+
 
 /*
  *  (c) Copyright 2003, 2004, 2005 Hewlett-Packard Development Company, LP

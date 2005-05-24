@@ -3,27 +3,27 @@
  * [See end of file]
  */
 
-package org.joseki.test;
+package com.hp.hpl.jena.joseki2;
 
 import java.net.* ;
 
-import com.hp.hpl.jena.joseki2.HttpExecute;
-
-/** Execute a "clear model" operation ona remote model (that allows such).
+/** Ping a remote model.  Remote models are not 
+ *  obliged to support the ping, or any other operation.
+ * 
  * @author      Andy Seaborne
- * @version     $Id: HttpClear.java,v 1.3 2005-05-24 13:22:28 andy_seaborne Exp $
+ * @version     $Id$
  */
-public class HttpClear extends HttpExecute
+public class HttpPing extends HttpExecute
 {
     
-    public HttpClear(URL url) throws MalformedURLException
+    public HttpPing(URL url) throws MalformedURLException
     {
         this(url.toString()) ;
     }
     
-    public HttpClear(String urlStr) throws MalformedURLException
+    public HttpPing(String urlStr) throws MalformedURLException
     {
-        super(urlStr, "clear") ;
+        super(urlStr, "ping") ;
     }
 }
 

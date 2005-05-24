@@ -1,57 +1,126 @@
+
 /*
  * (c) Copyright 2003, 2004, 2005 Hewlett-Packard Development Company, LP
  * [See end of file]
  */
+
 
 package org.joseki.server;
 
 
 import java.util.* ;
 
-/** Abstaction of an operation request on a model.
- *  The work is done by a processor that accepts the request.
+import org.joseki.util.Params;
+
+/** General pupose implementation of an operation.
+ *  provides methods to create the operation as well as meet
+ *  the Request interface.
  * @author      Andy Seaborne
- * @version     $Id: Request.java,v 1.5 2005-01-03 20:26:34 andy_seaborne Exp $
+ * @version     $Id: Request.java,v 1.6 2005-05-24 13:22:49 andy_seaborne Exp $
  */
-public interface Request
+public class Request
 {
-    public String getOpName() ;
-    public String getQueryLanguage() ;
-    public SourceModel getSourceModel() ;
-    public void setSourceModel(SourceModel srcModel) ;
+    // Where and how the operation will be performed
+    Processor processor ;
+    SourceModel sourceModel ;
+    Dispatcher dispatcher ;
     
-    public Processor getProcessor() ;
-    public void setProcessor(Processor proc) ;
-    
-    /** Get the URI for the source for the operation - the request URI local to the webapp 
-     * 
-     * @return String
-     */
-    public String getModelURI() ;
-    
-    /** The URL used in the request
-     * 
-     * @return String The URL used in the request
-     */
-    public String getRequestURL() ;
-    
-    public Dispatcher getDispatcher() ;
-    public void setDispatcher(Dispatcher dispatcher) ;
+    // How the operation was described.
+    String opName = null;
+    String queryLang = null;
+    String modelURI = null ;
+    String requestURL = null ;
+    String baseURI = null ; 
 
-    // The named parameters to the operation
-    // Map is String => String
-    public Map getParams() ;
-    public String getParam(String param) ;
+    // Arguments - models
+    // Parameters - key/value pairs
     
-    public boolean takesArg() ;
-    public void addArg(Object m) ;
-    public boolean containsParam(String name) ;
-    public void setParam(String name, String value)  ;
     
-    // Data args : Jena models.  Usually at most one.
-    public List getDataArgs() ;
+    List args = new ArrayList();
+
+    Params params = new Params() ;
+
+    public Request(String uri, String url, String name, String qName)
+                       //, Dispatcher d, SourceModel aModel, ProcessorModel proc)
+    {
+        modelURI = uri ;
+        requestURL = url ;
+        opName = name ;
+        queryLang = qName ;
+        //dispatcher = d ;
+        //sourceModel = aModel ;
+        //processor = proc ;
+    }
+
+    // -------- Arguments 
+    public boolean  takesArg() { return true ; }
+    
+    public void addArg(Object m) { args.add(m) ; }
+    public List getDataArgs() { return args ; }
+    
+    // -------- Parameters 
+    public boolean containsParam(String name) { return params.contains(name) ; }
+
+    /** Set, replacing any old values.*/
+    public void setParam(String name, String value)
+    {
+        params.remove(name) ;
+        params.add(name, value) ;
+    }
+
+    /** Add a parameter - may be come multi-valued */
+    public void addParam(String name) { addParam(name, null) ; }
+    
+    /** Add a parameter - may be come multi-valued */
+    public void addParam(String name, String value)
+    {
+        params.add(name, value) ;
+    }
+    
+    public String getParam(String param)
+    {
+        return (String)params.get1(param);
+    }
+    
+    public List getParams(String name) { return params.getN(name) ; }
+    
+    public List getParamPairs() { return params.pairs() ; }
+    
+
+    // -------- 
+    
+    public String getOpName() { return opName ; }
+    public String getQueryLanguage() { return queryLang ; }
+
+    public String getModelURI() { return modelURI ; }
+    public String getRequestURL() { return requestURL ; }
+
+    public SourceModel getSourceModel() { return sourceModel ;  }
+    public void setSourceModel(SourceModel src) { sourceModel = src ;  }
+    
+    public Processor getProcessor() { return processor ;  }
+    public void setProcessor(Processor proc) { processor = proc ;  }
+
+    public Dispatcher getDispatcher() { return dispatcher ; }
+    public void setDispatcher(Dispatcher d) { dispatcher = d ; }
+
+    /**
+     * @return Returns the baseURI.
+     */
+    public String getBaseURI()
+    {
+        return baseURI ;
+    }
+
+    /**
+     * @param baseURI The baseURI to set.
+     */
+    public void setBaseURI(String baseURI)
+    {
+        this.baseURI = baseURI ;
+    }
+
 }
-
 
 /*
  *  (c) Copyright 2003, 2004, 2005 Hewlett-Packard Development Company, LP
@@ -79,4 +148,3 @@ public interface Request
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
- 

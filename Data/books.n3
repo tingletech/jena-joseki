@@ -19,7 +19,7 @@
     dc:creator  _:a .
     
 :book3
-    dc:title    "Harry Potter And The Prisoner Of Azkaban" ;
+    dc:title    "Harry Potter and the Prisoner Of Azkaban" ;
     dc:creator  _:a .
     
 :book4

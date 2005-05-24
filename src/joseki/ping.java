@@ -6,13 +6,14 @@
 package joseki;
 
 import jena.cmdline.*;
-import com.hp.hpl.jena.joseki.* ;
+
+import com.hp.hpl.jena.joseki2.*;
 import com.hp.hpl.jena.rdf.model.* ;
 
 /** Command line application to issue a ping on a remote model.
  *
  * @author  Andy Seaborne
- * @version $Id: ping.java,v 1.1 2004-11-03 10:15:05 andy_seaborne Exp $
+ * @version $Id: ping.java,v 1.2 2005-05-24 13:22:27 andy_seaborne Exp $
  */
 
 

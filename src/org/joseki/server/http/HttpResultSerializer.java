@@ -12,6 +12,7 @@ import java.io.* ;
 import javax.servlet.http.* ; 
 import org.joseki.* ;
 import org.joseki.util.NullOutputStream; 
+import org.joseki.util.Params;
 import org.joseki.server.*;
 
 import com.hp.hpl.jena.rdf.model.*;
@@ -20,7 +21,7 @@ import com.hp.hpl.jena.shared.JenaException;
 /** Extracting operation data from HTTP servlet requests and formatting results for sending back.
  * 
  * @author      Andy Seaborne
- * @version     $Id: HttpResultSerializer.java,v 1.13 2005-01-03 20:26:33 andy_seaborne Exp $
+ * @version     $Id: HttpResultSerializer.java,v 1.14 2005-05-24 13:22:28 andy_seaborne Exp $
  */
 public class HttpResultSerializer
 {
@@ -213,10 +214,10 @@ public class HttpResultSerializer
             pw.println("URI = " + request.getModelURI());
             if ( request != null )
             {
-                for (Iterator iter = request.getParams().keySet().iterator(); iter.hasNext();)
+                for (Iterator iter = request.getParamPairs().listIterator(); iter.hasNext();)
                 {
-                    String p = (String)iter.next();
-                    pw.println(p + " = " + request.getParam(p));
+                    Params.Pair  p = (Params.Pair)iter.next();
+                    pw.println("    "+p.getName() + " = " + p.getValue()) ;
                 }
                 pw.println() ;
             }

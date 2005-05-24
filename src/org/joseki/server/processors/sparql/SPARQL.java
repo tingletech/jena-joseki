@@ -6,6 +6,9 @@
 package org.joseki.server.processors.sparql;
 
 import java.io.PrintWriter ;
+import java.util.Iterator;
+import java.util.List;
+
 import org.apache.commons.logging.*;
 
 import com.hp.hpl.jena.rdf.model.*;
@@ -19,11 +22,12 @@ import com.hp.hpl.jena.util.FileManager;
 
 
 import com.hp.hpl.jena.query.* ;
+import com.hp.hpl.jena.query.util.RelURI;
 
 /** SPARQL operations
  * 
  * @author  Andy Seaborne
- * @version $Id: SPARQL.java,v 1.24 2005-05-23 10:21:46 andy_seaborne Exp $
+ * @version $Id: SPARQL.java,v 1.25 2005-05-24 13:22:28 andy_seaborne Exp $
  */
 
 public class SPARQL extends QueryProcessorCom
@@ -33,6 +37,9 @@ public class SPARQL extends QueryProcessorCom
     static final String P_QUERY          = "query" ;
     static final String P_NAMED_GRAPH    = "named-graph-uri" ;
     static final String P_DEFAULT_GRAPH  = "default-graph-uri" ;
+    
+    // Old names
+    static final String P_DEFAULT_GRAPH_ALT1  = "graph-id" ;
     
     FileManager fileManager ; 
     
@@ -59,38 +66,73 @@ public class SPARQL extends QueryProcessorCom
             if (!(src instanceof SourceModelJena))
                 throw new QueryExecutionException(
                     ExecutionError.rcOperationNotSupported,
-                    "Wrong implementation - this RDQL processor works with Jena models");
+                    "Wrong implementation - this SPARQL processor works with Jena models");
             
-            // Decide target for the query.
-            // Either graph-id parameter, FROM in query (ARQ) or default to
-            // the target model of the request. 
+            // Process arguments
 
-            Model model = null ; 
+            // Decide target for the query.
+            DataSource dataset = null ;
             
-            String graphURL = request.getParam(P_DEFAULT_GRAPH) ;
-            if ( graphURL == null )
-                // try again, alternative name
-                graphURL = request.getParam("graph-uri") ;
-            if ( graphURL == null )
-                // try again, alternative name
-                graphURL = request.getParam("graph-id") ;
-            
-            if ( graphURL != null && ! graphURL.equals(""))
-                try {
-                    model = fileManager.loadModel(graphURL) ;
-                    log.info("Load "+graphURL) ;
-                } catch (Exception ex)
+            try {
+                
+                String graphURL = request.getParam(P_DEFAULT_GRAPH) ;
+                
+                if ( graphURL == null )
+                    // try again, alternative name
+                    graphURL = request.getParam(P_DEFAULT_GRAPH_ALT1) ;
+                
+                List namedGraphs = request.getParams(P_NAMED_GRAPH) ;
+                
+                if ( graphURL != null && request.getBaseURI() != null )
+                    graphURL = RelURI.resolve(graphURL, request.getBaseURI()) ;
+                    
+                
+                if ( graphURL != null && ! graphURL.equals(""))
                 {
-                    log.info("Failer to load "+graphURL+" : "+ex.getMessage()) ;
-                    throw new QueryExecutionException(
-                        ExecutionError.rcArgumentUnreadable,
-                        "Failed to load URL "+graphURL) ;
+                    if ( dataset == null )
+                        dataset = DataSetFactory.create() ;
+                    
+                    try {
+                        Model model = fileManager.loadModel(graphURL) ;
+                        dataset.setDefaultModel(model) ;
+                        log.info("Load "+graphURL) ;
+                    } catch (Exception ex)
+                    {
+                        log.info("Failed to load "+graphURL+" : "+ex.getMessage()) ;
+                        throw new QueryExecutionException(
+                                                          ExecutionError.rcArgumentUnreadable,
+                                                          "Failed to load URL "+graphURL) ;
+                    }
                 }
-            
-            if ( model == null )
-                // May yet be in query
-                model = ((SourceModelJena)src).getModel() ;
-            
+                
+                if ( namedGraphs != null )
+                {
+                    if ( dataset == null )
+                        dataset = DataSetFactory.create() ;
+                    for ( Iterator iter = namedGraphs.iterator() ; iter.hasNext() ; )
+                    {
+                        String uri = (String)iter.next() ;
+                        try {
+                            Model model = fileManager.loadModel(uri) ;
+                            log.info("Load (named)"+uri) ;
+                            dataset.addNamedModel(uri, model) ;
+                        } catch (Exception ex)
+                        {
+                            log.info("Failer to load (named) "+uri+" : "+ex.getMessage()) ;
+                            throw new QueryExecutionException(
+                                          ExecutionError.rcArgumentUnreadable,
+                                          "Failed to load URL "+uri) ;
+                        }
+                    }
+                }
+                
+            } catch (Exception ex)
+            {
+                log.info("SPARQL parameter error",ex) ;
+                throw new QueryExecutionException(
+                     ExecutionError.rcArgumentError, "Parameter error");
+            }
+                
             // Sort out the query.
             
             if (queryString == null )
@@ -132,12 +174,25 @@ public class SPARQL extends QueryProcessorCom
                 throw new QueryExecutionException(ExecutionError.rcQueryParseFailure, "Unknown Parse error") ;
             }
 
+            // Finalize the target dataset
+            if ( dataset == null )
+            {
+                // No dataset in protocol
+                if ( ! query.hasDataSetDescription() )
+                {
+                    dataset = DataSetFactory.create() ;
+                    // No dataset in query.
+                    Model model = ((SourceModelJena)src).getModel() ;
+                    dataset.setDefaultModel(model) ;
+                }
+            }
+            
             QueryExecution qexec = null ;
             
             if ( query.hasDataSetDescription() )
                 qexec = QueryExecutionFactory.create(query) ;
             else
-                qexec = QueryExecutionFactory.create(query, model) ;
+                qexec = QueryExecutionFactory.create(query, dataset) ;
                 
             // Test for SELECT in XML result set form
             boolean wantsAppXML = response.accepts("Accept", "application/xml") ;

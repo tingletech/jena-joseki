@@ -3,12 +3,12 @@
  * [See end of file]
  */
 
-package com.hp.hpl.jena.joseki;
+package com.hp.hpl.jena.query.engineHTTP;
 
 /** Exception class for all operations in the Joseki client library.
  *  Error codes are as HTTP statsus codes.
  * 
- * @version     $Id: HttpException.java,v 1.3 2005-01-03 20:26:32 andy_seaborne Exp $
+ * @version     $Id$
  * @author      Andy Seaborne
  */
 public class HttpException extends JosekiException

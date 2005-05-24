@@ -23,7 +23,7 @@ import com.hp.hpl.jena.rdf.model.*;
 /** Tests of the mechanisms (attach, dispatch) of the server side.
  * 
  * @author      Andy Seaborne
- * @version     $Id: JosekiServerInternalTests.java,v 1.6 2005-01-11 10:52:01 andy_seaborne Exp $
+ * @version     $Id: JosekiServerInternalTests.java,v 1.7 2005-05-24 13:22:28 andy_seaborne Exp $
  */
 public class JosekiServerInternalTests extends TestSuite
 {
@@ -98,7 +98,7 @@ public class JosekiServerInternalTests extends TestSuite
         {
             log.info(getName()+": "+opName+" :: "+modelURI) ;
             Request request = //dispatcher.createOperation(modelURI, requestURL, opName) ;
-                new RequestImpl(modelURI, requestURL, opName, null) ;
+                new Request(modelURI, requestURL, opName, null) ;
             SourceModel src = dispatcher.findModel(modelURI) ;
             request.setSourceModel(dispatcher.findModel(modelURI)) ;
             Processor proc = dispatcher.findProcessor(src, opName) ;
@@ -208,7 +208,7 @@ public class JosekiServerInternalTests extends TestSuite
             {
                 log.info(getName()+": query :: "+modelURI);
                 String queryLang = "RDQL" ;
-                Request request = new RequestImpl(modelURI, requestURL, HttpParams.pQuery, queryLang) ;
+                Request request = new Request(modelURI, requestURL, HttpParams.pQuery, queryLang) ;
                 SourceModel src = dispatcher.findModel(modelURI) ;
                 request.setSourceModel(src) ;
                 QueryProcessor qProc = dispatcher.findQueryProcessor(src, queryLang) ;

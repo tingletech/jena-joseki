@@ -22,7 +22,7 @@ import org.joseki.HttpParams;
 
 /** The servlet class.
  * @author  Andy Seaborne
- * @version $Id: JosekiWebAPI.java,v 1.17 2005-02-16 18:16:56 andy_seaborne Exp $
+ * @version $Id: JosekiWebAPI.java,v 1.18 2005-05-24 13:22:28 andy_seaborne Exp $
  */
 
 public class JosekiWebAPI extends HttpServlet implements Connector
@@ -176,7 +176,9 @@ public class JosekiWebAPI extends HttpServlet implements Connector
             try {
                 //Request opRequest = dispatcher.createQueryRequest(uri, requestURL, queryLang) ;
                 Request opRequest =
-                        new RequestImpl(uri, requestURL, HttpParams.pQuery, queryLang) ;
+                        new Request(uri, requestURL, HttpParams.pQuery, queryLang) ;
+                opRequest.setBaseURI(requestURL) ;
+                
                 if ( queryLang == null )
                     throw new ExecutionException(ExecutionError.rcArgumentError, "No query language name") ;
                 
@@ -188,7 +190,7 @@ public class JosekiWebAPI extends HttpServlet implements Connector
                     if ( k.equals("q") )
                         k = HttpParams.pQuery ;
                     for ( int vi = 0 ; vi < v.length ; vi++ )
-                        opRequest.setParam(k,v[vi]) ;
+                        opRequest.addParam(k,v[vi]) ;
                 }
                 
                 Response opResponse = new Response(opRequest, httpRequest, httpResponse) ;
@@ -251,7 +253,7 @@ public class JosekiWebAPI extends HttpServlet implements Connector
             try {
                 Request opRequest =
                 //    dispatcher.createOperation(uri, requestURL, reqName) ;
-                    new RequestImpl(uri, requestURL, reqName, null) ;
+                    new Request(uri, requestURL, reqName, null) ;
                 Response opResponse = new Response(opRequest, httpRequest, httpResponse) ;
                 httpRequestParser.setParameters(opRequest, httpRequest) ;
                 httpRequestParser.setArgs(opRequest, httpRequest) ;
@@ -306,7 +308,7 @@ public class JosekiWebAPI extends HttpServlet implements Connector
                 if (uri.equals("*") || uri.equals("/") || uri.equals("/*"))
                 {
                     // There isn't an SourceModel for the server itself - do the work here.
-                    Request opRequest = new RequestImpl(uri, requestURL, "options", null) ;
+                    Request opRequest = new Request(uri, requestURL, "options", null) ;
                     Response opResponse = new Response(opRequest, httpRequest, httpResponse) ;
                     opRequest.setParam("baseURL", baseURL) ;
                     //msg("Options: URI="+ req.getModelURI() + "  Request="+req.getName()) ;
@@ -316,7 +318,7 @@ public class JosekiWebAPI extends HttpServlet implements Connector
                     return ;
                     //doResponse(resultModel, opHostRequest, httpRequest, httpResponse) ;
                 }
-                Request opRequest = new RequestImpl(uri, requestURL, "options", null) ;
+                Request opRequest = new Request(uri, requestURL, "options", null) ;
                     //dispatcher.createOperation(uri, requestURL, "options") ;
                 Response opResponse = new Response(opRequest, httpRequest, httpResponse)  ;
                 opRequest.setParam("baseURL", baseURL) ;

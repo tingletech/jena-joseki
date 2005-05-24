@@ -3,30 +3,36 @@
  * [See end of file]
  */
 
-package com.hp.hpl.jena.joseki;
+package com.hp.hpl.jena.joseki2;
+
 
 import java.net.* ;
 
-/** Ping a remote model.  Remote models are not 
- *  obliged to support the ping, or any other operation.
+/** Create an execution object for performing an HTTP OPTIONS
+ *  operation.  The result is an RDF model.  If asked of
+ *  the server itself this will usually list the URLs of
+ *  supported models.  If asked of a model, there will be further
+ *  about query languages and operations supported.
  * 
- * @author      Andy Seaborne
- * @version     $Id: HttpPing.java,v 1.2 2005-01-03 20:26:32 andy_seaborne Exp $
+ * @author  Andy Seaborne
+ * @version $Id$
  */
-public class HttpPing extends HttpExecute
-{
-    
-    public HttpPing(URL url) throws MalformedURLException
-    {
-        this(url.toString()) ;
-    }
-    
-    public HttpPing(String urlStr) throws MalformedURLException
-    {
-        super(urlStr, "ping") ;
-    }
-}
 
+public class HttpOptions extends HttpExecute
+{
+    public HttpOptions(URL u) throws MalformedURLException
+    {
+        this(u.toString()) ;
+    }
+    
+    
+    public HttpOptions(String urlStr) throws MalformedURLException
+    {
+        super() ;
+        super.setURL(urlStr) ; 
+        super.setRequestMethod("OPTIONS", false) ;
+    }
+}   
 
 /*
  *  (c) Copyright 2003, 2004, 2005 Hewlett-Packard Development Company, LP
@@ -54,4 +60,3 @@ public class HttpPing extends HttpExecute
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
- 
