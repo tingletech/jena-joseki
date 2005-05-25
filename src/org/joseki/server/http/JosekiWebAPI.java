@@ -22,7 +22,7 @@ import org.joseki.HttpParams;
 
 /** The servlet class.
  * @author  Andy Seaborne
- * @version $Id: JosekiWebAPI.java,v 1.18 2005-05-24 13:22:28 andy_seaborne Exp $
+ * @version $Id: JosekiWebAPI.java,v 1.19 2005-05-25 08:40:11 andy_seaborne Exp $
  */
 
 public class JosekiWebAPI extends HttpServlet implements Connector
@@ -254,6 +254,8 @@ public class JosekiWebAPI extends HttpServlet implements Connector
                 Request opRequest =
                 //    dispatcher.createOperation(uri, requestURL, reqName) ;
                     new Request(uri, requestURL, reqName, null) ;
+                opRequest.setBaseURI(requestURL) ;
+
                 Response opResponse = new Response(opRequest, httpRequest, httpResponse) ;
                 httpRequestParser.setParameters(opRequest, httpRequest) ;
                 httpRequestParser.setArgs(opRequest, httpRequest) ;

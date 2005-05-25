@@ -27,7 +27,7 @@ import com.hp.hpl.jena.query.util.RelURI;
 /** SPARQL operations
  * 
  * @author  Andy Seaborne
- * @version $Id: SPARQL.java,v 1.25 2005-05-24 13:22:28 andy_seaborne Exp $
+ * @version $Id: SPARQL.java,v 1.26 2005-05-25 08:40:11 andy_seaborne Exp $
  */
 
 public class SPARQL extends QueryProcessorCom
@@ -86,6 +86,7 @@ public class SPARQL extends QueryProcessorCom
                 if ( graphURL != null && request.getBaseURI() != null )
                     graphURL = RelURI.resolve(graphURL, request.getBaseURI()) ;
                     
+                // Look in cache for loaded graphs!!
                 
                 if ( graphURL != null && ! graphURL.equals(""))
                 {
@@ -114,7 +115,7 @@ public class SPARQL extends QueryProcessorCom
                         String uri = (String)iter.next() ;
                         try {
                             Model model = fileManager.loadModel(uri) ;
-                            log.info("Load (named)"+uri) ;
+                            log.info("Load (named) "+uri) ;
                             dataset.addNamedModel(uri, model) ;
                         } catch (Exception ex)
                         {

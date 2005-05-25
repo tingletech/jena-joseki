@@ -17,7 +17,7 @@ public class Run
     public static void main(String[] args)
     {
         runJosekiServer(args) ; System.exit(0) ;
-        runParamsTest() ;
+        runParamsTest() ; System.exit(0) ;
         
     }
     
@@ -27,8 +27,6 @@ public class Run
         if ( args == null || args.length == 0 )
             args = new String[]{"joseki-dev.n3"} ;
         RunJoseki.main(args) ;
-        System.exit(0) ;
-        
         return ;
     }
 
