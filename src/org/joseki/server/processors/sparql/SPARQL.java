@@ -5,7 +5,6 @@
 
 package org.joseki.server.processors.sparql;
 
-import java.io.PrintWriter ;
 import java.util.Iterator;
 import java.util.List;
 
@@ -17,7 +16,6 @@ import org.joseki.Joseki ;
 import org.joseki.server.*;
 //import org.joseki.server.http.HttpResultSerializer;
 import org.joseki.vocabulary.JosekiVocab;
-import com.hp.hpl.jena.util.FileUtils ;
 import com.hp.hpl.jena.util.FileManager;
 
 
@@ -27,7 +25,7 @@ import com.hp.hpl.jena.query.util.RelURI;
 /** SPARQL operations
  * 
  * @author  Andy Seaborne
- * @version $Id: SPARQL.java,v 1.26 2005-05-25 08:40:11 andy_seaborne Exp $
+ * @version $Id: SPARQL.java,v 1.27 2005-05-26 15:35:46 andy_seaborne Exp $
  */
 
 public class SPARQL extends QueryProcessorCom
@@ -208,13 +206,14 @@ public class SPARQL extends QueryProcessorCom
             
             if ( query.isSelectType() && wantsAppXML )
             {
+                // Includes text
                 execQuerySelectXML(qexec, request, response) ;
                 log.info("OK - URI="+request.getModelURI()+" : "+queryStringLog) ;
                 return ;
             }
             
             if ( query.isAskType() )
-                execQueryAsk(qexec, response) ;
+                execQueryAsk(qexec, request, response) ;
             else
             {
                 // SELECT / RDF results, CONSTRUCT or DESCRIBE
@@ -250,18 +249,12 @@ public class SPARQL extends QueryProcessorCom
             if ( query.isDescribeType() )
                 return qexec.execDescribe() ; 
             
-            if ( query.isAskType() )
-            {
-                log.warn("Not implemented: ASK queries") ;
-                throw new QueryExecutionException(ExecutionError.rcOperationNotSupported, "ASK query") ;
-            }
-            
             log.warn("Unknown query type") ;
             throw new QueryExecutionException(ExecutionError.rcOperationNotSupported, "Unknown query type") ;
         }
         catch (QueryException qEx)
         {
-            log.info("Query execution error: "+qEx) ;
+            log.info("Query execution error (Graph results): "+qEx) ;
             throw new QueryExecutionException(ExecutionError.rcQueryExecutionFailure, null) ;
         }
     }
@@ -297,28 +290,40 @@ public class SPARQL extends QueryProcessorCom
         //throw new QueryExecutionException(Response.rcNotImplemented, "SPARQL.execQueryXML") ;
         catch (QueryException qEx)
         {
-            log.info("Query execution error: "+qEx) ;
+            log.info("Query execution error (SELECT/XML): "+qEx) ;
             throw new QueryExecutionException(ExecutionError.rcQueryExecutionFailure, null) ;
         }
     }
 
-    private void execQueryAsk(QueryExecution qexec, Response response)
+    private void execQueryAsk(QueryExecution qexec, Request request, Response response)
         throws QueryExecutionException
     {
+        String stylesheetURL = null ;
+        if ( request.containsParam(paramStyleSheet) )
+        {
+            stylesheetURL = request.getParam(paramStyleSheet) ;
+            if ( stylesheetURL != null )
+            {
+                stylesheetURL = stylesheetURL.trim() ;
+                if ( stylesheetURL.length() == 0 )
+                    stylesheetURL = null ;
+            }
+        }
+
+        
         try {
             boolean result = qexec.execAsk() ;
-            response.setMimeType(Joseki.contentTypeTextPlain) ;
+            
+            response.setMimeType(Joseki.contentTypeXML) ;
             response.setResponseCode(Response.rcOK) ;
             response.startResponse() ;
-            PrintWriter pw = FileUtils.asPrintWriterUTF8(response.getOutputStream()) ;
-            pw.println(result?"yes":"no" ) ;
-            pw.flush() ;
+            ResultSetFormatter.outputAsXML(response.getOutputStream(), result) ;
             response.finishResponse() ;
         }
         //throw new QueryExecutionException(Response.rcNotImplemented, "SPARQL.execQueryXML") ;
         catch (QueryException qEx)
         {
-            log.info("Query execution error: "+qEx) ;
+            log.info("Query execution error (ASK): "+qEx) ;
             throw new QueryExecutionException(ExecutionError.rcQueryExecutionFailure, null) ;
         }
         
