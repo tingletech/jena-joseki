@@ -10,6 +10,7 @@ import java.util.*;
 
 import com.hp.hpl.jena.query.*;
 import com.hp.hpl.jena.query.core.ResultBinding;
+import com.hp.hpl.jena.query.resultset.ResultSetRewindable;
 import com.hp.hpl.jena.query.util.QueryPrintUtils;
 import com.hp.hpl.jena.query.util.RelURI;
 import com.hp.hpl.jena.rdf.model.*;
@@ -148,13 +149,101 @@ public class NewConfig
 
     private void findDataSets()
     {
-        List x = findByType(JosekiVocab.RDFDataSet) ;
-
-        for ( Iterator iter = x.iterator()  ; iter.hasNext() ; )
+        if ( false )
         {
-            Resource r = (Resource)iter.next() ;
-            log.info("Dataset: "+r) ;
+            List x = findByType(JosekiVocab.RDFDataSet) ;
+    
+            for ( Iterator iter = x.iterator()  ; iter.hasNext() ; )
+            {
+                Resource r = (Resource)iter.next() ;
+                log.info("Dataset: "+r) ;
+            }
         }
+        // Need to do validity checking on the configuration model.
+        String[] s = new String[] {
+                // Downside is that we have inlined the URIs
+               "SELECT ?x ?dft ?named ?dftLabel ?graphName ?graphData",
+               "{ ?x a joseki:RDFDataSet ;",
+               "  OPTIONAL { ?x joseki:defaultGraph ?dft . OPTIONAL { ?dft rdfs:label ?dftLabel } }",
+               "  OPTIONAL { ?x joseki:namedGraph   ?named",
+                            // OPTIONAL here is error checking. 
+                            "OPTIONAL { ?named joseki:graphName ?graphName }",
+                            "OPTIONAL { ?named joseki:graphData ?graphData }",
+               "           }",
+               "}", 
+               "ORDER BY ?x ?dft ?named" } ;
+               
+        
+        Query query = makeQuery(s) ;
+        QueryExecution qexec = QueryExecutionFactory.create(query, confModel) ;
+        ResultSet rs = qexec.execSelect() ;
+        ResultSetRewindable rs2 = ResultSetFactory.makeRewindable(rs) ;
+        qexec.close() ;
+        rs = null ;
+        ResultSetFormatter.out(System.out, rs2, query) ;
+        rs2.reset() ;
+
+        DataSource src = null ;
+        Resource ds = null ;
+        Resource dft = null ;
+        for ( ; rs2.hasNext() ; )
+        {
+            QuerySolution qs = rs2.nextSolution() ;
+            Resource x = qs.getResource("x") ;
+            
+            // Impossible
+            // if ( x == null ) {}
+            
+            Resource dftGraph = qs.getResource("dft") ; 
+            Resource namedGraph = qs.getResource("named") ;
+            Resource graphName = qs.getResource("graphName") ;
+            Resource graphData = qs.getResource("graphName") ;
+            
+            // New dataset
+            if ( ! x.equals(ds) )
+            {
+                log.info("New dataset: "+x) ;
+                src = DataSetFactory.create() ;
+                if ( dftGraph != null )
+                {
+                    log.info("Default graph : "+dftGraph) ;
+                    src.setDefaultModel(buildModel(dftGraph)) ;
+                }
+                dft = dftGraph ;
+            }
+            else
+            {
+                // Check one default model.
+                if ( dftGraph != null && !dftGraph.equals(dft) )
+                    log.warn("Two default graphs") ;
+            }
+            
+            if ( graphName != null )
+            {
+                log.info("Graph / named : <"+graphName+">") ;
+                
+                if ( graphName.isAnon() )
+                    throw new ConfigurationErrorException("Graph name can't be a blank node") ; 
+                
+                if ( graphData == null )
+                {
+                    log.warn("Graph name but no graph data: <"+graphName.getURI()+">") ;
+                    throw new ConfigurationErrorException("No data for graph <"+graphName.getURI()+">") ;
+                }
+                
+                if ( src.containsNamedGraph(graphName.getURI()) )
+                {
+                    log.warn("Skipping duplicate named graph: <"+graphName.getURI()+">") ;
+                    continue ;
+                }
+                
+                src.addNamedModel(graphName.getURI(), buildModel(graphData)) ;
+            }
+            
+            ds = x ;
+        }
+        
+        qexec.close() ;
     }
 
     // ------------------------------------------------------
@@ -223,6 +312,15 @@ public class NewConfig
         }
     }
 
+    
+    private Model buildModel(Resource r)
+    {
+        ModelSpec mSpec = ModelFactory.createSpec(r, confModel) ; 
+        Model m = ModelFactory.createModel(mSpec) ;
+        log.info("Building model: "+r) ;
+        m.write(System.out, "N3") ;
+        return m ;
+    }
     
     private static void stdHeaders(StringBuffer sBuff)
     {
