@@ -37,9 +37,9 @@
            joseki:allowExplicitDataset       "true"^^xsd:boolean ;
            joseki:allowWebLoading            "true"^^xsd:boolean ;
            joseki:processor joseki:BindingSPARQL ;
-        ]
+        ] ;
     # Out-of-line declaration to the general processor
-    #joseki:service       joseki:SPAQRLgeneralService ;
+    joseki:service       joseki:SPAQRLgeneralService ;
     .
 
 ## --------------------------------------------------------------

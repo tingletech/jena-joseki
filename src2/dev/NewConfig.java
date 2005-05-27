@@ -47,7 +47,7 @@ public class NewConfig
             findServices() ;
         } catch (Exception ex)
         {
-            log.fatal("Failed to parse configuration file") ;
+            log.fatal("Failed to parse configuration file", ex) ;
             confModel = null ;
         }
     }
