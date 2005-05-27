@@ -1,47 +1,52 @@
 /*
- * (c) Copyright 2005 Hewlett-Packard Development Company, LP
- * All rights reserved.
+ * (c) Copyright 2003, 2004, 2005 Hewlett-Packard Development Company, LP
  * [See end of file]
  */
 
-
 package dev;
-import joseki.rdfserver;
 
-/** Run a Joseki server inside an IDE (Eclipse) for development purposes 
- *  provide a place to configure things before calling the real main() 
- * 
- * @author Andy Seaborne
- * @version $Id: RunJoseki.java,v 1.2 2005-05-27 15:51:44 andy_seaborne Exp $
- */ 
-
-public class RunJoseki
+/**
+ * @author      Andy Seaborne
+ * @version     $Id$
+ */
+public class ConfigurationErrorException extends RuntimeException //extends JosekiServerException
 {
-    public static void main(String[] args)
+    private static final long serialVersionUID = 99L;  // Serilizable.
+    
+    public ConfigurationErrorException()
     {
-        RunUtils.setLog4j() ;
-        rdfserver.main(args) ;
-        
-        // Threads under Eclipse seem to be daemons and so the server exits 
-        for ( ; ; )
-        {
-            Object obj = new Object() ;
-            synchronized(obj)
-            {
-                // Remember to own the lock first.
-                try { obj.wait() ; } catch (Exception ex) {}
-            }
-        }
-        
-        //System.exit(0) ;
-        //return ;
+        super();
     }
 
+    public ConfigurationErrorException(String message)
+    {
+        super(message);
+    }
+
+    /**
+     * Constructor for ConfigurationErrorException.
+     * @param message
+     * @param cause
+     */
+    public ConfigurationErrorException(String message, Throwable cause)
+    {
+        super(message, cause);
+    }
+
+    /**
+     * Constructor for ConfigurationErrorException.
+     * @param cause
+     */
+    public ConfigurationErrorException(Throwable cause)
+    {
+        super(cause);
+    }
 }
 
+
 /*
- * (c) Copyright 2005 Hewlett-Packard Development Company, LP
- * All rights reserved.
+ *  (c) Copyright 2003, 2004, 2005 Hewlett-Packard Development Company, LP
+ *  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -65,3 +70,4 @@ public class RunJoseki
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+ 

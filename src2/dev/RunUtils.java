@@ -4,39 +4,50 @@
  * [See end of file]
  */
 
-
 package dev;
-import joseki.rdfserver;
 
-/** Run a Joseki server inside an IDE (Eclipse) for development purposes 
- *  provide a place to configure things before calling the real main() 
- * 
- * @author Andy Seaborne
- * @version $Id: RunJoseki.java,v 1.2 2005-05-27 15:51:44 andy_seaborne Exp $
- */ 
+import java.io.File;
 
-public class RunJoseki
+import org.apache.commons.logging.LogFactory;
+
+
+public class RunUtils
 {
-    public static void main(String[] args)
+    
+    
+    public static void setLog4j()
     {
-        RunUtils.setLog4j() ;
-        rdfserver.main(args) ;
-        
-        // Threads under Eclipse seem to be daemons and so the server exits 
-        for ( ; ; )
-        {
-            Object obj = new Object() ;
-            synchronized(obj)
-            {
-                // Remember to own the lock first.
-                try { obj.wait() ; } catch (Exception ex) {}
-            }
-        }
-        
-        //System.exit(0) ;
-        //return ;
-    }
+        setPropertyDefault("org.apache.commons.logging.Log",
+                           "org.apache.commons.logging.impl.Log4JLogger");
 
+        if ( System.getProperty("log4j.configuration") == null )
+        {
+            if ( tryLog4jConfig("log4j.properties") )
+                return ;
+            if ( tryLog4jConfig("etc/log4j.properties") )
+                return ;
+        }
+    }
+    
+    public static boolean tryLog4jConfig(String fn)
+    {
+        File f = new File(fn) ;
+        if ( f.exists() )
+        {
+            fn = "file:"+fn ;
+            System.setProperty("log4j.configuration", fn) ;
+            LogFactory.getLog(RunJoseki.class).debug("Setting log4j.configuration: "+fn) ;
+            return true ;
+        }
+        return false ;
+    }
+    
+    
+    static void setPropertyDefault(String name, String value)
+    {
+        if ( System.getProperty(name) == null )
+            System.setProperty(name, value) ;
+    }
 }
 
 /*

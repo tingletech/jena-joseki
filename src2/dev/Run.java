@@ -16,6 +16,7 @@ public class Run
 
     public static void main(String[] args)
     {
+        NewConfig.main(new String[]{"joseki-config.ttl"}) ; System.exit(0) ;
         runJosekiServer(args) ; System.exit(0) ;
         runParamsTest() ; System.exit(0) ;
         

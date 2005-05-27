@@ -1,0 +1,162 @@
+# This file is written in N3 / Turtle
+
+@prefix rdfs:   <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xsd:    <http://www.w3.org/2001/XMLSchema#> .
+
+@prefix module: <http://joseki.org/2003/06/module#> .
+@prefix joseki: <http://joseki.org/2005/06/configuration#> .
+@prefix ql:     <http://jena.hpl.hp.com/2003/07/query/> .
+
+@prefix jms:    <http://jena.hpl.hp.com/2003/08/jms#> .
+
+## --------------------------------------------------------------
+## This file is written in N3 / Turtle
+## It is an RDF graph - order of RDF triples does not matter ## to the machine but it does help people who need to edit this file.
+
+
+## --------------------------------------------------------------
+## About this configuration
+
+<> joseki:include
+	# Include other configuration information
+	<joseki-def-proc.n3> # , <joseki-def-??.n3>
+    .
+
+## --------------------------------------------------------------
+## About this server
+
+[]  rdf:type joseki:Server ;
+    joseki:serverDebug   "true" ;
+    # Associate service endpoints with a server
+    # Inline declaration
+    joseki:service
+        [ rdf:type joseki:ServicePoint ;
+           joseki:dataset              _:ds1 ;
+           # Parameters to the SPARQL processor.
+           joseki:allowExplicitDataset       "true"^^xsd:boolean ;
+           joseki:allowWebLoading            "true"^^xsd:boolean ;
+           joseki:processor joseki:BindingSPARQL ;
+        ]
+    # Out-of-line declaration to the general processor
+    #joseki:service       joseki:SPAQRLgeneralService ;
+    .
+
+## --------------------------------------------------------------
+## Graphs available (Jena calls them Models)
+
+## ---- A model, with RDF read from a file 
+## (syntax determined by file extenstion - defaults to RDF/XML)
+
+_:model1  rdf:type jms:DefaultModelSpec ;
+           jms:loadWith  <file:D.ttl> .
+
+
+# Abbreviated forms (rewrite /CONSTRUCT then query again for model spec form):
+_:model2    joseki:attachedModel        <file:Data/empty.nt> ;
+    .
+
+
+
+## --------------------------------------------------------------
+## Datasets
+
+_:ds1	rdf:type joseki:RDFDataSet ;
+	joseki:defaultGraph	_:model1 ;
+	joseki:namedGraph
+   	    [ joseki:graphName      <http://example.org/name> ;
+               joseki:graphContents  _:model2 ] ;
+	# Could use the location manager and have the named thing only
+	# Can't have two names for one graph?
+	joseki:namedGraph
+   	    [ joseki:graphName      <http://example.org/name> ;
+               joseki:graphContents  _:model2 ] ;
+	## Short versions?
+
+	.
+	
+
+## --------------------------------------------------------------
+## Processors
+## Usually, this section is empty because only standard ## processors are used as includes above.
+
+## --------------------------------------------------------------
+## Services
+## A number of service endpoints.
+## A service endpoint also includes parameters used to config ## processors.
+
+_:s1 a joseki:ServicePoint ;
+     # Default target - optional
+     joseki:dataset              _:ds1 ;
+     # Parameters to the SPARQL processor.
+     joseki:allowExplicitDataset       "true"^^xsd:boolean ;
+     joseki:allowWebLoading            "false"^^xsd:boolean ;
+     joseki:processor joseki:BindingSPARQL ;
+     .
+
+# ----- definitions --------------------------------------------------
+# With options:
+# :allowExplicitDataset
+# Parameter to binding? To processor?  Binding Need repeated instantiation and initializations
+
+joseki:BindingSPARQL
+     a   joseki:QueryLanguageBinding ;
+     joseki:queryOperationName "SPARQL" ;
+     joseki:queryOperationName "sparql" ;
+     joseki:queryOperationName ql:SPARQL ;
+     module:interface      joseki:QueryOperationSPARQL ;
+     module:implementation joseki:ImplQueryOperationSPARQL .
+
+
+joseki:ImplQueryOperationSPARQL
+     a   joseki:QueryOperation ;
+     module:className
+         "org.joseki.server.processors.sparql.SPARQL" ;
+     .
+
+joseki:ImplQueryOperationGET
+     a   joseki:QueryOperation ;
+     module:className
+         "org.joseki.server.processors.QueryProcessorGET" ;
+     .
+
+#### -- POST converter
+
+joseki:BindingQueryPOST
+     a   joseki:OperationBinding ;
+     joseki:operationName  "query" ;
+     module:interface      joseki:OpQueryPOST ;
+     module:implementation joseki:ImplOpQueryPOST .
+
+
+joseki:ImplOpQueryPOST
+     a   joseki:Operation ;
+     module:className
+         "org.joseki.server.processors.ProcessorQueryPOST" .
+
+## ------------------------------------------
+## Joseki source controllers
+
+joseki:SourceControllerFile
+     a joseki:SourceController ;
+     # This could have been explicitly the class of the object
+     # Must agree with the constant in the implementation
+     module:interface      joseki:SourceController ;
+     module:implementation
+         [ module:className
+               "org.joseki.server.source.SourceControllerFile" ] ;
+     rdfs:comment "The standard SourceController for file-backed models" .
+
+
+joseki:SourceControllerRDB
+     a joseki:SourceController ;
+     module:interface      joseki:SourceController ;
+     module:implementation
+         [ module:className
+               "org.joseki.server.source.SourceControllerRDB" ] ;
+     rdfs:comment "The standard SourceController for database-backed models" .
+
+# Local Variables:
+# tab-width: 4
+# indent-tabs-mode: nil
+# End:

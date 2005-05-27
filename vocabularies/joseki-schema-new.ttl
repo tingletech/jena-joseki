@@ -1,0 +1,93 @@
+@prefix rdfs:   <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix module: <http://joseki.org/2003/06/module#> .
+
+
+@prefix :       <http://joseki.org/2005/06/configuration#> .
+
+
+##-------------------------------------------------------------
+
+<> rdfs:comment "Configuration schema for Joseki" ;
+   rdfs:seeAlso <http://joseki.org/> .
+
+<> rdfs:comment "$Id$" .
+
+##-------------------------------------------------------------
+## Configuration
+
+:include    rdf:type    rdf:Property ;
+    rdfs:comment        "Other resources to read and merge (e.g. file:...)" ;
+    .
+
+
+##-------------------------------------------------------------
+## Server
+
+:Server     rdf:type    rdfs:Class ;
+    rdfs:comment  "Server" ;
+    rdfs:label    "Server" ;
+    .
+
+:service    rdf:type    rdf:Property ;
+    rdfs:comment        "Association of a server with a service" ;
+    rdfs:label          "service" ;
+    rdfs:domain         :Server ;
+    rdfs:range          :ServicePoint ;  
+    .
+
+##-------------------------------------------------------------
+## Model/Graph
+## See also Jena Model Specification
+## 
+
+
+##-------------------------------------------------------------
+## Dataset
+
+:RDFDataSet     rdf:type    rdfs:Class ;
+    rdfs:comment            "" ;
+    rdfs:label              "" ;
+    .
+
+:defaultGraph   rdf:type    rdf:Property ;
+    rdfs:comment            "" ;
+    rdfs:label              "" ;
+    .
+
+:namedGraph     rdf:type    rdf:Property ;
+    rdfs:comment            "" ;
+    rdfs:label              "" ;
+    .  
+
+:graphName     rdf:type     rdf:Property ;
+    rdfs:comment            "" ;
+    rdfs:label              "" ;
+    .  
+
+:graphData     rdf:type     rdf:Property ;
+    rdfs:comment            "" ;
+    rdfs:label              "" ;
+    .  
+
+##-------------------------------------------------------------
+## Processors
+
+##-------------------------------------------------------------
+## Services
+
+:ServicePoint rdf:type   rdfs:Class ;
+    rdfs:comment    "Service" ;
+    rdfs:label      "Service" ;
+    .
+
+:Service rdf:type   rdfs:Class ;
+    rdfs:comment    "Service" ;
+    rdfs:label      "Service" ;
+    .
+
+
+
+##-------------------------------------------------------------
+## 
+
