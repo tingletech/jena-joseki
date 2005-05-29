@@ -31,15 +31,34 @@
     # Associate service endpoints with a server
     # Inline declaration
     joseki:service
-        [ rdf:type joseki:ServicePoint ;
-           joseki:dataset              _:ds1 ;
-           # Parameters to the SPARQL processor.
-           joseki:allowExplicitDataset       "true"^^xsd:boolean ;
-           joseki:allowWebLoading            "true"^^xsd:boolean ;
-           joseki:processor joseki:BindingSPARQL ;
-        ] ;
+      [ rdf:type joseki:ServicePoint ;
+        rdfs:label "Inline service point" ;
+        joseki:queryOperationName "SPARQL" ;
+        joseki:queryOperationName "sparql" ;
+        joseki:queryOperationName ql:SPARQL ;
+        joseki:dataset              _:ds1 ;
+        # Parameters to the SPARQL processor for this service
+        joseki:allowExplicitDataset       "true"^^xsd:boolean ;
+        joseki:allowWebLoading            "true"^^xsd:boolean ;
+        ## joseki:processor joseki:BindingSPARQL ;
+        module:implementation
+           [ module:className "CLASSNAME" ] ;
+      ] ;
     # Out-of-line declaration to the general processor
     joseki:service       joseki:SPAQRLgeneralService ;
+    .
+
+joseki:SPAQRLgeneralService  
+    rdfs:label "General SPARQL service" ;
+    rdf:type joseki:ServicePoint ;
+    # Code implementing
+    #module:className "org.joseki.server.processors.sparql.SPARQL" ;
+    module:implementation joseki:BindingSPARQL ;
+    module:className <java:org.joseki.server.processors.sparql.SPARQL> ;
+    # Names we answer to.
+    joseki:queryOperationName "SPARQL" ;
+    joseki:queryOperationName "sparql" ;
+    joseki:queryOperationName ql:SPARQL ;
     .
 
 ## --------------------------------------------------------------
@@ -59,12 +78,12 @@ _:model2    joseki:attachedModel        <file:Data/empty.nt> ;
     .
 
 
-
 ## --------------------------------------------------------------
 ## Datasets
 
 _:ds1   rdf:type joseki:RDFDataSet ;
     #joseki:defaultGraph    _:model1 ;
+    rdfs:label "Dataset _:ds1" ;
     joseki:namedGraph
         [ joseki:graphName      <http://example.org/name1> ;
           joseki:graphData      _:model1 ] ;
@@ -79,12 +98,17 @@ _:ds1   rdf:type joseki:RDFDataSet ;
 
 _:ds2   rdf:type joseki:RDFDataSet ;
     joseki:defaultGraph _:model1 ;
+    rdfs:label "Dataset of one model" ;
     .
+
+## What about Dataset builders that are external code?
+## i.e. adapters to other sources of RDF
     
 
 ## --------------------------------------------------------------
 ## Processors
-## Usually, this section is empty because only standard ## processors are used as includes above.
+## Usually, this section is empty because only standard
+## processors are used via inclusion of common definitions.
 
 ## --------------------------------------------------------------
 ## Services
@@ -101,18 +125,35 @@ _:s1 a joseki:ServicePoint ;
      .
 
 # ----- definitions --------------------------------------------------
-# With options:
-# :allowExplicitDataset
-# Parameter to binding? To processor?  Binding Need repeated instantiation and initializations
+# Drop module:interface
+# Drop module:??
 
 joseki:BindingSPARQL
-     a   joseki:QueryLanguageBinding ;
-     joseki:queryOperationName "SPARQL" ;
-     joseki:queryOperationName "sparql" ;
-     joseki:queryOperationName ql:SPARQL ;
-     module:interface      joseki:QueryOperationSPARQL ;
-     module:implementation joseki:ImplQueryOperationSPARQL .
+    a   joseki:QueryLanguageBinding ;
+    rdfs:label "SPARQL processor" ;
+    joseki:queryOperationName "SPARQL" ;
+    joseki:queryOperationName "sparql" ;
+    joseki:queryOperationName ql:SPARQL ;
+    module:className "org.joseki.server.processors.sparql.SPARQL" ;
+    .
 
+
+
+##     module:interface      joseki:QueryOperationSPARQL ;
+##     module:implementation joseki:ImplQueryOperationSPARQL .
+##     module:implementation
+##         [ module:className "org.joseki.server.processors.sparql.SPARQL" ] .
+##   Or just have module:className on the Binding?
+##   Still have class arguments by using the binding.
+    ## check what the loader really does with arguments.
+    ## Need per-class and per-instance arguments?
+    ## Use different URIs and dump on same resource
+
+joseki:BindingGET
+    a   joseki:QueryLanguageBinding ;
+    joseki:queryOperationName "GET" ; 
+    ##module:interface      joseki:QueryOperationGET ;
+    module:implementation joseki:ImplQueryOperationGET .
 
 joseki:ImplQueryOperationSPARQL
      a   joseki:QueryOperation ;
@@ -140,27 +181,27 @@ joseki:ImplOpQueryPOST
      module:className
          "org.joseki.server.processors.ProcessorQueryPOST" .
 
-## ------------------------------------------
-## Joseki source controllers
-
-joseki:SourceControllerFile
-     a joseki:SourceController ;
-     # This could have been explicitly the class of the object
-     # Must agree with the constant in the implementation
-     module:interface      joseki:SourceController ;
-     module:implementation
-         [ module:className
-               "org.joseki.server.source.SourceControllerFile" ] ;
-     rdfs:comment "The standard SourceController for file-backed models" .
-
-
-joseki:SourceControllerRDB
-     a joseki:SourceController ;
-     module:interface      joseki:SourceController ;
-     module:implementation
-         [ module:className
-               "org.joseki.server.source.SourceControllerRDB" ] ;
-     rdfs:comment "The standard SourceController for database-backed models" .
+## ## ------------------------------------------
+## ## Joseki source controllers
+## 
+## joseki:SourceControllerFile
+##      a joseki:SourceController ;
+##      # This could have been explicitly the class of the object
+##      # Must agree with the constant in the implementation
+##      module:interface      joseki:SourceController ;
+##      module:implementation
+##          [ module:className
+##                "org.joseki.server.source.SourceControllerFile" ] ;
+##      rdfs:comment "The standard SourceController for file-backed models" .
+## 
+## 
+## joseki:SourceControllerRDB
+##      a joseki:SourceController ;
+##      module:interface      joseki:SourceController ;
+##      module:implementation
+##          [ module:className
+##                "org.joseki.server.source.SourceControllerRDB" ] ;
+##      rdfs:comment "The standard SourceController for database-backed models" .
 
 # Local Variables:
 # tab-width: 4
