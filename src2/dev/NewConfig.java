@@ -35,8 +35,6 @@ public class NewConfig
     Set services = new HashSet() ;
     Set datasets = new HashSet() ;
     
-    
-    
     static void main(String argv[])
     {
         NewConfig conf = new NewConfig(argv[0]) ;
@@ -184,26 +182,17 @@ public class NewConfig
         String s[] = new String[]{
             "SELECT ?service ?className",
             "{",
-            "?service  joseki:service ",
-            "    [ module:implementation",
-            "        [ module:className ?className ] ] " ,
+            "[] joseki:service ?service .",
+            "?service module:implementation",
+            "          [ module:className ?className ]" ,
             "    }",
-            "ORDER BY ?service" } ;
+            "ORDER BY ?service ?className" } ;
 
-            //            "    { [] joseki:service ?service ;",
-//            "      OPTIONAL { ?service joseki:processor ?proc . ",
-//            "                 ?proc    module:implementation ?impl . "
-//            "                  ?impl   module:className      ?className }" ,
-// ALT        
-//        String s[] = new String[]{ "SELECT ?service ?className",
-//                                   "    { [] joseki:service ?service .",
-//                                   "      ?service module:className ?className" ,
-//                                   "    }",
-//                                   "ORDER BY ?service ?className" } ;
         ResultBinding rb = new ResultBinding(confModel) ;
         rb.add("server", server) ;
         Query q = makeQuery(s) ;
         QueryExecution qexec = QueryExecutionFactory.create(q, confModel, rb) ;
+        Set serviceResources = new HashSet() ; 
 
         try {
             Resource currentService = null ;
@@ -220,6 +209,12 @@ public class NewConfig
                 }
                 Resource serv = (Resource)n ;
 
+                if ( currentService == serv )
+                {
+                    log.warn("More than one implementation or more that one class: "+strForResource(serv)) ;
+                    throw new ConfigurationErrorException("Malformed service definition: "+strForResource(serv)) ;
+                }
+                
                 String className = null ;
                 RDFNode cn = qs.get("className") ;
                 
@@ -237,22 +232,58 @@ public class NewConfig
                     }
                     if ( ! r.getURI().startsWith("java:") )
                     {
-                        log.warn("Class name is a URi but not from the java: scheme") ;
+                        log.warn("Class name is a URI but not from the java: scheme") ;
                         continue ;
                     }
                     className = r.getURI().substring("java:".length()) ; 
                 }
-                log.info("Class name : "+className) ;
+                log.info("Class name: "+className) ;
                     
-                if ( currentService != null )
-                {
-                    services.add(new Service(className)) ;
-                }
-                currentService = serv ;
+                 services.add(new Service(className)) ;
+                 log.info("Service resource: "+n) ;
+                 serviceResources.add(n) ;
+                 currentService = serv ;
             }
         } finally { qexec.close() ; }
         
-        // Now check for "[] joseki:service ?service" not in the service set (i.e. malformed)
+        // CHECKING
+        
+        // ---- Check : class names for implementations
+        s = new String[]{
+            "SELECT DISTINCT ?service",
+            "{ []  joseki:service ?service .",
+            "  ?service module:implementation []  }"
+            } ;
+        
+        q = makeQuery(s) ;
+        qexec = QueryExecutionFactory.create(q, confModel, rb) ;
+        try {
+            for ( ResultSet rs = qexec.execSelect() ; rs.hasNext() ; )
+            {
+                QuerySolution qs = rs.nextSolution() ;
+                RDFNode n = qs.get("service") ;
+                if ( ! serviceResources.contains(n) )
+                    log.warn("No class name of service: "+strForNode(n) ) ;
+            }
+        } finally { qexec.close() ; }
+
+        // ---- Check : class names for implementations
+        s = new String[]{
+            "SELECT DISTINCT ?service",
+            "{ [] joseki:service ?service }" } ;
+        
+        q = makeQuery(s) ;
+        qexec = QueryExecutionFactory.create(q, confModel, rb) ;
+        try {
+            for ( ResultSet rs = qexec.execSelect() ; rs.hasNext() ; )
+            {
+                QuerySolution qs = rs.nextSolution() ;
+                RDFNode n = qs.get("service") ;
+                if ( !serviceResources.contains(n) )
+                    log.warn("No implementation for service: "+strForNode(n) ) ;
+            }
+        } finally { qexec.close() ; }
+        
     }
 
     private void findDataSets()
