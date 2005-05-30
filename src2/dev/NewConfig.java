@@ -53,10 +53,14 @@ public class NewConfig
             server = findServer() ;
             findDataSets() ;
             findServices() ;
-        } catch (Exception ex)
+        } catch (RuntimeException ex)
         {
             log.fatal("Failed to parse configuration file", ex) ;
+            // Clear an structures we may have partialy built.
             confModel = null ;
+            services = null ;
+            datasets = null ;
+            throw ex ;
         }
     }
     

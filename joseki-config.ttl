@@ -12,7 +12,8 @@
 
 ## --------------------------------------------------------------
 ## This file is written in N3 / Turtle
-## It is an RDF graph - order of RDF triples does not matter ## to the machine but it does help people who need to edit this file.
+## It is an RDF graph - order of RDF triples does not matter
+## to the machine but it does help people who need to edit this file.
 
 
 ## --------------------------------------------------------------
