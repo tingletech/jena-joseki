@@ -244,7 +244,7 @@ public class NewConfig
                 log.info("Class name: "+className) ;
                     
                  services.add(new Service(className)) ;
-                 log.info("Service resource: "+n) ;
+                 //log.info("Service resource: "+n) ;
                  serviceResources.add(n) ;
                  currentService = serv ;
             }
@@ -287,7 +287,6 @@ public class NewConfig
                     log.warn("No implementation for service: "+strForNode(n) ) ;
             }
         } finally { qexec.close() ; }
-        
     }
 
     private void findDataSets()
