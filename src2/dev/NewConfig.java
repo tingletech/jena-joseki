@@ -345,7 +345,7 @@ public class NewConfig
             if ( ! x.equals(ds) )
             {
                 log.info("New dataset: "+strForResource(x)) ;
-                src = DataSetFactory.create() ;
+                src = DatasetFactory.create() ;
                 // Place in the configuration
                 datasets.add(src) ;
                 

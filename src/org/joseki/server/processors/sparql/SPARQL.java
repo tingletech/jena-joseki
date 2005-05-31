@@ -25,7 +25,7 @@ import com.hp.hpl.jena.query.util.RelURI;
 /** SPARQL operations
  * 
  * @author  Andy Seaborne
- * @version $Id: SPARQL.java,v 1.27 2005-05-26 15:35:46 andy_seaborne Exp $
+ * @version $Id: SPARQL.java,v 1.28 2005-05-31 12:20:26 andy_seaborne Exp $
  */
 
 public class SPARQL extends QueryProcessorCom
@@ -89,7 +89,7 @@ public class SPARQL extends QueryProcessorCom
                 if ( graphURL != null && ! graphURL.equals(""))
                 {
                     if ( dataset == null )
-                        dataset = DataSetFactory.create() ;
+                        dataset = DatasetFactory.create() ;
                     
                     try {
                         Model model = fileManager.loadModel(graphURL) ;
@@ -107,7 +107,7 @@ public class SPARQL extends QueryProcessorCom
                 if ( namedGraphs != null )
                 {
                     if ( dataset == null )
-                        dataset = DataSetFactory.create() ;
+                        dataset = DatasetFactory.create() ;
                     for ( Iterator iter = namedGraphs.iterator() ; iter.hasNext() ; )
                     {
                         String uri = (String)iter.next() ;
@@ -177,9 +177,9 @@ public class SPARQL extends QueryProcessorCom
             if ( dataset == null )
             {
                 // No dataset in protocol
-                if ( ! query.hasDataSetDescription() )
+                if ( ! query.hasDatasetDescription() )
                 {
-                    dataset = DataSetFactory.create() ;
+                    dataset = DatasetFactory.create() ;
                     // No dataset in query.
                     Model model = ((SourceModelJena)src).getModel() ;
                     dataset.setDefaultModel(model) ;
@@ -188,7 +188,7 @@ public class SPARQL extends QueryProcessorCom
             
             QueryExecution qexec = null ;
             
-            if ( query.hasDataSetDescription() )
+            if ( query.hasDatasetDescription() )
                 qexec = QueryExecutionFactory.create(query) ;
             else
                 qexec = QueryExecutionFactory.create(query, dataset) ;
