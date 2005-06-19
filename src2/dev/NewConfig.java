@@ -339,10 +339,10 @@ public class NewConfig
         } finally { qexec.close() ; }
         
         
-        doNamedGraphCheck() ;
+        checkNamedGraphDescriptions() ;
     }
      
-    private void doNamedGraphCheck()
+    private void checkNamedGraphDescriptions()
     {
         // Check with reduced queries
         
@@ -447,27 +447,21 @@ public class NewConfig
             }
         } finally { qexec.close() ; }
         
-        // CHECKING
         
-        // ---- Check : class names for implementations
-        s = new String[]{
-            "SELECT DISTINCT ?service",
-            "{ []  joseki:service ?service .",
-            "  ?service module:implementation []  }"
-            } ;
-        
-        q = makeQuery(s) ;
-        qexec = QueryExecutionFactory.create(q, confModel, rb) ;
-        try {
-            for ( ResultSet rs = qexec.execSelect() ; rs.hasNext() ; )
-            {
-                QuerySolution qs = rs.nextSolution() ;
-                RDFNode n = qs.get("service") ;
-                if ( ! serviceResources.contains(n) )
-                    log.warn("No class name of service: "+strForNode(n) ) ;
-            }
-        } finally { qexec.close() ; }
+        // Check that we don't find more part formed service impls
+        // than well formed service descriptions
+        checkServiceImpls(rb, serviceResources) ;
 
+        // Check that we don't find more part forms services 
+        // than well formed service descriptions
+        checkServices(rb, serviceResources) ;
+    }
+
+    private void checkServices(ResultBinding rb, Set serviceResources)
+    {
+        String[] s ;
+        Query q ;
+        QueryExecution qexec ;
         // ---- Check : class names for implementations
         s = new String[]{
             "SELECT DISTINCT ?service",
@@ -482,6 +476,27 @@ public class NewConfig
                 RDFNode n = qs.get("service") ;
                 if ( !serviceResources.contains(n) )
                     log.warn("No implementation for service: "+strForNode(n) ) ;
+            }
+        } finally { qexec.close() ; }
+    }
+
+    private void checkServiceImpls(ResultBinding rb, Set serviceResources)
+    {
+        String [] s = new String[]{
+            "SELECT DISTINCT ?service",
+            "{ []  joseki:service ?service .",
+            "  ?service module:implementation []  }"
+            } ;
+        
+        Query q = makeQuery(s) ;
+        QueryExecution qexec = QueryExecutionFactory.create(q, confModel, rb) ;
+        try {
+            for ( ResultSet rs = qexec.execSelect() ; rs.hasNext() ; )
+            {
+                QuerySolution qs = rs.nextSolution() ;
+                RDFNode n = qs.get("service") ;
+                if ( ! serviceResources.contains(n) )
+                    log.warn("No class name of service: "+strForNode(n) ) ;
             }
         } finally { qexec.close() ; }
     }

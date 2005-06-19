@@ -15,6 +15,9 @@
 ## It is an RDF graph - order of RDF triples does not matter
 ## to the machine but it does help people who need to edit this file.
 
+## Note: adding rdfs:label to blank nodes will cause Joseki 
+## to print that in log messages.
+
 
 ## --------------------------------------------------------------
 ## About this configuration
@@ -96,8 +99,9 @@ _:ds1   rdf:type joseki:RDFDataSet ;
     # Could use the location manager and have the named thing only
     # Can't have two names for one graph?
     joseki:namedGraph
-        [ joseki:graphName      <http://example.org/name2> ;
-          joseki:graphData  _:model2 ] ;
+        [ #joseki:graphName      <http://example.org/name2> ;
+          #joseki:graphData  _:model2 
+        ] ;
     ## Short versions?
 
     .
