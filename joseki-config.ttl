@@ -68,22 +68,27 @@ joseki:SPAQRLgeneralService
 ## ---- A model, with RDF read from a file 
 ## (syntax determined by file extenstion - defaults to RDF/XML)
 
-_:model1  rdf:type jms:DefaultModelSpec ;
-    rdfs:label "Model 1" ;
+_:model  rdf:type jms:DefaultModelSpec ;
+    rdfs:label "Model(plain)" ;
     jms:loadWith  <file:D.ttl> .
+
+_:model1  rdf:type jms:DefaultModelSpec ;
+    rdfs:label "Model-1" ;
+    jms:loadWith  <file:D1.ttl> .
 
 
 # Abbreviated forms (rewrite /CONSTRUCT then query again for model spec form):
-_:model2    joseki:attachedModel        <file:Data/empty.nt> ;
-    rdfs:label "Model 2" ;
-    .
+##_:model2    joseki:attachedModel        <file:Data/empty.nt> ;
+_:model2 rdf:type jms:DefaultModelSpec ;
+    rdfs:label "Model-2" ;
+    jms:loadWith  <file:D2.ttl> .
 
 
 ## --------------------------------------------------------------
 ## Datasets
 
 _:ds1   rdf:type joseki:RDFDataSet ;
-    #joseki:defaultGraph    _:model1 ;
+    joseki:defaultGraph    _:model1 ;
     rdfs:label "Dataset _:ds1" ;
     joseki:namedGraph
         [ joseki:graphName      <http://example.org/name1> ;
@@ -92,7 +97,7 @@ _:ds1   rdf:type joseki:RDFDataSet ;
     # Can't have two names for one graph?
     joseki:namedGraph
         [ joseki:graphName      <http://example.org/name2> ;
-               joseki:graphData  _:model2 ] ;
+          joseki:graphData  _:model2 ] ;
     ## Short versions?
 
     .
