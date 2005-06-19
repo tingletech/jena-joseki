@@ -284,6 +284,10 @@ public class NewConfig
                 Resource graphName = qs.getResource("graphName") ;
                 Resource graphData = qs.getResource("graphData") ;
                 
+                if ( dftGraph == null &&  graphName == null )
+                    // Note the named graph match assumed a well-formed name/data pair
+                    log.warn("Dataset with no default graph and no named graphs: "+ strForResource(x)) ;
+                
                 // New dataset
                 if ( ! x.equals(ds) )
                 {
@@ -334,7 +338,44 @@ public class NewConfig
             }
         } finally { qexec.close() ; }
         
-        // Check with reduced queries?
+        
+        doNamedGraphCheck() ;
+    }
+     
+    private void doNamedGraphCheck()
+    {
+        // Check with reduced queries
+        
+        String[] s = new String[] {
+           "SELECT ?x ?ng ?graphName ?graphData",
+           "{ ?x joseki:namedGraph  ?ng ." +
+           "  OPTIONAL { ?ng joseki:graphName ?graphName }",  
+           "  OPTIONAL { ?ng joseki:graphData ?graphData }",  
+           "}", 
+           "ORDER BY ?ng ?graphName ?graphData"
+           } ;
+        Query query = makeQuery(s) ;
+        QueryExecution qexec = QueryExecutionFactory.create(query, confModel) ;
+        try {
+            ResultSet rs = qexec.execSelect() ;
+            for ( ; rs.hasNext() ; )
+            {
+                QuerySolution qs = rs.nextSolution() ;
+                Resource x         = qs.getResource("x") ;
+                Resource ng        = qs.getResource("ng") ;
+                Resource graphName = qs.getResource("graphName") ;
+                Resource graphData = qs.getResource("graphData") ;
+                
+                if ( graphName == null && graphData == null )
+                    log.warn("Named graph description with no name and no data: "+strForResource(x)) ;
+                
+                if ( graphName != null && graphData == null )
+                    log.warn("Named graph description a name but no data: Name = "+strForResource(graphName)) ;
+                
+                if ( graphName == null && graphData != null )
+                    log.warn("Named graph description with data but no name: "+strForResource(graphData)) ;
+            }
+        } finally { qexec.close() ; }
     }
 
     private void findServices()
@@ -546,6 +587,8 @@ public class NewConfig
     
     private static String strForResource(Resource r, PrefixMapping pm)
     {
+        if ( r == null )
+            return "NULL ";
         if ( r.hasProperty(RDFS.label))
         {
             RDFNode n = r.getProperty(RDFS.label).getObject() ;
