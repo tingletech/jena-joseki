@@ -9,15 +9,30 @@ package joseki3.server;
 import com.hp.hpl.jena.rdf.model.Resource;
 import joseki3.server.module.*;
 
-class Service
+public class Service
 {
     Loader loader = new Loader() ;
+    Processor proc ;
+    boolean available = false ;
     
-    Service(Resource r, String className)
+    public Service(Resource r, String className)
     {
-        Object s = (Object)loader.loadAndInstantiate(r, Object.class) ;
+        proc = (Processor)loader.loadAndInstantiate(r, Processor.class) ;
+        if ( proc != null )
+            available = true ;
     }
+    
+    public void exec(Request request, Response response) throws ExecutionException
+    {
+//        if ( ! isAvailable() )
+//            throw new ExecutionException() ;
+        proc.exec(request, response) ;
+    }
+    
+    public boolean isAvailable() { return available ; } 
+    public void setAvailability(boolean availability) { available = availability ; }
 }
+
 /*
  * (c) Copyright 2005 Hewlett-Packard Development Company, LP
  * All rights reserved.

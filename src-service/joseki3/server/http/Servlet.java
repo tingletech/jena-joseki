@@ -47,7 +47,7 @@ public class Servlet extends HttpServlet implements Connector
     
     int urlLimit = 8*1024 ;
     
-    ServiceRegistry serviceRegistry = new ServiceRegistry() ;
+    ServiceRegistry serviceRegistry = null ;
     
     protected HttpRequestParser    httpRequestParser = new HttpRequestParser() ;
     protected HttpResultSerializer httpSerializer = new HttpResultSerializer() ;
@@ -161,13 +161,45 @@ public class Servlet extends HttpServlet implements Connector
                 return ;
             }
 
-            uri = chooseDispatchURI(uri, httpRequest) ;
-            if ( uri.startsWith("/") )
-                uri = uri.substring(1) ;
+            String serviceURI = chooseDispatchURI(uri, httpRequest) ;
+            if ( serviceURI.startsWith("/") )
+                serviceURI = uri.substring(1) ;
             
+            log.info("Service URI = <"+serviceURI+">") ;
             
+            // Assemble parameters
+            Request request = new Request(serviceURI, requestURL) ;
+            Response response = new Response(request, httpRequest, httpResponse) ; 
+
+            Service service = serviceRegistry.find(uri) ;
+            if ( service == null )
+            {
+                log.info("404 - Service not found") ;
+                //doErrorNoSuchService() ;
+                httpResponse.sendError(HttpServletResponse.SC_NOT_FOUND, "Service <"+uri+"> not found") ;
+                return ;
+            }
             
-            // lookup uri (not a 
+            if ( !service.isAvailable() )
+            {
+                log.info("Service is not available") ;
+                //doErrorNoSuchService() ;
+                httpResponse.sendError(HttpServletResponse.SC_SERVICE_UNAVAILABLE,
+                                       "Service <"+uri+"> unavailable") ;
+                return ;
+            }
+                
+            
+            try {
+                service.exec(request, response) ;
+            }
+            catch (ExecutionException ex)
+            {
+                log.warn("Service execution error", ex) ;
+                httpResponse.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR) ;
+                httpResponse.flushBuffer() ;
+                httpResponse.getWriter().close() ;
+            } 
             
             //msg(Level.FINE, "Get: URL= "+uri) ;
             //msg(Level.FINE, "  QueryString = "+request.getQueryString()) ;
@@ -180,7 +212,8 @@ public class Servlet extends HttpServlet implements Connector
         
             // Do request
             //try {}
-        } catch (Exception ex)
+        }
+        catch (Exception ex)
         {
             try {
                 log.warn("Internal server error", ex) ;

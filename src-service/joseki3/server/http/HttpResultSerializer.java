@@ -5,15 +5,14 @@
 
 package joseki3.server.http;
 
-import java.util.* ;
 import org.apache.commons.logging.* ;
 import java.io.* ;
 
 import javax.servlet.http.* ; 
-import org.joseki.* ;
+import org.joseki.Joseki ;
 import org.joseki.util.NullOutputStream; 
-import org.joseki.util.Params;
-import org.joseki.server.*;
+
+import joseki3.server.*;
 
 import com.hp.hpl.jena.rdf.model.*;
 import com.hp.hpl.jena.shared.JenaException;
@@ -211,16 +210,16 @@ public class HttpResultSerializer
             PrintWriter pw = httpResponse.getWriter();
             pw.println(msg);
             pw.println();
-            pw.println("URI = " + request.getModelURI());
-            if ( request != null )
-            {
-                for (Iterator iter = request.getParamPairs().listIterator(); iter.hasNext();)
-                {
-                    Params.Pair  p = (Params.Pair)iter.next();
-                    pw.println("    "+p.getName() + " = " + p.getValue()) ;
-                }
-                pw.println() ;
-            }
+            pw.println("URI = " + request.getServiceURI());
+//            if ( request != null )
+//            {
+//                for (Iterator iter = request.getParamPairs().listIterator(); iter.hasNext();)
+//                {
+//                    Params.Pair  p = (Params.Pair)iter.next();
+//                    pw.println("    "+p.getName() + " = " + p.getValue()) ;
+//                }
+//                pw.println() ;
+//            }
             if ( ex != null )
                 ex.printStackTrace(pw) ;
             pw.flush();

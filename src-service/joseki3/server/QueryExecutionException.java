@@ -1,64 +1,24 @@
-
 /*
  * (c) Copyright 2003, 2004, 2005 Hewlett-Packard Development Company, LP
  * [See end of file]
  */
 
-
 package joseki3.server;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-/** General Request 
+/**
+ * @version     $Id: QueryExecutionException.java,v 1.1 2005-06-20 20:49:17 andy_seaborne Exp $
  * @author      Andy Seaborne
- * @version     $Id$
  */
-public class Request
+public class QueryExecutionException extends ExecutionException
 {
-    // How the operation was described.
-    String serviceURI = null ;
-    String requestURL = null ;
-
-    final static Object noValue = new Object() ; 
-    // Arguments - models
-    // Parameters - key/value pairs
-    List args = new ArrayList();
-    Map params = new HashMap();
-
-    public Request(String uri, String url)
-    {
-        serviceURI = uri ;
-        requestURL = url ;
-    }
+    private static final long serialVersionUID = 99L;  // Serilizable.
     
-    // Convert to multivalue.
-    public String getParam(String param) { return (String)params.get(param); }
-
-    public void setParam(String name, String value)
+    public QueryExecutionException(int rc, String shortMessage)
     {
-        if ( value == null )
-            params.put(name, noValue) ;
-        else
-            params.put(name, value) ;
+        super(rc, shortMessage) ;
     }
-
-    /** @return Returns the requestURL. */
-    public String getRequestURL()
-    {
-        return requestURL ;
-    }
-
-    /** @return Returns the serviceURI. */
-    public String getServiceURI()
-    {
-        return serviceURI ;
-    }
-
-    
 }
+
 
 /*
  *  (c) Copyright 2003, 2004, 2005 Hewlett-Packard Development Company, LP

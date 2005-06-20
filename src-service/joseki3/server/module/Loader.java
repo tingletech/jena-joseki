@@ -104,26 +104,26 @@ public class Loader
             Loadable module = (Loadable)classObj.newInstance();
             log.trace("New Instance created") ;
             
-            Statement s = bindingResource.getProperty(JosekiModule.interface_) ;
-            if ( s == null || s.getResource() == null)
-            {
-                log.warn("No 'joseki:interface' property or value not a resource for "+PrintUtils.fmt(bindingResource)) ;
-                return null ;
-            }
-            
-            String uriInterface = s.getResource().getURI() ;
-            
-            if ( uriInterface == null || ! module.getInterfaceURI().equals(uriInterface) )
-            {
-                if ( uriInterface == null )
-                {
-                    log.warn("No declared interface URI : expected "+module.getInterfaceURI()) ;
-                    return null ;
-                }
-                log.warn("Mismatch between expected and actual operation URIs: "+
-                        "Expected: "+uriInterface+" : Actual: "+module.getInterfaceURI() ) ;
-                return null ;
-            }
+//            Statement s = bindingResource.getProperty(JosekiModule.interface_) ;
+//            if ( s == null || s.getResource() == null)
+//            {
+//                log.warn("No 'joseki:interface' property or value not a resource for "+PrintUtils.fmt(bindingResource)) ;
+//                return null ;
+//            }
+//            
+//            String uriInterface = s.getResource().getURI() ;
+//            
+//            if ( uriInterface == null || ! module.getInterfaceURI().equals(uriInterface) )
+//            {
+//                if ( uriInterface == null )
+//                {
+//                    log.warn("No declared interface URI : expected "+module.getInterfaceURI()) ;
+//                    return null ;
+//                }
+//                log.warn("Mismatch between expected and actual operation URIs: "+
+//                        "Expected: "+uriInterface+" : Actual: "+module.getInterfaceURI() ) ;
+//                return null ;
+//            }
 
             if ( expectedType != null && ! expectedType.isInstance(module) )
             {
@@ -135,8 +135,8 @@ public class Loader
             module.init(bindingResource, implementation) ;
 
             //logger.debug("  Class: " + className);
-            log.debug("Module: " + uriInterface) ; 
-            log.debug("  Implementation: "+className);
+            //log.debug("Module: " + uriInterface) ; 
+            log.debug("Implementation: "+className);
             return module;
         }
         catch (Exception ex)
