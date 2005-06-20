@@ -1,29 +1,39 @@
 /*
- * (c) Copyright 2003, 2004, 2005 Hewlett-Packard Development Company, LP
+ * (c) Copyright 2005 Hewlett-Packard Development Company, LP
+ * All rights reserved.
  * [See end of file]
  */
 
-package joseki3.server;
+package joseki3.server.processors;
 
-/**
- * Anything that has an operation that can say what it is. 
- * 
- * @author  Andy Seaborne
- * @version $Id$
- */
+import com.hp.hpl.jena.rdf.model.Resource;
+
+import org.apache.commons.logging.*;
+
+import joseki3.server.QueryExecutionException;
+import joseki3.server.Request;
+import joseki3.server.Response;
+import joseki3.server.module.Loadable;
 
 
-public interface Interface
+public class SPARQL extends QueryCom implements Loadable
 {
-    /** The URI for this class.
-     * When loading, must agree with the URI specified in the decription.
-     */
-    public String getInterfaceURI() ;
+    static Log log = LogFactory.getLog(SPARQL.class) ;
+    
+    void execQuery(Request request, Response response) throws QueryExecutionException
+    {
+    }
+
+    public void init(Resource binding, Resource implementation)
+    {
+        log.info("Init SPARQL processor") ;
+    }
+
 }
 
 /*
- *  (c) Copyright 2003, 2004, 2005 Hewlett-Packard Development Company, LP
- *  All rights reserved.
+ * (c) Copyright 2005 Hewlett-Packard Development Company, LP
+ * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions

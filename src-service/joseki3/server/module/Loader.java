@@ -8,7 +8,7 @@ package joseki3.server.module;
 import org.apache.commons.logging.* ;
 
 import org.joseki.vocabulary.JosekiModule ;
-import org.joseki.server.module.Loadable;
+import joseki3.server.module.Loadable;
 import org.joseki.util.PrintUtils ;
 
 import com.hp.hpl.jena.rdf.model.* ;

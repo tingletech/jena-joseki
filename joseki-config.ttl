@@ -173,7 +173,7 @@ joseki:ServiceSPARQL
 joseki:ImplSPARQL
     rdf:type   joseki:ServiceImpl ;
     module:className
-        <java:org.joseki.server.processors.sparql.SPARQL> .
+        <java:joseki3.server.processors.SPARQL> .
     
 joseki:ServiceGet
     rdf:type joseki:Service ;
@@ -188,16 +188,20 @@ joseki:ImplGET
 
 #### -- POST converter
 
-joseki:ServiceQueryPOST
-     rdf:type joseki:Service ;
-     joseki:operationName  "query" ;
-     module:implementation joseki:ImplPOST .
+## No longer needed?
+## But need to leave a hook for query-by-POST and later
+## operations by POST.  Maybe query is any ?-less URL.
 
-
-joseki:ImplPOST
-     rdf:type   joseki:ServiceImpl ;
-     module:className
-         <java:org.joseki.server.processors.ProcessorQueryPOST> .
+## joseki:ServiceQueryPOST
+##      rdf:type joseki:Service ;
+##      joseki:operationName  "query" ;
+##      module:implementation joseki:ImplPOST .
+## 
+## 
+## joseki:ImplPOST
+##      rdf:type   joseki:ServiceImpl ;
+##      module:className
+##          <java:org.joseki.server.processors.ProcessorQueryPOST> .
 
 ## ## ------------------------------------------
 ## ## Joseki source controllers

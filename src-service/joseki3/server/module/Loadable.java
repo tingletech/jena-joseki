@@ -5,30 +5,21 @@
 
 package joseki3.server.module;
 
-import org.joseki.server.Interface;
-
 import com.hp.hpl.jena.rdf.model.* ;
 
 
 /**
  * Load classes and instantiate new object based on loaded classes.
- * Understands the RDf properties for naming and initializing a new instance. 
  * 
  * @author  Andy Seaborne
  * @version $Id$
  */
 
 
-public interface Loadable extends Interface
+public interface Loadable
 {
-    /** The URI for this loadable class.
-     *  Must agree with the URI specified on loading (if any).
-     */
-    public String getInterfaceURI() ;
-
     /** Allow an implementation to initialise, based on configuration file */
      public void init(Resource binding, Resource implementation) ;
-    
 }
 
 /*

@@ -1,29 +1,32 @@
 /*
- * (c) Copyright 2003, 2004, 2005 Hewlett-Packard Development Company, LP
+ * (c) Copyright 2005 Hewlett-Packard Development Company, LP
+ * All rights reserved.
  * [See end of file]
  */
 
+package joseki3.server.processors;
 
-package joseki3.server;
+import joseki3.server.*;
 
-/** Interface for all processors.
- * 
- * @author      Andy Seaborne
- * @version     $Id$
- */
 
-public interface Processor
+public abstract class QueryCom implements Processor
 {
-    /** Execute the operation in the Request object and
-     *  send the answers via the Response object.   
-     */
 
-    public void exec(Request request, Response response) throws ExecutionException ;
+    public void exec(Request request, Response response) throws ExecutionException
+    {
+        // Dataset ds = getDataset(request) ;
+        // Do locking on dataset
+        execQuery(request, response) ;
+    }
+    
+    
+    abstract void execQuery(Request request, Response response) throws QueryExecutionException ;
+    
 }
 
 /*
- *  (c) Copyright 2003, 2004, 2005 Hewlett-Packard Development Company, LP
- *  All rights reserved.
+ * (c) Copyright 2005 Hewlett-Packard Development Company, LP
+ * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions

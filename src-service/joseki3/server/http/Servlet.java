@@ -150,7 +150,7 @@ public class Servlet extends HttpServlet implements Connector
                 log.debug(HttpUtils.fmtRequest(httpRequest)) ;
             
             // getRequestURL is the exact string used by the caller in the request.
-            // Internally, its the "request URI" that names the model
+            // Internally, its the "request URI" that names the service
             
             String requestURL = httpRequest.getRequestURL().toString() ;
             String uri = httpRequest.getRequestURI() ;
@@ -161,17 +161,21 @@ public class Servlet extends HttpServlet implements Connector
                 return ;
             }
 
-            String serviceURI = chooseDispatchURI(uri, httpRequest) ;
+            String serviceURI = chooseServiceURI(uri, httpRequest) ;
             if ( serviceURI.startsWith("/") )
-                serviceURI = uri.substring(1) ;
+                serviceURI = serviceURI.substring(1) ;
             
             log.info("Service URI = <"+serviceURI+">") ;
             
+            String qs = httpRequest.getQueryString() ;
+            
             // Assemble parameters
             Request request = new Request(serviceURI, requestURL) ;
+            // params => request items
+            
             Response response = new Response(request, httpRequest, httpResponse) ; 
 
-            Service service = serviceRegistry.find(uri) ;
+            Service service = serviceRegistry.find(serviceURI) ;
             if ( service == null )
             {
                 log.info("404 - Service not found") ;
@@ -235,7 +239,7 @@ public class Servlet extends HttpServlet implements Connector
             String uri = httpRequest.getRequestURI() ;
             String httpQueryString = httpRequest.getQueryString() ;
             
-            uri = chooseDispatchURI(uri, httpRequest) ;
+            uri = chooseServiceURI(uri, httpRequest) ;
             
             if ( httpQueryString == null )
             {
@@ -258,13 +262,13 @@ public class Servlet extends HttpServlet implements Connector
     // This should return a list of possibilities to allow for
     // future changes.
 
-    private String chooseDispatchURI(String uri, HttpServletRequest httpRequest)
+    private String chooseServiceURI(String uri, HttpServletRequest httpRequest)
     {
-        String dispatchURI = uri ;
+        String serviceURI = uri ;
         String contextPath = httpRequest.getContextPath() ;
         
         if ( contextPath != null && contextPath.length() > 0 )
-            dispatchURI = dispatchURI.substring(contextPath.length()) ;
+            serviceURI = serviceURI.substring(contextPath.length()) ;
         
         String servletPath = httpRequest.getServletPath() ;
 
@@ -280,9 +284,9 @@ public class Servlet extends HttpServlet implements Connector
                 servletPath = "" ;
             if ( contextPath == null )
                 contextPath = "" ;
-            log.debug("DispatchURI: "+uri+" => "+dispatchURI+" (ContextPath = "+contextPath+", ServletPath = "+servletPath+")") ;
+            log.debug("DispatchURI: "+uri+" => "+serviceURI+" (ContextPath = "+contextPath+", ServletPath = "+servletPath+")") ;
         }
-        return dispatchURI ;
+        return serviceURI ;
     }
     
     
