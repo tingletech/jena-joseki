@@ -4,43 +4,43 @@
  * [See end of file]
  */
 
-package dev;
+package joseki3.server;
 
 import java.util.*;
 
 import com.hp.hpl.jena.query.*;
-import com.hp.hpl.jena.query.core.ResultBinding;
 import com.hp.hpl.jena.query.resultset.ResultSetRewindable;
 import com.hp.hpl.jena.query.util.RelURI;
 import com.hp.hpl.jena.rdf.model.*;
+import com.hp.hpl.jena.shared.JenaException;
 import com.hp.hpl.jena.shared.NotFoundException;
-import com.hp.hpl.jena.shared.PrefixMapping;
 import com.hp.hpl.jena.util.FileManager;
 import com.hp.hpl.jena.vocabulary.RDF;
 import com.hp.hpl.jena.vocabulary.RDFS;
 
+import dev.RunUtils;
+
 import org.apache.commons.logging.*;
 
-public class NewConfig
+public class Configuration
 {
     static { RunUtils.setLog4j() ; }
-    static Log log = LogFactory.getLog(NewConfig.class) ;
+    static Log log = LogFactory.getLog(Configuration.class) ;
     Model confModel ;
     Resource server ;
     // --------
-    // The configuration (one server)
-    // Datasets
-    // Services
     
-    Set services = new HashSet() ;
+    ServiceRegistry registry = null ;
+    Map services = new HashMap() ;
     Set datasets = new HashSet() ;
     
-    static void main(String argv[])
+    static public void main(String argv[])
     {
-        NewConfig conf = new NewConfig(argv[0]) ;
+        ServiceRegistry reg = new ServiceRegistry(); 
+        Configuration conf = new Configuration(argv[0], reg) ;
     }
     
-    public NewConfig(String filename)
+    public Configuration(String filename, ServiceRegistry registry)
     {
         filename = RelURI.resolveFileURL(filename) ;
         confModel = ModelFactory.createDefaultModel() ;
@@ -55,6 +55,8 @@ public class NewConfig
             findDataSets() ;
             log.info("==== Services ====") ;
             findServices() ;
+            log.info("==== Bind services to the server ====") ;
+            bindServices(registry) ;
         } catch (RuntimeException ex)
         {
             log.fatal("Failed to parse configuration file", ex) ;
@@ -105,7 +107,7 @@ public class NewConfig
         if ( filesDone.contains(filename) )
             return ;
         
-        log.info("Loading : "+strForURI(filename, null) ) ;
+        log.info("Loading : "+Utils.strForURI(filename, null) ) ;
         Model conf = null ; 
             
         try {
@@ -113,7 +115,7 @@ public class NewConfig
             filesDone.add(filename) ;
         } catch (NotFoundException ex)
         {
-            log.warn("Failed to load: "+ex.getMessage()) ;
+            log.warn("** Failed to load: "+ex.getMessage()) ;
             return ;
         }
         
@@ -131,17 +133,17 @@ public class NewConfig
                 RDFNode rn = qs.get("i") ;
                 if ( rn instanceof Literal )
                 {
-                    log.warn("Skipped: include should be a URI, not a literal: "+strForNode(rn) ) ;
+                    log.warn("** Skipped: include should be a URI, not a literal: "+Utils.nodeLabel(rn) ) ;
                     continue ;
                 }
                 Resource r  = (Resource)rn ;
                 if ( r.isAnon() )
                 {
-                    log.warn("Skipped: include should be a URI, not a blank node") ;
+                    log.warn("** Skipped: include should be a URI, not a blank node") ;
                     continue ;
                 }
                     
-                log.info("Include : "+strForResource(r)) ;
+                log.info("Include : "+Utils.nodeLabel(r)) ;
                 includes.add(r.getURI()) ;
             }
         } finally { qexec.close() ; } 
@@ -159,67 +161,19 @@ public class NewConfig
         List x = findByType(JosekiVocab.Server) ;
         if ( x.size() == 0 )
         {
-            log.warn("No server description found") ;
+            log.warn("** No server description found") ;
             throw new ConfigurationErrorException("No server description") ;
         }
         
         if ( x.size() > 1 )
         {
-            log.warn("Multiple server descriptions found") ;
+            log.warn("** Multiple server descriptions found") ;
             throw new ConfigurationErrorException("Too many server descriptions ("+x.size()+")") ;
         }
         
         return (Resource)x.get(0) ; 
     }
 
-    // Test cases
-    static class DatasetDesc
-    {
-        Model confModel ;
-        // Resource wil keep the config model around as well. 
-        private Resource defaultGraph = null ;
-        private Map namedGraphs = new HashMap() ;
-        
-        DatasetDesc(Model conf) { confModel = conf ; }
-        
-        /** @return Returns the dftGraph. */
-        public Resource getDefaultGraph() { return defaultGraph ;  }
-        /**  * @param dftGraph The dftGraph to set. */
-        public void setDefaultGraph(Resource dftGraph) { this.defaultGraph = dftGraph ; }
-    
-        /** @return Returns the namedGraphs. */
-        public Map getNamedGraphs()
-        {
-            return namedGraphs ;
-        }
-        /**  * @param namedGraphs The namedGraphs to set. */
-        public void addNamedGraph(String uri, Resource r)
-        {
-            namedGraphs.put(uri, r) ;
-        }
-        
-        
-        private Model buildModel(Resource r)
-        {
-            ModelSpec mSpec = ModelFactory.createSpec(r, confModel) ; 
-            Model m = ModelFactory.createModel(mSpec) ;
-            log.info("Building model: "+strForResource(r)) ;
-            m.write(System.out, "N3") ;
-            return m ;
-        }
-    }
-    
-    class Service
-    {
-        Service(String className) {}
-    }
-    
-    // Fix configuration file!
-    // This shortcuts service -> classname 
-    // from service -> implementation -> classname
-    // because implmentation == class
-    // Maybe use java:org.joseki... scheme
-    
     private void findDataSets()
     {
         if ( false )
@@ -229,7 +183,7 @@ public class NewConfig
             for ( Iterator iter = x.iterator()  ; iter.hasNext() ; )
             {
                 Resource r = (Resource)iter.next() ;
-                log.info("Dataset: "+strForResource(r)) ;
+                log.info("Dataset: "+Utils.nodeLabel(r)) ;
             }
         }
         // Need to do validity checking on the configuration model.
@@ -286,12 +240,12 @@ public class NewConfig
                 
                 if ( dftGraph == null &&  graphName == null )
                     // Note the named graph match assumed a well-formed name/data pair
-                    log.warn("Dataset with no default graph and no named graphs: "+ strForResource(x)) ;
+                    log.warn("** Dataset with no default graph and no named graphs: "+ Utils.nodeLabel(x)) ;
                 
                 // New dataset
                 if ( ! x.equals(ds) )
                 {
-                    log.info("New dataset: "+strForResource(x)) ;
+                    log.info("New dataset: "+Utils.nodeLabel(x)) ;
                     
                     src = new DatasetDesc(confModel) ;
                     
@@ -300,7 +254,7 @@ public class NewConfig
                     
                     if ( dftGraph != null )
                     {
-                        log.info("Default graph : "+strForResource(dftGraph)) ;
+                        log.info("  Default graph : "+Utils.nodeLabel(dftGraph)) ;
                         src.setDefaultGraph(dftGraph) ;
                     }
                     dft = dftGraph ;
@@ -309,25 +263,25 @@ public class NewConfig
                 {
                     // Check one default model.
                     if ( dftGraph != null && !dftGraph.equals(dft) )
-                        log.warn("Two default graphs") ;
+                        log.warn("  ** Two default graphs") ;
                 }
                 
                 if ( graphName != null )
                 {
-                    log.info("Graph / named : <"+graphName+">") ;
+                    log.info("  Graph / named : <"+graphName+">") ;
                     
                     if ( graphName.isAnon() )
                         throw new ConfigurationErrorException("Graph name can't be a blank node") ; 
                     
                     if ( graphData == null )
                     {
-                        log.warn("Graph name but no graph data: <"+graphName.getURI()+">") ;
+                        log.warn("  ** Graph name but no graph data: <"+graphName.getURI()+">") ;
                         throw new ConfigurationErrorException("No data for graph <"+graphName.getURI()+">") ;
                     }
                     
                     if ( src.getNamedGraphs().containsKey(graphName.getURI()) )
                     {
-                        log.warn("Skipping duplicate named graph: <"+graphName.getURI()+">") ;
+                        log.warn("  ** Skipping duplicate named graph: <"+graphName.getURI()+">") ;
                         continue ;
                     }
                     
@@ -367,13 +321,13 @@ public class NewConfig
                 Resource graphData = qs.getResource("graphData") ;
                 
                 if ( graphName == null && graphData == null )
-                    log.warn("Named graph description with no name and no data: "+strForResource(x)) ;
+                    log.warn("** Named graph description with no name and no data. Part of "+Utils.nodeLabel(x)) ;
                 
                 if ( graphName != null && graphData == null )
-                    log.warn("Named graph description a name but no data: Name = "+strForResource(graphName)) ;
+                    log.warn("** Named graph description a name but no data: Name = "+Utils.nodeLabel(graphName)) ;
                 
                 if ( graphName == null && graphData != null )
-                    log.warn("Named graph description with data but no name: "+strForResource(graphData)) ;
+                    log.warn("** Named graph description with data but no name: "+Utils.nodeLabel(graphData)) ;
             }
         } finally { qexec.close() ; }
     }
@@ -381,18 +335,17 @@ public class NewConfig
     private void findServices()
     {
         String s[] = new String[]{
-            "SELECT ?service ?className",
+            "SELECT *",
             "{",
-            "[] joseki:service ?service .",
-            "?service module:implementation",
-            "          [ module:className ?className ]" ,
+            "  ?SP    joseki:serviceRef  ?serviceRef ;",
+            "         joseki:processor   ?proc ." ,
+            "  ?proc  module:implementation",
+            "            [ module:className ?className ]" ,
             "    }",
-            "ORDER BY ?service ?className" } ;
+            "ORDER BY ?serviceRef ?className" } ;
 
-        ResultBinding rb = new ResultBinding(confModel) ;
-        rb.add("server", server) ;
-        Query q = makeQuery(s) ;
-        QueryExecution qexec = QueryExecutionFactory.create(q, confModel, rb) ;
+        Query query = makeQuery(s) ;
+        QueryExecution qexec = QueryExecutionFactory.create(query, confModel) ;
         Set serviceResources = new HashSet() ; 
 
         try {
@@ -401,102 +354,114 @@ public class NewConfig
             for ( ResultSet rs = qexec.execSelect() ; rs.hasNext() ; )
             {
                 QuerySolution qs = rs.nextSolution() ;
-                RDFNode n = qs.get("service") ;
-                log.info("Service:    "+strForNode(n)) ;
-                if ( ! ( n instanceof Resource ) )
+                RDFNode serviceNode = qs.get("SP") ;
+                Resource proc = qs.getResource("proc") ;
+                RDFNode className = qs.get("className") ;
+                
+                RDFNode x = qs.getLiteral("serviceRef") ;
+                if ( ! ( x instanceof Literal ) ) 
                 {
-                    log.warn("Service not a resource: "+strForNode(n)) ;
+                    log.warn("** Service references are literals (a URI ref which will be relative to the server)") ;
                     continue ;
                 }
-                Resource serv = (Resource)n ;
+                
+                String ref = qs.getLiteral("serviceRef").getLexicalForm() ;
+                String javaClass = null ;
 
-                if ( currentService == serv )
-                {
-                    log.warn("More than one implementation or more that one class: "+strForResource(serv)) ;
-                    throw new ConfigurationErrorException("Malformed service definition: "+strForResource(serv)) ;
-                }
+                log.info("Service: <"+ref+">") ;
                 
-                String className = null ;
-                RDFNode cn = qs.get("className") ;
+                if ( ! ( serviceNode instanceof Resource ) )
+                {
+                    log.warn("** Service not a resource: "+Utils.nodeLabel(serviceNode)) ;
+                    continue ;
+                }
+                Resource service = (Resource)serviceNode ;
+
+                javaClass = classNameFromNode(className) ;
+                if ( javaClass == null )
+                    continue ;
                 
-                if ( cn instanceof Literal )
-                {
-                    className = ((Literal)cn).getLexicalForm() ;
-                }
-                else
-                {
-                    Resource r = (Resource)cn ;
-                    if ( r.isAnon() )
-                    {
-                        log.warn("Class name is a blank node!") ;
-                        continue ;
-                    }
-                    if ( ! r.getURI().startsWith("java:") )
-                    {
-                        log.warn("Class name is a URI but not from the java: scheme") ;
-                        continue ;
-                    }
-                    className = r.getURI().substring("java:".length()) ; 
-                }
-                log.info("Class name: "+className) ;
+                log.info("  Class name: "+javaClass) ;
                     
-                 services.add(new Service(className)) ;
-                 //log.info("Service resource: "+n) ;
-                 serviceResources.add(n) ;
-                 currentService = serv ;
+                services.put(ref, new Service(proc, javaClass)) ;
+                // Record all well-formed services found.
+                serviceResources.add(serviceNode) ;
             }
-        } finally { qexec.close() ; }
+        } catch (JenaException ex)
+        {
+            log.fatal("Problems finding services") ;
+            throw ex ;
+        }
+        finally { qexec.close() ; }
         
-        
-        // Check that we don't find more part formed service impls
-        // than well formed service descriptions
-        checkServiceImpls(rb, serviceResources) ;
-
         // Check that we don't find more part forms services 
         // than well formed service descriptions
-        checkServices(rb, serviceResources) ;
+        checkServices(serviceResources) ;
+
+        // Check that we don't find more part formed service impls
+        // than well formed service descriptions
+        checkServiceImpls(serviceResources) ;
+
     }
 
-    private void checkServices(ResultBinding rb, Set serviceResources)
+    private void checkServices(Set serviceResources)
     {
         String[] s ;
         Query q ;
         QueryExecution qexec ;
         // ---- Check : class names for implementations
-        s = new String[]{
-            "SELECT DISTINCT ?service",
-            "{ [] joseki:service ?service }" } ;
+        List x = findByType(JosekiVocab.ServicePoint) ;
+        for ( Iterator iter = x.iterator() ; iter.hasNext() ; )
+        {
+            Resource r = (Resource)iter.next() ;
+            if ( !serviceResources.contains(r) )
+                 log.warn("** No implementation for service: "+Utils.nodeLabel(r) ) ;
+        }
+    }
+
+    private void checkServiceImpls(Set serviceResources)
+    {
+        String [] s = new String[]{
+            "SELECT *",
+            "{  ?SP  joseki:serviceRef ?serviceRef ; }"
+        } ;
         
-        q = makeQuery(s) ;
-        qexec = QueryExecutionFactory.create(q, confModel, rb) ;
+        Query query = makeQuery(s) ;
+        QueryExecution qexec = QueryExecutionFactory.create(query, confModel) ;
         try {
             for ( ResultSet rs = qexec.execSelect() ; rs.hasNext() ; )
             {
                 QuerySolution qs = rs.nextSolution() ;
-                RDFNode n = qs.get("service") ;
-                if ( !serviceResources.contains(n) )
-                    log.warn("No implementation for service: "+strForNode(n) ) ;
+                RDFNode n = qs.get("SP") ;
+                RDFNode ref = qs.get("serviceRef") ;
+                if ( ! (ref instanceof Literal) )
+                    log.warn("** Service reference isn't a literal: "+Utils.nodeLabel(ref) ) ;
+                
+                if ( ! serviceResources.contains(n) )
+                    log.warn("** No class name for service with reference: "+Utils.nodeLabel(ref) ) ;
             }
         } finally { qexec.close() ; }
     }
 
-    private void checkServiceImpls(ResultBinding rb, Set serviceResources)
+    private void bindServices(ServiceRegistry registry)
     {
         String [] s = new String[]{
-            "SELECT DISTINCT ?service",
-            "{ []  joseki:service ?service .",
-            "  ?service module:implementation []  }"
-            } ;
-        
-        Query q = makeQuery(s) ;
-        QueryExecution qexec = QueryExecutionFactory.create(q, confModel, rb) ;
+            "SELECT ?serviceRef ",
+            "{ [] joseki:service [ joseki:serviceRef  ?serviceRef ]",
+            "}",
+            "ORDER BY ?serviceRef"
+        } ;
+        Query query = makeQuery(s) ;
+        QueryExecution qexec = QueryExecutionFactory.create(query, confModel) ;
         try {
             for ( ResultSet rs = qexec.execSelect() ; rs.hasNext() ; )
             {
                 QuerySolution qs = rs.nextSolution() ;
-                RDFNode n = qs.get("service") ;
-                if ( ! serviceResources.contains(n) )
-                    log.warn("No class name of service: "+strForNode(n) ) ;
+                //RDFNode srv = qs.get("service") ;
+                String ref = qs.getLiteral("serviceRef").getLexicalForm() ;
+                log.info("Configured service: <"+ref+">") ;
+                Service srv = (Service)services.get(ref) ;
+                registry.add(ref, srv) ;
             }
         } finally { qexec.close() ; }
     }
@@ -505,7 +470,7 @@ public class NewConfig
     {
         if ( r.isAnon() )
         {
-            log.warn("BNode for type - not supported (yet)") ;
+            log.warn("** BNode for type - not supported (yet)") ;
             return null ;
         }
         
@@ -586,50 +551,33 @@ public class NewConfig
         sBuff.append("\n") ;
     }
     
-    
-    private static String strForNode(RDFNode n)
+    public static String classNameFromNode(RDFNode n)
     {
-        if ( n instanceof Resource )
-            return strForResource((Resource)n, null) ;
+        String className = null ;
         
-        Literal lit = (Literal)n ;
-        return lit.getLexicalForm() ;
-    }
-        
-    
-    
-    private static String strForResource(Resource r) { return strForResource(r, null) ; }
-    
-    private static String strForResource(Resource r, PrefixMapping pm)
-    {
-        if ( r == null )
-            return "NULL ";
-        if ( r.hasProperty(RDFS.label))
+        if ( n instanceof Literal )
         {
-            RDFNode n = r.getProperty(RDFS.label).getObject() ;
-            if ( n instanceof Literal )
-                return ((Literal)n).getString() ;
+            Literal lit = (Literal)n ;
+            className = lit.getLexicalForm() ;
+            if ( className.startsWith("java:") ) 
+                className.substring("java:".length()) ; 
+            return className ;
         }
-        
+
+        Resource r = (Resource)n ;
         if ( r.isAnon() )
-            return "<<blank node>>" ;
-
-        if ( pm == null )
-            pm = r.getModel() ;
-
-        return strForURI(r.getURI(), pm ) ;
-    }
-    
-    private static String strForURI(String uri, PrefixMapping pm)
-    {
-        if ( pm != null )
         {
-            String x = pm.shortForm(uri) ;
-            
-            if ( ! x.equals(uri) )
-                return x ;
+            log.warn("** Class name is a blank node") ;
+            return null ;
         }
-        return "<"+uri+">" ;
+        
+        if ( ! r.getURI().startsWith("java:") )
+        {
+            log.warn("** Class name is a URI but not from the java: scheme") ;
+            return null ;
+        }
+        className = r.getURI().substring("java:".length()) ;
+        return className ; 
     }
 }
 

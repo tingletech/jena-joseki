@@ -3,43 +3,30 @@
  * [See end of file]
  */
 
-package dev;
+package joseki3.server;
 
 /**
- * @author      Andy Seaborne
  * @version     $Id$
+ * @author      Andy Seaborne
  */
-public class ConfigurationErrorException extends RuntimeException //extends JosekiServerException
+public class ExecutionException extends java.lang.Exception
 {
     private static final long serialVersionUID = 99L;  // Serilizable.
-    
-    public ConfigurationErrorException()
+    public int returnCode;
+    public String shortMessage;
+    public String longMessage;
+
+    public ExecutionException(int rc, String _shortMessage)
     {
-        super();
+        this(rc, _shortMessage, null) ;
     }
 
-    public ConfigurationErrorException(String message)
-    {
-        super(message);
-    }
 
-    /**
-     * Constructor for ConfigurationErrorException.
-     * @param message
-     * @param cause
-     */
-    public ConfigurationErrorException(String message, Throwable cause)
+    public ExecutionException(int rc, String _shortMessage, String _longMessage)
     {
-        super(message, cause);
-    }
-
-    /**
-     * Constructor for ConfigurationErrorException.
-     * @param cause
-     */
-    public ConfigurationErrorException(Throwable cause)
-    {
-        super(cause);
+        returnCode = rc ;
+        shortMessage = _shortMessage ;
+        longMessage = _longMessage ;
     }
 }
 
@@ -70,4 +57,3 @@ public class ConfigurationErrorException extends RuntimeException //extends Jose
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
- 

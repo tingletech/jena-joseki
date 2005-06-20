@@ -32,8 +32,16 @@
 :service    rdf:type    rdf:Property ;
     rdfs:comment        "Association of a server with a service" ;
     rdfs:label          "service" ;
-    rdfs:domain         :Server ;
-    rdfs:range          :ServicePoint ;  
+    rdfs:domain         :ServicePoint ;
+    rdfs:range          rdfs:literal ;  
+    .
+
+:serviceURI    rdf:type    rdf:Property ;
+    rdfs:comment 
+       "URI reference for service URI (relative to where the server is)" ;
+    rdfs:label          "Service URI reference" ;
+    rdfs:domain         :ServicePoint ;
+#    rdfs:range         rdfs:literal ;  
     .
 
 ##-------------------------------------------------------------
@@ -72,6 +80,17 @@
 
 ##-------------------------------------------------------------
 ## Processors
+
+:processor  rdf:type            rdf:Property ;
+    rdfs:comment                "Processor" ;
+    rdfs:label                  "processor" ;
+    .
+
+:queryOperationName rdf:type   rdf:Property ; 
+    rdfs:comment                "query operation name" ;
+    rdfs:label                  "query operation name" ;
+    .
+    
 
 ##-------------------------------------------------------------
 ## Services

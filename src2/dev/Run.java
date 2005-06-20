@@ -8,6 +8,9 @@
 package dev;
 import java.net.* ;
 
+import joseki3.server.Configuration;
+import joseki3.server.RDFServer;
+
 import org.joseki.server.http.HttpContentType;
 import org.joseki.util.Params;
 
@@ -16,21 +19,50 @@ public class Run
 
     public static void main(String[] args)
     {
-        NewConfig.main(new String[]{"joseki-config.ttl"}) ; System.exit(0) ;
-        runJosekiServer(args) ; System.exit(0) ;
+        //runConfig() ;
+        
+        //runJosekiServer(args) ; System.exit(0) ;
+        
+        runNewJosekiServer(args) ; System.exit(0) ;
+        
         runParamsTest() ; System.exit(0) ;
         
     }
     
+    static void runCondig()
+    {
+        Configuration.main(new String[]{"joseki-config.ttl"}) ;
+        System.exit(0) ;
+    }
     
     public static void runJosekiServer(String[] args) 
     {
         if ( args == null || args.length == 0 )
             args = new String[]{"joseki-dev.n3"} ;
         RunJoseki.main(args) ;
-        return ;
+        System.exit(0) ;
     }
 
+    public static void runNewJosekiServer(String[] args) 
+    {
+        RunUtils.setLog4j() ;
+        RDFServer server = new RDFServer("joseki-config.ttl") ;
+        server.start() ;
+        // Threads under Eclipse seem to be daemons and so the server exits 
+        for ( ; ; )
+        {
+            Object obj = new Object() ;
+            synchronized(obj)
+            {
+                // Remember to own the lock first.
+                try { obj.wait() ; } catch (Exception ex) {}
+            }
+        }
+
+        //System.exit(0) ;
+    }
+
+    
     public static void runParamsTest()
     {
         Params p = new Params() ;

@@ -18,6 +18,36 @@
 ## Note: adding rdfs:label to blank nodes will cause Joseki 
 ## to print that in log messages.
 
+## Structure:
+## 
+## []  rdf:type joseki:Server 
+##     joseki:service
+##        rdf:type joseki:ServicePoint
+##        joseki:serviceRef    service URI = server + sevice Ref
+##
+##        # Data part
+##        joseki:dataset
+## 
+##        # Service part
+##        joseki:processor
+##           joseki:queryLang
+##           module:implementation
+##              module:className <java:....>
+        
+## Normally, the details of the processor are hidden in a standard defintion
+## The dataset can be described elsewhere as well.
+
+## []  rdf:type joseki:Server 
+##     joseki:service
+##        rdf:type joseki:ServicePoint
+##       joseki:service
+##        # Data part
+##        joseki:dataset
+##          Description of dataset
+##        # Service part
+##        joseki:processor joseki:ServiceSPARQL ;
+
+
 
 ## --------------------------------------------------------------
 ## About this configuration
@@ -33,37 +63,39 @@
 []  rdf:type joseki:Server ;
     joseki:serverDebug   "true" ;
     # Associate service endpoints with a server
-    # Inline declaration
     joseki:service
       [ rdf:type joseki:ServicePoint ;
-        rdfs:label "Inline service point" ;
-        joseki:queryOperationName "SPARQL" ;
-        joseki:queryOperationName "sparql" ;
-        joseki:queryOperationName ql:SPARQL ;
+        rdfs:label "service point" ;
+        ## URI relative to the server 
+        joseki:serviceRef         "query" ;
+
+        # dataset part
         joseki:dataset              _:ds1 ;
-        # Parameters to the SPARQL processor for this service
+
+        # Service part.
+        # Parameters to the SPARQL processor for this service point
         joseki:allowExplicitDataset       "true"^^xsd:boolean ;
         joseki:allowWebLoading            "true"^^xsd:boolean ;
-        ## joseki:processor joseki:BindingSPARQL ;
-        module:implementation
-           [ module:className "CLASSNAME" ] ;
+
+        joseki:processor joseki:ServiceSPARQL ;
+
       ] ;
-    # Out-of-line declaration to the general processor
-    joseki:service       joseki:SPAQRLgeneralService ;
+
+    joseki:service
+      [ rdf:type    joseki:ServicePoint ;
+        rdfs:label  "Inline service point" ;
+        joseki:serviceRef         "sparql" ;
+        # dataset part
+        # Absent
+
+        # Service part.
+        joseki:processor
+          [ joseki:queryOperationName "sparql" ;
+            module:implementation [ module:className <java:module> ]
+          ] ;
+      ] ;
     .
 
-joseki:SPAQRLgeneralService  
-    rdfs:label "General SPARQL service" ;
-    rdf:type joseki:ServicePoint ;
-    # Code implementing
-    #module:className "org.joseki.server.processors.sparql.SPARQL" ;
-    module:implementation joseki:BindingSPARQL ;
-    module:className <java:org.joseki.server.processors.sparql.SPARQL> ;
-    # Names we answer to.
-    joseki:queryOperationName "SPARQL" ;
-    joseki:queryOperationName "sparql" ;
-    joseki:queryOperationName ql:SPARQL ;
-    .
 
 ## --------------------------------------------------------------
 ## Graphs available (Jena calls them Models)
@@ -99,8 +131,8 @@ _:ds1   rdf:type joseki:RDFDataSet ;
     # Could use the location manager and have the named thing only
     # Can't have two names for one graph?
     joseki:namedGraph
-        [ #joseki:graphName      <http://example.org/name2> ;
-          #joseki:graphData  _:model2 
+        [ joseki:graphName      <http://example.org/name2> ;
+          joseki:graphData  _:model2 
         ] ;
     ## Short versions?
 
@@ -123,73 +155,49 @@ _:ds2   rdf:type joseki:RDFDataSet ;
 ## --------------------------------------------------------------
 ## Services
 ## A number of service endpoints.
-## A service endpoint also includes parameters used to config ## processors.
-
-_:s1 a joseki:ServicePoint ;
-     # Default target - optional
-     joseki:dataset              _:ds1 ;
-     # Parameters to the SPARQL processor.
-     joseki:allowExplicitDataset       "true"^^xsd:boolean ;
-     joseki:allowWebLoading            "false"^^xsd:boolean ;
-     joseki:processor joseki:BindingSPARQL ;
-     .
+## A service endpoint also includes parameters used to
+## config processors.
 
 # ----- definitions --------------------------------------------------
-# Drop module:interface
-# Drop module:??
 
-joseki:BindingSPARQL
-    a   joseki:QueryLanguageBinding ;
-    rdfs:label "SPARQL processor" ;
+joseki:ServiceSPARQL  
+    rdfs:label "General SPARQL service" ;
+    rdf:type joseki:Service ;
+    module:implementation joseki:ImplSPARQL ;
+    # Names we answer to.
     joseki:queryOperationName "SPARQL" ;
     joseki:queryOperationName "sparql" ;
     joseki:queryOperationName ql:SPARQL ;
-    module:className "org.joseki.server.processors.sparql.SPARQL" ;
     .
 
-
-
-##     module:interface      joseki:QueryOperationSPARQL ;
-##     module:implementation joseki:ImplQueryOperationSPARQL .
-##     module:implementation
-##         [ module:className "org.joseki.server.processors.sparql.SPARQL" ] .
-##   Or just have module:className on the Binding?
-##   Still have class arguments by using the binding.
-    ## check what the loader really does with arguments.
-    ## Need per-class and per-instance arguments?
-    ## Use different URIs and dump on same resource
-
-joseki:BindingGET
-    a   joseki:QueryLanguageBinding ;
+joseki:ImplSPARQL
+    rdf:type   joseki:ServiceImpl ;
+    module:className
+        <java:org.joseki.server.processors.sparql.SPARQL> .
+    
+joseki:ServiceGet
+    rdf:type joseki:Service ;
     joseki:queryOperationName "GET" ; 
-    ##module:interface      joseki:QueryOperationGET ;
-    module:implementation joseki:ImplQueryOperationGET .
+    module:implementation joseki:ImplGET .
 
-joseki:ImplQueryOperationSPARQL
-     a   joseki:QueryOperation ;
+joseki:ImplGET
+     rdf:type   joseki:ServiceImpl ;
      module:className
-         "org.joseki.server.processors.sparql.SPARQL" ;
-     .
-
-joseki:ImplQueryOperationGET
-     a   joseki:QueryOperation ;
-     module:className
-         "org.joseki.server.processors.QueryProcessorGET" ;
+         <java:org.joseki.server.processors.QueryProcessorGET> ;
      .
 
 #### -- POST converter
 
-joseki:BindingQueryPOST
-     a   joseki:OperationBinding ;
+joseki:ServiceQueryPOST
+     rdf:type joseki:Service ;
      joseki:operationName  "query" ;
-     module:interface      joseki:OpQueryPOST ;
-     module:implementation joseki:ImplOpQueryPOST .
+     module:implementation joseki:ImplPOST .
 
 
-joseki:ImplOpQueryPOST
-     a   joseki:Operation ;
+joseki:ImplPOST
+     rdf:type   joseki:ServiceImpl ;
      module:className
-         "org.joseki.server.processors.ProcessorQueryPOST" .
+         <java:org.joseki.server.processors.ProcessorQueryPOST> .
 
 ## ## ------------------------------------------
 ## ## Joseki source controllers
