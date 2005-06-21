@@ -19,7 +19,7 @@ import com.hp.hpl.jena.rdf.model.* ;
 public interface Loadable
 {
     /** Allow an implementation to initialise, based on configuration file */
-     public void init(Resource binding, Resource implementation) ;
+     public void init(Resource service, Resource implementation) ;
 }
 
 /*

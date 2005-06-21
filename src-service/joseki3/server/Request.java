@@ -7,10 +7,7 @@
 
 package joseki3.server;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /** General Request 
  * @author      Andy Seaborne
@@ -23,9 +20,8 @@ public class Request
     String requestURL = null ;
 
     final static Object noValue = new Object() ; 
-    // Arguments - models
-    // Parameters - key/value pairs
-    List args = new ArrayList();
+    // Parameters :: key => List of values pairs
+    
     Map params = new HashMap();
 
     public Request(String uri, String url)
@@ -34,17 +30,52 @@ public class Request
         requestURL = url ;
     }
     
-    // Convert to multivalue.
-    public String getParam(String param) { return (String)params.get(param); }
-
+    // ---- Parameters
+    
+    public String getParam(String param)
+    { 
+        List x = getParams(param) ;
+        if ( x == null )
+            return null ;
+        return (String)x.get(0);
+    }
+    
+    public List getParams(String param)
+    {
+            if ( ! params.containsKey(param) ) 
+                return null ;
+            List x = (List)params.get(param) ;
+            if ( x.size() == 0 )
+                return null ;
+            return x ;
+    }
+    
     public void setParam(String name, String value)
     {
-        if ( value == null )
-            params.put(name, noValue) ;
-        else
-            params.put(name, value) ;
+        if ( ! params.containsKey(name) )
+            params.put(name, new ArrayList()) ;
+        List x = (List)params.get(name) ;
+        x.add(value) ;
     }
 
+    public boolean containsParam(String param)
+    {
+        return getParams(param) != null ;
+    }
+    
+    public Iterator parameterNames()
+    {
+        List x = new ArrayList() ;
+        for ( Iterator iter = params.keySet().iterator() ; iter.hasNext() ; )
+        {
+            String k = (String)iter.next() ;
+            List z = (List)params.get(k) ;
+            if ( z.size() != 0 )
+                x.add(k) ;
+        }
+        return x.iterator() ;
+    }
+    
     /** @return Returns the requestURL. */
     public String getRequestURL()
     {
@@ -56,8 +87,29 @@ public class Request
     {
         return serviceURI ;
     }
-
     
+    public String paramsAsString()
+    {
+        StringBuffer sBuff = new StringBuffer() ;
+        boolean first = true ;
+        for ( Iterator iter = parameterNames() ; iter.hasNext(); )
+        {
+            String k = (String)iter.next() ;
+            List x = getParams(k) ;
+            if ( x != null )
+                for ( Iterator iter2 = x.iterator() ; iter2.hasNext(); )
+                {
+                    String v = (String)iter2.next() ;
+                    if ( ! first )
+                        sBuff.append(" ") ;
+                    first = false ;
+                    sBuff.append(k) ;
+                    sBuff.append("=") ;
+                    sBuff.append(v) ;
+                }
+        }
+        return sBuff.toString() ; 
+    }
 }
 
 /*

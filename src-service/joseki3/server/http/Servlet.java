@@ -172,6 +172,16 @@ public class Servlet extends HttpServlet implements Connector
             // Assemble parameters
             Request request = new Request(serviceURI, requestURL) ;
             // params => request items
+            for ( Enumeration en = httpRequest.getParameterNames() ; en.hasMoreElements() ; )
+            {
+                String k = (String)en.nextElement() ;
+                String[] x = httpRequest.getParameterValues(k) ;
+                for(int i = 0 ; i < x.length ; i++ )
+                {
+                    String s = x[i] ;
+                    request.setParam(k, s) ;
+                }
+            }
             
             Response response = new Response(request, httpRequest, httpResponse) ; 
 

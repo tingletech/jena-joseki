@@ -24,6 +24,8 @@ public class JosekiVocab {
     /** <p></p> */
     public static final Property namedGraph = m_model.createProperty( "http://joseki.org/2005/06/configuration#namedGraph" );
     
+    public static final Property allowWebLoading = m_model.createProperty( "http://joseki.org/2005/06/configuration#allowWebLoading" );
+    
     /** <p></p> */
     public static final Property graphData = m_model.createProperty( "http://joseki.org/2005/06/configuration#graphData" );
     
@@ -34,22 +36,24 @@ public class JosekiVocab {
     public static final Property queryOperationName = m_model.createProperty( "http://joseki.org/2005/06/configuration#queryOperationName" );
     
     /** <p>URI reference for service URI (relative to where the server is)</p> */
-    public static final Property serviceURI = m_model.createProperty( "http://joseki.org/2005/06/configuration#serviceURI" );
+    public static final Property serviceRef = m_model.createProperty( "http://joseki.org/2005/06/configuration#serviceRef" );
+    
+    public static final Property allowExplicitDataset = m_model.createProperty( "http://joseki.org/2005/06/configuration#allowExplicitDataset" );
     
     /** <p>Other resources to read and merge (e.g. file:...)</p> */
     public static final Property include = m_model.createProperty( "http://joseki.org/2005/06/configuration#include" );
     
-    /** <p>Processor</p> */
+    /** <p>URI reference for service URI (relative to where the server is)</p> */
     public static final Property processor = m_model.createProperty( "http://joseki.org/2005/06/configuration#processor" );
     
     /** <p></p> */
     public static final Property defaultGraph = m_model.createProperty( "http://joseki.org/2005/06/configuration#defaultGraph" );
     
-    /** <p>Service</p> */
-    public static final Resource Service = m_model.createResource( "http://joseki.org/2005/06/configuration#Service" );
-    
     /** <p></p> */
     public static final Resource RDFDataSet = m_model.createResource( "http://joseki.org/2005/06/configuration#RDFDataSet" );
+    
+    /** <p>Processor</p> */
+    public static final Resource Processor = m_model.createResource( "http://joseki.org/2005/06/configuration#Processor" );
     
     /** <p>Service</p> */
     public static final Resource ServicePoint = m_model.createResource( "http://joseki.org/2005/06/configuration#ServicePoint" );

@@ -4,8 +4,10 @@
  * [See end of file]
  */
 
-package joseki3.server.http;
+package joseki3.server.test;
 
+import joseki3.server.http.AcceptItem;
+import joseki3.server.http.AcceptList;
 import junit.framework.TestCase;
 
 /** org.joseki.server.http.TestContentNegotiation

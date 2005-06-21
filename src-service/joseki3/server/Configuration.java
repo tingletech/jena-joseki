@@ -337,10 +337,10 @@ public class Configuration
         String s[] = new String[]{
             "SELECT *",
             "{",
-            "  ?SP    joseki:serviceRef  ?serviceRef ;",
-            "         joseki:processor   ?proc ." ,
-            "  ?proc  module:implementation",
-            "            [ module:className ?className ]" ,
+            "  ?service  joseki:serviceRef  ?serviceRef ;",
+            "            joseki:processor   ?proc ." ,
+            "  ?proc     module:implementation",
+            "                [ module:className ?className ]" ,
             "    }",
             "ORDER BY ?serviceRef ?className" } ;
 
@@ -354,7 +354,7 @@ public class Configuration
             for ( ResultSet rs = qexec.execSelect() ; rs.hasNext() ; )
             {
                 QuerySolution qs = rs.nextSolution() ;
-                RDFNode serviceNode = qs.get("SP") ;
+                RDFNode serviceNode = qs.getResource("service") ;
                 Resource proc = qs.getResource("proc") ;
                 RDFNode className = qs.get("className") ;
                 
@@ -375,15 +375,15 @@ public class Configuration
                     log.warn("** Service not a resource: "+Utils.nodeLabel(serviceNode)) ;
                     continue ;
                 }
-                Resource service = (Resource)serviceNode ;
 
                 javaClass = classNameFromNode(className) ;
                 if ( javaClass == null )
                     continue ;
                 
                 log.info("  Class name: "+javaClass) ;
-                    
-                services.put(ref, new Service(proc, javaClass)) ;
+                Service service = new Service(proc, javaClass) ; 
+                services.put(ref, service) ;
+                
                 // Record all well-formed services found.
                 serviceResources.add(serviceNode) ;
             }

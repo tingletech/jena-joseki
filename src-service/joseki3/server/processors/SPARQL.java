@@ -6,27 +6,43 @@
 
 package joseki3.server.processors;
 
-import com.hp.hpl.jena.rdf.model.Resource;
+import com.hp.hpl.jena.rdf.model.*;
 
 import org.apache.commons.logging.*;
 
-import joseki3.server.QueryExecutionException;
-import joseki3.server.Request;
-import joseki3.server.Response;
+import joseki3.server.*;
 import joseki3.server.module.Loadable;
 
 
 public class SPARQL extends QueryCom implements Loadable
 {
     static Log log = LogFactory.getLog(SPARQL.class) ;
+    static final Property allowDatasetDescP = ResourceFactory.createProperty(JosekiVocab.getURI(), "allowExplicitDataset") ;
+    static final Property allowWebLoadingP = ResourceFactory.createProperty(JosekiVocab.getURI(), "allowWebLoading") ;
+
+    static Model m = ModelFactory.createDefaultModel() ;
+    
+    static final Literal XSD_TRUE   = m.createTypedLiteral(true) ; 
+    static final Literal XSD_FALSE  = m.createTypedLiteral(false) ;
+    
+    boolean allowDatasetDesc = false ;
+    boolean allowWebLoading  = false ;
     
     void execQuery(Request request, Response response) throws QueryExecutionException
     {
+        log.info("Request: "+request.paramsAsString()) ;
     }
 
-    public void init(Resource binding, Resource implementation)
+    public void init(Resource service, Resource implementation)
     {
         log.info("Init SPARQL processor") ;
+
+        if ( service.hasProperty(allowDatasetDescP, XSD_TRUE) )
+            allowDatasetDesc = true ;
+        if ( service.hasProperty(allowWebLoadingP, XSD_TRUE) )
+            allowWebLoading = true ;
+
+        log.info("Dataset description: "+allowDatasetDesc+" // Web loading: "+allowWebLoading) ;
     }
 
 }
