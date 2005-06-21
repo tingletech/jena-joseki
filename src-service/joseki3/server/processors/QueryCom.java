@@ -7,22 +7,26 @@
 package joseki3.server.processors;
 
 
+import com.hp.hpl.jena.query.Lock;
+import com.hp.hpl.jena.query.util.LockMRSW;
+
 import joseki3.server.*;
 
 
 public abstract class QueryCom implements Processor
 {
-    //Lock lock = new Lock() ;
+    Lock lock = new LockMRSW() ;
         
     public void exec(Request request, Response response) throws ExecutionException
     {
         // Dataset ds = getDataset(request) ;
         // Do locking on dataset
         
-        // Must be read safe - can we abstract?
-        execQuery(request, response) ;
+        lock.enterCriticalSection(Lock.READ) ;
+        try {
+            execQuery(request, response) ;
+        } finally { lock.leaveCriticalSection() ; }
     }
-    
     
     abstract void execQuery(Request request, Response response) throws QueryExecutionException ;
 }
