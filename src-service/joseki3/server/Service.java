@@ -14,12 +14,14 @@ public class Service
     Loader loader = new Loader() ;
     Processor proc ;
     boolean available = false ;
+    Resource resource ;
     
-    public Service(Resource r, String className)
+    public Service(Resource r)
     {
         proc = (Processor)loader.loadAndInstantiate(r, Processor.class) ;
         if ( proc != null )
             available = true ;
+        resource = r ;
     }
     
     public void exec(Request request, Response response) throws ExecutionException
@@ -31,6 +33,14 @@ public class Service
     
     public boolean isAvailable() { return available ; } 
     public void setAvailability(boolean availability) { available = availability ; }
+    
+    /**
+     * @return Returns the resource.
+     */
+    public Resource getResource()
+    {
+        return resource ;
+    }
 }
 
 /*

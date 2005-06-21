@@ -42,7 +42,7 @@ public class Utils
         return lit.getLexicalForm() ;
     }
 
-    private static String strForResource(Resource r) { return strForResource(r, null) ; }
+    public static String strForResource(Resource r) { return strForResource(r, r.getModel()) ; }
     
     private static String strForResource(Resource r, PrefixMapping pm)
     {

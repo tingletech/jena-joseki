@@ -36,13 +36,36 @@
     rdfs:range          rdfs:literal ;  
     .
 
-:serviceURI    rdf:type    rdf:Property ;
+:serviceRef    rdf:type    rdf:Property ;
     rdfs:comment 
        "URI reference for service URI (relative to where the server is)" ;
     rdfs:label          "Service URI reference" ;
     rdfs:domain         :ServicePoint ;
 #    rdfs:range         rdfs:literal ;  
     .
+
+:processor     rdf:type    rdf:Property ;
+         rdfs:comment 
+       "URI reference for service URI (relative to where the server is)" ;
+    rdfs:label          "Service URI reference" ;
+    rdfs:domain         :ServicePoint ;
+    rdfs:range          :Processor ;
+    .
+
+
+##-------------------------------------------------------------
+## SPARQL 
+
+:allowExplicitDataset   rdf:type    rdf:Property ;
+    rdfs:label          "allowExplicitDataset" ;
+    rdfs:domain         :ServicePoint ;
+    .
+
+:allowWebLoading       rdf:type    rdf:Property ;
+    rdfs:label          "allowWebLoading" ;
+    rdfs:domain         :ServicePoint ;
+    .
+
 
 ##-------------------------------------------------------------
 ## Model/Graph
@@ -81,17 +104,6 @@
 ##-------------------------------------------------------------
 ## Processors
 
-:processor  rdf:type            rdf:Property ;
-    rdfs:comment                "Processor" ;
-    rdfs:label                  "processor" ;
-    .
-
-:queryOperationName rdf:type   rdf:Property ; 
-    rdfs:comment                "query operation name" ;
-    rdfs:label                  "query operation name" ;
-    .
-    
-
 ##-------------------------------------------------------------
 ## Services
 
@@ -100,12 +112,15 @@
     rdfs:label      "Service" ;
     .
 
-:Service rdf:type   rdfs:Class ;
-    rdfs:comment    "Service" ;
-    rdfs:label      "Service" ;
+:Processor rdf:type   rdfs:Class ;
+    rdfs:comment    "Processor" ;
+    rdfs:label      "Processor" ;
     .
 
-
+:queryOperationName rdf:type   rdf:Property ; 
+    rdfs:comment                "query operation name" ;
+    rdfs:label                  "query operation name" ;
+    .
 
 ##-------------------------------------------------------------
 ## 

@@ -62,40 +62,42 @@
 
 []  rdf:type joseki:Server ;
     joseki:serverDebug   "true" ;
+
     # Associate service endpoints with a server
+
+    # Service 1 - general purpose SPARQL processor, no dataset
     joseki:service
-      [ rdf:type joseki:ServicePoint ;
+      [ 
+        rdf:type joseki:ServicePoint ;
         rdfs:label "service point" ;
-        ## URI relative to the server 
-        joseki:serviceRef         "query" ;
 
-        # dataset part
-        joseki:dataset              _:ds1 ;
-
-        # Service part.
-        # Parameters to the SPARQL processor for this service point
-        joseki:allowExplicitDataset       "true"^^xsd:boolean ;
-        joseki:allowWebLoading            "true"^^xsd:boolean ;
-
-        joseki:processor joseki:ServiceSPARQL ;
-
+        joseki:serviceRef         "sparql" ;
+        joseki:processor joseki:ProcessorSPARQL ;
       ] ;
 
+    # Service 2 - SPARQL processor only handling a given dataset.
     joseki:service
       [ rdf:type    joseki:ServicePoint ;
-        rdfs:label  "Inline service point" ;
-        joseki:serviceRef         "sparql" ;
+        rdfs:label  "SPARQL on fixed dataset" ;
+        joseki:serviceRef         "query" ;
         # dataset part
-        # Absent
+        joseki:dataset       _:ds1 ;
 
         # Service part.
+        joseki:processor    joseki:ProcessorSPARQL_FixedDS ;
+      ] ;
+
+    # Service 3 - example - all inline.
+    joseki:service
+      [ rdf:type    joseki:ServicePoint ;
+        rdfs:label  "Inline example" ;
+        joseki:serviceRef         "example" ;
+        joseki:dataset
+          [ joseki:defaultGraph    _:model1 ; ] ;
         joseki:processor
-          [ joseki:queryOperationName "sparql" ;
-            module:implementation [ module:className <java:module> ]
-          ] ;
+          [ module:implementation [ module:className <java:module> ] ] ;
       ] ;
     .
-
 
 ## --------------------------------------------------------------
 ## Graphs available (Jena calls them Models)
@@ -160,22 +162,39 @@ _:ds2   rdf:type joseki:RDFDataSet ;
 
 # ----- definitions --------------------------------------------------
 
-joseki:ServiceSPARQL  
-    rdfs:label "General SPARQL service" ;
-    rdf:type joseki:Service ;
+joseki:ProcessorSPARQL
+    rdfs:label "General SPARQL processor" ;
+    rdf:type joseki:Processor ;
     module:implementation joseki:ImplSPARQL ;
-    # Names we answer to.
+
+    # Parameters - this processor processes FROM/FROM NAMED
+    joseki:allowExplicitDataset       "true"^^xsd:boolean ;
+    joseki:allowWebLoading            "true"^^xsd:boolean ;
+
+    # Names we answer to (optional request parameters)
     joseki:queryOperationName "SPARQL" ;
     joseki:queryOperationName "sparql" ;
     joseki:queryOperationName ql:SPARQL ;
     .
+
+joseki:ProcessorSPARQL_FixedDS
+    rdfs:label "SPARQL processor for fixed datasets" ;
+    rdf:type joseki:Processor ;
+    module:implementation joseki:ImplSPARQL ;
+
+    # This processor does not accept queries with FROM/FROM NAMED
+    joseki:allowExplicitDataset       "false"^^xsd:boolean ;
+    joseki:allowWebLoading            "false"^^xsd:boolean ;
+    .
+
+
 
 joseki:ImplSPARQL
     rdf:type   joseki:ServiceImpl ;
     module:className
         <java:joseki3.server.processors.SPARQL> .
     
-joseki:ServiceGet
+joseki:ProcessorGet
     rdf:type joseki:Service ;
     joseki:queryOperationName "GET" ; 
     module:implementation joseki:ImplGET .
@@ -185,45 +204,6 @@ joseki:ImplGET
      module:className
          <java:org.joseki.server.processors.QueryProcessorGET> ;
      .
-
-#### -- POST converter
-
-## No longer needed?
-## But need to leave a hook for query-by-POST and later
-## operations by POST.  Maybe query is any ?-less URL.
-
-## joseki:ServiceQueryPOST
-##      rdf:type joseki:Service ;
-##      joseki:operationName  "query" ;
-##      module:implementation joseki:ImplPOST .
-## 
-## 
-## joseki:ImplPOST
-##      rdf:type   joseki:ServiceImpl ;
-##      module:className
-##          <java:org.joseki.server.processors.ProcessorQueryPOST> .
-
-## ## ------------------------------------------
-## ## Joseki source controllers
-## 
-## joseki:SourceControllerFile
-##      a joseki:SourceController ;
-##      # This could have been explicitly the class of the object
-##      # Must agree with the constant in the implementation
-##      module:interface      joseki:SourceController ;
-##      module:implementation
-##          [ module:className
-##                "org.joseki.server.source.SourceControllerFile" ] ;
-##      rdfs:comment "The standard SourceController for file-backed models" .
-## 
-## 
-## joseki:SourceControllerRDB
-##      a joseki:SourceController ;
-##      module:interface      joseki:SourceController ;
-##      module:implementation
-##          [ module:className
-##                "org.joseki.server.source.SourceControllerRDB" ] ;
-##      rdfs:comment "The standard SourceController for database-backed models" .
 
 # Local Variables:
 # tab-width: 4

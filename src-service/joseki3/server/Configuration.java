@@ -54,9 +54,10 @@ public class Configuration
             log.info("==== Datasets ====") ;
             findDataSets() ;
             log.info("==== Services ====") ;
-            findServices() ;
+            Set definedServices = findServices() ;
             log.info("==== Bind services to the server ====") ;
-            bindServices(registry) ;
+            Set boundServices = bindServices(registry, definedServices) ;
+            checkBoundServices(definedServices, boundServices) ;
         } catch (RuntimeException ex)
         {
             log.fatal("Failed to parse configuration file", ex) ;
@@ -332,7 +333,7 @@ public class Configuration
         } finally { qexec.close() ; }
     }
 
-    private void findServices()
+    private Set findServices()
     {
         String s[] = new String[]{
             "SELECT *",
@@ -346,7 +347,9 @@ public class Configuration
 
         Query query = makeQuery(s) ;
         QueryExecution qexec = QueryExecutionFactory.create(query, confModel) ;
-        Set serviceResources = new HashSet() ; 
+        
+        // Does not mean the services are asscoiated with the server. 
+        Set definedServices = new HashSet() ; 
 
         try {
             Resource currentService = null ;
@@ -376,16 +379,17 @@ public class Configuration
                     continue ;
                 }
 
+                // Checking.
                 javaClass = classNameFromNode(className) ;
                 if ( javaClass == null )
                     continue ;
                 
                 log.info("  Class name: "+javaClass) ;
-                Service service = new Service(proc, javaClass) ; 
+                Service service = new Service(proc) ; 
                 services.put(ref, service) ;
                 
                 // Record all well-formed services found.
-                serviceResources.add(serviceNode) ;
+                definedServices.add(serviceNode) ;
             }
         } catch (JenaException ex)
         {
@@ -396,15 +400,16 @@ public class Configuration
         
         // Check that we don't find more part forms services 
         // than well formed service descriptions
-        checkServices(serviceResources) ;
+        checkServices(definedServices) ;
 
         // Check that we don't find more part formed service impls
         // than well formed service descriptions
-        checkServiceImpls(serviceResources) ;
-
+        checkServiceImpls(definedServices) ;
+        
+        return definedServices ;
     }
 
-    private void checkServices(Set serviceResources)
+    private void checkServices(Set definedServices)
     {
         String[] s ;
         Query q ;
@@ -414,12 +419,12 @@ public class Configuration
         for ( Iterator iter = x.iterator() ; iter.hasNext() ; )
         {
             Resource r = (Resource)iter.next() ;
-            if ( !serviceResources.contains(r) )
+            if ( !definedServices.contains(r) )
                  log.warn("** No implementation for service: "+Utils.nodeLabel(r) ) ;
         }
     }
 
-    private void checkServiceImpls(Set serviceResources)
+    private void checkServiceImpls(Set definedServices)
     {
         String [] s = new String[]{
             "SELECT *",
@@ -437,35 +442,52 @@ public class Configuration
                 if ( ! (ref instanceof Literal) )
                     log.warn("** Service reference isn't a literal: "+Utils.nodeLabel(ref) ) ;
                 
-                if ( ! serviceResources.contains(n) )
+                if ( ! definedServices.contains(n) )
                     log.warn("** No class name for service with reference: "+Utils.nodeLabel(ref) ) ;
             }
         } finally { qexec.close() ; }
     }
 
-    private void bindServices(ServiceRegistry registry)
+    private Set bindServices(ServiceRegistry registry, Set definedServices)
     {
         String [] s = new String[]{
-            "SELECT ?serviceRef ",
-            "{ [] joseki:service [ joseki:serviceRef  ?serviceRef ]",
+            "SELECT ?service ?serviceRef ",
+            "{ []        joseki:service     ?service . ",
+            "  ?service  joseki:serviceRef  ?serviceRef",
             "}",
             "ORDER BY ?serviceRef"
         } ;
+        
+        Set boundServices = new HashSet() ;
         Query query = makeQuery(s) ;
         QueryExecution qexec = QueryExecutionFactory.create(query, confModel) ;
         try {
             for ( ResultSet rs = qexec.execSelect() ; rs.hasNext() ; )
             {
                 QuerySolution qs = rs.nextSolution() ;
-                //RDFNode srv = qs.get("service") ;
+                RDFNode srvNode = qs.get("service") ;
                 String ref = qs.getLiteral("serviceRef").getLexicalForm() ;
                 log.info("Configured service: <"+ref+">") ;
                 Service srv = (Service)services.get(ref) ;
                 registry.add(ref, srv) ;
+                boundServices.add(srvNode) ;
             }
         } finally { qexec.close() ; }
+        return boundServices ;
     }
 
+    
+    private void checkBoundServices(Set definedServices, Set boundServices)
+    {
+        Set x = new HashSet(definedServices) ;
+        x.removeAll(boundServices) ;
+        for ( Iterator iter = x.iterator() ; iter.hasNext() ; )
+        {
+            Resource srv = (Resource)iter.next() ;
+            log.warn("** Service not attached to a server: "+Utils.nodeLabel(srv)) ;
+        }
+    }
+    
     private List findByType(Resource r)
     {
         if ( r.isAnon() )
