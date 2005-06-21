@@ -6,22 +6,25 @@
 
 package joseki3.server.processors;
 
+
 import joseki3.server.*;
 
 
 public abstract class QueryCom implements Processor
 {
-
+    //Lock lock = new Lock() ;
+        
     public void exec(Request request, Response response) throws ExecutionException
     {
         // Dataset ds = getDataset(request) ;
         // Do locking on dataset
+        
+        // Must be read safe - can we abstract?
         execQuery(request, response) ;
     }
     
     
     abstract void execQuery(Request request, Response response) throws QueryExecutionException ;
-    
 }
 
 /*
