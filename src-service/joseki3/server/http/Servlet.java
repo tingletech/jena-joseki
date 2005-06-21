@@ -33,7 +33,7 @@ public class Servlet extends HttpServlet implements Connector
     
     // This happens very early - check it.
     static {
-        try { log = LogFactory.getLog(Servlet.class) ; }
+        try { log = LogFactory.getLog("Joseki") ; }
         catch (Exception ex)
         {
             System.err.println("Exception creating the logger") ;
@@ -66,7 +66,7 @@ public class Servlet extends HttpServlet implements Connector
     /** Creates new JosekiWebAPI */
     public Servlet()
     {
-        log.debug("Created") ;
+        log.info("-------- Joseki") ;
     }
 
     public void init() throws ServletException

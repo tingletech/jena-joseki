@@ -32,6 +32,7 @@ public class Configuration
     
     ServiceRegistry registry = null ;
     Map services = new HashMap() ;
+    Object noService = new Object() ;
     Set datasets = new HashSet() ;
     
     static public void main(String argv[])
@@ -48,16 +49,17 @@ public class Configuration
         Set filesDone = new HashSet() ;
         
         try {
+            log.info("==== Configuration ====") ;
             readConfFile(confModel, filename, filesDone) ;
             verify() ;
             server = findServer() ;
             log.info("==== Datasets ====") ;
             findDataSets() ;
             log.info("==== Services ====") ;
-            Set definedServices = findServices() ;
+            findServices() ;
             log.info("==== Bind services to the server ====") ;
-            Set boundServices = bindServices(registry, definedServices) ;
-            checkBoundServices(definedServices, boundServices) ;
+            bindServices(registry) ;
+            log.info("==== End Configuration ====") ;
         } catch (RuntimeException ex)
         {
             log.fatal("Failed to parse configuration file", ex) ;
@@ -69,40 +71,15 @@ public class Configuration
         }
     }
     
+    
+    
     private void verify()
     {
-        // Eyeball?
-        // Check processors
-        // One service - one processor
-        
-        // May change to removing the level of indirection to the class
-        // Do we want shared classes and arguments?
-        
-        // a   joseki:QueryLanguageBinding ;
-        //     joseki:queryOperationName
-        //  --module:implementation-->
-        //     a joseki:QueryOperation ;
-        //     module:className
-        
-        // a   joseki:OperationBinding
-        //     joseki:operationName
-        //  --module:implementation-->
-        //     a joseki:QueryOperation ;
-        //     module:className
-        
-        
-        // Check models
-        // ??
-        
-        // Check datasets
-        // One default graph
-        // Named graphs have name and data
-        
-        // Check server
-        // One server
-        // Has at least one service endpoint.
     }
 
+    // ----------------------------------------------------------
+    // Configuration model
+    
     private void readConfFile(Model confModel2, String filename, Set filesDone)
     {
         if ( filesDone.contains(filename) )
@@ -156,7 +133,10 @@ public class Configuration
             readConfFile(confModel, fn, filesDone) ; 
         }
     }
-        
+    
+    // ----------------------------------------------------------
+    // The server
+
     private Resource findServer()
     {
         List x = findByType(JosekiVocab.Server) ;
@@ -175,6 +155,9 @@ public class Configuration
         return (Resource)x.get(0) ; 
     }
 
+    // ----------------------------------------------------------
+    // Datasets
+    
     private void findDataSets()
     {
         if ( false )
@@ -191,17 +174,6 @@ public class Configuration
         // Can also do like services - once with a fixed query then reduce elements
         // to see if we find the same things
         String[] s = new String[] {
-                // Downside is that we have inlined the URIs
-//               "SELECT ?x ?dft ?named ?graphName ?graphData",
-//               "{ ?x a joseki:RDFDataSet ;",
-//               "  OPTIONAL { ?x joseki:defaultGraph ?dft }",
-//               "  OPTIONAL { ?x joseki:namedGraph   ?named",
-//                            // OPTIONAL here is for error checking. 
-//                            "OPTIONAL { ?named joseki:graphName ?graphName }",
-//                            "OPTIONAL { ?named joseki:graphData ?graphData }",
-//               "           }",
-//               "}", 
-//               "ORDER BY ?x ?dft ?named"
                "SELECT ?x ?dft ?graphName ?graphData",
                "{ ?x a joseki:RDFDataSet ;",
                "  OPTIONAL { ?x joseki:defaultGraph ?dft }",
@@ -333,6 +305,9 @@ public class Configuration
         } finally { qexec.close() ; }
     }
 
+    // ----------------------------------------------------------
+    // Services
+    
     private Set findServices()
     {
         String s[] = new String[]{
@@ -349,8 +324,8 @@ public class Configuration
         QueryExecution qexec = QueryExecutionFactory.create(query, confModel) ;
         
         // Does not mean the services are asscoiated with the server. 
-        Set definedServices = new HashSet() ; 
-
+        Set serviceResources = new HashSet() ; 
+        
         try {
             Resource currentService = null ;
             
@@ -361,7 +336,8 @@ public class Configuration
                 Resource proc = qs.getResource("proc") ;
                 RDFNode className = qs.get("className") ;
                 
-                RDFNode x = qs.getLiteral("serviceRef") ;
+                // ---- Check reference
+                RDFNode x = qs.get("serviceRef") ;
                 if ( ! ( x instanceof Literal ) ) 
                 {
                     log.warn("** Service references are literals (a URI ref which will be relative to the server)") ;
@@ -369,27 +345,32 @@ public class Configuration
                 }
                 
                 String ref = qs.getLiteral("serviceRef").getLexicalForm() ;
-                String javaClass = null ;
 
-                log.info("Service: <"+ref+">") ;
-                
-                if ( ! ( serviceNode instanceof Resource ) )
+                // ---- Check duplicates
+                if ( services.containsKey(ref) ) 
                 {
-                    log.warn("** Service not a resource: "+Utils.nodeLabel(serviceNode)) ;
+                    Service srv = (Service)services.get(ref) ;
+                    srv.setAvailability(false) ;
+                    log.warn("** Duplicate service reference: "+ref) ;
                     continue ;
                 }
-
-                // Checking.
+                
+                log.info("Service: <"+ref+">") ;
+                
+                // ---- Implementing class name
+                // This done in the loader as well but a check here is more informative 
+                String javaClass = null ;
                 javaClass = classNameFromNode(className) ;
                 if ( javaClass == null )
                     continue ;
-                
                 log.info("  Class name: "+javaClass) ;
-                Service service = new Service(proc) ; 
+                
+                // ---- 
+                Service service = new Service(proc, ref) ;
                 services.put(ref, service) ;
                 
                 // Record all well-formed services found.
-                definedServices.add(serviceNode) ;
+                serviceResources.add(serviceNode) ;
             }
         } catch (JenaException ex)
         {
@@ -400,13 +381,13 @@ public class Configuration
         
         // Check that we don't find more part forms services 
         // than well formed service descriptions
-        checkServices(definedServices) ;
+        checkServices(serviceResources) ;
 
         // Check that we don't find more part formed service impls
         // than well formed service descriptions
-        checkServiceImpls(definedServices) ;
+        checkServiceImpls(serviceResources) ;
         
-        return definedServices ;
+        return serviceResources ;
     }
 
     private void checkServices(Set definedServices)
@@ -448,32 +429,23 @@ public class Configuration
         } finally { qexec.close() ; }
     }
 
-    private Set bindServices(ServiceRegistry registry, Set definedServices)
+    // ----------------------------------------------------------
+    // Server set up
+    
+    private void bindServices(ServiceRegistry registry)
     {
-        String [] s = new String[]{
-            "SELECT ?service ?serviceRef ",
-            "{ []        joseki:service     ?service . ",
-            "  ?service  joseki:serviceRef  ?serviceRef",
-            "}",
-            "ORDER BY ?serviceRef"
-        } ;
-        
-        Set boundServices = new HashSet() ;
-        Query query = makeQuery(s) ;
-        QueryExecution qexec = QueryExecutionFactory.create(query, confModel) ;
-        try {
-            for ( ResultSet rs = qexec.execSelect() ; rs.hasNext() ; )
+        for ( Iterator iter = services.keySet().iterator() ; iter.hasNext() ; )
+        {
+            String ref = (String)iter.next() ;
+            Service srv = (Service)services.get(ref) ;
+            if ( ! srv.isAvailable() )
             {
-                QuerySolution qs = rs.nextSolution() ;
-                RDFNode srvNode = qs.get("service") ;
-                String ref = qs.getLiteral("serviceRef").getLexicalForm() ;
-                log.info("Configured service: <"+ref+">") ;
-                Service srv = (Service)services.get(ref) ;
-                registry.add(ref, srv) ;
-                boundServices.add(srvNode) ;
+                log.info("Service skipped: "+srv.getRef()) ;
+                continue ;
             }
-        } finally { qexec.close() ; }
-        return boundServices ;
+            log.info("SERVICE: "+srv.getRef()) ;
+            registry.add(ref, srv) ;
+        }
     }
 
     

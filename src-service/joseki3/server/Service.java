@@ -12,12 +12,15 @@ import joseki3.server.module.*;
 public class Service
 {
     Loader loader = new Loader() ;
+    
+    String serviceRef ;
     Processor proc ;
     boolean available = false ;
     Resource resource ;
     
-    public Service(Resource r)
+    public Service(Resource r, String ref)
     {
+        serviceRef = ref ; 
         proc = (Processor)loader.loadAndInstantiate(r, Processor.class) ;
         if ( proc != null )
             available = true ;
@@ -40,6 +43,13 @@ public class Service
     public Resource getResource()
     {
         return resource ;
+    }
+    
+    public String getRef() { return "<"+serviceRef+">" ; }
+    
+    public String toString()
+    {
+        return "Service: "+serviceRef ;
     }
 }
 
