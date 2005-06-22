@@ -1,36 +1,20 @@
 Joseki3
 =======
 
-+ SPARQLer in CVS as asuuplied app
-  Need ant support
+**** New codebase
 
-+ Multiple value parameters - redo "Request" to allow multivalues.
++ Test configuration (test of errors by looking in registry, and configuration members)
+
+
+- - - - - - - - - - - -
+
++ SPARQLer in CVS as supplied app
+  Need ant support
 
 + XSLT update to latest
 
-+ Config file
-   separate models from service
-   ops assigned to service
-   
-+ DataSets
-  ModelSpec++
-  Dynamic Models - i.e. construct model as URI comes in
-
-+ Deprecate Joseki2 in Joseki3 codebase
-  Time to fix/remove the Joseki2 client library
-     Withdraw add/remove for now
-     Client library => SPARQL => ARQ.engineHTTP
-
 + Option for server side XSLT
   Firefox refuses to execute from a different server?
-
-+ Request/RequestIpl => Request
-  ditto Response
-  Multiple args for Request
-  Formalize the parameters accepted.
-
-+ Design new configuration file.
-  Leave POST processing open.
 
 + Use ModelSpecs
 
@@ -44,24 +28,7 @@ Joseki3
 + Latest protocol
     Add private params "ctype" (force MIME type of return), and XSLT "stylesheet"
 
-+ Add joseki:textContentType
-  If looks like a browser, then text/plain with this type as contents.
-
-+ Enable FROM loading in SPARQL processor
-  Make server config controlled
-  SPARQL *service* processor 
-
-+ Errors with long messages as well as short.
-  inc stack traces.
-
-+ Request and RequestImpl merge to a single class
-  Or split Response into interface and implementation
-  Drive by SOAP-ization
-
-+ Query only version?  No operations.
-
 + Allow fetch handlers (renamed) for DESCRIBE
-  Need doing in ARQ first
 
 + Management
   At least keep some statistics (and provide a web page?!)
@@ -71,20 +38,3 @@ Joseki3
   javax.management in 1.5.0 MBean
   
 + SOAP connector (Axis)
-
-+ Restructure the main server implementation
-  ??
-    .server.config
-    .server.dispatch.
-    .server.processor (all process bits - interfaces and abstract classes)
-    .server.operations
-    .server.query
-    .server
-        SourceModel
-	SourceController
-	Processor
-	RDFServer
-	JosekiServerException
-	ExecutionException
-	ExecutionError
-	Registry (the central one)
