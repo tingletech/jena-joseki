@@ -24,6 +24,7 @@ public class ExecutionError
     static public final int rcConfigurationError     = 11 ;
     static public final int rcArgumentError          = 12 ;
     static public final int rcNotImplemented         = 13 ;
+    static public final int rcServiceUnavailable     = 14 ;
     
     static public final int rcQueryParseFailure      = 100 ;
     static public final int rcQueryExecutionFailure  = 101 ;
@@ -44,6 +45,7 @@ public class ExecutionError
           "Incorrect configuration" ,
           "Error in arguments", 
           "Not implemented" ,
+          "Service unavailable",
           null // Terminator
     };
 

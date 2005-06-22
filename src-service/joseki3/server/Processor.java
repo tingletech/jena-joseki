@@ -18,7 +18,8 @@ public interface Processor
      *  send the answers via the Response object.   
      */
 
-    public void exec(Request request, Response response) throws ExecutionException ;
+    public void exec(Request request, Response response, DatasetDesc datasetDesc)
+        throws ExecutionException ;
 }
 
 /*

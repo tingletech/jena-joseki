@@ -16,7 +16,7 @@ import com.hp.hpl.jena.rdf.model.ModelSpec;
 import com.hp.hpl.jena.rdf.model.Resource;
 
 
-class DatasetDesc
+public class DatasetDesc
 {
     Model confModel ;
     // Resource will keep the config model around as well. 

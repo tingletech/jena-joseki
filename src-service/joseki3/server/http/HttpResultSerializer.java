@@ -185,6 +185,9 @@ public class HttpResultSerializer
                 case ExecutionError.rcNotImplemented:
                     httpRC = HttpServletResponse.SC_NOT_IMPLEMENTED ;
                     break ;
+                case ExecutionError.rcServiceUnavailable:
+                    httpRC = HttpServletResponse.SC_SERVICE_UNAVAILABLE ;
+                    break ;
                 default :
                     httpRC = HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
                     break;
