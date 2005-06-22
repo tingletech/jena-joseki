@@ -34,7 +34,7 @@ public class Request
     
     public String getParam(String param)
     { 
-        List x = getParams(param) ;
+        List x = getParamsOrNull(param) ;
         if ( x == null )
             return null ;
         return (String)x.get(0);
@@ -43,12 +43,23 @@ public class Request
     public List getParams(String param)
     {
             if ( ! params.containsKey(param) ) 
+                return new ArrayList() ;
+            List x = (List)params.get(param) ;
+            return x ;
+    }
+    
+    private List getParamsOrNull(String param)
+    {
+            if ( ! params.containsKey(param) ) 
                 return null ;
             List x = (List)params.get(param) ;
             if ( x.size() == 0 )
                 return null ;
             return x ;
     }
+    
+    
+    
     
     public void setParam(String name, String value)
     {
@@ -95,7 +106,7 @@ public class Request
         for ( Iterator iter = parameterNames() ; iter.hasNext(); )
         {
             String k = (String)iter.next() ;
-            List x = getParams(k) ;
+            List x = getParamsOrNull(k) ;
             if ( x != null )
                 for ( Iterator iter2 = x.iterator() ; iter2.hasNext(); )
                 {

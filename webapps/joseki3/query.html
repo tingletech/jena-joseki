@@ -110,9 +110,8 @@ code {
 <div class="moreindent">
 
 
-<form action="/service">
+<form action="/books">
 SELECT - get variables (apply XSLT stylesheet)<br/>
-<input type="hidden" name="lang" value="SPARQL" />
 <textarea name="query" cols="70" rows="5">
 PREFIX books:   <http://example.org/book/>
 PREFIX dc:      <http://purl.org/dc/elements/1.1/>
@@ -123,7 +122,7 @@ XSLT style sheet (leave blank for none):
 <input name="stylesheet" size="25" value="/xml-to-html.xsl" />
 <br/>
 Graph id (leave blank for none): 
-<input name="graph-id" size="25" value="/books" />
+<input name="graph-id" size="25" value="" />
 <br/>
 <input type="submit" value="Get Results" />
 </form>
@@ -131,7 +130,6 @@ Graph id (leave blank for none):
 
 <form action="/books">
 CONSTRUCT - return a graph<br/>
-<input type="hidden" name="lang" value="SPARQL" />
 <textarea name="query" cols="70" rows="5">
 PREFIX dc:      <http://purl.org/dc/elements/1.1/>
 CONSTRUCT { $book dc:title $title } WHERE { $book dc:title $title }
@@ -143,7 +141,6 @@ CONSTRUCT { $book dc:title $title } WHERE { $book dc:title $title }
 
 <form action="/books">
 DESCRIBE - get information about something<br/>
-<input type="hidden" name="lang" value="SPARQL" />
 <textarea name="query" cols="70" rows="6">
 PREFIX books:   <http://example.org/book/>
 PREFIX dc:      <http://purl.org/dc/elements/1.1/>

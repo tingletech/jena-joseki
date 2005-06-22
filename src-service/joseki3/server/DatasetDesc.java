@@ -10,6 +10,12 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import com.hp.hpl.jena.query.DataSource;
+import com.hp.hpl.jena.query.Dataset;
+import com.hp.hpl.jena.query.DatasetFactory;
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
 import com.hp.hpl.jena.rdf.model.ModelSpec;
@@ -18,12 +24,14 @@ import com.hp.hpl.jena.rdf.model.Resource;
 
 public class DatasetDesc
 {
+    static Log log = LogFactory.getLog(DatasetDesc.class) ;
     Model confModel ;
     // Resource will keep the config model around as well. 
     Resource defaultGraph = null ;
     Map namedGraphs = new HashMap() ;
+    Dataset dataset = null ;
     
-    DatasetDesc(Model conf) { confModel = conf ; }
+    public DatasetDesc(Model conf) { confModel = conf ; }
     
     /** @return Returns the dftGraph. */
     public Resource getDefaultGraph() { return defaultGraph ;  }
@@ -42,12 +50,33 @@ public class DatasetDesc
     }
     
     
+    public Dataset getDataset()
+    {
+        if ( dataset == null )
+        {
+            DataSource ds = DatasetFactory.create() ;
+            if ( getDefaultGraph() != null )
+            {
+                Model m = buildModel(getDefaultGraph()) ;
+                ds.setDefaultModel(m) ;
+            }
+            
+            for ( Iterator iter = namedGraphs.keySet().iterator() ; iter.hasNext() ; )
+            {
+                String n = (String)iter.next() ;
+                Resource r = (Resource)namedGraphs.get(n) ; 
+                ds.addNamedModel(n, buildModel(r)) ;
+            }
+            dataset = ds ;
+        }
+        return dataset ;
+    }
+    
     private Model buildModel(Resource r)
     {
         ModelSpec mSpec = ModelFactory.createSpec(r, confModel) ; 
         Model m = ModelFactory.createModel(mSpec) ;
-        Configuration.log.info("Building model: "+Utils.nodeLabel(r)) ;
-        m.write(System.out, "N3") ;
+        log.info("Building model: "+Utils.nodeLabel(r)) ;
         return m ;
     }
     
