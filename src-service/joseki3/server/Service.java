@@ -11,12 +11,14 @@ public class Service
     String serviceRef ;
     Processor processor ;
     boolean available ;
+    DatasetDesc dataset ;
     
-    public Service(Processor proc, String ref)
+    public Service(Processor proc, String ref, DatasetDesc dataset)
     {
-        serviceRef = ref ; 
+        this.serviceRef = ref ; 
         this.processor = proc ;
-        available = true ;
+        this.dataset = dataset ;
+        this.available = true ;
     }
     
     public void exec(Request request, Response response) throws ExecutionException
@@ -30,6 +32,7 @@ public class Service
     public void setAvailability(boolean availability) { available = availability ; }
     
     public String getRef() { return "<"+serviceRef+">" ; }
+    public DatasetDesc getDatasetDesc() { return dataset ; }
     
     public String toString()
     {

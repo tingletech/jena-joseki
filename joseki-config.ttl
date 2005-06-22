@@ -18,86 +18,77 @@
 ## Note: adding rdfs:label to blank nodes will cause Joseki 
 ## to print that in log messages.
 
-## Structure:
-## 
-## []  rdf:type joseki:Server 
-##     joseki:service
-##        rdf:type joseki:ServicePoint
-##        joseki:serviceRef    service URI = server + sevice Ref
-##
-##        # Data part
-##        joseki:dataset
-## 
-##        # Service part
-##        joseki:processor
-##           joseki:queryLang
-##           module:implementation
-##              module:className <java:....>
-        
-## Normally, the details of the processor are hidden in a standard defintion
-## The dataset can be described elsewhere as well.
-
-## []  rdf:type joseki:Server 
-##     joseki:service
-##        rdf:type joseki:ServicePoint
-##       joseki:service
-##        # Data part
-##        joseki:dataset
-##          Description of dataset
-##        # Service part
-##        joseki:processor joseki:ServiceSPARQL ;
-
-
 
 ## --------------------------------------------------------------
 ## About this configuration
 
-<> joseki:include
-    # Include other configuration information
-    <joseki-def-proc.n3> # , <joseki-def-??.n3>
-    .
+<> joseki:include <file:joseki-defs.ttl> .
 
+##     # Include other configuration information
+##     <joseki-def-proc.n3> # , <joseki-def-??.n3>
+##     .
+ 
 ## --------------------------------------------------------------
 ## About this server
 
 []  rdf:type joseki:Server ;
     joseki:serverDebug   "true" ;
-
-    # Associate service endpoints with a server
-
-    # Service 1 - general purpose SPARQL processor, no dataset
-    joseki:service
-      [ 
-        rdf:type joseki:ServicePoint ;
-        rdfs:label "service point" ;
-
-        joseki:serviceRef         "sparql" ;
-        joseki:processor joseki:ProcessorSPARQL ;
-      ] ;
-
-    # Service 2 - SPARQL processor only handling a given dataset.
-    joseki:service
-      [ rdf:type    joseki:ServicePoint ;
-        rdfs:label  "SPARQL on fixed dataset" ;
-        joseki:serviceRef         "query" ;
-        # dataset part
-        joseki:dataset       _:ds1 ;
-
-        # Service part.
-        joseki:processor    joseki:ProcessorSPARQL_FixedDS ;
-      ] ;
-
-    # Service 3 - example - all inline.
-    joseki:service
-      [ rdf:type    joseki:ServicePoint ;
-        rdfs:label  "Inline example" ;
-        joseki:serviceRef         "example" ;
-        joseki:dataset
-          [ joseki:defaultGraph    _:model1 ; ] ;
-        joseki:processor
-          [ module:implementation [ module:className <java:module> ] ] ;
-      ] ;
     .
+
+## --------------------------------------------------------------
+## Services
+## Services are best described by a blank node - it's the
+## serviceRef that will be used to match requests to services,
+## not any URI for the description.
+
+# Service 1
+# General purpose SPARQL processor, no dataset, expects the
+# request to specify the dataset (either by parameters in the
+# protocol request or in the query itself).
+
+[]
+    rdf:type            joseki:Service ;
+    rdfs:label          "service point" ;
+    joseki:serviceRef   "///sparql" ;
+    joseki:processor    joseki:ProcessorSPARQL ;
+    .
+
+# Service 2 - SPARQL processor only handling a given dataset
+[]
+    rdf:type            joseki:Service ;
+    rdfs:label          "SPARQL on the books model" ;
+    joseki:serviceRef   "books" ;
+    # dataset part
+    joseki:dataset      _:books ;
+    # Service part.
+    # This processor will not allow either the protocol,
+    # nor the query, to specify the datset.
+    joseki:processor    joseki:ProcessorSPARQL_FixedDS ;
+    .
+
+
+## Add a FOAF named graph example.
+
+
+## Move to an example config file.
+
+# Service 3 - example - all inline.
+[]
+    rdf:type    joseki:Service ;
+    rdfs:label  "Inline example" ;
+
+    # Required - serviceRef
+    joseki:serviceRef         "example" ;
+    joseki:dataset
+        [ joseki:defaultGraph    _:model1 ; ] ;
+    joseki:processor
+        # Does not exist - causes a config warning and this
+        # service is not available for requests
+        [ module:implementation [ module:className <java:module> ] ] ;
+    .
+
+
+## Move below to examples.
 
 ## --------------------------------------------------------------
 ## Graphs available (Jena calls them Models)
@@ -140,9 +131,12 @@ _:ds1   rdf:type joseki:RDFDataSet ;
 
     .
 
-_:ds2   rdf:type joseki:RDFDataSet ;
-    joseki:defaultGraph _:model1 ;
-    rdfs:label "Dataset of one model" ;
+# a datset of one model inthe 
+
+_:books   rdf:type joseki:RDFDataSet ;
+    rdfs:label "Books dataset" ;
+    joseki:defaultGraph
+      [ jms:loadWith  <file:Data/books.n3> ] ;
     .
 
 ## What about Dataset builders that are external code?
@@ -160,7 +154,8 @@ _:ds2   rdf:type joseki:RDFDataSet ;
 ## A service endpoint also includes parameters used to
 ## config processors.
 
-# ----- definitions --------------------------------------------------
+## ----- definitions --------------------------------------------------
+## Move to defs file.
 
 joseki:ProcessorSPARQL
     rdfs:label "General SPARQL processor" ;

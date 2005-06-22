@@ -38,7 +38,7 @@ public class Configuration
     ServiceRegistry registry = null ;
     Map services = new HashMap() ;
     Set badServiceRefs = new HashSet() ;    // Service references that failed initially checking. 
-    Set datasets = new HashSet() ;
+    Map datasets = new HashMap() ;          // Dataset resource to description
     
     static public void main(String argv[])
     {
@@ -285,7 +285,15 @@ public class Configuration
                     log.warn("** Failed to load "+javaClass) ;
                     continue ;
                 }
-                Service service = new Service(proc, ref) ;
+                
+                // Now get the dataset 
+                DatasetDesc dataset = null ;
+                
+                try {
+                    dataset = getDatasetForService(ref) ;
+                } catch(Exception ex) { continue ; }
+                
+                Service service = new Service(proc, ref, dataset) ;
                 services.put(ref, service) ;
                 
                 // Record all well-formed services found.
@@ -306,6 +314,43 @@ public class Configuration
         // than well formed service descriptions
         
         return serviceResources ;
+    }
+
+    private DatasetDesc getDatasetForService(String ref)
+    {
+        String s[] = new String[]{
+            "SELECT *",
+            "{",
+            "  ?service  joseki:serviceRef  '"+ref+"' ;",
+            "            joseki:dataset     ?dataset ." ,
+            "    }",
+            "ORDER BY ?serviceRef ?className" } ;
+
+        Query query = makeQuery(s) ;
+        QueryExecution qexec = QueryExecutionFactory.create(query, confModel) ;
+        List x = new ArrayList() ;
+        try {
+            Resource currentService = null ;
+            
+            for ( ResultSet rs = qexec.execSelect() ; rs.hasNext() ; )
+            {
+                QuerySolution qs = rs.nextSolution() ;
+                x.add(qs.get("dataset")) ;
+            }
+        } finally { qexec.close() ; }
+        
+        if ( x.size() == 0 )
+            return null ;
+
+        if ( x.size() > 1 )
+        {
+            log.warn("** "+x.size()+" dataset descriptions for service <"+ref+">") ;
+            throw new RuntimeException("Too many dataset descriptions") ;
+        }
+
+        RDFNode n = (RDFNode)x.get(0) ;
+        DatasetDesc desc = (DatasetDesc)datasets.get(n) ;
+        return desc ;
     }
 
     private void checkServicesImpls(Set definedServices)
@@ -337,12 +382,11 @@ public class Configuration
                 log.info("Service skipped: "+srv.getRef()) ;
                 continue ;
             }
-            log.info("SERVICE: "+srv.getRef()) ;
+            log.info("Service: "+srv.getRef()) ;
             registry.add(ref, srv) ;
         }
     }
 
-    
     // ----------------------------------------------------------
     // Datasets
     
@@ -411,7 +455,7 @@ public class Configuration
                     src = new DatasetDesc(confModel) ;
                     
                     // Place in the configuration
-                    datasets.add(src) ;
+                    datasets.put(x, src) ;
                     
                     if ( dftGraph != null )
                     {
@@ -534,7 +578,6 @@ public class Configuration
         String s = "PREFIX rdf: <"+RDF.getURI()+">\nSELECT ?x { ?x rdf:type <"+classURI+"> }" ;
         Query q = makeQuery(s) ;
         QueryExecution qexec = QueryExecutionFactory.create(q, confModel) ;
-
         try {
             for ( ResultSet rs = qexec.execSelect() ; rs.hasNext() ; )
             {
