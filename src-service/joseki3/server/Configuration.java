@@ -8,6 +8,9 @@ package joseki3.server;
 
 import java.util.*;
 
+import joseki3.server.module.Loader;
+import joseki3.server.module.LoaderException;
+
 import com.hp.hpl.jena.query.*;
 import com.hp.hpl.jena.query.resultset.ResultSetRewindable;
 import com.hp.hpl.jena.query.util.RelURI;
@@ -26,6 +29,8 @@ public class Configuration
 {
     static { RunUtils.setLog4j() ; }
     static Log log = LogFactory.getLog(Configuration.class) ;
+    
+    Loader loader = new Loader() ;
     Model confModel ;
     Resource server ;
     // --------
@@ -171,14 +176,12 @@ public class Configuration
             {
                 QuerySolution qs = rs.nextSolution() ;
                 RDFNode service = qs.getResource("service") ;
-                RDFNode x = qs.get("serviceRef") ;
-                if ( ! ( x instanceof Literal ) ) 
+                String ref = serviceRef(qs.get("serviceRef")) ;
+                if ( ref == null ) 
                 {
                     log.warn("** Service references are literals (a URI ref which will be relative to the server)") ;
                     continue ;
                 }
-                
-                String ref = qs.getLiteral("serviceRef").getLexicalForm() ;
                 
                 boolean good = true ;
                 if ( refs.containsKey(ref) )  
@@ -232,16 +235,14 @@ public class Configuration
             {
                 QuerySolution qs = rs.nextSolution() ;
                 RDFNode serviceNode = qs.getResource("service") ;
-                Resource proc = qs.getResource("proc") ;
+                Resource procRes = qs.getResource("proc") ;
                 RDFNode className = qs.get("className") ;
                 
                 // ---- Check reference
-                RDFNode x = qs.get("serviceRef") ;
-                if ( ! ( x instanceof Literal ) )
-                    // Warning already done
+                String ref = serviceRef(qs.get("serviceRef")) ;
+                if ( ref == null )
                     continue ;
                 
-                String ref = qs.getLiteral("serviceRef").getLexicalForm() ;
                 if ( badServiceRefs.contains(ref) )
                 {
                     log.info("Skipping: "+ref) ;
@@ -269,7 +270,21 @@ public class Configuration
                     continue ;
                 log.info("  Class name: "+javaClass) ;
                 
-                // ---- 
+                // ----
+                Processor proc = null ;
+                try {
+                    proc =(Processor)loader.loadAndInstantiate(procRes, Processor.class) ;
+                } catch (LoaderException ex)
+                {
+                    log.warn("** "+ex.getMessage()) ;
+                    continue ;
+                }
+                
+                if ( proc == null )
+                {
+                    log.warn("** Failed to load "+javaClass) ;
+                    continue ;
+                }
                 Service service = new Service(proc, ref) ;
                 services.put(ref, service) ;
                 
@@ -285,16 +300,15 @@ public class Configuration
         
         // Check that we don't find more part forms services 
         // than well formed service descriptions
-        checkServices(serviceResources) ;
+        checkServicesImpls(serviceResources) ;
 
         // Check that we don't find more part formed service impls
         // than well formed service descriptions
-        checkServiceImpls(serviceResources) ;
         
         return serviceResources ;
     }
 
-    private void checkServices(Set definedServices)
+    private void checkServicesImpls(Set definedServices)
     {
         String[] s ;
         Query q ;
@@ -307,34 +321,6 @@ public class Configuration
             if ( !definedServices.contains(r) )
                  log.warn("** No implementation for service: "+Utils.nodeLabel(r) ) ;
         }
-    }
-
-    private void checkServiceImpls(Set definedServices)
-    {
-        String [] s = new String[]{
-            "SELECT *",
-            "{  ?SP joseki:serviceRef ?serviceRef ; }"
-        } ;
-        
-        Query query = makeQuery(s) ;
-        QueryExecution qexec = QueryExecutionFactory.create(query, confModel) ;
-        try {
-            for ( ResultSet rs = qexec.execSelect() ; rs.hasNext() ; )
-            {
-                QuerySolution qs = rs.nextSolution() ;
-                RDFNode n = qs.get("SP") ;
-                RDFNode x = qs.get("serviceRef") ;
-                if ( ! (x instanceof Literal) )
-                    continue ;
-                
-                if ( ! definedServices.contains(n) )
-                {
-                    String ref = qs.getLiteral("serviceRef").getLexicalForm() ;
-                    if ( !badServiceRefs.contains(ref) )
-                        log.warn("** No class name for service with reference: "+ref ) ;
-                }
-            }
-        } finally { qexec.close() ; }
     }
 
     // ----------------------------------------------------------

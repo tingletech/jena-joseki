@@ -51,13 +51,11 @@ public class Loader
 
         } catch (JenaException ex)
         {
-            log.warn("Binding/Implementation structure incorrect") ;
-            return null ;
+            throw new LoaderException("Binding/Implementation structure incorrect") ;
         }
         catch (NullPointerException nullEx)
         {
-            log.warn("No definition for "+PrintUtils.fmt(bindingResource)) ;
-            return null ;
+            throw new LoaderException("No definition for "+PrintUtils.fmt(bindingResource)) ;
         }
 
         String className = "<<unset>>" ;
@@ -67,16 +65,14 @@ public class Loader
             if ( className == null )
             {
                 // This should not happen as we used "getRequiredProperty"
-                log.warn("Class name not found" ) ;
-                return null ;
+                throw new LoaderException("Class name not found") ;
             }
             log.trace("Class name: "+className) ;
         } catch (PropertyNotFoundException noPropEx)
         {
-            log.warn("No property 'className'") ;
-            return null ;
+            throw new LoaderException("No property 'className'") ;
         }
-        
+
         try {            
             log.trace("Load module: " + className);
             Class classObj = null ;
@@ -84,52 +80,22 @@ public class Loader
                 classObj = classLoader.loadClass(className);
             } catch (ClassNotFoundException ex)
             {
-                log.warn("Class not found: "+className);
-                return null ;
+                throw new LoaderException("Class not found: "+className);
             }
             
             if ( classObj == null )
-            {
-                log.warn("Null return from classloader");
-                return null ;
-            }
+                throw new LoaderException("Null return from classloader");
+            
             log.debug("Loaded: "+className) ;
             
             if ( ! Loadable.class.isAssignableFrom(classObj) )
-            {
-                log.warn(className + " does not support interface Loadable" ) ;
-                return null;
-            }
+                throw new LoaderException(className + " does not support interface Loadable" ) ;
 
             Loadable module = (Loadable)classObj.newInstance();
             log.trace("New Instance created") ;
             
-//            Statement s = bindingResource.getProperty(JosekiModule.interface_) ;
-//            if ( s == null || s.getResource() == null)
-//            {
-//                log.warn("No 'joseki:interface' property or value not a resource for "+PrintUtils.fmt(bindingResource)) ;
-//                return null ;
-//            }
-//            
-//            String uriInterface = s.getResource().getURI() ;
-//            
-//            if ( uriInterface == null || ! module.getInterfaceURI().equals(uriInterface) )
-//            {
-//                if ( uriInterface == null )
-//                {
-//                    log.warn("No declared interface URI : expected "+module.getInterfaceURI()) ;
-//                    return null ;
-//                }
-//                log.warn("Mismatch between expected and actual operation URIs: "+
-//                        "Expected: "+uriInterface+" : Actual: "+module.getInterfaceURI() ) ;
-//                return null ;
-//            }
-
             if ( expectedType != null && ! expectedType.isInstance(module) )
-            {
-                log.warn("  " + className + " is not of class "+expectedType.getName()) ;
-                return null;
-            }
+                throw new LoaderException("  " + className + " is not of class "+expectedType.getName()) ;
 
             // Looks good - now initialize it.
             module.init(bindingResource, implementation) ;
@@ -139,10 +105,10 @@ public class Loader
             log.debug("Implementation: "+className);
             return module;
         }
+        catch (LoaderException ex ) { throw ex; }
         catch (Exception ex)
         {
-            log.warn("Unexpected exception loading class " + className, ex);
-            return null;
+            throw new LoaderException("Unexpected exception loading class " + className, ex);
         }
     }
     
@@ -173,7 +139,7 @@ public class Loader
         }
         
         if ( classLoader == null )
-            log.warn("Failed to find a classloader") ;
+            throw new LoaderException("Failed to find a classloader") ;
         return classLoader ;
     }
     
@@ -195,10 +161,7 @@ public class Loader
             return null ;
         
         if ( ! r.getURI().startsWith("java:") )
-        {
-            log.warn("** Class name is a URI but not from the java: scheme") ;
-            return null ;
-        }
+            throw new LoaderException("Class name is a URI but not from the java: scheme") ;
         className = r.getURI().substring("java:".length()) ;
         return className ; 
     }

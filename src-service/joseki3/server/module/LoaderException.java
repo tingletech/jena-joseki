@@ -4,37 +4,13 @@
  * [See end of file]
  */
 
-package joseki3.server;
+package joseki3.server.module;
 
-public class Service
+
+public class LoaderException extends RuntimeException
 {
-    String serviceRef ;
-    Processor processor ;
-    boolean available ;
-    
-    public Service(Processor proc, String ref)
-    {
-        serviceRef = ref ; 
-        this.processor = proc ;
-        available = true ;
-    }
-    
-    public void exec(Request request, Response response) throws ExecutionException
-    {
-//        if ( ! isAvailable() )
-//            throw new ExecutionException() ;
-        processor.exec(request, response) ;
-    }
-    
-    public boolean isAvailable() { return available ; } 
-    public void setAvailability(boolean availability) { available = availability ; }
-    
-    public String getRef() { return "<"+serviceRef+">" ; }
-    
-    public String toString()
-    {
-        return "Service: "+serviceRef ;
-    }
+    public LoaderException(String msg) { super(msg) ; } 
+    public LoaderException(String msg, Throwable cause) { super(msg, cause) ; } 
 }
 
 /*
