@@ -15,6 +15,9 @@ public class Service
     
     public Service(Processor proc, String ref, DatasetDesc dataset)
     {
+        while ( ref.startsWith("/") )
+            ref = ref.substring(1) ;
+        
         this.serviceRef = ref ; 
         this.processor = proc ;
         this.dataset = dataset ;

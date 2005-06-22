@@ -260,7 +260,7 @@ public class Configuration
                     continue ;
                 }
                 
-                log.info("Service: <"+ref+">") ;
+                log.info("Service reference: \""+ref+"\"") ;
                 
                 // ---- Implementing class name
                 // This done in the loader as well but a check here is more informative 

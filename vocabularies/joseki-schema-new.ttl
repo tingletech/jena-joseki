@@ -6,14 +6,14 @@
 @prefix :       <http://joseki.org/2005/06/configuration#> .
 
 
-##-------------------------------------------------------------
+## ------------------------------------------------------------
 
 <> rdfs:comment "Configuration schema for Joseki" ;
    rdfs:seeAlso <http://joseki.org/> .
 
 <> rdfs:comment "$Id$" .
 
-##-------------------------------------------------------------
+## ------------------------------------------------------------
 ## Configuration
 
 :include    rdf:type    rdf:Property ;
@@ -21,7 +21,7 @@
     .
 
 
-##-------------------------------------------------------------
+## ------------------------------------------------------------
 ## Server
 
 :Server     rdf:type    rdfs:Class ;
@@ -29,12 +29,8 @@
     rdfs:label    "Server" ;
     .
 
-:service    rdf:type    rdf:Property ;
-    rdfs:comment        "Association of a server with a service" ;
-    rdfs:label          "service" ;
-    rdfs:domain         :ServicePoint ;
-    rdfs:range          rdfs:literal ;  
-    .
+## ------------------------------------------------------------
+## Services
 
 :serviceRef    rdf:type    rdf:Property ;
     rdfs:comment 
@@ -52,8 +48,13 @@
     rdfs:range          :Processor ;
     .
 
+:dataset    rdf:type    rdf:Property ;
+    rdfs:label          "dataset" ;
+    rdfs:domain         :Service ;
+    rdfs:range          :RDFDataset ;
+    .
 
-##-------------------------------------------------------------
+## ------------------------------------------------------------
 ## SPARQL 
 
 :allowExplicitDataset   rdf:type    rdf:Property ;
@@ -67,13 +68,13 @@
     .
 
 
-##-------------------------------------------------------------
+## ------------------------------------------------------------
 ## Model/Graph
 ## See also Jena Model Specification
 ## 
 
 
-##-------------------------------------------------------------
+## ------------------------------------------------------------
 ## Dataset
 
 :RDFDataSet     rdf:type    rdfs:Class ;
@@ -101,16 +102,8 @@
     rdfs:label              "" ;
     .  
 
-##-------------------------------------------------------------
+## ------------------------------------------------------------
 ## Processors
-
-##-------------------------------------------------------------
-## Services
-
-:ServicePoint rdf:type   rdfs:Class ;
-    rdfs:comment    "Service" ;
-    rdfs:label      "Service" ;
-    .
 
 :Processor rdf:type   rdfs:Class ;
     rdfs:comment    "Processor" ;
@@ -122,6 +115,13 @@
     rdfs:label                  "query operation name" ;
     .
 
-##-------------------------------------------------------------
+## See also module:
+
+## ------------------------------------------------------------
 ## 
 
+
+# Local Variables:
+# tab-width: 4
+# indent-tabs-mode: nil
+# End:
