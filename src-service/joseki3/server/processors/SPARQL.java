@@ -28,11 +28,6 @@ public class SPARQL extends QueryCom implements Loadable
     boolean allowDatasetDesc = false ;
     boolean allowWebLoading  = false ;
     
-    void execQuery(Request request, Response response) throws QueryExecutionException
-    {
-        log.info("Request: "+request.paramsAsString()) ;
-    }
-
     public void init(Resource service, Resource implementation)
     {
         log.info("Init SPARQL processor") ;
@@ -45,6 +40,10 @@ public class SPARQL extends QueryCom implements Loadable
         log.info("Dataset description: "+allowDatasetDesc+" // Web loading: "+allowWebLoading) ;
     }
 
+    void execQuery(Request request, Response response) throws QueryExecutionException
+    {
+        log.info("Request: "+request.paramsAsString()) ;
+    }
 }
 
 /*
