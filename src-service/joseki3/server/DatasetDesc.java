@@ -7,6 +7,7 @@
 package joseki3.server;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 import com.hp.hpl.jena.rdf.model.Model;
@@ -18,7 +19,7 @@ import com.hp.hpl.jena.rdf.model.Resource;
 class DatasetDesc
 {
     Model confModel ;
-    // Resource wil keep the config model around as well. 
+    // Resource will keep the config model around as well. 
     Resource defaultGraph = null ;
     Map namedGraphs = new HashMap() ;
     
@@ -48,6 +49,33 @@ class DatasetDesc
         Configuration.log.info("Building model: "+Utils.nodeLabel(r)) ;
         m.write(System.out, "N3") ;
         return m ;
+    }
+    
+    public String toString()
+    {
+        StringBuffer sbuff = new StringBuffer() ;
+        sbuff.append("{") ;
+        boolean first = true ;  
+        if ( defaultGraph != null )
+        {
+            sbuff.append(Utils.nodeLabel(defaultGraph)) ;
+            first = false ;
+        }
+        for ( Iterator iter = namedGraphs.keySet().iterator() ; iter.hasNext() ; )
+        {
+            if ( first )
+                sbuff.append(" ") ;
+            first = false ;
+            String n = (String)iter.next() ;
+            Resource r = (Resource)namedGraphs.get(n) ;
+            sbuff.append("(") ;
+            sbuff.append(n) ;
+            sbuff.append(", ") ;
+            sbuff.append(Utils.nodeLabel(r)) ;
+            sbuff.append(")") ;
+        }
+        sbuff.append("}") ;
+        return sbuff.toString() ;
     }
 }
 /*

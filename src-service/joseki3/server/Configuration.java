@@ -382,8 +382,11 @@ public class Configuration
                 log.info("Service skipped: "+srv.getRef()) ;
                 continue ;
             }
-            log.info("Service: "+srv.getRef()) ;
             registry.add(ref, srv) ;
+            if ( srv.getDatasetDesc() != null)
+                log.info("Service: "+srv.getRef()+" "+srv.getDatasetDesc().toString()) ;
+            else
+                log.info("Service: "+srv.getRef()) ;
         }
     }
 

@@ -36,7 +36,7 @@ public class Utils
         if ( n == null )
             return "<null>" ;
         if ( n instanceof Resource )
-            return strForResource((Resource)n, null) ;
+            return strForResource((Resource)n) ;
         
         Literal lit = (Literal)n ;
         return lit.getLexicalForm() ;
