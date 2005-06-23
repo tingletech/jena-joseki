@@ -43,7 +43,7 @@ public class DatasetDesc
     {
         return namedGraphs ;
     }
-    /**  * @param namedGraphs The namedGraphs to set. */
+
     public void addNamedGraph(String uri, Resource r)
     {
         namedGraphs.put(uri, r) ;
