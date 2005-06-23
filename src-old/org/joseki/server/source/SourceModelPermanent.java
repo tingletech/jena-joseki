@@ -1,40 +1,36 @@
 /*
- * (c) Copyright 2004, 2005 Hewlett-Packard Development Company, LP
- * All rights reserved.
+ * (c) Copyright 2003, 2004, 2005 Hewlett-Packard Development Company, LP
  * [See end of file]
  */
 
-package org.joseki.test;
+package org.joseki.server.source;
 
-import junit.framework.Test;
-import junit.framework.TestSuite;
+import org.joseki.server.SourceController ;
+import com.hp.hpl.jena.rdf.model.* ;
 
-/** 
- * @author Andy Seaborne
- * @version $Id: JosekiTests.java,v 1.3 2005-06-23 09:55:58 andy_seaborne Exp $
+/** An attached model that manages a model whose OS resources
+ *  do not need managing at query time i.e. they are permanently
+ *  allocated at creation of the SourceModel. 
+ *
+ * @author  Andy Seaborne
+ * @version $Id: SourceModelPermanent.java,v 1.1 2005-06-23 09:55:58 andy_seaborne Exp $
  */
 
-public class JosekiTests
+public class SourceModelPermanent extends SourceModelCom
 {
-
-    public static void main(String[] args)
+    Model model = null ;
+    public SourceModelPermanent(SourceController ctl, Model _model, String serverURI)
     {
-        junit.textui.TestRunner.run(JosekiTests.suite());
+        super(ctl, serverURI) ;
+        model = _model ;
     }
-
-    public static Test suite()
-    {
-        TestSuite suite = new TestSuite("Joseki Test Suite");
-        //$JUnit-BEGIN$
-        suite.addTestSuite(TestContentNegotiation.class);
-        //$JUnit-END$
-        return suite;
-    }
+    
+    public Model getModel() { return model ; }
 }
 
 /*
- * (c) Copyright 2004, 2005 Hewlett-Packard Development Company, LP
- * All rights reserved.
+ *  (c) Copyright 2003, 2004, 2005 Hewlett-Packard Development Company, LP
+ *  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions

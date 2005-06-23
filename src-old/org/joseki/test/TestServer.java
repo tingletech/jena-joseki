@@ -6,30 +6,50 @@
 
 package org.joseki.test;
 
-import junit.framework.Test;
-import junit.framework.TestSuite;
+import org.joseki.server.*;
 
-/** 
+/** org.joseki.test.TestServer
+ * 
  * @author Andy Seaborne
- * @version $Id: JosekiTests.java,v 1.3 2005-06-23 09:55:58 andy_seaborne Exp $
+ * @version $Id: TestServer.java,v 1.1 2005-06-23 09:55:58 andy_seaborne Exp $
  */
 
-public class JosekiTests
+public class TestServer 
 {
+    public int port         = 9990 ;
+    String baseURI          = "http://localhost:"+port+"/" ;
+    String testdata_URI     = baseURI+"testdata" ;
+    String testdata2_URI    = baseURI+"testdata2" ;
 
-    public static void main(String[] args)
-    {
-        junit.textui.TestRunner.run(JosekiTests.suite());
-    }
+    String noSuchModelURI   = baseURI+"noSuchModel" ;
+    String scratchModelURI  = baseURI+"scratch" ;
+    String emptyModelURI    = baseURI+"empty" ;
+    String infRDFSModelURI  = baseURI+"inf-rdfs" ;
+    String infOWLModelURI   = baseURI+"inf-owl" ;
+    String fetchModelURI    = baseURI+"fetch-1" ;
+    
+    RDFServer server = null ;
 
-    public static Test suite()
+    void createServer()
     {
-        TestSuite suite = new TestSuite("Joseki Test Suite");
-        //$JUnit-BEGIN$
-        suite.addTestSuite(TestContentNegotiation.class);
-        //$JUnit-END$
-        return suite;
+        try {
+            server = new RDFServer("etc/joseki-junit.n3", port) ;
+            server.start() ;
+        } catch (ConfigurationErrorException confEx)
+        {
+            System.err.println("Configuration error: "+confEx.getMessage()) ;
+            //confEx.printStackTrace(System.err) ;
+            server = null ;
+            return ;
+        }
     }
+    
+    void destroyServer()
+    {
+        server.stop() ;
+        server = null ;
+    }
+    
 }
 
 /*

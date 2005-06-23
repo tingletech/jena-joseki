@@ -9,7 +9,7 @@ import java.util.* ;
 
 /** Constants and other definitions.
  * @author      Andy Seaborne
- * @version     $Id: Joseki.java,v 1.14 2005-06-23 09:55:59 andy_seaborne Exp $
+ * @version     $Id: Joseki.java,v 1.1 2005-06-23 09:55:59 andy_seaborne Exp $
  */
 public class Joseki
 {

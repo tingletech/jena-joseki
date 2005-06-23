@@ -1,40 +1,52 @@
 /*
- * (c) Copyright 2004, 2005 Hewlett-Packard Development Company, LP
- * All rights reserved.
+ * (c) Copyright 2003, 2004, 2005 Hewlett-Packard Development Company, LP
  * [See end of file]
  */
-
+ 
 package org.joseki.test;
 
-import junit.framework.Test;
-import junit.framework.TestSuite;
+import java.util.* ;
+import org.joseki.server.*;
+import org.joseki.server.processors.*;
+import org.joseki.server.processors.ops.ArgZeroProcessor;
+import org.joseki.vocabulary.JosekiVocab;
 
-/** 
- * @author Andy Seaborne
- * @version $Id: JosekiTests.java,v 1.3 2005-06-23 09:55:58 andy_seaborne Exp $
+import com.hp.hpl.jena.rdf.model.*;
+
+/** This processor is only for testing. It is not a good idea to have
+ *  on a live system.
+ * 
+ * @author      Andy Seaborne
+ * @version     $Id: ClearModelProcessor.java,v 1.1 2005-06-23 09:55:58 andy_seaborne Exp $
  */
 
-public class JosekiTests
+public class ClearModelProcessor extends ArgZeroProcessor
 {
-
-    public static void main(String[] args)
+    public ClearModelProcessor()
     {
-        junit.textui.TestRunner.run(JosekiTests.suite());
+        super("clear", LockType.WriteOperation) ;
     }
+    
+    public String getInterfaceURI() { return JosekiVocab.getURI()+"OpClear" ; }
 
-    public static Test suite()
+    public Model execZeroArg(SourceModel src, Request request)
+        throws RDFException, ExecutionException
     {
-        TestSuite suite = new TestSuite("Joseki Test Suite");
-        //$JUnit-BEGIN$
-        suite.addTestSuite(TestContentNegotiation.class);
-        //$JUnit-END$
-        return suite;
+        Model target = ((SourceModelJena)src).getModel() ;
+            
+        // target.remove(target) gets a java.util.ConcurrentModificationException (Jena1)
+        Set s = new HashSet() ;
+        for ( StmtIterator sIter = target.listStatements() ; sIter.hasNext() ; )
+            s.add(sIter.next()) ;
+        for ( Iterator iter = s.iterator() ; iter.hasNext() ; )
+            target.remove((Statement)iter.next()) ;
+        return emptyModel ;
     }
 }
 
 /*
- * (c) Copyright 2004, 2005 Hewlett-Packard Development Company, LP
- * All rights reserved.
+ *  (c) Copyright 2003, 2004, 2005 Hewlett-Packard Development Company, LP
+ *  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions

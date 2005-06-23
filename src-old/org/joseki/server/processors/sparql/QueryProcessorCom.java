@@ -4,32 +4,52 @@
  * [See end of file]
  */
 
-package org.joseki.test;
+package org.joseki.server.processors.sparql;
 
-import junit.framework.Test;
-import junit.framework.TestSuite;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.joseki.HttpParams;
+import org.joseki.server.*;
+import org.joseki.server.processors.LockType;
+import org.joseki.server.processors.ProcessorCom;
 
-/** 
+/** QueryProcessorCom - the root of query processors.
+ * 
  * @author Andy Seaborne
- * @version $Id: JosekiTests.java,v 1.3 2005-06-23 09:55:58 andy_seaborne Exp $
+ * @version $Id: QueryProcessorCom.java,v 1.1 2005-06-23 09:56:01 andy_seaborne Exp $
  */
 
-public class JosekiTests
+public abstract class QueryProcessorCom extends ProcessorCom implements QueryProcessor
 {
-
-    public static void main(String[] args)
+    private Log log = LogFactory.getLog(QueryProcessorCom.class) ;
+    
+    public QueryProcessorCom(String name)
     {
-        junit.textui.TestRunner.run(JosekiTests.suite());
+        super(name, LockType.ReadOperation) ;
     }
-
-    public static Test suite()
+    
+    public void execute(Request request, Response response) throws ExecutionException
     {
-        TestSuite suite = new TestSuite("Joseki Test Suite");
-        //$JUnit-BEGIN$
-        suite.addTestSuite(TestContentNegotiation.class);
-        //$JUnit-END$
-        return suite;
+        SourceModel aModel = request.getSourceModel() ;
+        // Inside lock.
+        // Convert from Processor.exec to QueryProcessor.execQuery
+        String queryLangName = request.getParam(HttpParams.pQueryLang) ;
+        String queryString = request.getParam(HttpParams.pQuery) ;
+        
+        if ( queryLangName == null )
+        {
+            log.warn("No query language name or URI found") ;
+             throw new QueryExecutionException(Response.rcQueryExecutionFailure,
+                                               "No query language name or URI found");
+        }
+        
+        execQuery(aModel, queryString, request, response) ;
     }
+    
+    public abstract void execQuery(SourceModel aModel, String queryString,
+                                   Request request, Response response)
+        throws QueryExecutionException ;
+    
 }
 
 /*

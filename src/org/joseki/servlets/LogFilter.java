@@ -1,40 +1,50 @@
 /*
- * (c) Copyright 2004, 2005 Hewlett-Packard Development Company, LP
- * All rights reserved.
+ * (c) Copyright 2003, 2004, 2005 Hewlett-Packard Development Company, LP
  * [See end of file]
  */
 
-package org.joseki.test;
+package org.joseki.servlets;
 
-import junit.framework.Test;
-import junit.framework.TestSuite;
+import org.apache.commons.logging.*;
+import javax.servlet.*;
+import javax.servlet.http.*;
+import java.io.*;
 
-/** 
- * @author Andy Seaborne
- * @version $Id: JosekiTests.java,v 1.3 2005-06-23 09:55:58 andy_seaborne Exp $
+/**
+ * @author      Andy Seaborne
+ * @version     $Id: LogFilter.java,v 1.1 2005-06-23 09:56:01 andy_seaborne Exp $
  */
-
-public class JosekiTests
+public class LogFilter implements Filter
 {
+    static Log log = LogFactory.getLog(LogFilter.class) ; 
+    
+    private FilterConfig filterConfig = null;
 
-    public static void main(String[] args)
+    public void init(FilterConfig filterConfig) throws ServletException
     {
-        junit.textui.TestRunner.run(JosekiTests.suite());
+        this.filterConfig = filterConfig;
     }
 
-    public static Test suite()
+    public void destroy()
     {
-        TestSuite suite = new TestSuite("Joseki Test Suite");
-        //$JUnit-BEGIN$
-        suite.addTestSuite(TestContentNegotiation.class);
-        //$JUnit-END$
-        return suite;
+    }
+
+    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
+        throws IOException, ServletException
+    {
+        if ( request instanceof HttpServletRequest )
+        {
+            String uri = ((HttpServletRequest)request).getRequestURI() ;
+            log.info("Request: "+uri) ;
+        }
+        
+        chain.doFilter(request, response);
     }
 }
 
 /*
- * (c) Copyright 2004, 2005 Hewlett-Packard Development Company, LP
- * All rights reserved.
+ *  (c) Copyright 2003, 2004, 2005 Hewlett-Packard Development Company, LP
+ *  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions

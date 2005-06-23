@@ -4,27 +4,28 @@
  * [See end of file]
  */
 
-package org.joseki.test;
+package org.joseki.server.http;
 
 import junit.framework.Test;
 import junit.framework.TestSuite;
 
-/** 
+/** org.joseki.server.http.TestsHttp
+ * 
  * @author Andy Seaborne
- * @version $Id: JosekiTests.java,v 1.3 2005-06-23 09:55:58 andy_seaborne Exp $
+ * @version $Id: TestsHttp.java,v 1.1 2005-06-23 09:55:58 andy_seaborne Exp $
  */
 
-public class JosekiTests
+public class TestsHttp
 {
 
     public static void main(String[] args)
     {
-        junit.textui.TestRunner.run(JosekiTests.suite());
+        junit.textui.TestRunner.run(TestsHttp.suite());
     }
 
     public static Test suite()
     {
-        TestSuite suite = new TestSuite("Joseki Test Suite");
+        TestSuite suite = new TestSuite("Test for org.joseki.server.http");
         //$JUnit-BEGIN$
         suite.addTestSuite(TestContentNegotiation.class);
         //$JUnit-END$

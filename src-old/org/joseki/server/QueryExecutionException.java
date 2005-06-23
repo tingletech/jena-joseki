@@ -1,40 +1,32 @@
 /*
- * (c) Copyright 2004, 2005 Hewlett-Packard Development Company, LP
- * All rights reserved.
+ * (c) Copyright 2003, 2004, 2005 Hewlett-Packard Development Company, LP
  * [See end of file]
  */
 
-package org.joseki.test;
+package org.joseki.server;
 
-import junit.framework.Test;
-import junit.framework.TestSuite;
 
-/** 
- * @author Andy Seaborne
- * @version $Id: JosekiTests.java,v 1.3 2005-06-23 09:55:58 andy_seaborne Exp $
+
+//import com.hp.hpl.jena.rdf.model.Model ;
+
+/**
+ * @version     $Id: QueryExecutionException.java,v 1.1 2005-06-23 09:55:57 andy_seaborne Exp $
+ * @author      Andy Seaborne
  */
-
-public class JosekiTests
+public class QueryExecutionException extends ExecutionException
 {
-
-    public static void main(String[] args)
+    private static final long serialVersionUID = 99L;  // Serilizable.
+    
+    public QueryExecutionException(int rc, String shortMessage)
     {
-        junit.textui.TestRunner.run(JosekiTests.suite());
-    }
-
-    public static Test suite()
-    {
-        TestSuite suite = new TestSuite("Joseki Test Suite");
-        //$JUnit-BEGIN$
-        suite.addTestSuite(TestContentNegotiation.class);
-        //$JUnit-END$
-        return suite;
+        super(rc, shortMessage) ;
     }
 }
 
+
 /*
- * (c) Copyright 2004, 2005 Hewlett-Packard Development Company, LP
- * All rights reserved.
+ *  (c) Copyright 2003, 2004, 2005 Hewlett-Packard Development Company, LP
+ *  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions

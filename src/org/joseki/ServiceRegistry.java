@@ -4,31 +4,55 @@
  * [See end of file]
  */
 
-package org.joseki.test;
+package org.joseki;
 
-import junit.framework.Test;
-import junit.framework.TestSuite;
+import java.util.* ;
 
-/** 
+/** Registry of DescribeHandlers.     
+ * 
  * @author Andy Seaborne
- * @version $Id: JosekiTests.java,v 1.3 2005-06-23 09:55:58 andy_seaborne Exp $
+ * @version $Id: ServiceRegistry.java,v 1.1 2005-06-23 09:55:59 andy_seaborne Exp $
  */
 
-public class JosekiTests
+public class ServiceRegistry
 {
-
-    public static void main(String[] args)
+    // Singleton
+    static private ServiceRegistry globalRegistry = null ;
+    static { init() ; }
+    
+    
+    private Map registry = new HashMap() ; 
+    
+    //private ServiceRegistry() { }
+    
+    public static ServiceRegistry get() { return globalRegistry ; }
+    
+    private static void init()
     {
-        junit.textui.TestRunner.run(JosekiTests.suite());
+//        if ( globalRegistry == null )
+//        {
+//            globalRegistry = new ServiceRegistry() ;
+//        }
     }
 
-    public static Test suite()
+    public Service find(String name)
     {
-        TestSuite suite = new TestSuite("Joseki Test Suite");
-        //$JUnit-BEGIN$
-        suite.addTestSuite(TestContentNegotiation.class);
-        //$JUnit-END$
-        return suite;
+        return (Service)registry.get(name) ;
+    }
+    
+    public void add(String name, Service handler)
+    {
+        registry.put(name, handler) ; 
+    }
+    
+    public void remove(String name)
+    {
+        registry.remove(name) ; 
+    }
+    
+    public void clear()
+    {
+        registry.clear() ;
     }
 }
 

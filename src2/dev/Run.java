@@ -8,10 +8,10 @@
 package dev;
 import java.net.* ;
 
-import joseki3.server.Configuration;
-import joseki3.server.RDFServer;
+import org.joseki.Configuration;
+import org.joseki.RDFServer;
 
-import org.joseki.server.http.HttpContentType;
+import org.joseki.http.HttpContentType;
 import org.joseki.util.Params;
 
 public class Run

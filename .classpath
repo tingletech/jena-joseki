@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="lib/antlr.jar"/>
 	<classpathentry kind="lib" path="lib/commons-logging.jar"/>
@@ -18,7 +17,7 @@
 	<classpathentry sourcepath="jena-src.zip" kind="lib" path="lib/jena.jar"/>
 	<classpathentry kind="lib" path="lib/log4j-1.2.9.jar"/>
 	<classpathentry kind="src" path="src2"/>
+	<classpathentry kind="src" path="src"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/ARQ"/>
-	<classpathentry kind="src" path="src-service"/>
 	<classpathentry kind="output" path="classes"/>
 </classpath>

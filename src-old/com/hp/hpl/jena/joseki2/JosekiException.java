@@ -1,39 +1,29 @@
 /*
- * (c) Copyright 2004, 2005 Hewlett-Packard Development Company, LP
- * All rights reserved.
+ * (c) Copyright 2003, 2004, 2005 Hewlett-Packard Development Company, LP
  * [See end of file]
  */
 
-package org.joseki.test;
-
-import junit.framework.Test;
-import junit.framework.TestSuite;
-
-/** 
- * @author Andy Seaborne
- * @version $Id: JosekiTests.java,v 1.3 2005-06-23 09:55:58 andy_seaborne Exp $
+/** Top of exception class hierarchy for Joseki library exceptions
+ * @author     Andy Seaborne
+ * @version    $Id: JosekiException.java,v 1.1 2005-06-23 09:55:59 andy_seaborne Exp $
  */
+ 
+package com.hp.hpl.jena.joseki2;
 
-public class JosekiTests
+//import com.hp.hpl.jena.shared.JenaException;
+
+public class JosekiException extends /*JenaException*/RuntimeException
 {
-
-    public static void main(String[] args)
-    {
-        junit.textui.TestRunner.run(JosekiTests.suite());
-    }
-
-    public static Test suite()
-    {
-        TestSuite suite = new TestSuite("Joseki Test Suite");
-        //$JUnit-BEGIN$
-        suite.addTestSuite(TestContentNegotiation.class);
-        //$JUnit-END$
-        return suite;
-    }
+    private static final long serialVersionUID = 99L;  // Serilizable.
+    public JosekiException() { super() ; }
+    public JosekiException(String msg) { super(msg) ; }
+    
+    public JosekiException(Throwable cause) { super(cause) ; }
+    public JosekiException(String msg, Throwable cause) { super(msg, cause) ; }
 }
 
 /*
- * (c) Copyright 2004, 2005 Hewlett-Packard Development Company, LP
+ * (c) Copyright 2003, 2004, 2005 Hewlett-Packard Development Company, LP
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without

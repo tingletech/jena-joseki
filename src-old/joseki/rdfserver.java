@@ -7,12 +7,13 @@ package joseki;
 
 import jena.cmdline.* ;
 
-import org.joseki.* ;
+import org.joseki.server.* ;
+import org.joseki.Joseki ;
 
 /** Command line application to run an RDF Server
  *
  * @author  Andy Seaborne
- * @version $Id: rdfserver.java,v 1.5 2005-06-23 09:56:00 andy_seaborne Exp $
+ * @version $Id: rdfserver.java,v 1.1 2005-06-23 09:55:58 andy_seaborne Exp $
  */
 
 

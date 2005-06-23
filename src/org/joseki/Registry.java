@@ -4,31 +4,52 @@
  * [See end of file]
  */
 
-package org.joseki.test;
+package org.joseki;
 
-import junit.framework.Test;
-import junit.framework.TestSuite;
+import java.util.* ;
 
-/** 
+/** A single general registry to bootstrap from.     
+ * 
  * @author Andy Seaborne
- * @version $Id: JosekiTests.java,v 1.3 2005-06-23 09:55:58 andy_seaborne Exp $
+ * @version $Id: Registry.java,v 1.1 2005-06-23 09:55:59 andy_seaborne Exp $
  */
 
-public class JosekiTests
+public class Registry
 {
-
-    public static void main(String[] args)
+    // Singleton
+    static private Registry globalRegistry = null ;
+    static { init() ; }
+    
+    private Map registry = new HashMap() ; 
+    
+    private Registry() { }
+    
+    public static Registry get() { return globalRegistry ; }
+    
+    private static void init()
     {
-        junit.textui.TestRunner.run(JosekiTests.suite());
+        if ( globalRegistry == null )
+            globalRegistry = new Registry() ;
     }
 
-    public static Test suite()
+    static public Object find(String name)
     {
-        TestSuite suite = new TestSuite("Joseki Test Suite");
-        //$JUnit-BEGIN$
-        suite.addTestSuite(TestContentNegotiation.class);
-        //$JUnit-END$
-        return suite;
+        return get().registry.get(name) ;
+    }
+    
+    static public void add(String name, Object value)
+    {
+        get().registry.put(name, value) ; 
+    }
+    
+    static public void remove(String name)
+    {
+        get().registry.remove(name) ; 
+    }
+    
+    static public void clear()
+    {
+        get().registry.clear() ;
     }
 }
 

@@ -4,32 +4,18 @@
  * [See end of file]
  */
 
-package org.joseki.test;
+package org.joseki.server.processors;
 
-import junit.framework.Test;
-import junit.framework.TestSuite;
-
-/** 
+/** org.joseki.server.processors.LockType
+ * 
  * @author Andy Seaborne
- * @version $Id: JosekiTests.java,v 1.3 2005-06-23 09:55:58 andy_seaborne Exp $
+ * @version $Id: LockType.java,v 1.1 2005-06-23 09:55:58 andy_seaborne Exp $
  */
 
-public class JosekiTests
+public interface LockType
 {
-
-    public static void main(String[] args)
-    {
-        junit.textui.TestRunner.run(JosekiTests.suite());
-    }
-
-    public static Test suite()
-    {
-        TestSuite suite = new TestSuite("Joseki Test Suite");
-        //$JUnit-BEGIN$
-        suite.addTestSuite(TestContentNegotiation.class);
-        //$JUnit-END$
-        return suite;
-    }
+    static public final int ReadOperation    = 100 ;
+    static public final int WriteOperation   = 101 ;
 }
 
 /*

@@ -1,40 +1,42 @@
 /*
- * (c) Copyright 2004, 2005 Hewlett-Packard Development Company, LP
- * All rights reserved.
+ * (c) Copyright 2003, 2004, 2005 Hewlett-Packard Development Company, LP
  * [See end of file]
  */
 
-package org.joseki.test;
+package com.hp.hpl.jena.joseki2;
 
-import junit.framework.Test;
-import junit.framework.TestSuite;
 
-/** 
- * @author Andy Seaborne
- * @version $Id: JosekiTests.java,v 1.3 2005-06-23 09:55:58 andy_seaborne Exp $
+import java.net.* ;
+
+/** Create an execution object for performing an HTTP OPTIONS
+ *  operation.  The result is an RDF model.  If asked of
+ *  the server itself this will usually list the URLs of
+ *  supported models.  If asked of a model, there will be further
+ *  about query languages and operations supported.
+ * 
+ * @author  Andy Seaborne
+ * @version $Id: HttpOptions.java,v 1.1 2005-06-23 09:55:59 andy_seaborne Exp $
  */
 
-public class JosekiTests
+public class HttpOptions extends HttpExecute
 {
-
-    public static void main(String[] args)
+    public HttpOptions(URL u) throws MalformedURLException
     {
-        junit.textui.TestRunner.run(JosekiTests.suite());
+        this(u.toString()) ;
     }
-
-    public static Test suite()
+    
+    
+    public HttpOptions(String urlStr) throws MalformedURLException
     {
-        TestSuite suite = new TestSuite("Joseki Test Suite");
-        //$JUnit-BEGIN$
-        suite.addTestSuite(TestContentNegotiation.class);
-        //$JUnit-END$
-        return suite;
+        super() ;
+        super.setURL(urlStr) ; 
+        super.setRequestMethod("OPTIONS", false) ;
     }
-}
+}   
 
 /*
- * (c) Copyright 2004, 2005 Hewlett-Packard Development Company, LP
- * All rights reserved.
+ *  (c) Copyright 2003, 2004, 2005 Hewlett-Packard Development Company, LP
+ *  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions

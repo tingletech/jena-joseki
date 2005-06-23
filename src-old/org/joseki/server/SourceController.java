@@ -1,39 +1,41 @@
 /*
- * (c) Copyright 2004, 2005 Hewlett-Packard Development Company, LP
- * All rights reserved.
+ * (c) Copyright 2003, 2004, 2005 Hewlett-Packard Development Company, LP
  * [See end of file]
  */
 
-package org.joseki.test;
+package org.joseki.server;
 
-import junit.framework.Test;
-import junit.framework.TestSuite;
+import com.hp.hpl.jena.rdf.model.* ;
 
-/** 
+/** A SourceController is an interface for loading and unloading the runtime
+ * system resources for datasources.  
+ *   
  * @author Andy Seaborne
- * @version $Id: JosekiTests.java,v 1.3 2005-06-23 09:55:58 andy_seaborne Exp $
- */
+ * @version $Id: SourceController.java,v 1.1 2005-06-23 09:55:57 andy_seaborne Exp $
+ */ 
 
-public class JosekiTests
+public interface SourceController
 {
-
-    public static void main(String[] args)
-    {
-        junit.textui.TestRunner.run(JosekiTests.suite());
-    }
-
-    public static Test suite()
-    {
-        TestSuite suite = new TestSuite("Joseki Test Suite");
-        //$JUnit-BEGIN$
-        suite.addTestSuite(TestContentNegotiation.class);
-        //$JUnit-END$
-        return suite;
-    }
+    // Called once, during configuration
+    public SourceModel createSourceModel(Resource description, String serverURI) ;
+    
+    // The URI we are the controller  for (convenience)
+    public String getServerURI() ;
+    
+    // Called before and after every operation so the controller
+    // knows a source is in use. 
+    public void activate() ; 
+    public void deactivate() ;
+    
+    // Called each time a source needs to be built.
+    public Model buildSource() ;
+    
+    // Called when released
+    public void releaseSource() ;
 }
 
 /*
- * (c) Copyright 2004, 2005 Hewlett-Packard Development Company, LP
+ * (c) Copyright 2003, 2004, 2005 Hewlett-Packard Development Company, LP
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without

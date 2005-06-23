@@ -4,32 +4,53 @@
  * [See end of file]
  */
 
-package org.joseki.test;
+package org.joseki.http;
 
-import junit.framework.Test;
-import junit.framework.TestSuite;
+import java.io.InputStream;
+import javax.servlet.ServletContext;
 
-/** 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import com.hp.hpl.jena.util.Locator;
+import com.hp.hpl.jena.util.FileUtils;
+
+/** org.joseki.server.LocatorServletContext
+ * 
  * @author Andy Seaborne
- * @version $Id: JosekiTests.java,v 1.3 2005-06-23 09:55:58 andy_seaborne Exp $
+ * @version $Id: LocatorServletContext.java,v 1.1 2005-06-23 09:55:58 andy_seaborne Exp $
  */
 
-public class JosekiTests
+public class LocatorServletContext implements Locator
 {
-
-    public static void main(String[] args)
+    static Log logger = LogFactory.getLog(LocatorServletContext.class) ;
+    ServletContext servletContext = null ;
+    
+    public LocatorServletContext(ServletContext context)
     {
-        junit.textui.TestRunner.run(JosekiTests.suite());
+        servletContext = context ;
+    }
+    
+    public InputStream open(String resourceName)
+    {
+        if ( servletContext == null)
+            return null ;
+
+        String fn = FileUtils.toFilename(resourceName) ;
+        if ( fn == null )
+        {
+            logger.trace("LocatorServletContext: failed to open: "+resourceName) ; 
+            return null ;
+        }
+
+        InputStream in = servletContext.getResourceAsStream(fn);
+        if (in != null)
+            logger.debug("Reading as servlet resource: " + resourceName);
+        return in ;
+
     }
 
-    public static Test suite()
-    {
-        TestSuite suite = new TestSuite("Joseki Test Suite");
-        //$JUnit-BEGIN$
-        suite.addTestSuite(TestContentNegotiation.class);
-        //$JUnit-END$
-        return suite;
-    }
+    public String getName() { return "LocatorServletContext" ; }
 }
 
 /*

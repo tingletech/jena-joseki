@@ -1,40 +1,43 @@
 /*
- * (c) Copyright 2004, 2005 Hewlett-Packard Development Company, LP
- * All rights reserved.
+ * (c) Copyright 2003, 2004, 2005 Hewlett-Packard Development Company, LP
  * [See end of file]
  */
 
-package org.joseki.test;
+package org.joseki.server.processors.fetch;
 
-import junit.framework.Test;
-import junit.framework.TestSuite;
+import org.joseki.util.Closure ;
+import org.joseki.server.module.Loadable ;
+import com.hp.hpl.jena.rdf.model.*;
+import java.util.Set ;
 
-/** 
- * @author Andy Seaborne
- * @version $Id: JosekiTests.java,v 1.3 2005-06-23 09:55:58 andy_seaborne Exp $
- */
+/** Fetch handler to find the bNode-closure from a resource.
+ *  The resource itself can be a bNode or a labelled node.
+ *  This calculates the set of all properties, and following all the
+ *  properties on bNodes (recursively, with loop detection).
+ *  
+ * @author     Andy Seaborne
+ * @version    $Id: FetchClosure.java,v 1.1 2005-06-23 09:56:00 andy_seaborne Exp $
+ * 
+ */ 
 
-public class JosekiTests
+public class FetchClosure implements FetchHandler, Loadable
 {
+    public String getInterfaceURI() { return org.joseki.vocabulary.JosekiVocab.fetchClosure ; }
 
-    public static void main(String[] args)
-    {
-        junit.textui.TestRunner.run(JosekiTests.suite());
-    }
+    public void init(Resource binding, Resource implementation) {}
 
-    public static Test suite()
+
+    public boolean handles(Resource r, Set types){ return true ;}
+    public void fetch(Resource r, Set types, Model acc)
     {
-        TestSuite suite = new TestSuite("Joseki Test Suite");
-        //$JUnit-BEGIN$
-        suite.addTestSuite(TestContentNegotiation.class);
-        //$JUnit-END$
-        return suite;
+        Closure.closure(r, false, acc) ;
     }
 }
 
+
 /*
- * (c) Copyright 2004, 2005 Hewlett-Packard Development Company, LP
- * All rights reserved.
+ *  (c) Copyright 2003, 2004, 2005 Hewlett-Packard Development Company, LP
+ *  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -58,3 +61,4 @@ public class JosekiTests
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+

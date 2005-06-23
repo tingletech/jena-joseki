@@ -1,39 +1,67 @@
 /*
- * (c) Copyright 2004, 2005 Hewlett-Packard Development Company, LP
- * All rights reserved.
+ * (c) Copyright 2003, 2004, 2005 Hewlett-Packard Development Company, LP
  * [See end of file]
  */
 
-package org.joseki.test;
 
-import junit.framework.Test;
-import junit.framework.TestSuite;
-
-/** 
- * @author Andy Seaborne
- * @version $Id: JosekiTests.java,v 1.3 2005-06-23 09:55:58 andy_seaborne Exp $
+/**
+ * @author     Andy Seaborne
+ * @version    $Id: CacheTest.java,v 1.1 2005-06-23 09:55:57 andy_seaborne Exp $
  */
+ 
+package org.joseki.util.cache;
 
-public class JosekiTests
+//import org.apache.commons.logging.* ;
+
+public class CacheTest
 {
 
     public static void main(String[] args)
     {
-        junit.textui.TestRunner.run(JosekiTests.suite());
-    }
+        if (System.getProperty("java.util.logging.config.file") == null)
+            System.setProperty("java.util.logging.config.file", "etc/logging.properties");
 
-    public static Test suite()
+        Cache c = new Cache(4, new ItemFactoryTest(), new CachePolicyLRU() ) ;
+        
+        for ( int i = 0 ; i < 5 ; i++)
+        {
+            Integer val = new Integer(i) ;
+            String key = val.toString() ;
+            c.put(key, val) ;
+        }
+        
+        
+        get(c, new Integer(1).toString()) ;
+        get(c, new Integer(2).toString()) ;
+        get(c, new Integer(3).toString()) ;
+        get(c, new Integer(9).toString()) ;
+    }
+    
+    static void get(Cache c, Object k)
     {
-        TestSuite suite = new TestSuite("Joseki Test Suite");
-        //$JUnit-BEGIN$
-        suite.addTestSuite(TestContentNegotiation.class);
-        //$JUnit-END$
-        return suite;
+        Object obj = c.get(k) ;
+        System.out.println(k + " => "+obj) ;
+    }
+    
+    
+    static class ItemFactoryTest implements CacheItemFactory
+    {
+        
+        public Object create(Object key)
+        {
+            return key ;
+        }
+
+        public void destroy(Object key, Object obj)
+        {
+        }
+        
     }
 }
 
+
 /*
- * (c) Copyright 2004, 2005 Hewlett-Packard Development Company, LP
+ * (c) Copyright 2003, 2004, 2005 Hewlett-Packard Development Company, LP
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without

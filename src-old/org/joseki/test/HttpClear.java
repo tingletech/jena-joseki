@@ -1,40 +1,36 @@
 /*
- * (c) Copyright 2004, 2005 Hewlett-Packard Development Company, LP
- * All rights reserved.
+ * (c) Copyright 2003, 2004, 2005 Hewlett-Packard Development Company, LP
  * [See end of file]
  */
 
 package org.joseki.test;
 
-import junit.framework.Test;
-import junit.framework.TestSuite;
+import java.net.* ;
 
-/** 
- * @author Andy Seaborne
- * @version $Id: JosekiTests.java,v 1.3 2005-06-23 09:55:58 andy_seaborne Exp $
+import com.hp.hpl.jena.joseki2.HttpExecute;
+
+/** Execute a "clear model" operation ona remote model (that allows such).
+ * @author      Andy Seaborne
+ * @version     $Id: HttpClear.java,v 1.1 2005-06-23 09:55:58 andy_seaborne Exp $
  */
-
-public class JosekiTests
+public class HttpClear extends HttpExecute
 {
-
-    public static void main(String[] args)
+    
+    public HttpClear(URL url) throws MalformedURLException
     {
-        junit.textui.TestRunner.run(JosekiTests.suite());
+        this(url.toString()) ;
     }
-
-    public static Test suite()
+    
+    public HttpClear(String urlStr) throws MalformedURLException
     {
-        TestSuite suite = new TestSuite("Joseki Test Suite");
-        //$JUnit-BEGIN$
-        suite.addTestSuite(TestContentNegotiation.class);
-        //$JUnit-END$
-        return suite;
+        super(urlStr, "clear") ;
     }
 }
 
+
 /*
- * (c) Copyright 2004, 2005 Hewlett-Packard Development Company, LP
- * All rights reserved.
+ *  (c) Copyright 2003, 2004, 2005 Hewlett-Packard Development Company, LP
+ *  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -58,3 +54,4 @@ public class JosekiTests
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+ 
