@@ -14,7 +14,7 @@
  */
 
 //package org.mortbay.http.handler;
-package org.joseki.webserver;
+package org.joseki.servlets;
 
 import org.mortbay.http.* ;
 import org.mortbay.http.handler.*;
@@ -30,7 +30,7 @@ import java.util.*;
  * Was org.mortbay.http.handler.NotFoundHandler except I want the time/date as well
  * because it helps debugging.
  * 
- * @version $Id: NotFoundHandler2.java,v 1.1 2005-06-23 09:56:01 andy_seaborne Exp $
+ * @version $Id: NotFoundHandler2.java,v 1.1 2005-06-23 16:20:01 andy_seaborne Exp $
  * @author Greg Wilkins (gregw)
  */
 public class NotFoundHandler2 extends NotFoundHandler

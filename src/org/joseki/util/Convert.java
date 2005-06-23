@@ -10,12 +10,12 @@ import java.net.URLDecoder;
 import java.io.UnsupportedEncodingException ;
 
 /**
- * @version     $Id: Convert.java,v 1.4 2005-01-03 20:26:36 andy_seaborne Exp $
+ * @version     $Id: Convert.java,v 1.5 2005-06-23 16:19:45 andy_seaborne Exp $
  * @author      Andy Seaborne
  */
 public class Convert
 {
-    // UTF-8 is required inJava implementations
+    // UTF-8 is required in Java implementations
  
     // Choose the characters to escape.
 

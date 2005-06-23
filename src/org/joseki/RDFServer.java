@@ -16,7 +16,7 @@ import org.apache.commons.logging.* ;
 
 /** Standalone server.
  * 
- * @version $Id: RDFServer.java,v 1.1 2005-06-23 09:55:59 andy_seaborne Exp $
+ * @version $Id: RDFServer.java,v 1.2 2005-06-23 16:20:01 andy_seaborne Exp $
  * @author  Andy Seaborne
  */
 
@@ -98,7 +98,7 @@ public class RDFServer
             server.addListener(":"+port) ;
             
             webAppContextJoseki = 
-                    server.addWebApplication(serverBaseURI, "./webapps/joseki3/") ;
+                    server.addWebApplication(serverBaseURI, "./webapps/joseki/") ;
             
             if ( webAppContextJoseki == null )
                 throw new JosekiServerException("Failed to create the web application (null returned)") ;
@@ -155,7 +155,7 @@ public class RDFServer
         if ( config.getWarnings() > 0 )
         {
             log.fatal("Configuration warnings") ;
-            return ;
+            throw new ConfigurationErrorException("Configuration warnings") ;
         }
         
         try {
@@ -193,7 +193,8 @@ public class RDFServer
         }
         
         if ( ! earlyInitialize )
-            return ;
+            return ; 
+
         
         // Check that the dispatcher registry seen by the webapp is the
         // same as the one created during initialization.  That is, the
