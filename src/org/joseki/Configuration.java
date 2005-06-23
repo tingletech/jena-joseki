@@ -20,15 +20,12 @@ import com.hp.hpl.jena.util.FileManager;
 import com.hp.hpl.jena.vocabulary.RDF;
 import com.hp.hpl.jena.vocabulary.RDFS;
 
-import dev.RunUtils;
-
 import org.apache.commons.logging.*;
 import org.joseki.module.Loader;
 import org.joseki.module.LoaderException;
 
 public class Configuration
 {
-    static { RunUtils.setLog4j() ; }
     static Log log = LogFactory.getLog(Configuration.class) ;
     
     Loader loader = new Loader() ;
@@ -41,12 +38,6 @@ public class Configuration
     Set badServiceRefs = new HashSet() ;    // Service references that failed initially checking. 
     Map datasets = new HashMap() ;          // Dataset resource to description
     int warnings = 0 ;
-    
-    static public void main(String argv[])
-    {
-        ServiceRegistry reg = new ServiceRegistry(); 
-        Configuration conf = new Configuration(argv[0], reg) ;
-    }
     
     public Configuration(String filename, ServiceRegistry registry)
     {

@@ -8,7 +8,6 @@
 package dev;
 import java.net.* ;
 
-import org.joseki.Configuration;
 import org.joseki.RDFServer;
 
 import org.joseki.http.HttpContentType;
@@ -19,20 +18,12 @@ public class Run
 
     public static void main(String[] args)
     {
-        //runConfig() ;
-        
         //runJosekiServer(args) ; System.exit(0) ;
         
         runNewJosekiServer(args) ; System.exit(0) ;
         
         runParamsTest() ; System.exit(0) ;
         
-    }
-    
-    static void runCondig()
-    {
-        Configuration.main(new String[]{"joseki-config.ttl"}) ;
-        System.exit(0) ;
     }
     
     public static void runJosekiServer(String[] args) 

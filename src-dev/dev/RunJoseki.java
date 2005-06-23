@@ -12,7 +12,7 @@ import joseki.rdfserver;
  *  provide a place to configure things before calling the real main() 
  * 
  * @author Andy Seaborne
- * @version $Id: RunJoseki.java,v 1.2 2005-05-27 15:51:44 andy_seaborne Exp $
+ * @version $Id: RunJoseki.java,v 1.1 2005-06-23 10:16:16 andy_seaborne Exp $
  */ 
 
 public class RunJoseki

@@ -16,8 +16,8 @@
 	<classpathentry kind="lib" path="lib/xml-apis.jar"/>
 	<classpathentry sourcepath="jena-src.zip" kind="lib" path="lib/jena.jar"/>
 	<classpathentry kind="lib" path="lib/log4j-1.2.9.jar"/>
-	<classpathentry kind="src" path="src2"/>
 	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="src" path="src-dev"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/ARQ"/>
 	<classpathentry kind="output" path="classes"/>
 </classpath>
