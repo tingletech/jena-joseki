@@ -379,6 +379,7 @@ public class Configuration
                 log.info("Service skipped: "+srv.getRef()) ;
                 continue ;
             }
+            ref = Service.canonical(ref) ;
             registry.add(ref, srv) ;
             if ( srv.getDatasetDesc() != null)
                 log.info("Service: "+srv.getRef()+" "+srv.getDatasetDesc().toString()) ;

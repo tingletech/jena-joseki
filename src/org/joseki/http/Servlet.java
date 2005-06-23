@@ -19,7 +19,7 @@ import org.joseki.*;
 
 /** The servlet class.
  * @author  Andy Seaborne
- * @version $Id: Servlet.java,v 1.1 2005-06-23 09:55:58 andy_seaborne Exp $
+ * @version $Id: Servlet.java,v 1.2 2005-06-23 17:50:17 andy_seaborne Exp $
  */
 
 public class Servlet extends HttpServlet implements Connector
@@ -159,8 +159,7 @@ public class Servlet extends HttpServlet implements Connector
             }
 
             String serviceURI = chooseServiceURI(uri, httpRequest) ;
-            if ( serviceURI.startsWith("/") )
-                serviceURI = serviceURI.substring(1) ;
+            serviceURI = Service.canonical(serviceURI) ;
             
             log.info("Service URI = <"+serviceURI+">") ;
             
@@ -204,12 +203,17 @@ public class Servlet extends HttpServlet implements Connector
             try {
                 service.exec(request, response) ;
             }
+            catch (QueryExecutionException ex)
+            {
+                response.doException(ex) ;
+            }
             catch (ExecutionException ex)
             {
                 log.warn("Service execution error", ex) ;
-                httpResponse.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR) ;
-                httpResponse.flushBuffer() ;
-                httpResponse.getWriter().close() ;
+//                httpResponse.setStatus() ;
+//                httpResponse.flushBuffer() ;
+//                httpResponse.getWriter().close() ;
+                httpResponse.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR) ;
             } 
             
             //msg(Level.FINE, "Get: URL= "+uri) ;
@@ -220,9 +224,10 @@ public class Servlet extends HttpServlet implements Connector
         {
             try {
                 log.warn("Internal server error", ex) ;
-                httpResponse.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR) ;
-                httpResponse.flushBuffer() ;
-                httpResponse.getWriter().close() ;
+//                httpResponse.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR) ;
+//                httpResponse.flushBuffer() ;
+//                httpResponse.getWriter().close() ;
+                httpResponse.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR) ;
             } catch (Exception e) {}
         }        
     }

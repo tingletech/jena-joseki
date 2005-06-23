@@ -65,11 +65,17 @@ public class SPARQL extends QueryCom implements Loadable
         try {
             //log.info("Request: "+request.paramsAsString()) ;
             String queryString = request.getParam(P_QUERY) ;
-            if  (queryString == null || queryString.equals("") )
+            if  (queryString == null )
             {
-                log.debug("Query: No query argument") ;
+                log.debug("No query argument") ;
                 throw new QueryExecutionException(ExecutionError.rcQueryExecutionFailure,
-                "Empty query string");    
+                    "No query string");    
+            }
+            if ( queryString.equals("") )
+            {
+                log.debug("Empty query string") ;
+                throw new QueryExecutionException(ExecutionError.rcQueryExecutionFailure,
+                    "Empty query string");    
             }
             
             // ---- Query
@@ -144,17 +150,17 @@ public class SPARQL extends QueryCom implements Loadable
             if ( query.isSelectType() && wantsAppXML )
             {
                 // Includes text
-                execQuerySelectXML(qexec, request, response) ;
+                execQuerySelectXML(query, qexec, request, response) ;
                 log.info("OK: "+queryStringLog) ;
                 return ;
             }
             
             if ( query.isAskType() )
-                execQueryAsk(qexec, request, response) ;
+                execQueryAsk(query, qexec, request, response) ;
             else
             {
                 // SELECT / RDF results, CONSTRUCT or DESCRIBE
-                Model results = execQueryModel(qexec) ;
+                Model results = execQueryModel(query, qexec) ;
                 response.doResponse(results) ;
             }
             log.info("OK - "+queryStringLog) ;
@@ -168,11 +174,9 @@ public class SPARQL extends QueryCom implements Loadable
         }
     }
 
-    private Model execQueryModel(QueryExecution qexec) throws QueryExecutionException
+    private Model execQueryModel(Query query, QueryExecution qexec) throws QueryExecutionException
     {
         try {
-            Query query = qexec.getQuery() ;
-            
             if ( query.isSelectType() )
             {
                 ResultSet results = qexec.execSelect() ;
@@ -198,10 +202,9 @@ public class SPARQL extends QueryCom implements Loadable
   
     static final String paramStyleSheet = "stylesheet" ;
     
-    private void execQuerySelectXML(QueryExecution qexec, Request request, Response response)
+    private void execQuerySelectXML(Query query, QueryExecution qexec, Request request, Response response)
     throws QueryExecutionException
     {
-        Query query = qexec.getQuery() ;
         String stylesheetURL = null ;
         if ( request.containsParam(paramStyleSheet) )
         {
@@ -233,7 +236,7 @@ public class SPARQL extends QueryCom implements Loadable
     }
 
     
-    private void execQueryAsk(QueryExecution qexec, Request request, Response response)
+    private void execQueryAsk(Query query, QueryExecution qexec, Request request, Response response)
     throws QueryExecutionException
     {
         String stylesheetURL = null ;

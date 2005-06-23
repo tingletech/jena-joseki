@@ -15,10 +15,7 @@ public class Service
     
     public Service(Processor proc, String ref, DatasetDesc dataset)
     {
-        while ( ref.startsWith("/") )
-            ref = ref.substring(1) ;
-        
-        this.serviceRef = ref ; 
+        this.serviceRef = canonical(ref) ; 
         this.processor = proc ;
         this.dataset = dataset ;
         this.available = true ;
@@ -40,6 +37,13 @@ public class Service
     public String toString()
     {
         return "Service: "+serviceRef ;
+    }
+    
+    public static String canonical(String ref)
+    {
+        while ( ref.startsWith("/") )
+            ref = ref.substring(1) ;
+        return ref ;
     }
 }
 
