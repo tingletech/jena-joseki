@@ -9,12 +9,11 @@ package org.joseki.util;
 /** org.joseki.util.StringUtils
  * 
  * @author Andy Seaborne
- * @version $Id: StringUtils.java,v 1.2 2005-01-03 20:26:36 andy_seaborne Exp $
+ * @version $Id: StringUtils.java,v 1.3 2005-06-23 18:17:16 andy_seaborne Exp $
  */
 
 public class StringUtils
 {
-    // Java 1.4-ism
     public static String[] split(String s, String splitStr)
     {
         String[] x = s.split(splitStr) ;
@@ -24,26 +23,6 @@ public class StringUtils
         }
         return x ;
     }
-    
-    public static String join(String sep, String[]a)
-    {
-        if ( a.length == 0 )
-            return "" ;
-        
-        if ( a.length == 1)
-            return a[0] ;
-
-        StringBuffer sbuff = new StringBuffer() ;
-        sbuff.append(a[0]) ;
-        
-        for ( int i = 1 ; i < a.length ; i++ )
-        {
-            sbuff.append(sep) ;
-            sbuff.append(a[i]) ;
-        }
-        return sbuff.toString() ;
-    }
-    
 }
 
 
