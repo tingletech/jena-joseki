@@ -101,9 +101,22 @@ public class SPARQL extends QueryCom implements Loadable
                 throw new QueryExecutionException(ExecutionError.rcQueryParseFailure, "Unknown Parse error") ;
             }
             
+            // Check arguments
+            
+            if ( ! allowDatasetDesc )
+            {
+                // Restrict to service dataset only. 
+               if ( datasetInProtocol(request) )
+                   throw new QueryExecutionException(ExecutionError.rcArgumentError, "This service does not allow the dataset to be specified in the protocol request") ;
+               if ( query.hasDatasetDescription() )
+                   throw new QueryExecutionException(ExecutionError.rcArgumentError, "This service does not allow the dataset to be specified in the query") ;
+            }
+            
             // ---- Dataset
             
             Dataset dataset = datasetFromProtocol(request) ;
+            
+            
             boolean useQueryDesc = false ;
             
             if ( dataset == null )
@@ -114,7 +127,8 @@ public class SPARQL extends QueryCom implements Loadable
                 // If in query, then the query engine will do the loading.
             }
             
-            
+            // Use the service dataset description if
+            // not in query and not in protocol. 
             if ( !useQueryDesc && dataset == null )
             {
                 if ( datasetDesc != null )
@@ -277,6 +291,15 @@ public class SPARQL extends QueryCom implements Loadable
         tmp = tmp.replace('\n', ' ') ;
         tmp = tmp.replace('\r', ' ') ;
         return tmp ;
+    }
+    
+    private boolean datasetInProtocol(Request request)
+    {
+        if ( request.containsParam(P_DEFAULT_GRAPH) )
+            return true ;
+        if ( request.containsParam(P_NAMED_GRAPH) )
+            return true ;
+        return false ;
     }
     
     private Dataset datasetFromProtocol(Request request) throws QueryExecutionException

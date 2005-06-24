@@ -11,7 +11,7 @@ import java.util.*;
 
 /** General Request 
  * @author      Andy Seaborne
- * @version     $Id: Request.java,v 1.1 2005-06-23 09:55:59 andy_seaborne Exp $
+ * @version     $Id: Request.java,v 1.2 2005-06-24 13:45:47 andy_seaborne Exp $
  */
 public class Request
 {
@@ -71,7 +71,7 @@ public class Request
 
     public boolean containsParam(String param)
     {
-        return getParams(param) != null ;
+        return getParamsOrNull(param) != null ;
     }
     
     public Iterator parameterNames()
