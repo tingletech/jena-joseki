@@ -23,10 +23,7 @@
 ## About this configuration
 
 <> joseki:include <file:joseki-defs.ttl> .
-
-##     # Include other configuration information
-##     <joseki-def-proc.n3> # , <joseki-def-??.n3>
-##     .
+    # Include other configuration information
  
 ## --------------------------------------------------------------
 ## About this server
@@ -37,9 +34,10 @@
 
 ## --------------------------------------------------------------
 ## Services
+
 ## Services are best described by a blank node - it's the
 ## serviceRef that will be used to match requests to services,
-## not any URI for the description.
+## not some resource URI for the description.
 
 # Service 1
 # General purpose SPARQL processor, no dataset, expects the
@@ -87,27 +85,6 @@
 ##         [ module:implementation [ module:className <java:module> ] ] ;
 ##     .
 ## 
-## --------------------------------------------------------------
-## Graphs available (Jena calls them Models)
-
-## ---- A model, with RDF read from a file 
-## (syntax determined by file extenstion - defaults to RDF/XML)
-
-_:model  rdf:type jms:DefaultModelSpec ;
-    rdfs:label "Model(plain)" ;
-    jms:loadWith  <file:D.ttl> .
-
-_:model1  rdf:type jms:DefaultModelSpec ;
-    rdfs:label "Model-1" ;
-    jms:loadWith  <file:D1.ttl> .
-
-
-# Abbreviated forms (rewrite /CONSTRUCT then query again for model spec form):
-##_:model2    joseki:attachedModel        <file:Data/empty.nt> ;
-_:model2 rdf:type jms:DefaultModelSpec ;
-    rdfs:label "Model-2" ;
-    jms:loadWith  <file:D2.ttl> .
-
 
 ## --------------------------------------------------------------
 ## Datasets
@@ -136,58 +113,33 @@ _:books   rdf:type joseki:RDFDataSet ;
         jms:loadWith  <file:Data/books.n3> ] ;
     .
 
-## What about Dataset builders that are external code?
-## i.e. adapters to other sources of RDF
-    
+## --------------------------------------------------------------
+## Individual graphs  (Jena calls them Models)
+## ---- A model, with RDF read from a file 
+## (syntax determined by file extension - defaults to RDF/XML)
+
+_:model  rdf:type jms:DefaultModelSpec ;
+    rdfs:label "Model(plain)" ;
+    jms:loadWith  <file:D.ttl> .
+
+_:model1  rdf:type jms:DefaultModelSpec ;
+    rdfs:label "Model-1" ;
+    jms:loadWith  <file:D1.ttl> .
+
+_:model2 rdf:type jms:DefaultModelSpec ;
+    rdfs:label "Model-2" ;
+    jms:loadWith  <file:D2.ttl> .
+
+## Examples of RDFS and OWL inference models
 
 ## --------------------------------------------------------------
 ## Processors
 ## Usually, this section is empty because only standard
 ## processors are used via inclusion of common definitions.
 
-## ----- definitions --------------------------------------------------
-## Move to defs file.
 
-joseki:ProcessorSPARQL
-    rdfs:label "General SPARQL processor" ;
-    rdf:type joseki:Processor ;
-    module:implementation joseki:ImplSPARQL ;
 
-    # Parameters - this processor processes FROM/FROM NAMED
-    joseki:allowExplicitDataset       "true"^^xsd:boolean ;
-    joseki:allowWebLoading            "true"^^xsd:boolean ;
-
-    # Names we answer to (optional request parameters)
-    joseki:queryOperationName "SPARQL" ;
-    joseki:queryOperationName "sparql" ;
-    joseki:queryOperationName ql:SPARQL ;
-    .
-
-joseki:ProcessorSPARQL_FixedDS
-    rdfs:label "SPARQL processor for fixed datasets" ;
-    rdf:type joseki:Processor ;
-    module:implementation joseki:ImplSPARQL ;
-
-    # This processor does not accept queries with FROM/FROM NAMED
-    joseki:allowExplicitDataset       "false"^^xsd:boolean ;
-    joseki:allowWebLoading            "false"^^xsd:boolean ;
-    .
-
-joseki:ImplSPARQL
-    rdf:type   joseki:ServiceImpl ;
-    module:className
-        <java:org.joseki.processors.SPARQL> .
-    
-## joseki:ProcessorGet
-##     rdf:type joseki:Service ;
-##     joseki:queryOperationName "GET" ; 
-##     module:implementation joseki:ImplGET .
-## 
-## joseki:ImplGET
-##      rdf:type   joseki:ServiceImpl ;
-##      module:className
-##          <java:org.joseki.processors.QueryProcessorGET> ;
-##      .
+## --------------------------------------------------------------
 
 # Local Variables:
 # tab-width: 4

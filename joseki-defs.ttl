@@ -9,3 +9,48 @@
 @prefix ql:     <http://jena.hpl.hp.com/2003/07/query/> .
 
 @prefix jms:    <http://jena.hpl.hp.com/2003/08/jms#> .
+
+## ----- definitions --------------------------------------------------
+
+
+joseki:ProcessorSPARQL
+    rdfs:label "General SPARQL processor" ;
+    rdf:type joseki:Processor ;
+    module:implementation joseki:ImplSPARQL ;
+
+    # Parameters - this processor processes FROM/FROM NAMED
+    joseki:allowExplicitDataset       "true"^^xsd:boolean ;
+    joseki:allowWebLoading            "true"^^xsd:boolean ;
+
+    # Names we answer to (optional request parameters)
+##     joseki:queryOperationName "SPARQL" ;
+##     joseki:queryOperationName "sparql" ;
+##     joseki:queryOperationName ql:SPARQL ;
+    .
+
+joseki:ProcessorSPARQL_FixedDS
+    rdfs:label "SPARQL processor for fixed datasets" ;
+    rdf:type joseki:Processor ;
+    module:implementation joseki:ImplSPARQL ;
+
+    # This processor does not accept queries with FROM/FROM NAMED
+    joseki:allowExplicitDataset       "false"^^xsd:boolean ;
+    joseki:allowWebLoading            "false"^^xsd:boolean ;
+    .
+
+joseki:ImplSPARQL
+    rdf:type   joseki:ServiceImpl ;
+    module:className
+        <java:org.joseki.processors.SPARQL> .
+    
+## joseki:ProcessorGet
+##     rdf:type joseki:Service ;
+##     joseki:queryOperationName "GET" ; 
+##     module:implementation joseki:ImplGET .
+## 
+## joseki:ImplGET
+##      rdf:type   joseki:ServiceImpl ;
+##      module:className
+##          <java:org.joseki.processors.QueryProcessorGET> ;
+##      .
+

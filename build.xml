@@ -26,17 +26,14 @@
 
     <property name="doc.dir"         value="doc"/>
     <property name="web.dir"         value="Web"/>
-    <property name="examples.dir"    value="Examples/"/>
-    <property name="python.client"   value="Python/"/>
-    <property name="perl.client"     value="Perl/"/>
     <property name="webapp.name"     value="joseki"/>
 
     <!-- Where to build the web application -->
-    <property name="webapp.build.dir"
+    <property name="webapps.build.dir"
                   value="webapps.build/${webapp.name}"/>
     
     <!-- Where the webapp is deploy by default -->
-    <property name="webapp.deploy.dir"      value="webapps/${webapp.name}"/>
+    <property name="webapps.deploy.dir"      value="webapps/${webapp.name}"/>
 
     <path id="runClasspath">
         <fileset dir="lib/" includes="*.jar"/>
@@ -84,7 +81,6 @@
 
     <target name="jar" depends="make-jar"
 	    description="Create the Joseki JAR file">
-      <antcall target="clean-build-dirs"/>
     </target>
 
 
@@ -93,6 +89,7 @@
         <jar jarfile="${jar.dir}/${jar.name}"
              basedir="${build.dir}">
         </jar>
+	<antcall target="clean-build-dirs"/>
     </target>
 
     <!-- ============================================== -->
@@ -103,8 +100,8 @@
 
     <target name="webapp-deploy" depends="webapp-build-format,webapp-build"
         description="Build and install into webapps/joseki">
-      <copy todir="${webapp.deploy.dir}">
-        <fileset dir="${webapp.build.dir}">
+      <copy todir="${webapps.deploy.dir}">
+        <fileset dir="${webapps.build.dir}">
           <include name="**"/>
         </fileset>
       </copy>
@@ -113,25 +110,25 @@
     <target name="webapp-clean" 
             description="Remove deployed JARs (use if you have deployed a full webapp)">
       <delete>
-        <fileset dir="${webapp.deploy.dir}/WEB-INF/lib" includes="*.jar"/>
+        <fileset dir="${webapps.deploy.dir}/WEB-INF/lib" includes="*.jar"/>
       </delete>
     </target>
 
     <target name="webapp-build-clean" description="Clean out the webapp build area">
-      <delete dir="${webapp.build.dir}"/>
-      <mkdir dir="${webapp.build.dir}"/>
+      <delete dir="${webapps.build.dir}"/>
+      <mkdir dir="${webapps.build.dir}"/>
     </target>
 
 
     <!-- Create webapp area (minimal) -->
     <target name="webapp-build-format" depends="webapp-build-clean"
             description="Format the webapps/ area">
-        <copy tofile="${webapp.build.dir}/WEB-INF/web.xml" 
+        <copy tofile="${webapps.build.dir}/WEB-INF/web.xml" 
               file="etc/webapp-web.xml"/>
     </target>
 
     <target name="copy-webapp-libs" depends="check-jar">
-        <copy todir="${webapp.build.dir}/WEB-INF/lib">
+        <copy todir="${webapps.build.dir}/WEB-INF/lib">
           <fileset dir="${lib.dir}"  >
               <include name="*.jar"/>
               <exclude name="javax.servlet.jar"/>
@@ -143,9 +140,9 @@
 
     <target name="war-file" depends="check-jar,webapp-build"
       description="Create a web application archive (WAR) fie" >
-        <war warfile="${webapp.name}.war"
-             webxml="${webapp.build.dir}/WEB-INF/web.xml">
-            <fileset dir="${webapp.build.dir}" excludes="**/web.xml"/>
+        <war warfile="${webapps.name}.war"
+             webxml="${webapps.build.dir}/WEB-INF/web.xml">
+            <fileset dir="${webapps.build.dir}" excludes="**/web.xml"/>
         </war>
     </target>
 
@@ -163,7 +160,7 @@
     <!-- ============================================== -->
     <!-- Create the distribution tree -->
 
-    <!-- Does not current include the WAR file -->
+    <!-- Does not include the WAR file -->
 
     <target name="release" depends="junit,create-dist,create-zips"
             description="Build a release zip">
@@ -235,31 +232,6 @@
         </zip>
     -->
 
-        <!-- Examples -->
-        <copy todir="${dist.dir}/${examples.dir}">
-          <fileset dir="${examples.dir}" includes="**"/>
-          <fileset dir="Data" excludes="*.~"/>
-        </copy>
-
-        <!-- Python client library -->
-        <copy todir="${dist.dir}/${python.client}">
-            <fileset dir="${python.client}">
-              <include name="**"/>
-              <exclude name="*.~"/>
-              <exclude name="CVS"/>
-              <exclude name="*.pyc"/>
-            </fileset>
-        </copy>
-
-        <!-- Perl client library -->
-        <copy todir="${dist.dir}/${perl.client}">
-            <fileset dir="${perl.client}">
-              <include name="**"/>
-              <exclude name="*.~"/>
-              <exclude name="CVS"/>
-            </fileset>
-        </copy>
-
         <!-- Misc -->
         <copy todir="${dist.dir}" file="CopyrightNotice.txt"/>
         <copy todir="${dist.dir}" file="README.txt"/>
@@ -282,9 +254,9 @@
         </copy>
 
         <!-- webapp -->
-        <mkdir  dir="${dist.dir}/${webapp.deploy.dir}"/>
-        <copy todir="${dist.dir}/${webapp.deploy.dir}">
-          <fileset dir="${webapp.build.dir}" />
+        <mkdir  dir="${dist.dir}/${webapps.deploy.dir}"/>
+        <copy todir="${dist.dir}/${webapps.deploy.dir}">
+          <fileset dir="${webapps.build.dir}" />
         </copy>
     </target>
            
@@ -352,7 +324,7 @@
                  Public="true"
                  Use="true"
                  additionalparam="-breakiterator"
-                 bottom="Copyright &#169; 2002 Hewlett-Packard. All Rights Reserved.">
+                 bottom="Copyright &#169; 2003, 2004, 2005 Hewlett-Packard. All Rights Reserved.">
             <classpath refid="buildClasspath" />
         </javadoc>
     </target>
