@@ -19,7 +19,7 @@ import org.joseki.*;
 
 /** The servlet class.
  * @author  Andy Seaborne
- * @version $Id: Servlet.java,v 1.3 2005-06-24 17:45:33 andy_seaborne Exp $
+ * @version $Id: Servlet.java,v 1.4 2005-06-24 18:08:54 andy_seaborne Exp $
  */
 
 public class Servlet extends HttpServlet implements Connector
@@ -186,7 +186,7 @@ public class Servlet extends HttpServlet implements Connector
             {
                 log.info("404 - Service not found") ;
                 //doErrorNoSuchService() ;
-                httpResponse.sendError(HttpServletResponse.SC_NOT_FOUND, "Service <"+uri+"> not found") ;
+                httpResponse.sendError(HttpServletResponse.SC_NOT_FOUND, "Service <"+serviceURI+"> not found") ;
                 return ;
             }
             
@@ -195,7 +195,7 @@ public class Servlet extends HttpServlet implements Connector
                 log.info("Service is not available") ;
                 //doErrorNoSuchService() ;
                 httpResponse.sendError(HttpServletResponse.SC_SERVICE_UNAVAILABLE,
-                                       "Service <"+uri+"> unavailable") ;
+                                       "Service <"+serviceURI+"> unavailable") ;
                 return ;
             }
                 
@@ -235,6 +235,14 @@ public class Servlet extends HttpServlet implements Connector
 
     public void doPost(HttpServletRequest httpRequest, HttpServletResponse httpResponse)
     {
+        String s = httpRequest.getContentType() ;
+        if ( s != null && ! s.equals("application/x-www-form-urlencoded") )
+        {
+            try {
+                httpResponse.sendError(HttpServletResponse.SC_UNSUPPORTED_MEDIA_TYPE, "Must be application/x-www-form-urlencoded") ;
+            } catch (Exception ex) {}
+            return ;
+        }
         doGet(httpRequest, httpResponse) ;
     }
 
