@@ -3,7 +3,7 @@
     <property name="Name"            value="Joseki"/>
     <property name="name"            value="joseki"/>
 
-    <property name="version"         value="3.0-dev-2"/>
+    <property name="version"         value="3.0-dev-1"/>
     <property name="dist.name"       value="${name}-${version}"/>
     <property name="dist.path"       value="${Name}-${version}"/>
     <property name="dist.root"       value="dist"/>
@@ -23,10 +23,6 @@
     <property name="jar.dir"         value="${lib.dir}"/>
     <property name="jar.name"        value="${name}.jar"/>
     <property name="javadoc.dir"     value="doc/javadoc"/>
-    <property name="javadocClient.dir"
-                  value="${javadoc.dir}/client"/>
-    <property name="javadocServer.dir"
-                  value="${javadoc.dir}/server"/>
 
     <property name="doc.dir"         value="doc"/>
     <property name="web.dir"         value="Web"/>
@@ -86,7 +82,11 @@
 
     <!-- ============================================== -->
 
-    <target name="jar" depends="make-jar" description="Create the Joseki JAR file"/>
+    <target name="jar" depends="make-jar"
+	    description="Create the Joseki JAR file">
+      <antcall target="clean-build-dirs"/>
+    </target>
+
 
     <target name="make-jar" depends="compile">
         <mkdir dir="${jar.dir}"/>
@@ -134,7 +134,6 @@
         <copy todir="${webapp.build.dir}/WEB-INF/lib">
           <fileset dir="${lib.dir}"  >
               <include name="*.jar"/>
-              <exclude name="commons-httpclient*.jar"/>
               <exclude name="javax.servlet.jar"/>
               <exclude name="org.mortbay.*.jar"/>
               <exclude name="jasper*.jar"/>
@@ -167,7 +166,8 @@
     <!-- Does not current include the WAR file -->
 
     <target name="release" depends="junit,create-dist,create-zips"
-            description="Build a release zip"/>
+            description="Build a release zip">
+    </target>
 
     <!-- Distribution includes the skeleton webapp, 
          not the jar files in webapp directory nor the war file
@@ -339,35 +339,12 @@
     <!-- ============================================== -->
     <!-- Documentation -->
 
-    <target name="javadoc" depends="javadoc-client,javadoc-server">
-    </target>
-
-    <!-- Client library -->
-    <target name="javadoc-client">
-        <delete dir="${javadocClient.dir}"/>
-        <mkdir dir="${javadocClient.dir}"/>
-        <javadoc packagenames="com.hp.hpl.jena.joseki.*"
-                 sourcepath="${src.dir}"
-                 destdir="${javadocClient.dir}"
-                 author="true"
-                 version="true"
-                 windowtitle="${Name} Client API"
-                 doctitle="${Name}"
-                 Public="true"
-                 Use="true"
-                 additionalparam="-breakiterator"
-                 bottom="Copyright &#169; 2002, 2003, 2004 Hewlett-Packard Development Company, LP">
-            <classpath refid="buildClasspath" />
-        </javadoc>
-    </target>
-
-    <!-- Server system -->
-    <target name="javadoc-server">
-        <delete dir="${javadocServer.dir}"/>
-        <mkdir dir="${javadocServer.dir}"/>
+    <target name="javadoc">
+        <delete dir="${javadoc.dir}"/>
+        <mkdir dir="${javadoc.dir}"/>
         <javadoc packagenames="org.joseki.*"
                  sourcepath="${src.dir}"
-                 destdir="${javadocServer.dir}"
+                 destdir="${javadoc.dir}"
                  author="true"
                  version="true"
                  windowtitle="${Name} Server"
@@ -419,8 +396,8 @@
     <!-- ============================================== -->
     <!-- Misc -->
 
-    <target name="clean">
-        <!-- Delete the ${build} and ${dist} directory trees -->
+    <target name="clean-build-dirs">
         <delete dir="${build.dir}"/>
+        <mkdir dir="${build.dir}"/>
     </target>
 </project>

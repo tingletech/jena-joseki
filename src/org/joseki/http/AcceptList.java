@@ -15,7 +15,7 @@ import org.apache.commons.logging.*;
 /** A class to handle a list of accept types
  * 
  * @author Andy Seaborne
- * @version $Id: AcceptList.java,v 1.1 2005-06-23 09:55:58 andy_seaborne Exp $
+ * @version $Id: AcceptList.java,v 1.2 2005-06-24 18:41:55 andy_seaborne Exp $
  */
 
 public class AcceptList
@@ -79,7 +79,7 @@ public class AcceptList
      * 
      * @param proposalList Client list of possibilities
      * @param offerList    Server list of possibilities
-     * @return
+     * @return AcceptItem
      */
     
     static public AcceptItem match(AcceptList proposalList, AcceptList offerList)
