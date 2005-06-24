@@ -19,7 +19,7 @@ import org.joseki.*;
 
 /** The servlet class.
  * @author  Andy Seaborne
- * @version $Id: Servlet.java,v 1.2 2005-06-23 17:50:17 andy_seaborne Exp $
+ * @version $Id: Servlet.java,v 1.3 2005-06-24 17:45:33 andy_seaborne Exp $
  */
 
 public class Servlet extends HttpServlet implements Connector
@@ -235,31 +235,7 @@ public class Servlet extends HttpServlet implements Connector
 
     public void doPost(HttpServletRequest httpRequest, HttpServletResponse httpResponse)
     {
-        try {
-            if ( log.isDebugEnabled() )
-                log.debug(HttpUtils.fmtRequest(httpRequest)) ;
-            
-            String requestURL = httpRequest.getRequestURL().toString() ;
-            String uri = httpRequest.getRequestURI() ;
-            String httpQueryString = httpRequest.getQueryString() ;
-            
-            uri = chooseServiceURI(uri, httpRequest) ;
-            
-            if ( httpQueryString == null )
-            {
-                httpResponse.sendError(HttpServletResponse.SC_BAD_REQUEST, "The HTTP query string specified in POST is empty: it must be ?op=<opName>") ;
-                return ;
-            }
-
-            //try {} catch () {}{
-        }
-        catch (Exception ex)
-        {
-            ex.printStackTrace(System.err) ;
-            // Problems.
-            doPanic(httpResponse, HttpServletResponse.SC_INTERNAL_SERVER_ERROR) ;
-            return ;
-        }        
+        doGet(httpRequest, httpResponse) ;
     }
 
     // ------------------------------------------

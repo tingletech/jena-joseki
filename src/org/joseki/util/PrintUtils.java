@@ -12,7 +12,7 @@ import org.apache.commons.logging.* ;
 /** Code to format things for output 
  *  
  * @author     Andy Seaborne
- * @version    $Id: PrintUtils.java,v 1.2 2005-01-03 20:26:36 andy_seaborne Exp $
+ * @version    $Id: PrintUtils.java,v 1.3 2005-06-24 17:46:16 andy_seaborne Exp $
  */
  
 public class PrintUtils
@@ -51,6 +51,7 @@ public class PrintUtils
         }
         iter.close() ;
     }
+   
 }
 
 /*
