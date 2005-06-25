@@ -29,9 +29,6 @@ Joseki3
 + Testing 
   Include Tomcat in JUnit test cycle?  Or too heavy?
 
-+ Latest protocol
-    Add private params "ctype" (force MIME type of return), and XSLT "stylesheet"
-
 + Allow fetch handlers (renamed) for DESCRIBE
 
 + Management
@@ -41,4 +38,4 @@ Joseki3
   May be JMX (later), 
   javax.management in 1.5.0 MBean
   
-+ SOAP connector (Axis)
++ SOAP connector (Axis?)

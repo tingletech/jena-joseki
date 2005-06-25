@@ -37,6 +37,15 @@ public class Configuration
     Map services = new HashMap() ;
     Set badServiceRefs = new HashSet() ;    // Service references that failed initially checking. 
     Map datasets = new HashMap() ;          // Dataset resource to description
+    
+    // Stats
+    int numServices = 0 ;
+    int numServiceTriples = 0 ;
+    
+    int numDatasets = 0 ;
+    int numNamedGraphs = 0 ;
+    int numDefaultGraphs = 0 ;
+    
     int warnings = 0 ;
     
     public Configuration(String filename, ServiceRegistry registry)
@@ -71,9 +80,38 @@ public class Configuration
 
     public int getWarnings() { return warnings ; }
 
+    /** @return Returns the numDatasets. */
+    public int getNumDatasets()
+    {
+        return numDatasets ;
+    }
+
+    /** @return Returns the numDefaultGraphs. */
+    public int getNumDefaultGraphs()
+    {
+        return numDefaultGraphs ;
+    }
+
+    /** @return Returns the numNamedGraphs. */
+    public int getNumNamedGraphs()
+    {
+        return numNamedGraphs ;
+    }
+
+    /** @return Returns the numServices. */
+    public int getNumServices()
+    {
+        return numServices ;
+    }
     // ----------------------------------------------------------
     // Configuration model
-    
+
+    /** @param numServiceTriples The numServiceTriples to set. */
+    public void setNumServiceTriples(int numServiceTriples)
+    {
+        this.numServiceTriples = numServiceTriples ;
+    }
+
     private void readConfFile(Model confModel2, String filename, Set filesDone)
     {
         if ( filesDone.contains(filename) )
@@ -154,6 +192,8 @@ public class Configuration
     
     private void checkServiceReferences()
     {
+        // Check for services with two or more references
+        // and services with the same reference
         String s[] = new String[]{
             "SELECT *",
             "{",
@@ -169,6 +209,7 @@ public class Configuration
         try {
             for ( ResultSet rs = qexec.execSelect() ; rs.hasNext() ; )
             {
+                this.numServiceTriples ++;
                 QuerySolution qs = rs.nextSolution() ;
                 RDFNode service = qs.getResource("service") ;
                 String ref = serviceRef(qs.get("serviceRef")) ;
@@ -189,7 +230,7 @@ public class Configuration
                 if ( services.containsKey(service) ) 
                 {
                     String r = (String)services.get(service) ; 
-                    warn("Service has multiple references: \""+ref+"\" and \""+r+"\"") ;
+                    warn("Services has same references: \""+ref+"\" and \""+r+"\"") ;
                     badServiceRefs.add(r) ;
                     good = false ;
                 }
@@ -290,6 +331,7 @@ public class Configuration
                 
                 Service service = new Service(proc, ref, dataset) ;
                 services.put(ref, service) ;
+                numServices ++ ;
                 
                 // Record all well-formed services found.
                 serviceResources.add(serviceNode) ;
@@ -444,7 +486,7 @@ public class Configuration
                 Resource graphName = qs.getResource("graphName") ;
                 Resource graphData = qs.getResource("graphData") ;
                 
-                if ( dftGraph == null &&  graphName == null )
+                if ( dftGraph == null && graphName == null )
                     // Note the named graph match assumed a well-formed name/data pair
                     warn("Dataset with no default graph and no named graphs: "+ Utils.nodeLabel(x)) ;
                 
@@ -457,11 +499,13 @@ public class Configuration
                     
                     // Place in the configuration
                     datasets.put(x, src) ;
+                    numDatasets ++ ;
                     
                     if ( dftGraph != null )
                     {
                         log.info("  Default graph : "+Utils.nodeLabel(dftGraph)) ;
                         src.setDefaultGraph(dftGraph) ;
+                        numDefaultGraphs++ ;
                     }
                     dft = dftGraph ;
                 }
@@ -469,7 +513,7 @@ public class Configuration
                 {
                     // Check one default model.
                     if ( dftGraph != null && !dftGraph.equals(dft) )
-                        log.warn("  ** Two default graphs") ;
+                        warn("  Two default graphs") ;
                 }
                 
                 if ( graphName != null )
@@ -481,17 +525,18 @@ public class Configuration
                     
                     if ( graphData == null )
                     {
-                        log.warn("  ** Graph name but no graph data: <"+graphName.getURI()+">") ;
+                        warn("  Graph name but no graph data: <"+graphName.getURI()+">") ;
                         throw new ConfigurationErrorException("No data for graph <"+graphName.getURI()+">") ;
                     }
                     
                     if ( src.getNamedGraphs().containsKey(graphName.getURI()) )
                     {
-                        log.warn("  ** Skipping duplicate named graph: <"+graphName.getURI()+">") ;
+                        warn("  Skipping duplicate named graph: <"+graphName.getURI()+">") ;
                         continue ;
                     }
                     
                     src.addNamedGraph(graphName.getURI(), graphData) ;
+                    numNamedGraphs++ ; 
                 }
                 
                 ds = x ;

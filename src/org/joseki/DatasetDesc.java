@@ -6,9 +6,7 @@
 
 package org.joseki;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
+import java.util.*;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -33,9 +31,10 @@ public class DatasetDesc
     
     public DatasetDesc(Model conf) { confModel = conf ; }
     
-    /** @return Returns the dftGraph. */
+    /** @return Returns the resources for the default graph. */
     public Resource getDefaultGraph() { return defaultGraph ;  }
-    /**  * @param dftGraph The dftGraph to set. */
+    
+    /** @param Set the resource to use to make the default graph. */
     public void setDefaultGraph(Resource dftGraph) { this.defaultGraph = dftGraph ; }
 
     /** @return Returns the namedGraphs. */
@@ -73,6 +72,7 @@ public class DatasetDesc
         }
         return dataset ;
     }
+    
     
     private Model buildModel(Resource r)
     {
