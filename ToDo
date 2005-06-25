@@ -8,6 +8,7 @@ Joseki3
 + Search and remove references to "dispatcher"
 
 + Dataset cache coupled to descriptions.
+  need dataset set cache and "description key"
 
 - - - - - - - - - - - -
 

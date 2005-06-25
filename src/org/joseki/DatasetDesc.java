@@ -49,6 +49,8 @@ public class DatasetDesc
         namedGraphs.put(uri, r) ;
     }
     
+    /** Drop any dataset to free system resources */ 
+    public void freeDataset() { dataset = null ; }
     
     public Dataset getDataset()
     {
