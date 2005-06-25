@@ -19,7 +19,7 @@ import org.joseki.*;
 
 /** The servlet class.
  * @author  Andy Seaborne
- * @version $Id: Servlet.java,v 1.4 2005-06-24 18:08:54 andy_seaborne Exp $
+ * @version $Id: Servlet.java,v 1.5 2005-06-25 16:35:37 andy_seaborne Exp $
  */
 
 public class Servlet extends HttpServlet implements Connector
@@ -278,58 +278,6 @@ public class Servlet extends HttpServlet implements Connector
     }
     
     
-//    protected void execute(Request request, Response response)
-//    {
-//       try {
-//            String uri = request.getModelURI() ;
-//            String s = null ; 
-//            if ( request.getOpName().equals(HttpParams.pQuery) )
-//                s = "URI="+ uri + "  Query="+request.getParam(HttpParams.pQueryLang) ;
-//            else
-//                s = "URI="+ uri + "  Request="+request.getOpName() ;
-//
-//            log.debug(s) ;
-//            
-//            dispatcher.exec(request, response) ;
-//            log.info("OK - "+s) ;
-//        } catch (ExecutionException execEx)
-//        {
-//            //String s = httpResponseCode(execEx.returnCode) ;
-//            //log.info(s+" ("+execEx.returnCode+")") ;
-//            response.doException(execEx) ;
-//            return ;
-//        }
-//
-//    }
-
-
-    // Safe version (does not read body)
-    // Don't use ServletRequest.getParameter as that reads form data.
-    
-    private Map getParameters(String queryString)
-    {
-        Map map = new HashMap() ;
-        
-        String[] params = queryString.split("&") ;
-        for ( int i = 0 ; i < params.length ; i++ )
-        {
-            String p = params[i] ;
-            String[] x = p.split("=",2) ;
-            
-            if ( x.length == 0 )
-                continue ;
-
-            String pName = x[0] ;
-            String pValue = "" ;
-            if ( x.length == 2 )
-                pValue = x[1] ;
-            map.put(pName, "") ;
-        }
-        // Not found
-        return null ;
-    }
-
-    
     // Reply when an exception was generated
 
 //    private void doExeception(ExecutionException execEx, String uri, HttpServletResponse response)
@@ -343,8 +291,8 @@ public class Servlet extends HttpServlet implements Connector
 
     // Desparate way to reply
     
-    private void doPanic(HttpServletResponse response, int reason)
-    {
+//    private void doPanic(HttpServletResponse response, int reason)
+//    {
 //        // Panic.
 //        try {                
 //            response.setHeader(Joseki.httpHeaderField, Joseki.httpHeaderValue) ;
@@ -352,7 +300,7 @@ public class Servlet extends HttpServlet implements Connector
 //            response.flushBuffer() ;
 //            response.getWriter().close() ;
 //        } catch (Exception e) {}
-    }
+//    }
 
 
     /** Returns a short description of the servlet.
@@ -407,32 +355,8 @@ public class Servlet extends HttpServlet implements Connector
       return false;
     }
 
-    
+   
 
-//    private boolean initDispatcher(Dispatcher disp) throws ConfigurationErrorException
-//    {
-//        String tmp = System.getProperty(RDFServer.propertyModelSet) ;
-//        if ( tmp != null && tmp.equals(RDFServer.noMapValue))
-//            return false ;
-//        
-//        if ( tmp != null )
-//            if (attemptLoad(tmp, "System property: " + RDFServer.propertyModelSet, disp))
-//                return true;
-//
-//        if (servletConfig != null
-//            && attemptLoad(
-//                servletConfig.getInitParameter(RDFServer.propertyModelSet),
-//                "Servlet configuration parameter: " + RDFServer.propertyModelSet,
-//                disp) )
-//            return true;
-//
-//        // Try default name and location
-//        if (attemptLoad(RDFServer.defaultConfigFile, "Default filename",disp) )
-//            return true;
-//
-//        return false;
-//    }
-//
     private boolean attemptLoad(String filename, String reason, ServiceRegistry registry)
         throws ConfigurationErrorException
     {

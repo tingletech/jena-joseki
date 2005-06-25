@@ -7,6 +7,8 @@ Joseki3
 
 + Search and remove references to "dispatcher"
 
++ Dataset cache coupled to descriptions.
+
 - - - - - - - - - - - -
 
 + SPARQLer in CVS as supplied app

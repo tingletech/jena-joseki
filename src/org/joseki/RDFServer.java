@@ -16,7 +16,7 @@ import org.apache.commons.logging.* ;
 
 /** Standalone server.
  * 
- * @version $Id: RDFServer.java,v 1.2 2005-06-23 16:20:01 andy_seaborne Exp $
+ * @version $Id: RDFServer.java,v 1.3 2005-06-25 16:35:28 andy_seaborne Exp $
  * @author  Andy Seaborne
  */
 
@@ -196,7 +196,7 @@ public class RDFServer
             return ; 
 
         
-        // Check that the dispatcher registry seen by the webapp is the
+        // Check that the service registry seen by the webapp is the
         // same as the one created during initialization.  That is, the
         // webapp does not have its own class for this.
         
@@ -213,7 +213,7 @@ public class RDFServer
 
             if ( ! cls.isAssignableFrom(ServiceRegistry.class))
             {    
-                log.warn("Found another dispatcher configuration subsystem in the web apllication");
+                log.warn("Found another service configuration subsystem in the web apllication");
                 log.warn("Suspect a second copy of joseki.jar in WEB-INF/lib") ;
                 throw new ConfigurationErrorException("ServiceRegistry clash") ;
             }
