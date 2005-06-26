@@ -1,0 +1,117 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<html>
+
+<head>
+
+
+  <meta name="author" content="Andy Seaborne"/>
+  <meta name="description" content="" />
+  <meta name="keywords" content="" />
+  <meta http-equiv="Content-Language" content="en-gb">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+
+  <meta name="DC.Creator"    content="Andy Seaborne">
+  <meta name="DC.Publisher"  content="">
+  <meta name="DC.Title"      content="Joseki: Publishing a Model">
+  <meta name="DC.Rights"
+        content="Copyright 2003, 2004, 2005 Hewlett-Packard Development Company LP">
+  <meta name="DC.Identifier"
+        content="http://www.joseki.org/publishing.html">
+  <meta name="DC.Format"     content="text/html; charset=iso-8859-1">
+  <meta name="DC.Date"       content="$Date: 2005-06-26 18:39:02 $">
+  <meta name="DC.Type"       content="web page">
+
+<title>Joseki: Publishing a Model</title>
+<link rel="stylesheet" type="text/css" href="StyleSheets/joseki.css">
+
+</head>
+
+<BODY>
+<h1>Joseki: Publishing a Model</h1>
+<P>This section goes through the basic steps needed to publish an RDF
+model. Other sections provide greater detail &ndash; see:</P>
+<UL>
+	<LI><A HREF="configuration.html">The configuration file</A>
+	<LI><A HREF="running.html">Running a Joseki server</A>
+</UL>
+<P>Two things are needed to get an existing RDF model to be published
+using Joseki &ndash; first, add it to the configuration file so it is
+one of the models the server is hosting; second, restart the server.</P>
+
+<p>But first note that, to publish a small RDF model, all you need is a web
+server &ndash; any web server &ndash; you can just put the file up for people
+to access like a web page.  Joseki adds the ability to use queries to access
+published data so you don't need to transfer the whole copy and it also adds the
+ability to change the model for a collaboration between applications. This can
+be useful when models are big; where the information is frequently changing or
+where several applications are exchanging information via a shared model.<h2>Adding a model to the configuration file</h2>
+<p>Suppose we have a RDF model in the file "stuff.xml" and want it to appear
+as <code>http://example.com/myRDF</code>:</p>
+<pre class="box">&lt;http://server/myRDF&gt;
+    a   joseki:AttachedModel ;
+    joseki:attachedModel        &lt;file:stuff.xml&gt; ;
+    joseki:hasQueryOperation    joseki:BindingRDQL ;
+    joseki:hasQueryOperation    joseki:BindingGET ;
+    joseki:hasOperation         joseki:BindingQueryModel ;
+    joseki:hasOperation         joseki:BindingPing ;
+    joseki:isImmutable          &quot;true" ;
+    .
+</pre>
+<p>We have used
+<a href="http://www.w3.org/DesignIssues/Notation3.html">N3</a> here because it produces more readable RDF - the
+configuration file can be in RDF/XML, or even N-triples, and the file extension
+is used to determine the file type (.n3 for N3, .nt for N-Triples, .xml or .rdf
+for RDF/XML).  Just don't forget the dot at the end!
+</p>
+<p>What we have done is to add some metadata to the configuration model, saying what
+we are adding (an attached model), where the data is (in the file:) and what operations
+can be performed.  Here, clients can query the model with HTTP GET and with RDQL over
+HTTP GET or HTTP POST.  Also, the model allows OPTIONS and a Ping operation.  This
+set of query and other operations forms the usual needed.  We also told
+the server that the model is immutable &ndash; none of the queries or operations
+change the model either explicitly or implicitly &ndash; some operations (like GET) use
+this information for efficiency.
+</p>
+<h2>Running the Server</h2>
+<p>Once the configuration file is done, you need to restart the server; you can check the
+log file to see that the new model has been picked up.  The simplest way to run
+the server is as a standalone program:</p>
+<pre class="box">java -cp ... joseki.rdfserver configFile.n3
+</pre>
+
+<p><a href="running.html">Further details on running a Joseki server</a>.</p>
+
+<h2>Database-backed RDF Models</h2>
+<p>A Jena RDF model held in a database can also be added: the URI for the data is
+just the the JDBC URL:</p>
+<pre class="box">&lt;http://server/myLargePersistentRDF&gt;
+    a   joseki:AttachedModel ;
+    joseki:attachedModel      &lt;jdbc:mysql://host/db&gt; ;
+    joseki:user               &quot;test&quot; ;
+    joseki:password           &quot;password&quot; ;
+    joseki:dbModelName        &quot;model_name&quot; ;
+    joseki:dbType             &quot;MySQL&quot; ;
+    joseki:dbDriver           &quot;com.mysql.jdbc.Driver&quot; ;
+    joseki:hasQueryOperation  joseki:BindingRDQL ;
+    joseki:hasOperation       joseki:BindingPing ;
+    joseki:hasOperation       joseki:BindingQueryModel ;
+    .
+</pre>
+<p>We have not allowed plain GET because it is a large model (it does not stop an
+RDQL query that asks for the entire database).  Because of variation in JDBC
+URLs, we pass user and password information separately.</p>
+
+<h2>See Also</h2>
+
+<ul>
+	<LI><A HREF="configuration.html">The configuration file</A></li>
+	<LI><A HREF="running.html">Running a server</A></li>
+</ul>
+
+
+<hr>
+<div class="footer">
+<p align="right">$Date: 2005-06-26 18:39:02 $ // $Revision: 1.1 $ // $Author: andy_seaborne $</p>
+</div>
+</body>
+</html>

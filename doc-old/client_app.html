@@ -1,0 +1,101 @@
+
+<html>
+<head>
+  <meta name="author" content="Andy Seaborne"/>
+  <meta name="description" content="" />
+  <meta name="keywords" content="" />
+  <meta http-equiv="Content-Language" content="en-gb">
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+
+  <meta name="DC.Creator"    content="Andy Seaborne">
+  <meta name="DC.Publisher"  content="">
+  <meta name="DC.Title"      content="Joseki remote query applications">
+  <meta name="DC.Rights"
+        content="Copyright 2003, 2004, 2005 Hewlett-Packard Development Company LP">
+  <meta name="DC.Identifier"
+        content="http://www.joseki.org/client_app.html">
+  <meta name="DC.Format"     content="text/html; charset=iso-8859-1">
+  <meta name="DC.Date"       content="$Date: 2005-06-26 18:39:03 $">
+  <meta name="DC.Type"       content="web page">
+
+<title>Joseki remote query applications</title>
+<link rel="stylesheet" type="text/css" href="StyleSheets/joseki.css">
+
+</head>
+
+<body>
+<h1>Joseki: Command Line Applications</h1>
+<p>The standard distribution provides some client applications for accessing 
+published RDF on a remote server.&nbsp; All are are written on 
+top of the <a href="client_library.html">Joseki client library</a>.&nbsp; The  command line applications 
+are:</p>
+<ul>
+  <li><a href="#app_fetch">rdffetch</a>: Get the RDF data contained in a hosted 
+  model about a particular resource</li>
+  <li><a href="#app_rdql">rdfqueryremote</a>: Issue an RDQL query on a model 
+  hosted by a Joseki server</li>
+  <li><a href="#app_query">query</a>: general purpose, low-level tool, to format 
+  and issue a Joseki query request</li>
+  <li>ping: perform a <code>ping</code> operation on a remote model.</li>
+</ul>
+<p>The <a href="protocol.html">protocol</a> used in both these applications is 
+HTTP GET. Any program that can issue HTTP GETs, such as <a href="http://www.wget.org/">
+wget</a> or <a href="http://www.w3.org/2000/10/swap/doc/cwm">cwm</a>, can access 
+a Joseki server.&nbsp; There is a directory of <a href="examples.html">examples</a> 
+in the distribution, and there is a Python library that works with
+<a href="http://rdflib.net/">RDFLib</a>.</p>
+<h2><a name="app_fetch">Fetch</a></h2>
+<html>
+
+<body>
+<p>A remote fetch returns the recorded RDF about a resource in the model.&nbsp; 
+For example, if the resource is the URI is the subject of
+<a href="http://dublincore.org/">Dublin Core</a> statements, an appropriately 
+configured server will return all the statements with properties in the Dublin 
+Core namespace with the requested resource as subject.</p>
+<p>Usage:</p>
+<pre class="box">java -cp ... joseki.rdffetch --model ModelURI --resource URI</pre>
+<p>The RDF is written out according to the <code>--format</code> argument, or N3 
+by default.</p>
+</body>
+</html>
+<p>The exact nature of the 
+  RDF returned is determined by the server.&nbsp; See the &quot;<a href="RDF_data_objects.html">Data 
+  Objects</a>&quot; page for further information.</p>
+<h2><a name="app_rdql">Remote Query</a></h2>
+<p>Joseki comes with a command line application, very similar to the command 
+line 
+interface to the RDQL local query system (jena.rdfquery).</p>
+<p>Access to RDF in Joseki is in the form of an RDF graph returned as the result 
+of a query (including fetch or issuing an RDQL query).&nbsp; Executing an RDQL 
+query on the server returns the smallest subgraph that matches the query (i.e. 
+the subgraph that gives the same results as the query on the original graph).</p>
+<p>Usage:</p>
+<pre class="box">java -cp ... joseki.rdfqueryremote [--model URI] {--query file | queryString}</pre>
+<p>In particular, you can put all the information in the query using the FROM 
+clause of RDQL:</p>
+<pre class="box">SELECT ?x
+FROM &lt;http://localhost:2020/testdata&gt;
+WHERE (?x, ?y, &quot;LITERAL-2&quot;)</pre>
+<p>so the command:</p>
+<pre class="box">java -cp ... joseki.rdfqueryremote --query SomeFile</pre>
+<p>will work for the default installation with its test data.</p>
+<p>Specifying the &quot;--model URL&quot; parameter overrides the URL specified in the 
+FROM clause of a query if any was present.</p>
+<h2><a name="app_query">query</a></h2>
+<p>A low level command:</p>
+<pre class="box">java -cp ... joseki.query --model URL [--format RDFsyntax] [--lang lang] httpQueryString</pre>
+<p>can be used to construct and perform a single query operation.&nbsp; The 
+arguments must be provided in &quot;HTTP Query String&quot; format but it does not need to 
+be <code>www-form-urlencoded</code> encoded.&nbsp; For example:</p>
+<pre class="box">java -cp ... joseki.query --model URL --lang RDQL 'q=SELECT * WHERE (?x ?y ?z)'</pre>
+<pre>&nbsp;</pre>
+<pre class="box">java -cp ... joseki.query --model URL 'r=http://example.org/thing' 'lang=fetch'</pre>
+</body>
+</html>
+<hr>
+<div class="footer">
+<p align="right">$Date: 2005-06-26 18:39:03 $ // $Revision: 1.1 $ // $Author: andy_seaborne $</p>
+</div>
+</body>
+</html>

@@ -1,0 +1,65 @@
+#!/bin/bash
+
+RBASE="shell.sourceforge.net:joseki-web/htdocs/web2"
+
+# Define the files that make up the remote web site
+# except the one that will be index.html
+
+PAGES=$(cat <<EOF
+RDF_data_objects.html
+client_app.html
+client_library.html
+configuration.html
+documentation.html
+downloads.html
+examples.html
+index.html
+installation.html
+license.content.html
+license.html
+modules.html
+processors.html
+protocol.html
+publishing.html
+query-languages.html
+resources.html
+running.html
+support.html
+EOF
+)
+
+STYLE=$(cat<<EOF
+StyleSheets/joseki.css
+StyleSheets/site.css
+EOF
+)
+
+IMAGES=$(cat<<EOF
+images/JosekiJRS.png
+images/JosekiSimple.png
+EOF
+)
+
+# WEB
+
+# Local permissions
+## find . -type d | xargs chmod og+rx
+## find . -type f | xargs chmod og=r
+
+# All directories.
+find . -type d | xargs chmod og+rx
+# Files that are exported
+chmod og=r $PAGES $STYLE $OTHER
+
+pscp -load "shell.sourceforge.net" $PAGES    "$RBASE"
+pscp -load "shell.sourceforge.net" $STYLE    "$RBASE/StyleSheets"
+pscp -load "shell.sourceforge.net" $IMAGES   "$RBASE/images"
+
+#$OTHER
+
+
+## # Fix permissions?
+## ssh joseki.sourceforge.net "find joseki-web/htdocs -type d | xargs chmod +rx"
+## ssh joseki.sourceforge.net "find joseki-web/htdocs -type f | xargs chmod +r"
+
+
