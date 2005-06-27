@@ -7,8 +7,10 @@
 
 package dev;
 
-import org.joseki.ConfigurationErrorException;
-import org.joseki.RDFServer;
+import com.hp.hpl.jena.rdf.model.Model;
+
+import joseki.rdfserver;
+import org.joseki.util.GraphUtils;
 
 public class Run
 {
@@ -16,26 +18,17 @@ public class Run
     public static void main(String[] args)
     {
         //runJosekiServer(args) ; System.exit(0) ;
-        
-        runNewJosekiServer(args) ; System.exit(0) ;
+        runLimitedGraph() ;  System.exit(0) ;
     }
     
     public static void runJosekiServer(String[] args) 
     {
-        if ( args == null || args.length == 0 )
-            args = new String[]{"joseki-dev.n3"} ;
-        RunJoseki.main(args) ;
-        System.exit(0) ;
-    }
-
-    public static void runNewJosekiServer(String[] args) 
-    {
         RunUtils.setLog4j() ;
-        try {
-            RDFServer server = new RDFServer("joseki-config.ttl") ;
-            server.start() ;
-        } catch (ConfigurationErrorException ex)
-        { System.exit(0) ; }
+
+        if ( args == null || args.length == 0 )
+            args = new String[]{"joseki-config.ttl"} ;
+
+        rdfserver.main(args) ;
         
         // Threads under Eclipse seem to be daemons and so the server exits 
         for ( ; ; )
@@ -47,10 +40,15 @@ public class Run
                 try { obj.wait() ; } catch (Exception ex) {}
             }
         }
-
+        
         //System.exit(0) ;
     }
-
+    
+    static void runLimitedGraph()
+    {
+        Model m = GraphUtils.readModel("file:D.rdf", 6) ;
+        m.write(System.out, "N3") ;
+    }
     
 }
 

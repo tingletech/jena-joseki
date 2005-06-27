@@ -11,6 +11,7 @@ import java.util.List;
 
 import com.hp.hpl.jena.query.*;
 import com.hp.hpl.jena.rdf.model.*;
+import com.hp.hpl.jena.shared.NotFoundException;
 import com.hp.hpl.jena.util.FileManager;
 
 import org.apache.commons.logging.*;
@@ -245,7 +246,12 @@ public class SPARQL extends QueryCom implements Loadable
         catch (QueryException qEx)
         {
             log.info("Query execution error (SELECT/XML): "+qEx) ;
-            throw new QueryExecutionException(ExecutionError.rcQueryExecutionFailure, null) ;
+            throw new QueryExecutionException(ExecutionError.rcQueryExecutionFailure, qEx.getMessage()) ;
+        }
+        catch (NotFoundException ex)
+        {
+            log.info("Query execution error (SELECT/XML): "+ex) ;
+            throw new QueryExecutionException(ExecutionError.rcQueryExecutionFailure, ex.getMessage()) ;
         }
     }
 
@@ -295,9 +301,12 @@ public class SPARQL extends QueryCom implements Loadable
     
     private boolean datasetInProtocol(Request request)
     {
-        if ( request.containsParam(P_DEFAULT_GRAPH) )
+        String d = request.getParam(P_DEFAULT_GRAPH) ;
+        if ( d != null && !d.equals("") )
             return true ;
-        if ( request.containsParam(P_NAMED_GRAPH) )
+        
+        List n = (List)request.getParams(P_NAMED_GRAPH) ;
+        if ( n != null && n.size() > 0 )
             return true ;
         return false ;
     }
@@ -308,7 +317,8 @@ public class SPARQL extends QueryCom implements Loadable
             
             String graphURL = request.getParam(P_DEFAULT_GRAPH) ;
             List namedGraphs = request.getParams(P_NAMED_GRAPH) ;
-            if ( graphURL == null && namedGraphs.size() == 0 )
+            if ( ( graphURL == null || graphURL.equals("") )  
+                    && namedGraphs.size() == 0 )
                 return null ;
             DataSource dataset = null ;
             

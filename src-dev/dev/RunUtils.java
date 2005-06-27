@@ -36,7 +36,7 @@ public class RunUtils
         {
             fn = "file:"+fn ;
             System.setProperty("log4j.configuration", fn) ;
-            LogFactory.getLog(RunJoseki.class).debug("Setting log4j.configuration: "+fn) ;
+            LogFactory.getLog(RunUtils.class).debug("Setting log4j.configuration: "+fn) ;
             return true ;
         }
         return false ;

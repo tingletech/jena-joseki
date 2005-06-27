@@ -1,0 +1,147 @@
+# This file is written in N3 / Turtle
+
+@prefix rdfs:   <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xsd:    <http://www.w3.org/2001/XMLSchema#> .
+
+@prefix module: <http://joseki.org/2003/06/module#> .
+@prefix joseki: <http://joseki.org/2005/06/configuration#> .
+@prefix ql:     <http://jena.hpl.hp.com/2003/07/query/> .
+
+@prefix jms:    <http://jena.hpl.hp.com/2003/08/jms#> .
+
+## --------------------------------------------------------------
+## This file is written in N3 / Turtle
+## It is an RDF graph - order of RDF triples does not matter
+## to the machine but it does help people who need to edit this file.
+
+## Note: adding rdfs:label to blank nodes will cause Joseki 
+## to print that in log messages.
+
+
+## --------------------------------------------------------------
+## About this configuration
+
+<> joseki:include <file:joseki-defs.ttl> .
+    # Include other configuration information
+ 
+## --------------------------------------------------------------
+## About this server
+
+[]  rdf:type joseki:Server ;
+    joseki:serverDebug   "true" ;
+    .
+
+## --------------------------------------------------------------
+## Services
+
+## Services are best described by a blank node - it's the
+## serviceRef that will be used to match requests to services,
+## not some resource URI for the description.
+
+# Service 1
+# General purpose SPARQL processor, no dataset, expects the
+# request to specify the dataset (either by parameters in the
+# protocol request or in the query itself).
+
+[]
+    rdf:type            joseki:Service ;
+    rdfs:label          "service point" ;
+    joseki:serviceRef   "///sparql" ;
+    joseki:processor    joseki:ProcessorSPARQL ;
+    .
+
+# Service 2 - SPARQL processor only handling a given dataset
+[]
+    rdf:type            joseki:Service ;
+    rdfs:label          "SPARQL on the books model" ;
+    joseki:serviceRef   "books" ;
+    # dataset part
+    joseki:dataset      _:books ;
+    # Service part.
+    # This processor will not allow either the protocol,
+    # nor the query, to specify the datset.
+    joseki:processor    joseki:ProcessorSPARQL_FixedDS ;
+    .
+
+
+## Add a FOAF named graph example.
+
+
+## Move to an example config file.
+
+## # Service 3 - example - all inline.
+## []
+##     rdf:type    joseki:Service ;
+##     rdfs:label  "Inline example" ;
+## 
+##     # Required - serviceRef
+##     joseki:serviceRef         "example" ;
+##     joseki:dataset
+##         [ joseki:defaultGraph    _:model1 ; ] ;
+##     joseki:processor
+##         # Does not exist - causes a config warning and this
+##         # service is not available for requests
+##         [ module:implementation [ module:className <java:module> ] ] ;
+##     .
+## 
+
+## --------------------------------------------------------------
+## Datasets
+
+_:ds1   rdf:type joseki:RDFDataSet ;
+    joseki:defaultGraph    _:model1 ;
+    rdfs:label "Dataset _:ds1" ;
+    joseki:namedGraph
+        [ joseki:graphName      <http://example.org/name1> ;
+          joseki:graphData      _:model1 ] ;
+    # Could use the location manager and have the named thing only
+    # Can't have two names for one graph?
+    joseki:namedGraph
+        [ joseki:graphName      <http://example.org/name2> ;
+          joseki:graphData  _:model2 
+        ] ;
+    ## Short versions?
+    .
+
+# A dataset of one model as the default graph
+
+_:books   rdf:type joseki:RDFDataSet ;
+    rdfs:label "Books" ;
+    joseki:defaultGraph
+      [ rdfs:label "books.n3" ;
+        jms:loadWith  <file:Data/books.n3> ] ;
+    .
+
+## --------------------------------------------------------------
+## Individual graphs  (Jena calls them Models)
+## ---- A model, with RDF read from a file 
+## (syntax determined by file extension - defaults to RDF/XML)
+
+_:model  rdf:type jms:DefaultModelSpec ;
+    rdfs:label "Model(plain)" ;
+    jms:loadWith  <file:D.ttl> .
+
+_:model1  rdf:type jms:DefaultModelSpec ;
+    rdfs:label "Model-1" ;
+    jms:loadWith  <file:D1.ttl> .
+
+_:model2 rdf:type jms:DefaultModelSpec ;
+    rdfs:label "Model-2" ;
+    jms:loadWith  <file:D2.ttl> .
+
+## Examples of RDFS and OWL inference models
+
+## --------------------------------------------------------------
+## Processors
+## Usually, this section is empty because only standard
+## processors are used via inclusion of common definitions.
+
+
+
+## --------------------------------------------------------------
+
+# Local Variables:
+# tab-width: 4
+# indent-tabs-mode: nil
+# End:

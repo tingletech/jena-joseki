@@ -10,6 +10,10 @@ Joseki3
 + Dataset cache coupled to descriptions.
   need dataset set cache and "description key"
 
++ Check whether loading broken RDF causes a memory leak
+  (need loading controls)
+  Add a graph that limits the nuber of triples added/bulkupdated.
+
 - - - - - - - - - - - -
 
 + SPARQLer in CVS as supplied app

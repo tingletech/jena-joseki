@@ -4,37 +4,53 @@
  * [See end of file]
  */
 
+package org.joseki.util;
 
-package dev;
-import joseki.rdfserver;
+import org.joseki.graph.GraphErrorHandler;
+import org.joseki.graph.LimitingGraph;
 
-/** Run a Joseki server inside an IDE (Eclipse) for development purposes 
- *  provide a place to configure things before calling the real main() 
- * 
- * @author Andy Seaborne
- * @version $Id: RunJoseki.java,v 1.1 2005-06-23 10:16:16 andy_seaborne Exp $
- */ 
+import com.hp.hpl.jena.graph.Graph;
+import com.hp.hpl.jena.mem.GraphMem;
+import com.hp.hpl.jena.rdf.model.Model;
+import com.hp.hpl.jena.rdf.model.ModelFactory;
+import com.hp.hpl.jena.rdf.model.RDFReader;
 
-public class RunJoseki
+import com.hp.hpl.jena.util.FileUtils;
+
+/** A packaging of code to do a controlled read of a graph or model */
+
+public class GraphUtils
 {
-    public static void main(String[] args)
+    public static Model readModel(String uri, int limit)
     {
-        RunUtils.setLog4j() ;
-        rdfserver.main(args) ;
-        
-        // Threads under Eclipse seem to be daemons and so the server exits 
-        for ( ; ; )
-        {
-            Object obj = new Object() ;
-            synchronized(obj)
-            {
-                // Remember to own the lock first.
-                try { obj.wait() ; } catch (Exception ex) {}
-            }
-        }
-        
-        //System.exit(0) ;
-        //return ;
+        return readModel(uri, limit, FileUtils.guessLang(uri)) ;
+    }
+    
+    public static Model readModel(String uri, int limit, String syntax) 
+    {
+        Graph g = new GraphMem() ;
+        g = new LimitingGraph(g, limit) ;
+        Model m = ModelFactory.createModelForGraph(g) ;
+        RDFReader r = m.getReader(syntax) ;
+        r.setErrorHandler(new GraphErrorHandler()) ;
+        r.read(m, uri) ;
+        return m ;
+    }
+    
+    public static Graph readGraph(String uri, int limit, String syntax) 
+    {
+        Graph g = new GraphMem() ;
+        g = new LimitingGraph(g, limit) ;
+        Model m = ModelFactory.createModelForGraph(g) ;
+        RDFReader r = m.getReader(syntax) ;
+        r.setErrorHandler(new GraphErrorHandler()) ;
+        r.read(m, uri) ;
+        return g ;
+    }
+    
+    public static Graph readGraph(String uri, int limit)
+    {
+        return readGraph(uri, limit, FileUtils.guessLang(uri)) ;
     }
 
 }

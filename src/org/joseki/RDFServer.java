@@ -16,7 +16,7 @@ import org.apache.commons.logging.* ;
 
 /** Standalone server.
  * 
- * @version $Id: RDFServer.java,v 1.3 2005-06-25 16:35:28 andy_seaborne Exp $
+ * @version $Id: RDFServer.java,v 1.4 2005-06-27 15:45:04 andy_seaborne Exp $
  * @author  Andy Seaborne
  */
 
@@ -46,7 +46,7 @@ public class RDFServer
     public static final String defaultServerBaseURI = "/" ;
     
     /** Default configuration file */
-    public static final String defaultConfigFile = "etc/joseki.n3" ;
+    public static final String defaultConfigFile = "joseki-config.ttl" ;
 
     /** Value for the config file meaning "no configuration"
      */  

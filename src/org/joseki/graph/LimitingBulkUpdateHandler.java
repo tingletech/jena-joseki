@@ -9,6 +9,7 @@ package org.joseki.graph;
 import java.util.Iterator;
 import java.util.List;
 
+import com.hp.hpl.jena.graph.BulkUpdateHandler;
 import com.hp.hpl.jena.graph.Graph;
 import com.hp.hpl.jena.graph.Triple;
 import com.hp.hpl.jena.graph.impl.WrappedBulkUpdateHandler;
@@ -17,9 +18,9 @@ public class LimitingBulkUpdateHandler extends WrappedBulkUpdateHandler
 {
     LimitingGraph lGraph ;
     
-    public LimitingBulkUpdateHandler(LimitingGraph graph)
+    public LimitingBulkUpdateHandler(LimitingGraph graph, BulkUpdateHandler bulk)
     {
-        super(graph, graph.getBulkUpdateHandler()) ;
+        super(graph, bulk) ;
         this.lGraph = graph ;
     }
     

@@ -6,45 +6,43 @@
 
 package org.joseki.graph;
 
-import com.hp.hpl.jena.graph.BulkUpdateHandler;
-import com.hp.hpl.jena.graph.Graph;
-import com.hp.hpl.jena.graph.Triple;
-import com.hp.hpl.jena.graph.impl.GraphWithPerform;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
-import com.hp.hpl.jena.graph.impl.WrappedGraph;
-import com.hp.hpl.jena.shared.AddDeniedException;
+import com.hp.hpl.jena.rdf.model.RDFErrorHandler;
+import com.hp.hpl.jena.shared.JenaException;
 
-public class LimitingGraph extends WrappedGraph implements GraphWithPerform
+// A copy of the ARP handler - used to guarantee
+// error handling (it's different for different readers)  
+
+public class GraphErrorHandler implements RDFErrorHandler 
 {
-    int limit = 10000 ;
-    int count = 0 ;
+    public static final Log log = LogFactory.getLog( GraphErrorHandler.class );
+    int warnings = 0 ;
+    int errors = 0 ;
+    int fatalErrors = 0 ;
     
-    LimitingBulkUpdateHandler bulk ;
-    
-    public LimitingGraph(Graph graph, int triplesLimit)
+    public void warning(Exception arg0)
     {
-        super(graph) ;
-        this.limit = triplesLimit ;
-        bulk = new LimitingBulkUpdateHandler(this, graph.getBulkUpdateHandler()) ;
+        warnings ++ ;
+        log.warn(arg0.getMessage()) ;
     }
 
-    public void add( Triple t ) throws AddDeniedException
-    {
-        count++ ;
-        checkSize() ;
-        super.add(t) ;
+    public void error(Exception e) {
+        log.error(e.getMessage()) ;
+        errors ++ ;
+        throw e instanceof RuntimeException 
+        ? (RuntimeException) e
+        : new JenaException( e );
     }
 
-    /** returns this Graph's bulk-update handler */
-    public BulkUpdateHandler getBulkUpdateHandler()
-    {
-        return bulk ;
-    }
-    
-    void checkSize()
-    {
-        if ( count > limit )
-            throw new AddDeniedException("Attempt to exceed graph limit ("+limit+")") ;
+    public void fatalError(Exception e) {
+        fatalErrors++ ;
+        log.error(e.getMessage());
+        
+        throw e instanceof RuntimeException 
+            ? (RuntimeException) e
+            : new JenaException( e );
     }
 }
 
