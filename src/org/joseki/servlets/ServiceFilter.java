@@ -1,59 +1,48 @@
 /*
- * (c) Copyright 2004, 2005 Hewlett-Packard Development Company, LP
+ * (c) Copyright 2005 Hewlett-Packard Development Company, LP
  * All rights reserved.
  * [See end of file]
  */
 
+package org.joseki.servlets;
 
-package dev;
+import java.io.IOException;
 
-import com.hp.hpl.jena.rdf.model.Model;
+import javax.servlet.*;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
-import joseki.rdfserver;
-import org.joseki.util.GraphUtils;
 
-public class Run
+
+/** A filter that checkes to see if a service exists */ 
+public class ServiceFilter implements Filter
 {
-
-    public static void main(String[] args)
+    ServletContext context ; 
+    public void init(FilterConfig conf) throws ServletException
     {
-        runJosekiServer(args) ; System.exit(0) ;
-        //runLimitedGraph() ;  System.exit(0) ;
+        context = conf.getServletContext() ;
     }
-    
-    public static void runJosekiServer(String[] args) 
-    {
-        RunUtils.setLog4j() ;
 
-        if ( args == null || args.length == 0 )
-            args = new String[]{"joseki-config.ttl"} ;
-
-        rdfserver.main(args) ;
-        
-        // Threads under Eclipse seem to be daemons and so the server exits 
-        for ( ; ; )
-        {
-            Object obj = new Object() ;
-            synchronized(obj)
-            {
-                // Remember to own the lock first.
-                try { obj.wait() ; } catch (Exception ex) {}
-            }
-        }
-        
-        //System.exit(0) ;
-    }
-    
-    static void runLimitedGraph()
+    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
+        throws IOException, ServletException
     {
-        Model m = GraphUtils.readModel("file:D.rdf", 6) ;
-        m.write(System.out, "N3") ;
+        if ( request instanceof HttpServletRequest && response instanceof HttpServletResponse)
+            doFilter((HttpServletRequest)request,  (HttpServletResponse)response, chain) ;
+        else
+            chain.doFilter(request, response) ;
     }
-    
+
+    public void doFilter(HttpServletRequest httpRequest, HttpServletResponse httpResponse, FilterChain chain)
+    throws IOException, ServletException
+    {
+    }
+
+    public void destroy()
+    { }
 }
 
 /*
- * (c) Copyright 2004, 2005 Hewlett-Packard Development Company, LP
+ * (c) Copyright 2005 Hewlett-Packard Development Company, LP
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without

@@ -19,7 +19,7 @@ import org.joseki.*;
 
 /** The servlet class.
  * @author  Andy Seaborne
- * @version $Id: Servlet.java,v 1.5 2005-06-25 16:35:37 andy_seaborne Exp $
+ * @version $Id: Servlet.java,v 1.6 2005-06-27 17:06:04 andy_seaborne Exp $
  */
 
 public class Servlet extends HttpServlet implements Connector
@@ -103,10 +103,15 @@ public class Servlet extends HttpServlet implements Connector
         printName = config.getServletName();
         
         servletEnv() ;
+        initServiceRegistry() ;
+    }
         
-        // Get the service registry is not already supplied.
-        if ( serviceRegistry == null )
-            serviceRegistry = (ServiceRegistry)Registry.find(RDFServer.ServiceRegistryName) ;
+    public void initServiceRegistry() throws ServletException
+    {
+        if ( serviceRegistry != null )
+            return ;
+        
+        serviceRegistry = (ServiceRegistry)Registry.find(RDFServer.ServiceRegistryName) ;
         
         // No global one.
         if ( serviceRegistry == null )
@@ -184,6 +189,10 @@ public class Servlet extends HttpServlet implements Connector
             Service service = serviceRegistry.find(serviceURI) ;
             if ( service == null )
             {
+                // Pass to static handler.
+                //RequestDispatcher dispatcher = httpRequest.getRequestDispatcher(aDestination.toString());
+                //dispatcher.forward(httpRequest, httpResponse);
+                
                 log.info("404 - Service not found") ;
                 //doErrorNoSuchService() ;
                 httpResponse.sendError(HttpServletResponse.SC_NOT_FOUND, "Service <"+serviceURI+"> not found") ;
@@ -250,7 +259,7 @@ public class Servlet extends HttpServlet implements Connector
     // This should return a list of possibilities to allow for
     // future changes.
 
-    private String chooseServiceURI(String uri, HttpServletRequest httpRequest)
+    public static String chooseServiceURI(String uri, HttpServletRequest httpRequest)
     {
         String serviceURI = uri ;
         String contextPath = httpRequest.getContextPath() ;
