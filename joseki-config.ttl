@@ -39,6 +39,9 @@
 ## serviceRef that will be used to match requests to services,
 ## not some resource URI for the description.
 
+## Note that the service reference and the routing of incoming
+## requests by URI as defined by web.xml have to align.
+
 # Service 1
 # General purpose SPARQL processor, no dataset, expects the
 # request to specify the dataset (either by parameters in the
@@ -66,18 +69,11 @@
 
 
 ## Add a FOAF named graph example.
-[]
-    rdf:type            joseki:Service ;
-    rdfs:label          "SPARQL on the dataset of FOAF data" ;
-    joseki:serviceRef   "foaf" ;
-    # dataset part
-    joseki:dataset      _:foaf ;
-    # Service part.
-    # This processor will not allow either the protocol,
-    # nor the query, to specify the datset.
-    joseki:processor    joseki:ProcessorSPARQL_FixedDS ;
-    .
 
+
+## Move to an example config file.
+
+## # Service 3 - example - all inline.
 ## []
 ##     rdf:type    joseki:Service ;
 ##     rdfs:label  "Inline example" ;
@@ -119,29 +115,6 @@ _:books   rdf:type joseki:RDFDataSet ;
       [ rdfs:label "books.n3" ;
         jms:loadWith  <file:Data/books.n3> ] ;
     .
-
-_:foaf  rdf:type joseki:RDFDataSet ;
-    rdfs:label "FOAF" ;
-    joseki:defaultGraph
-      [ rdfs:label "FOAF manifest" ;
-        jms:loadWith  <file:Data/foaf-manifest.ttl> ] ;
-    joseki:namedGraph
-      [ rdfs:label "FOAF - Alice" ;
-        joseki:graphName    <http://example.org/foaf/alice> ;
-        joseki:graphData
-              [ rdfs:label "foaf-alice" ;
-                jms:loadWith  <file:Data/foaf-alice.ttl> ]
-      ] ;
-    joseki:namedGraph
-      [ rdfs:label "FOAF - Bob" ;
-        joseki:graphName    <http://example.org/foaf/bob> ;
-        joseki:graphData
-              [ rdfs:label "foaf-bob" ;
-                jms:loadWith  <file:Data/foaf-bob.ttl> ]
-      ] ;
-    .
-
-
 
 ## --------------------------------------------------------------
 ## Individual graphs  (Jena calls them Models)
