@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema version="$Id: sparql-protocol-types.xsd,v 1.1 2005-06-28 21:28:52 andy_seaborne Exp $" xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    xmlns:vbr="http://www.w3.org/2001/sw/DataAccess/rf1/result2"
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    xmlns:sparqlx="http://www.w3.org/2001/sw/DataAccess/sparqlx.xsd">
+    <xs:import namespace="http://www.w3.org/2001/sw/DataAccess/rf1/result2"
+        schemaLocation="http://www.w3.org/2001/sw/DataAccess/rf1/result2.xsd"></xs:import>
+    <xs:import namespace="http://www.w3.org/1999/02/22-rdf-syntax-ns#"></xs:import>
+    <xs:element name="query">
+        <xs:annotation>
+            <xs:documentation> A query is composed of an RDF dataset, or references to the graph or
+                graphs against which the query will be executed; and the query itself -- in this
+                case, the query is a string conforming to a grammar @@. </xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:all>
+                <xs:element minOccurs="1" maxOccurs="1" name="sparql-query" type="xs:string">
+                    <xs:annotation>
+                        <xs:documentation>@@ quote the spec...</xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+                <xs:element minOccurs="0" maxOccurs="1" ref="rdf-dataset"></xs:element>
+            </xs:all>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="rdf-dataset">
+        <xs:annotation>
+            <xs:documentation>An rdf-dataset is a set of URIs, zero or one of which is the default
+                graph (which might also be called the anonymous graph, since it cannot be named);
+                and zero or any number of named graphs.</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:sequence>
+                <!-- I believe this has to be a sequence because of cardinality issues... -->
+                <xs:element minOccurs="0" maxOccurs="1" name="default-graph-uri" type="xs:anyURI"></xs:element>
+                <xs:element minOccurs="0" maxOccurs="unbounded" name="named-graph-uri" type="xs:anyURI"></xs:element>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="query-result">
+        <xs:annotation>
+            <xs:documentation>The type for serializaing query results, either as VBR XML or
+            RDF/XML.</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+            <xs:choice>
+                <xs:element minOccurs="0" maxOccurs="1" ref="vbr:sparql"></xs:element>
+                <xs:element minOccurs="0" maxOccurs="1" ref="rdf:RDF"></xs:element>
+            </xs:choice>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="faultDetails" type="xs:string"></xs:element>
+</xs:schema>

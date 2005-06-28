@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- $Id: sparql-protocol-query.wsdl,v 1.1 2005-06-28 21:28:52 andy_seaborne Exp $ -->
+<description xmlns="http://www.w3.org/2005/05/wsdl"
+  xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+  xmlns:whttp="http://www.w3.org/2004/08/wsdl/http"
+  xmlns:st="http://www.w3.org/2001/sw/DataAccess/sparql-protocol-types"
+  targetNamespace="http://www.w3.org/2005/01/sparql-protocol-query">
+  <!-- SparqlQuery -->
+  <interface name="SparqlQuery" styleDefault="http://www.w3.org/2005/05/wsdl/style/uri">
+    <operation name="query" pattern="http://www.w3.org/2004/08/wsdl/in-out" safety="true">
+      <documentation>The operation is used to convey queries and their results.</documentation>
+      <input messageLabel="In" element="st:query"></input>
+      <output messageLabel="Out" element="st:query-result"></output>
+    </operation>
+  </interface>
+  <!-- bad query fault -->
+  <fault name="MalformedQuery" element="st:faultDetails"></fault>
+  <fault name="QueryRequestRefused" element="st:faultDetails"></fault><!-- FIXME -->
+  <!-- type imports -->
+  <types>
+    <xs:import namespace="http://www.w3.org/2001/sw/DataAccess/rf1/result2"></xs:import>
+    <xs:import namespace="http://www.w3.org/2001/sw/DataAccess/sparql-protocol-types"></xs:import>
+  </types>
+  <!-- HTTP bindings -->
+  <binding name="query" interface="SparqlQuery" type="http://www.w3.org/2005/05/wsdl/http"
+    whttp:version="1.1" whttp:transferCodingDefault="" whttp:queryParameterSeparatorDefault=""
+    whttp:cookies="" whttp:methodDefault="GET">
+    <fault name="MalformedQuery" whttp:code="400"></fault>
+    <operation ref="query" whttp:location=""
+      whttp:inputSerialization="application/x-www-form-urlencoded" whttp:outputSerialization=""
+      whttp:faultSerialization="" whttp:defaultTransferEncoding=""></operation>
+  </binding>
+</description>
