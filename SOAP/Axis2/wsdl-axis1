@@ -1,0 +1,11 @@
+#!/bin/bash
+export AXIS_HOME="$SYS/axis-1_2_1"
+
+CP="$(make_classpath $AXIS_HOME)"
+CP="$CP;classes"
+
+# Output in "org.joseki.ws"
+# Step 3
+java -cp "$CP" org.apache.axis.wsdl.WSDL2Java \
+	-o src -d Session -s -S true \
+    -Nurn:sparql1 org.joseki.ws query1.wsdl

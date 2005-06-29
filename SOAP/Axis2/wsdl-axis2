@@ -1,0 +1,7 @@
+#!/bin/bash
+
+export AXIS_HOME=~/sys/axis2-M2-bin/
+PATH=$PATH:~/sys/axis2-M2-bin/bin
+
+WSDL2Java.bat $*
+#WSDL2Code.bat $*

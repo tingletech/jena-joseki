@@ -1,0 +1,29 @@
+#!/bin/bash
+export AXIS_HOME="$SYS/axis-1_2_1"
+
+CP="$(make_classpath $AXIS_HOME)"
+CP="$CP;classes"
+
+# Step 0 - clean up
+rm -rf src/org/joseki/ws/*
+rm -rf classes/*
+
+# Step1 ; Interface from org.joseki.soap
+javac -d classes src/org/joseki/webservices/JosekiQuery.java 
+[ "$?" = "0" ] || exit $? ;
+
+# Step 2
+java -cp "$CP" org.apache.axis.wsdl.Java2WSDL \
+	-o SPARQL_11.wsdl \
+	-l"http://localhost:8080/axis/services/WSQuery" \
+	-n "urn:sparql1" \
+	-p."org.joseki.soap" "urn:sparql1" \
+	org.joseki.webservices.JosekiQuery
+[ "$?" = "0" ] || exit $? ;
+	
+# Output in "org.joseki.ws"
+# Step 3
+java -cp "$CP" org.apache.axis.wsdl.WSDL2Java \
+	-o src -d Session -s -S true \
+    -Nurn:sparql1 org.joseki.ws SPARQL_11.wsdl
+[ "$?" = "0" ] || exit $? ;
