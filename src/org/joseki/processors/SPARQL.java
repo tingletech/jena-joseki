@@ -352,6 +352,16 @@ public class SPARQL extends QueryCom implements Loadable
                 for ( Iterator iter = namedGraphs.iterator() ; iter.hasNext() ; )
                 {
                     String uri = (String)iter.next() ;
+                    if ( uri == null )
+                    {
+                        log.warn("Null "+P_NAMED_GRAPH+ " (ignored)") ;
+                        continue ;
+                    }
+                    if ( uri.equals("") )
+                    {
+                        log.warn("Empty "+P_NAMED_GRAPH+ " (ignored)") ;
+                        continue ;
+                    }
                     try {
                         Model model = fileManager.loadModel(uri) ;
                         log.info("Load (named) "+uri) ;
