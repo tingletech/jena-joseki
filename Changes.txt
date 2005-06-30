@@ -4,15 +4,10 @@ Joseki3
 Joseki3 is not compatible with Joseki2.
 
 
-== Version 3.0 pre 1
+== Version 3.0 preview 1
 
-+ Supports the SPARQL protocol.
-+ Supports the SPARQL query language.
++ Supports the SPARQL protocol over HTTP (Last Call version)
++ Supports the SPARQL query language (Last Call version)
 
 
-v3.0 from v2.1
---------------
-(partial list)
 
-Update operations are current not supported.  This is a query server only
-at the moment.

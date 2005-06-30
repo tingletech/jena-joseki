@@ -3,6 +3,8 @@ Joseki3
 
 **** New codebase
 
++ Better error and warning hanlding when dynamically building a dataset
+
 + Test configuration (test of errors by looking in registry, and configuration members)
 
 + Search and remove references to "dispatcher"

@@ -18,6 +18,7 @@ import org.apache.commons.logging.*;
 
 import org.joseki.*;
 import org.joseki.module.Loadable;
+import org.joseki.util.GraphUtils;
 
 
 public class SPARQL extends QueryCom implements Loadable
@@ -37,6 +38,8 @@ public class SPARQL extends QueryCom implements Loadable
     
     boolean allowDatasetDesc = false ;
     boolean allowWebLoading  = false ;
+    
+    int maxTriples = 10000 ;
     
     FileManager fileManager ; 
     
@@ -320,6 +323,7 @@ public class SPARQL extends QueryCom implements Loadable
             if ( ( graphURL == null || graphURL.equals("") )  
                     && namedGraphs.size() == 0 )
                 return null ;
+            
             DataSource dataset = null ;
             
 //          if ( graphURL != null && request.getBaseURI() != null )
@@ -333,7 +337,9 @@ public class SPARQL extends QueryCom implements Loadable
                     dataset = DatasetFactory.create() ;
                 
                 try {
-                    Model model = fileManager.loadModel(graphURL) ;
+                    //Model model = fileManager.loadModel(graphURL) ;
+                    Model model = GraphUtils.readModel(graphURL, maxTriples) ;
+                    
                     dataset.setDefaultModel(model) ;
                     log.info("Load "+graphURL) ;
                 } catch (Exception ex)
@@ -386,10 +392,6 @@ public class SPARQL extends QueryCom implements Loadable
         }
         
     }
-    
-    
-    
-    
 }
 
 /*

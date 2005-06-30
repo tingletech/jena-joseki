@@ -73,6 +73,7 @@ public class DatasetDesc
         return dataset ;
     }
     
+    public void clearDataset() { dataset = null ; }
     
     private Model buildModel(Resource r)
     {

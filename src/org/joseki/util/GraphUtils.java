@@ -6,6 +6,8 @@
 
 package org.joseki.util;
 
+import java.io.InputStream;
+
 import org.joseki.graph.GraphErrorHandler;
 import org.joseki.graph.LimitingGraph;
 
@@ -15,6 +17,7 @@ import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
 import com.hp.hpl.jena.rdf.model.RDFReader;
 
+import com.hp.hpl.jena.util.FileManager;
 import com.hp.hpl.jena.util.FileUtils;
 
 /** A packaging of code to do a controlled read of a graph or model */
@@ -28,12 +31,14 @@ public class GraphUtils
     
     public static Model readModel(String uri, int limit, String syntax) 
     {
+        
         Graph g = new GraphMem() ;
         g = new LimitingGraph(g, limit) ;
         Model m = ModelFactory.createModelForGraph(g) ;
         RDFReader r = m.getReader(syntax) ;
         r.setErrorHandler(new GraphErrorHandler()) ;
-        r.read(m, uri) ;
+        InputStream in = FileManager.get().open(uri) ;
+        r.read(m, in, uri) ;
         return m ;
     }
     
@@ -44,7 +49,8 @@ public class GraphUtils
         Model m = ModelFactory.createModelForGraph(g) ;
         RDFReader r = m.getReader(syntax) ;
         r.setErrorHandler(new GraphErrorHandler()) ;
-        r.read(m, uri) ;
+        InputStream in = FileManager.get().open(uri) ;
+        r.read(m, in, uri) ;
         return g ;
     }
     
@@ -52,7 +58,7 @@ public class GraphUtils
     {
         return readGraph(uri, limit, FileUtils.guessLang(uri)) ;
     }
-
+    
 }
 
 /*
