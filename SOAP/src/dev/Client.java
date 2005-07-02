@@ -11,13 +11,13 @@ public class Client
 	{
 		try {
 			String endpoint = 
-				"http://localhost:8080/axis/services/WSquery" ;
+				"http://localhost:8080/axis/services/WSQuery" ;
 			
 			Service  service = new Service();
 			Call     call    = (Call) service.createCall();
 			
 			call.setTargetEndpointAddress( new java.net.URL(endpoint) );
-			call.setOperationName(new QName("http://soapinterop.org/", "echoString") );
+			call.setOperationName(new QName("urn:sparql1", "WSquery") );
 			
 			//call.addParameter("testParam",
 			//                  org.apache.axis.Constants.XSD_STRING,
