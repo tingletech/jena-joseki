@@ -5,7 +5,7 @@ CP="$(make_classpath $AXIS_HOME)"
 CP="$CP;classes"
 
 # Step 0 - clean up
-rm -rf src/org/joseki/ws/*
+rm -rf src/org/joseki/ws/*.{java,wsdd}
 rm -rf classes/*
 
 # Step1 : Compile interface
