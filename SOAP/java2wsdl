@@ -8,11 +8,11 @@ CP="$CP;classes"
 rm -rf src/org/joseki/ws/*
 rm -rf classes/*
 
-# Step1 ; Interface from org.joseki.soap
+# Step1 : Compile interface
 javac -d classes src/org/joseki/webservices/JosekiQuery.java 
 [ "$?" = "0" ] || exit $? ;
 
-# Step 2
+# Step 2 : Interface to WSDL
 java -cp "$CP" org.apache.axis.wsdl.Java2WSDL \
 	-o SPARQL_11.wsdl \
 	-l"http://localhost:8080/axis/services/WSQuery" \
@@ -22,8 +22,16 @@ java -cp "$CP" org.apache.axis.wsdl.Java2WSDL \
 [ "$?" = "0" ] || exit $? ;
 	
 # Output in "org.joseki.ws"
-# Step 3
+# Step 3 : WSDL to Web Service (Server)
 java -cp "$CP" org.apache.axis.wsdl.WSDL2Java \
 	-o src -d Session -s -S true \
     -Nurn:sparql1 org.joseki.ws SPARQL_11.wsdl
 [ "$?" = "0" ] || exit $? ;
+
+# Step 4 : WSDL to Web Service (Client)
+java -cp "$CP" org.apache.axis.wsdl.WSDL2Java \
+	-o src \
+    -Nurn:sparql1 org.joseki.wsclient SPARQL_11.wsdl
+[ "$?" = "0" ] || exit $? ;
+
+

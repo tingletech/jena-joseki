@@ -8,5 +8,5 @@
 package org.joseki.wsclient;
 
 public interface JosekiQuery extends java.rmi.Remote {
-    public void query(java.lang.String in0, java.lang.String in1, java.lang.String[] in2) throws java.rmi.RemoteException;
+    public java.lang.String query(java.lang.String in0, java.lang.String in1, java.lang.String[] in2) throws java.rmi.RemoteException;
 }

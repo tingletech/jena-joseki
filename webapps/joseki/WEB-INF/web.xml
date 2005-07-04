@@ -27,7 +27,7 @@ PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.2//EN"
     <!-- Configuration file -->
     <init-param>
       <param-name>jena.rdfserver.modelset</param-name>
-      <param-value>joseki-config.ttl</param-value>
+      <param-value>etc/joseki.n3</param-value>
     </init-param>
 
   </servlet>
@@ -43,7 +43,7 @@ PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.2//EN"
        means that the welcome page is not handled.
        Nor other mappings like /*.html 
    -->
-
+  
   <servlet-mapping>
     <servlet-name>default</servlet-name>
     <url-pattern>/index.html</url-pattern>
@@ -57,11 +57,6 @@ PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.2//EN"
   <servlet-mapping>
     <servlet-name>default</servlet-name>
     <url-pattern>/query.html</url-pattern>
-  </servlet-mapping>
-
-  <servlet-mapping>
-    <servlet-name>default</servlet-name>
-    <url-pattern>/StyleSheets/*.css</url-pattern>
   </servlet-mapping>
 
   <servlet-mapping>
