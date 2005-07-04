@@ -35,7 +35,8 @@ public class WSQuerySoapBindingSkeleton implements org.joseki.ws.JosekiQuery, or
             new org.apache.axis.description.ParameterDesc(new javax.xml.namespace.QName("", "in1"), org.apache.axis.description.ParameterDesc.IN, new javax.xml.namespace.QName("http://schemas.xmlsoap.org/soap/encoding/", "string"), java.lang.String.class, false, false), 
             new org.apache.axis.description.ParameterDesc(new javax.xml.namespace.QName("", "in2"), org.apache.axis.description.ParameterDesc.IN, new javax.xml.namespace.QName("urn:sparql1", "ArrayOf_soapenc_string"), java.lang.String[].class, false, false), 
         };
-        _oper = new org.apache.axis.description.OperationDesc("query", _params, null);
+        _oper = new org.apache.axis.description.OperationDesc("query", _params, new javax.xml.namespace.QName("", "queryReturn"));
+        _oper.setReturnType(new javax.xml.namespace.QName("http://schemas.xmlsoap.org/soap/encoding/", "string"));
         _oper.setElementQName(new javax.xml.namespace.QName("urn:sparql1", "query"));
         _oper.setSoapAction("");
         _myOperationsList.add(_oper);
@@ -52,9 +53,10 @@ public class WSQuerySoapBindingSkeleton implements org.joseki.ws.JosekiQuery, or
     public WSQuerySoapBindingSkeleton(org.joseki.ws.JosekiQuery impl) {
         this.impl = impl;
     }
-    public void query(java.lang.String in0, java.lang.String in1, java.lang.String[] in2) throws java.rmi.RemoteException
+    public java.lang.String query(java.lang.String in0, java.lang.String in1, java.lang.String[] in2) throws java.rmi.RemoteException
     {
-        impl.query(in0, in1, in2);
+        java.lang.String ret = impl.query(in0, in1, in2);
+        return ret;
     }
 
 }

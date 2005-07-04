@@ -8,7 +8,8 @@
 package org.joseki.ws;
 
 public class WSQuerySoapBindingImpl implements org.joseki.ws.JosekiQuery{
-    public void query(java.lang.String in0, java.lang.String in1, java.lang.String[] in2) throws java.rmi.RemoteException {
+    public java.lang.String query(java.lang.String in0, java.lang.String in1, java.lang.String[] in2) throws java.rmi.RemoteException {
+        return null;
     }
 
 }

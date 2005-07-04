@@ -17,7 +17,7 @@ java -cp "$CP" org.apache.axis.wsdl.Java2WSDL \
 	-o SPARQL_11.wsdl \
 	-l"http://localhost:8080/axis/services/WSQuery" \
 	-n "urn:sparql1" \
-	-p."org.joseki.soap" "urn:sparql1" \
+	-p"org.joseki.soap" "urn:sparql1" \
 	org.joseki.webservices.JosekiQuery
 [ "$?" = "0" ] || exit $? ;
 	
@@ -33,5 +33,3 @@ java -cp "$CP" org.apache.axis.wsdl.WSDL2Java \
 	-o src \
     -Nurn:sparql1 org.joseki.wsclient SPARQL_11.wsdl
 [ "$?" = "0" ] || exit $? ;
-
-
