@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<!DOCTYPE web-app
-     PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
-    "http://java.sun.com/dtd/web-app_2_3.dtd">
-<web-app>
+<web-app xmlns="http://java.sun.com/xml/ns/j2ee"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd"
+    version="2.4">
 
   <!-- ======================== Introduction ============================== -->
   <!-- This document defines default values for *all* web applications      -->
@@ -26,6 +26,9 @@
   <!--                                                                      -->
   <!--   debug               Debugging detail level for messages logged     -->
   <!--                       by this servlet.  [0]                          -->
+  <!--                                                                      -->
+  <!--   fileEncoding        Encoding to be used to read static resources   -->
+  <!--                       [platform default]                             -->
   <!--                                                                      -->
   <!--   input               Input buffer size (in bytes) when reading      -->
   <!--                       resources to be served.  [2048]                -->
@@ -59,9 +62,7 @@
 
     <servlet>
         <servlet-name>default</servlet-name>
-        <servlet-class>
-          org.apache.catalina.servlets.DefaultServlet
-        </servlet-class>
+        <servlet-class>org.apache.catalina.servlets.DefaultServlet</servlet-class>
         <init-param>
             <param-name>debug</param-name>
             <param-value>0</param-value>
@@ -76,8 +77,8 @@
 
   <!-- The "invoker" servlet, which executes anonymous servlet classes      -->
   <!-- that have not been defined in a web.xml file.  Traditionally, this   -->
-  <!-- servlet is mapped to URL pattern "/servlet/*", but you can map it    -->
-  <!-- to other patterns as well.  The extra path info portion of such a    -->
+  <!-- servlet is mapped to the URL pattern "/servlet/*", but you can map   -->
+  <!-- it to other patterns as well.  The extra path info portion of such a -->
   <!-- request must be the fully qualified class name of a Java class that  -->
   <!-- implements Servlet (or extends HttpServlet), or the servlet name     -->
   <!-- of an existing servlet definition.     This servlet supports the     -->
@@ -104,14 +105,24 @@
 
   <!-- The JSP page compiler and execution servlet, which is the mechanism  -->
   <!-- used by Tomcat to support JSP pages.  Traditionally, this servlet    -->
-  <!-- is mapped to URL patterh "*.jsp".  This servlet supports the         -->
+  <!-- is mapped to the URL pattern "*.jsp".  This servlet supports the     -->
   <!-- following initialization parameters (default values are in square    -->
   <!-- brackets):                                                           -->
   <!--                                                                      -->
-  <!--   checkInterval       If development is false and reloading is true, -->
-  <!--                       background compiles are enabled. checkInterval -->
-  <!--                       is the time in seconds between checks to see   -->
-  <!--                       if a JSP page needs to be recompiled. [300]    -->
+  <!--   checkInterval       If development is false and checkInterval is   -->
+  <!--                       greater than zero, background compilations are -->
+  <!--                       enabled. checkInterval is the time in seconds  -->
+  <!--                       between checks to see if a JSP page needs to   -->
+  <!--                       be recompiled. [0]                             -->
+  <!--                                                                      -->
+  <!--   modificationTestInterval                                           -->
+  <!--                       Causes a JSP (and its dependent files) to not  -->
+  <!--                       be checked for modification during the         -->
+  <!--                       specified time interval (in seconds) from the  -->
+  <!--                       last time the JSP was checked for              -->
+  <!--                       modification. A value of 0 will cause the JSP  -->
+  <!--                       to be checked on every access.                 -->
+  <!--                       Used in development mode only. [4]             -->
   <!--                                                                      -->
   <!--   compiler            Which compiler Ant should use to compile JSP   -->
   <!--                       pages.  See the Ant documentation for more     -->
@@ -124,8 +135,10 @@
   <!--                       generated servlets?  [Created dynamically      -->
   <!--                       based on the current web application]          -->
   <!--                                                                      -->
-  <!--   development         Is Jasper used in development mode (will check -->
-  <!--                       for JSP modification on every access)?  [true] -->
+  <!--   development         Is Jasper used in development mode? If true,   -->
+  <!--                       the frequency at which JSPs are checked for    -->
+  <!--                       modification may be specified via the          -->
+  <!--                       modificationTestInterval parameter. [true]     -->
   <!--                                                                      -->
   <!--   enablePooling       Determines whether tag handler pooling is      -->
   <!--                       enabled  [true]                                -->
@@ -146,12 +159,10 @@
   <!--                                                                      -->
   <!--   mappedfile          Should we generate static content with one     -->
   <!--                       print statement per input line, to ease        -->
-  <!--                       debugging?  [true]                            -->
+  <!--                       debugging?  [true]                             -->
   <!--                                                                      -->
   <!--   trimSpaces          Should white spaces in template text between   -->
   <!--                       actions or directives be trimmed?  [false]     -->
-  <!--                                                                      -->
-  <!--   reloading           Should Jasper check for modified JSPs?  [true] -->
   <!--                                                                      -->
   <!--   suppressSmap        Should the generation of SMAP info for JSR45   -->
   <!--                       debugging be suppressed?  [false]              -->
@@ -164,21 +175,21 @@
   <!--                       arrays, to improve performance in some cases?  -->
   <!--                       [false]                                        -->
   <!--                                                                      -->
+  <!--   errorOnUseBeanInvalidClassAttribute                                -->
+  <!--                       Should Jasper issue an error when the value of -->
+  <!--                       the class attribute in an useBean action is    -->
+  <!--                       not a valid bean class?  [true]                -->
+  <!--                                                                      -->
   <!--   scratchdir          What scratch directory should we use when      -->
   <!--                       compiling JSP pages?  [default work directory  -->
   <!--                       for the current web application]               -->
-  <!--                                                                      -->
-  <!--   tagpoolMaxSize      The maximum tag handler pool size  [5]         -->
   <!--                                                                      -->
   <!--   xpoweredBy          Determines whether X-Powered-By response       -->
   <!--                       header is added by generated servlet  [false]  -->
   <!--                                                                      -->
   <!-- If you wish to use Jikes to compile JSP pages:                       -->
-  <!--   Set the init parameter "compiler" to "jikes".  Define              -->
-  <!--   the property "-Dbuild.compiler.emacs=true" when starting Tomcat    -->
-  <!--   by adding the above to your CATALINA_OPTS environment variable.    -->
-  <!--   If you get an error reporting that jikes can't use UTF8 encoding,  -->
-  <!--   try setting the init parameter "javaEncoding" to "ISO-8859-1".     -->
+  <!--   Please see the "Using Jikes" section of the Jasper-HowTo           -->
+  <!--   page in the Tomcat documentation.                                  -->
 
     <servlet>
         <servlet-name>jsp</servlet-name>
@@ -197,7 +208,7 @@
 
   <!-- Server Side Includes processing servlet, which processes SSI         -->
   <!-- directives in HTML pages consistent with similar support in web      -->
-  <!-- servers like Apache.  Traditionally, this servlet is mapped to       -->
+  <!-- servers like Apache.  Traditionally, this servlet is mapped to the   -->
   <!-- URL pattern "*.shtml".  This servlet supports the following          -->
   <!-- initialization parameters (default values are in square brackets):   -->
   <!--                                                                      -->
@@ -255,19 +266,22 @@
   <!-- supports the following initialization parameters (default values     -->
   <!-- are in square brackets):                                             -->
   <!--                                                                      -->
-  <!--   cgiPathPrefix       The CGI search path will start at              -->
-  <!--                       webAppRootDir + File.separator + this prefix.  -->
-  <!--                       [WEB-INF/cgi]                                  -->
+  <!--   cgiPathPrefix        The CGI search path will start at             -->
+  <!--                        webAppRootDir + File.separator + this prefix. -->
+  <!--                        [WEB-INF/cgi]                                 -->
   <!--                                                                      -->
-  <!--   clientInputTimeout  The time (in milliseconds) to wait for input   -->
-  <!--                       from the browser before assuming that there    -->
-  <!--                       is none.  [100]                                -->
+  <!--   debug                Debugging detail level for messages logged    -->
+  <!--                        by this servlet.  [0]                         -->
   <!--                                                                      -->
-  <!--   debug               Debugging detail level for messages logged     -->
-  <!--                       by this servlet.  [0]                          -->
+  <!--   executable           Name of the exectuable used to run the        -->
+  <!--                        script. [perl]                                -->
   <!--                                                                      -->
-  <!--   executable          Name of the exectuable used to run the script. -->
-  <!--                       [perl]                                         -->
+  <!--   parameterEncoding    Name of parameter encoding to be used with    -->
+  <!--                        CGI servlet.                                  -->
+  <!--                        [System.getProperty("file.encoding","UTF-8")] -->
+  <!--                                                                      -->
+  <!--   passShellEnvironment Should the shell environment variables (if    -->
+  <!--                        any) be passed to the CGI script? [false]     -->
   <!--                                                                      -->
   <!-- IMPORTANT: To use the CGI servlet, you also need to rename the       -->
   <!--            $CATALINA_HOME/server/lib/servlets-cgi.renametojar file   -->
@@ -277,10 +291,6 @@
     <servlet>
         <servlet-name>cgi</servlet-name>
         <servlet-class>org.apache.catalina.servlets.CGIServlet</servlet-class>
-        <init-param>
-          <param-name>clientInputTimeout</param-name>
-          <param-value>100</param-value>
-        </init-param>
         <init-param>
           <param-name>debug</param-name>
           <param-value>6</param-value>
@@ -459,7 +469,7 @@
     </mime-mapping>
     <mime-mapping>
         <extension>dtd</extension>
-        <mime-type>text/plain</mime-type>
+        <mime-type>application/xml-dtd</mime-type>
     </mime-mapping>
     <mime-mapping>
         <extension>dv</extension>
@@ -582,6 +592,10 @@
         <mime-type>application/x-troff-man</mime-type>
     </mime-mapping>
     <mime-mapping>
+        <extension>mathml</extension>
+        <mime-type>application/mathml+xml</mime-type> 
+    </mime-mapping>
+    <mime-mapping>
         <extension>me</extension>
         <mime-type>application/x-troff-me</mime-type>
     </mime-mapping>
@@ -654,6 +668,10 @@
         <mime-type>application/oda</mime-type>
     </mime-mapping>
     <mime-mapping>
+        <extension>ogg</extension>
+        <mime-type>application/ogg</mime-type>
+    </mime-mapping>
+    <mime-mapping>
         <extension>pbm</extension>
         <mime-type>image/x-portable-bitmap</mime-type>
     </mime-mapping>
@@ -698,6 +716,10 @@
         <mime-type>image/x-portable-pixmap</mime-type>
     </mime-mapping>
     <mime-mapping>
+        <extension>ppt</extension>
+        <mime-type>application/powerpoint</mime-type>
+    </mime-mapping>
+    <mime-mapping>
         <extension>ps</extension>
         <mime-type>application/postscript</mime-type>
     </mime-mapping>
@@ -720,6 +742,10 @@
     <mime-mapping>
         <extension>ras</extension>
         <mime-type>image/x-cmu-raster</mime-type>
+    </mime-mapping>
+    <mime-mapping>
+        <extension>rdf</extension>
+        <mime-type>application/rdf+xml</mime-type>
     </mime-mapping>
     <mime-mapping>
         <extension>rgb</extension>
@@ -772,6 +798,10 @@
     <mime-mapping>
         <extension>sv4crc</extension>
         <mime-type>application/x-sv4crc</mime-type>
+    </mime-mapping>
+    <mime-mapping>
+        <extension>svg</extension>
+        <mime-type>image/svg+xml</mime-type>
     </mime-mapping>
     <mime-mapping>
         <extension>swf</extension>
@@ -830,12 +860,24 @@
         <mime-type>application/x-ustar</mime-type>
     </mime-mapping>
     <mime-mapping>
+        <extension>vxml</extension>
+        <mime-type>application/voicexml+xml</mime-type>
+    </mime-mapping>
+    <mime-mapping>
         <extension>xbm</extension>
         <mime-type>image/x-xbitmap</mime-type>
     </mime-mapping>
     <mime-mapping>
+        <extension>xht</extension>
+        <mime-type>application/xhtml+xml</mime-type>
+    </mime-mapping>
+    <mime-mapping>
+        <extension>xhtml</extension>
+        <mime-type>application/xhtml+xml</mime-type>
+    </mime-mapping>
+    <mime-mapping>
         <extension>xml</extension>
-        <mime-type>text/xml</mime-type>
+        <mime-type>application/xml</mime-type>
     </mime-mapping>
     <mime-mapping>
         <extension>xpm</extension>
@@ -843,7 +885,15 @@
     </mime-mapping>
     <mime-mapping>
         <extension>xsl</extension>
-        <mime-type>text/xml</mime-type>
+        <mime-type>application/xml</mime-type>
+    </mime-mapping>
+    <mime-mapping>
+        <extension>xslt</extension>
+        <mime-type>application/xslt+xml</mime-type>
+    </mime-mapping>
+    <mime-mapping>
+        <extension>xul</extension>
+        <mime-type>application/vnd.mozilla.xul+xml</mime-type>
     </mime-mapping>
     <mime-mapping>
         <extension>xwd</extension>
@@ -855,11 +905,15 @@
     </mime-mapping>
     <mime-mapping>
         <extension>svg</extension>
-        <mime-type>image/svg+xml</mime-type>
+        <mime-type>image/svg</mime-type>
     </mime-mapping>
     <mime-mapping>
         <extension>svgz</extension>
-        <mime-type>image/svg+xml</mime-type>
+        <mime-type>image/svg</mime-type>
+    </mime-mapping>
+    <mime-mapping>
+        <extension>vsd</extension>
+        <mime-type>application/x-visio</mime-type>
     </mime-mapping>
     <mime-mapping>
         <!-- Wireless Bitmap -->
