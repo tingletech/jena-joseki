@@ -4,9 +4,11 @@ export AXIS_HOME="$SYS/axis-1_2_1"
 CP="$(make_classpath $AXIS_HOME)"
 CP="$CP;classes"
 
-# Output in "org.joseki.ws1"
 
-# Step 3 : WSDL to Web Service (Server)
+# Output in "org.joseki.ws1"
+rm -f src/org/joseki/ws1/*.java
+
+# WSDL to Web Service (Server)
 java -cp "$CP" org.apache.axis.wsdl.WSDL2Java \
 	-o src -d Session -s -S true          \
         -Nhttp://www.w3.org/2005/01/sparql-protocol-query  org.joseki.ws1  \

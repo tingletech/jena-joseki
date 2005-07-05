@@ -63,19 +63,11 @@
   </wsdl:types>
 
   <wsdl:message name="queryRequest">
-    <!--
     <wsdl:part name="query" type="st:query"/>
-    -->
-    <!-- @@FIXME -->
-    <wsdl:part name="query" type="xs:string"/>
   </wsdl:message>
 
   <wsdl:message name="queryResponse">
-    <!-- @@FIXME -->
-    <!--
     <wsdl:part name="response" type="st:query-result"/>
-    -->
-    <wsdl:part name="response" type="xs:string"/>
   </wsdl:message>
 
   <wsdl:portType name="QueryType">

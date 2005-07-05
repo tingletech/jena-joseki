@@ -8,7 +8,7 @@
 package org.joseki.ws1;
 
 public class QuerySoapBindingImpl implements org.joseki.ws1.QueryType{
-    public java.lang.String query(java.lang.String query) throws java.rmi.RemoteException {
+    public org.w3.www._2001.sw.DataAccess.sparql_protocol_types.QueryResult query(org.w3.www._2001.sw.DataAccess.sparql_protocol_types.Query query) throws java.rmi.RemoteException {
         return null;
     }
 
