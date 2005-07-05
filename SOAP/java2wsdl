@@ -8,9 +8,9 @@ CP="$CP;classes"
 rm -rf src/org/joseki/ws/*.{java,wsdd}
 rm -rf classes/*
 
-# Step1 : Compile interface
-javac -d classes src/org/joseki/webservices/JosekiQuery.java 
-[ "$?" = "0" ] || exit $? ;
+## # Step1 : Compile interface
+## javac -d classes src/org/joseki/webservices/JosekiQuery.java 
+## [ "$?" = "0" ] || exit $? ;
 
 # Step 2 : Interface to WSDL
 java -cp "$CP" org.apache.axis.wsdl.Java2WSDL \
