@@ -9,6 +9,10 @@ CP="$CP;classes"
 rm -f src/org/joseki/ws1/*.java
 
 # WSDL to Web Service (Server)
+# Args: -c --implementationClassName
+#       -w --wrapArrays
+# --buildFile
+
 java $SOCKS -cp "$CP" org.apache.axis.wsdl.WSDL2Java \
 	-o src -d Session -s -S true          \
         -Nhttp://www.w3.org/2005/01/sparql-protocol-query org.joseki.ws1  \

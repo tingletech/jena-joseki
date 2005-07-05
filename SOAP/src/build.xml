@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<project basedir="." default="jar">
+    <property name="src" location="."/>
+    <property name="build.classes" location="classes"/>
+    <path id="classpath">
+        <pathelement location="/home/afs/sys/axis-1_2_1/lib/activation.jar"/>
+        <pathelement location="/home/afs/sys/axis-1_2_1/lib/axis-ant.jar"/>
+        <pathelement location="/home/afs/sys/axis-1_2_1/lib/axis.jar"/>
+        <pathelement location="/home/afs/sys/axis-1_2_1/lib/commons-discovery-0.2.jar"/>
+        <pathelement location="/home/afs/sys/axis-1_2_1/lib/commons-logging-1.0.4.jar"/>
+        <pathelement location="/home/afs/sys/axis-1_2_1/lib/jaxrpc.jar"/>
+        <pathelement location="/home/afs/sys/axis-1_2_1/lib/log4j-1.2.8.jar"/>
+        <pathelement location="/home/afs/sys/axis-1_2_1/lib/mailapi.jar"/>
+        <pathelement location="/home/afs/sys/axis-1_2_1/lib/saaj.jar"/>
+        <pathelement location="/home/afs/sys/axis-1_2_1/lib/wsdl4j-1.5.1.jar"/>
+        <pathelement location="classes"/>
+    </path>
+    <target name="compile">
+       <mkdir dir="${build.classes}"/>
+        <javac destdir="${build.classes}" debug="on">
+            <classpath refid="classpath" />
+            <src path="${src}"/>
+        </javac>
+    </target>
+    <target name="jar" depends="compile">
+        <copy todir="${build.classes}">
+            <fileset dir="." casesensitive="yes" >
+                <include name="**/*.wsdd"/>
+            </fileset>
+        </copy>
+        <jar jarfile="sparql-11.jar" basedir="${build.classes}" >
+        <include name="**" />
+        <manifest>
+            <section name="org/apache/ws4j2ee">
+            <attribute name="Implementation-Title" value="Apache Axis"/>
+            <attribute name="Implementation-Vendor" value="Apache Web Services"/>
+            </section>
+        </manifest>
+        </jar>
+        <delete dir="${build.classes}"/>
+    </target>
+</project>
