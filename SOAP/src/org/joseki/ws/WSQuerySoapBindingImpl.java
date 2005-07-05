@@ -8,8 +8,23 @@
 package org.joseki.ws;
 
 public class WSQuerySoapBindingImpl implements org.joseki.ws.JosekiQuery{
-    public java.lang.String query(java.lang.String in0, java.lang.String in1, java.lang.String[] in2) throws java.rmi.RemoteException {
-        return null;
+    public String query(String in0, 
+						String in1,
+						String[] in2)
+		throws java.rmi.RemoteException
+	{
+		String queryString = in0 ;
+		String defaultGraphURI = in1 ;
+		String[] namedGraphURIs = in2 ;
+
+
+		System.out.println("Query = "+queryString) ;
+		System.out.println("Default graph URI = "+defaultGraphURI) ;
+		for ( int i = 0 ; i < namedGraphURIs.length ; i++ )
+			{
+				System.out.println("Named graph URI = "+namedGraphURIs[i]) ;
+			}
+        return "JOSEKI" ;
     }
 
 }

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema version="$Id$" 
+	   xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	   xmlns:vbr="http://www.w3.org/2001/sw/DataAccess/rf1/result2"
+	   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+	   xmlns:sparqlx="http://www.w3.org/2001/sw/DataAccess/sparqlx.xsd">
+
+  <xs:import namespace="http://www.w3.org/2001/sw/DataAccess/rf1/result2"
+	     schemaLocation="http://www.w3.org/2001/sw/DataAccess/rf1/result2.xsd">
+  </xs:import>
+
+  <xs:import namespace="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+  </xs:import>
+
+  <xs:element name="query">
+    <xs:complexType>
+      <xs:all>
+	<xs:element minOccurs="1" maxOccurs="1" name="sparql-query" type="xs:string"></xs:element>
+	<xs:element minOccurs="0" maxOccurs="1" name="default-graph-uri" type="xs:anyURI"></xs:element>
+	<xs:element minOccurs="0" maxOccurs="unbounded" name="named-graph-uri" type="xs:anyURI"></xs:element> 
+      </xs:all>
+    </xs:complexType>
+  </xs:element>
+
+  <!--
+  <xs:element name="rdf-dataset">
+    <xs:complexType>
+      <xs:sequence>
+	<xs:element minOccurs="0" maxOccurs="1" name="default-graph-uri" type="xs:anyURI"></xs:element>
+	<xs:element minOccurs="0" maxOccurs="unbounded" name="named-graph-uri" type="xs:anyURI"></xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  -->
+
+  <xs:element name="query-result">
+    <xs:complexType>
+      <xs:choice>
+	<xs:element minOccurs="0" maxOccurs="1" ref="vbr:sparql"></xs:element>
+	<xs:element minOccurs="0" maxOccurs="1" ref="rdf:RDF"></xs:element>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="faultDetails" type="xs:string"></xs:element>
+
+</xs:schema>

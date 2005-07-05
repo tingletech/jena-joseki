@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<wsdl:definitions
+     targetNamespace="http://www.w3.org/2005/01/sparql-protocol-query"
+     xmlns:tns="http://www.w3.org/2005/01/sparql-protocol-query"
+
+     xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+     xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+
+     xmlns:st="http://www.w3.org/2001/sw/DataAccess/sparql-protocol-types"
+
+
+     xmlns:wsd2="http://www.w3.org/2004/08/wsdl" 
+     xmlns:whttp="http://www.w3.org/2004/08/wsdl/http"
+     xmlns:http="http://schemas.xmlsoap.org/wsdl/http/"
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+
+     xmlns:xs="http://www.w3.org/2001/XMLSchema"
+
+     xmlns:xrf="http://www.w3.org/2001/sw/DataAccess/rf1/result"
+     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     schemaLocation="http://www.w3.org/2004/08/wsdl" 
+     >
+
+  <!--
+  <wsdl:import namespace="http://www.w3.org/2001/sw/DataAccess/rf1/result"
+	       location="http://www.w3.org/2001/sw/DataAccess/rf1/result"/>
+  <wsdl:import namespace="http://www.w3.org/2001/sw/DataAccess/sparql-protocol-types"
+	       location="http://www.w3.org/2001/sw/DataAccess/sparql-protocol-types"/>
+  <wsdl:import namespace="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+	       location="http://www.w3.org/1999/02/22-rdf-syntax-ns#"/>
+  -->
+  <!--
+  <wsdl:types>
+    <xs:import namespace="http://www.w3.org/2001/sw/DataAccess/rf1/result"/>
+    <xs:import namespace="http://www.w3.org/2001/sw/DataAccess/sparql-protocol-types"/>
+    <xs:import namespace="http://www.w3.org/1999/02/22-rdf-syntax-ns#"/>
+  </wsdl:types>
+  -->
+
+  <wsdl:types>
+    <schema targetNamespace="http://www.w3.org/2001/sw/DataAccess/sparql-protocol-types"
+	    xmlns="http://www.w3.org/2001/XMLSchema">
+      <xs:complexType name="query">
+	<xs:all>
+	  <xs:element minOccurs="1" maxOccurs="1" name="sparql-query" type="xs:string"/>
+	  <xs:element minOccurs="0" maxOccurs="1" name="default-graph-uri" type="xs:anyURI"/>
+	  <xs:element minOccurs="0" maxOccurs="unbounded" name="named-graph-uri" type="xs:anyURI"/>
+	</xs:all>
+      </xs:complexType>
+
+    <xs:complexType name="query-result">
+	<!--@@FIXME
+       <xs:choice>
+	<xs:element minOccurs="0" maxOccurs="1" ref="vbr:sparql"/>
+	<xs:element minOccurs="0" maxOccurs="1" ref="rdf:RDF"/>
+      </xs:choice>
+	-->
+	<xs:any/>
+      </xs:complexType>
+    </schema>
+    
+  </wsdl:types>
+
+  <wsdl:message name="queryRequest">
+    <!--
+    <wsdl:part name="query" type="st:query"/>
+    -->
+    <!-- @@FIXME -->
+    <wsdl:part name="query" type="xs:string"/>
+  </wsdl:message>
+
+  <wsdl:message name="queryResponse">
+    <!-- @@FIXME -->
+    <!--
+    <wsdl:part name="response" type="st:query-result"/>
+    -->
+    <wsdl:part name="response" type="xs:string"/>
+  </wsdl:message>
+
+  <wsdl:portType name="QueryType">
+    <wsdl:operation name="query">
+      <wsdl:input message="tns:queryRequest"/>
+      <wsdl:output message="tns:queryResponse"/>
+    </wsdl:operation>
+  </wsdl:portType>
+
+  <wsdl:binding name="QuerySoapBinding" type="tns:QueryType">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="query">
+      <wsdl:input>
+	<soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+	<soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+
+
+  <wsdl:service name="JosekiQueryService">
+    <wsdl:port binding="tns:QuerySoapBinding" name="queryPort">
+      <soap:address location="http://localhost:8080/axis/services/WSQuery"/>
+    </wsdl:port>
+  </wsdl:service>
+
+</wsdl:definitions>
+

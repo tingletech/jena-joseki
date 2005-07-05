@@ -11,8 +11,8 @@ import java.io.InputStream;
 import org.joseki.graph.GraphErrorHandler;
 import org.joseki.graph.LimitingGraph;
 
+import com.hp.hpl.jena.graph.Factory;
 import com.hp.hpl.jena.graph.Graph;
-import com.hp.hpl.jena.mem.GraphMem;
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
 import com.hp.hpl.jena.rdf.model.RDFReader;
@@ -31,8 +31,7 @@ public class GraphUtils
     
     public static Model readModel(String uri, int limit, String syntax) 
     {
-        
-        Graph g = new GraphMem() ;
+        Graph g = Factory.createGraphMem() ;
         g = new LimitingGraph(g, limit) ;
         Model m = ModelFactory.createModelForGraph(g) ;
         RDFReader r = m.getReader(syntax) ;
@@ -44,7 +43,7 @@ public class GraphUtils
     
     public static Graph readGraph(String uri, int limit, String syntax) 
     {
-        Graph g = new GraphMem() ;
+        Graph g = Factory.createGraphMem() ;
         g = new LimitingGraph(g, limit) ;
         Model m = ModelFactory.createModelForGraph(g) ;
         RDFReader r = m.getReader(syntax) ;

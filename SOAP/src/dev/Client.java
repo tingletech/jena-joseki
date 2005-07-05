@@ -3,7 +3,7 @@ package dev;
 import org.apache.axis.client.Call;
 import org.apache.axis.client.Service;
 
-//import javax.xml.namespace.QName;
+import javax.xml.namespace.QName;
 
 public class Client
 {
@@ -11,13 +11,16 @@ public class Client
 	{
 		try {
 			String endpoint = 
-				"http://localhost:8080/axis/services/WSQuery" ;
+				"http://localhost:2525/axis/services/WSQuery" ;
 			
 			Service  service = new Service();
 			Call     call    = (Call) service.createCall();
 			
 			call.setTargetEndpointAddress( new java.net.URL(endpoint) );
-			call.setOperationName(new QName("urn:sparql1", "WSquery") );
+
+			// Method name
+			call.setOperationName(new QName("urn:sparql1", 
+											"query") );
 			
 			//call.addParameter("testParam",
 			//                  org.apache.axis.Constants.XSD_STRING,
@@ -27,16 +30,16 @@ public class Client
 			String queryString = "SELECT" ;
 			String defaultGraphURI = "<default graph>" ;
 			String[] namegraphURIs = new String[]{"<g1>", "<g2>"} ;
-			Object[] args = 
+			Object[] ws_args = 
 				new Object[]{queryString, defaultGraphURI, namegraphURIs} ;
 
-			String ret = (String)call.invoke(args) ;
+			String ret = (String)call.invoke(ws_args) ;
 
            System.out.println("Sent , got '" + ret + "'");
 
        } catch (Exception e) {
            System.err.println(e.getMessage()) ;
-		   e.printStacktrace(System.err) ;
+		   e.printStackTrace(System.err) ;
        }
    }
 }
