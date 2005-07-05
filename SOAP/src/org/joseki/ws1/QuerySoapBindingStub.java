@@ -65,6 +65,69 @@ public class QuerySoapBindingStub extends org.apache.axis.client.Stub implements
             java.lang.Class simpledf = org.apache.axis.encoding.ser.SimpleDeserializerFactory.class;
             java.lang.Class simplelistsf = org.apache.axis.encoding.ser.SimpleListSerializerFactory.class;
             java.lang.Class simplelistdf = org.apache.axis.encoding.ser.SimpleListDeserializerFactory.class;
+            qName = new javax.xml.namespace.QName("http://www.w3.org/2001/sw/DataAccess/rf1/result2", ">binding");
+            cachedSerQNames.add(qName);
+            cls = org.w3.www._2001.sw.DataAccess.rf1.result2.Binding.class;
+            cachedSerClasses.add(cls);
+            cachedSerFactories.add(beansf);
+            cachedDeserFactories.add(beandf);
+
+            qName = new javax.xml.namespace.QName("http://www.w3.org/2001/sw/DataAccess/rf1/result2", ">head");
+            cachedSerQNames.add(qName);
+            cls = org.w3.www._2001.sw.DataAccess.rf1.result2.Head.class;
+            cachedSerClasses.add(cls);
+            cachedSerFactories.add(beansf);
+            cachedDeserFactories.add(beandf);
+
+            qName = new javax.xml.namespace.QName("http://www.w3.org/2001/sw/DataAccess/rf1/result2", ">literal");
+            cachedSerQNames.add(qName);
+            cls = org.w3.www._2001.sw.DataAccess.rf1.result2.Literal.class;
+            cachedSerClasses.add(cls);
+            cachedSerFactories.add(beansf);
+            cachedDeserFactories.add(beandf);
+
+            qName = new javax.xml.namespace.QName("http://www.w3.org/2001/sw/DataAccess/rf1/result2", ">result");
+            cachedSerQNames.add(qName);
+            cls = org.w3.www._2001.sw.DataAccess.rf1.result2.Result.class;
+            cachedSerClasses.add(cls);
+            cachedSerFactories.add(beansf);
+            cachedDeserFactories.add(beandf);
+
+            qName = new javax.xml.namespace.QName("http://www.w3.org/2001/sw/DataAccess/rf1/result2", ">results");
+            cachedSerQNames.add(qName);
+            cls = org.w3.www._2001.sw.DataAccess.rf1.result2.Results.class;
+            cachedSerClasses.add(cls);
+            cachedSerFactories.add(beansf);
+            cachedDeserFactories.add(beandf);
+
+            qName = new javax.xml.namespace.QName("http://www.w3.org/2001/sw/DataAccess/rf1/result2", ">sparql");
+            cachedSerQNames.add(qName);
+            cls = org.w3.www._2001.sw.DataAccess.rf1.result2.Sparql.class;
+            cachedSerClasses.add(cls);
+            cachedSerFactories.add(beansf);
+            cachedDeserFactories.add(beandf);
+
+            qName = new javax.xml.namespace.QName("http://www.w3.org/2001/sw/DataAccess/rf1/result2", ">unbound");
+            cachedSerQNames.add(qName);
+            cls = org.w3.www._2001.sw.DataAccess.rf1.result2.Unbound.class;
+            cachedSerClasses.add(cls);
+            cachedSerFactories.add(beansf);
+            cachedDeserFactories.add(beandf);
+
+            qName = new javax.xml.namespace.QName("http://www.w3.org/2001/sw/DataAccess/rf1/result2", ">variable");
+            cachedSerQNames.add(qName);
+            cls = org.w3.www._2001.sw.DataAccess.rf1.result2.Variable.class;
+            cachedSerClasses.add(cls);
+            cachedSerFactories.add(beansf);
+            cachedDeserFactories.add(beandf);
+
+            qName = new javax.xml.namespace.QName("http://www.w3.org/2001/sw/DataAccess/rf1/result2", "URI-reference");
+            cachedSerQNames.add(qName);
+            cls = org.apache.axis.types.URI.class;
+            cachedSerClasses.add(cls);
+            cachedSerFactories.add(simplesf);
+            cachedDeserFactories.add(simpledf);
+
             qName = new javax.xml.namespace.QName("http://www.w3.org/2001/sw/DataAccess/sparql-protocol-types", "query");
             cachedSerQNames.add(qName);
             cls = org.w3.www._2001.sw.DataAccess.sparql_protocol_types.Query.class;

@@ -8,7 +8,7 @@
      xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
 
      xmlns:st="http://www.w3.org/2001/sw/DataAccess/sparql-protocol-types"
-
+     xmlns:vbr="http://www.w3.org/2001/sw/DataAccess/rf1/result2"
 
      xmlns:wsd2="http://www.w3.org/2004/08/wsdl" 
      xmlns:whttp="http://www.w3.org/2004/08/wsdl/http"
@@ -22,14 +22,17 @@
      schemaLocation="http://www.w3.org/2004/08/wsdl" 
      >
 
+
+  <wsdl:import namespace="http://www.w3.org/2001/sw/DataAccess/rf1/result2"
+	       location="http://www.w3.org/2001/sw/DataAccess/rf1/result2"/>
+
   <!--
-  <wsdl:import namespace="http://www.w3.org/2001/sw/DataAccess/rf1/result"
-	       location="http://www.w3.org/2001/sw/DataAccess/rf1/result"/>
   <wsdl:import namespace="http://www.w3.org/2001/sw/DataAccess/sparql-protocol-types"
 	       location="http://www.w3.org/2001/sw/DataAccess/sparql-protocol-types"/>
   <wsdl:import namespace="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
 	       location="http://www.w3.org/1999/02/22-rdf-syntax-ns#"/>
   -->
+
   <!--
   <wsdl:types>
     <xs:import namespace="http://www.w3.org/2001/sw/DataAccess/rf1/result"/>
@@ -50,13 +53,13 @@
       </xs:complexType>
 
     <xs:complexType name="query-result">
-	<!--@@FIXME
        <xs:choice>
 	<xs:element minOccurs="0" maxOccurs="1" ref="vbr:sparql"/>
+	<!--
 	<xs:element minOccurs="0" maxOccurs="1" ref="rdf:RDF"/>
-      </xs:choice>
 	-->
 	<xs:any/>
+      </xs:choice>
       </xs:complexType>
     </schema>
     

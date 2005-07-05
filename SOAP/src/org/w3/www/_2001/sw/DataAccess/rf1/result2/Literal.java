@@ -1,49 +1,29 @@
 /**
- * QueryResult.java
+ * Literal.java
  *
  * This file was auto-generated from WSDL
  * by the Apache Axis 1.2.1 Jun 14, 2005 (09:15:57 EDT) WSDL2Java emitter.
  */
 
-package org.w3.www._2001.sw.DataAccess.sparql_protocol_types;
+package org.w3.www._2001.sw.DataAccess.rf1.result2;
 
-public class QueryResult  implements java.io.Serializable, org.apache.axis.encoding.AnyContentType {
-    private org.w3.www._2001.sw.DataAccess.rf1.result2.Sparql sparql;
-    private org.apache.axis.message.MessageElement [] _any;
+public class Literal  implements java.io.Serializable, org.apache.axis.encoding.MixedContentType {
+    private org.apache.axis.message.MessageElement [] _any;  // attribute
+    private org.apache.axis.types.URI datatype;  // attribute
 
-    public QueryResult() {
+    public Literal() {
     }
 
-    public QueryResult(
-           org.w3.www._2001.sw.DataAccess.rf1.result2.Sparql sparql,
-           org.apache.axis.message.MessageElement [] _any) {
-           this.sparql = sparql;
+    public Literal(
+           org.apache.axis.message.MessageElement [] _any,
+           org.apache.axis.types.URI datatype) {
            this._any = _any;
+           this.datatype = datatype;
     }
 
 
     /**
-     * Gets the sparql value for this QueryResult.
-     * 
-     * @return sparql
-     */
-    public org.w3.www._2001.sw.DataAccess.rf1.result2.Sparql getSparql() {
-        return sparql;
-    }
-
-
-    /**
-     * Sets the sparql value for this QueryResult.
-     * 
-     * @param sparql
-     */
-    public void setSparql(org.w3.www._2001.sw.DataAccess.rf1.result2.Sparql sparql) {
-        this.sparql = sparql;
-    }
-
-
-    /**
-     * Gets the _any value for this QueryResult.
+     * Gets the _any value for this Literal.
      * 
      * @return _any
      */
@@ -53,7 +33,7 @@ public class QueryResult  implements java.io.Serializable, org.apache.axis.encod
 
 
     /**
-     * Sets the _any value for this QueryResult.
+     * Sets the _any value for this Literal.
      * 
      * @param _any
      */
@@ -61,10 +41,30 @@ public class QueryResult  implements java.io.Serializable, org.apache.axis.encod
         this._any = _any;
     }
 
+
+    /**
+     * Gets the datatype value for this Literal.
+     * 
+     * @return datatype
+     */
+    public org.apache.axis.types.URI getDatatype() {
+        return datatype;
+    }
+
+
+    /**
+     * Sets the datatype value for this Literal.
+     * 
+     * @param datatype
+     */
+    public void setDatatype(org.apache.axis.types.URI datatype) {
+        this.datatype = datatype;
+    }
+
     private java.lang.Object __equalsCalc = null;
     public synchronized boolean equals(java.lang.Object obj) {
-        if (!(obj instanceof QueryResult)) return false;
-        QueryResult other = (QueryResult) obj;
+        if (!(obj instanceof Literal)) return false;
+        Literal other = (Literal) obj;
         if (obj == null) return false;
         if (this == obj) return true;
         if (__equalsCalc != null) {
@@ -73,12 +73,12 @@ public class QueryResult  implements java.io.Serializable, org.apache.axis.encod
         __equalsCalc = obj;
         boolean _equals;
         _equals = true && 
-            ((this.sparql==null && other.getSparql()==null) || 
-             (this.sparql!=null &&
-              this.sparql.equals(other.getSparql()))) &&
             ((this._any==null && other.get_any()==null) || 
              (this._any!=null &&
-              java.util.Arrays.equals(this._any, other.get_any())));
+              java.util.Arrays.equals(this._any, other.get_any()))) &&
+            ((this.datatype==null && other.getDatatype()==null) || 
+             (this.datatype!=null &&
+              this.datatype.equals(other.getDatatype())));
         __equalsCalc = null;
         return _equals;
     }
@@ -90,9 +90,6 @@ public class QueryResult  implements java.io.Serializable, org.apache.axis.encod
         }
         __hashCodeCalc = true;
         int _hashCode = 1;
-        if (getSparql() != null) {
-            _hashCode += getSparql().hashCode();
-        }
         if (get_any() != null) {
             for (int i=0;
                  i<java.lang.reflect.Array.getLength(get_any());
@@ -104,23 +101,24 @@ public class QueryResult  implements java.io.Serializable, org.apache.axis.encod
                 }
             }
         }
+        if (getDatatype() != null) {
+            _hashCode += getDatatype().hashCode();
+        }
         __hashCodeCalc = false;
         return _hashCode;
     }
 
     // Type metadata
     private static org.apache.axis.description.TypeDesc typeDesc =
-        new org.apache.axis.description.TypeDesc(QueryResult.class, true);
+        new org.apache.axis.description.TypeDesc(Literal.class, true);
 
     static {
-        typeDesc.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2001/sw/DataAccess/sparql-protocol-types", "query-result"));
-        org.apache.axis.description.ElementDesc elemField = new org.apache.axis.description.ElementDesc();
-        elemField.setFieldName("sparql");
-        elemField.setXmlName(new javax.xml.namespace.QName("http://www.w3.org/2001/sw/DataAccess/rf1/result2", "sparql"));
-        elemField.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2001/sw/DataAccess/rf1/result2", "sparql"));
-        elemField.setMinOccurs(0);
-        elemField.setNillable(false);
-        typeDesc.addFieldDesc(elemField);
+        typeDesc.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2001/sw/DataAccess/rf1/result2", ">literal"));
+        org.apache.axis.description.AttributeDesc attrField = new org.apache.axis.description.AttributeDesc();
+        attrField.setFieldName("datatype");
+        attrField.setXmlName(new javax.xml.namespace.QName("", "datatype"));
+        attrField.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2001/sw/DataAccess/rf1/result2", "URI-reference"));
+        typeDesc.addFieldDesc(attrField);
     }
 
     /**
