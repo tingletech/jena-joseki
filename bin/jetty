@@ -4,6 +4,9 @@
 JETTY_HOME=${JETTY_HOME:-/home/afs/sys/Jetty-5}
 
 CP="$(joseki_path)"
+CP2="$(alljars $PWD/lib2)"
+CP="$CP;$CP2"
+CP="$CP;$JAVA_HOME/lib/tools.jar"
 
 #DEBUG=-DDEBUG=true
 FIX=-Dorg.mortbay.util.FileResource.checkAliases=false 
