@@ -10,7 +10,6 @@ import javax.xml.namespace.QName;
 
 import org.apache.axis.AxisFault;
 import org.apache.axis.client.Call;
-import org.apache.axis.message.SOAPBodyElement;
 //import org.apache.axis.client.Service;
 import org.joseki.ws1client.JosekiQueryServiceLocator;
 import org.joseki.ws1client.QueryType;
@@ -45,7 +44,7 @@ public class WSClient
             call.setOperationName(
                new QName("http://www.w3.org/2005/01/sparql-protocol-query", "query")); 
 
-            SOAPBodyElement b = null ;
+            
            
             // Arguments
             
