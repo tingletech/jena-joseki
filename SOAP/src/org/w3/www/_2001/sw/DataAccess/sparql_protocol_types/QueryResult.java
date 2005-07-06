@@ -113,7 +113,7 @@ public class QueryResult  implements java.io.Serializable, org.apache.axis.encod
         new org.apache.axis.description.TypeDesc(QueryResult.class, true);
 
     static {
-        typeDesc.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2001/sw/DataAccess/sparql-protocol-types", "query-result"));
+        typeDesc.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2001/sw/DataAccess/sparql-protocol-types", ">query-result"));
         org.apache.axis.description.ElementDesc elemField = new org.apache.axis.description.ElementDesc();
         elemField.setFieldName("sparql");
         elemField.setXmlName(new javax.xml.namespace.QName("http://www.w3.org/2001/sw/DataAccess/rf1/result2", "sparql"));

@@ -6,10 +6,13 @@
  */
 
 package org.joseki.ws1;
+import org.w3.www._2001.sw.DataAccess.sparql_protocol_types.* ;
 
-public class QuerySoapBindingImpl implements org.joseki.ws1.QueryType{
-    public org.w3.www._2001.sw.DataAccess.sparql_protocol_types.QueryResult query(org.w3.www._2001.sw.DataAccess.sparql_protocol_types.Query query) throws java.rmi.RemoteException {
+public class QuerySoapBindingImpl implements org.joseki.ws1.QueryType
+{
+    public QueryResult query(Query query) throws java.rmi.RemoteException
+	{
+		System.out.println("Hello") ;
         return null;
     }
-
 }

@@ -31,10 +31,10 @@ public class QuerySoapBindingSkeleton implements org.joseki.ws1.QueryType, org.a
         org.apache.axis.description.FaultDesc _fault;
         org.apache.axis.description.ParameterDesc [] _params;
         _params = new org.apache.axis.description.ParameterDesc [] {
-            new org.apache.axis.description.ParameterDesc(new javax.xml.namespace.QName("", "query"), org.apache.axis.description.ParameterDesc.IN, new javax.xml.namespace.QName("http://www.w3.org/2001/sw/DataAccess/sparql-protocol-types", "query"), org.w3.www._2001.sw.DataAccess.sparql_protocol_types.Query.class, false, false), 
+            new org.apache.axis.description.ParameterDesc(new javax.xml.namespace.QName("http://www.w3.org/2001/sw/DataAccess/sparql-protocol-types", "query"), org.apache.axis.description.ParameterDesc.IN, new javax.xml.namespace.QName("http://www.w3.org/2001/sw/DataAccess/sparql-protocol-types", ">query"), org.w3.www._2001.sw.DataAccess.sparql_protocol_types.Query.class, false, false), 
         };
-        _oper = new org.apache.axis.description.OperationDesc("query", _params, new javax.xml.namespace.QName("", "response"));
-        _oper.setReturnType(new javax.xml.namespace.QName("http://www.w3.org/2001/sw/DataAccess/sparql-protocol-types", "query-result"));
+        _oper = new org.apache.axis.description.OperationDesc("query", _params, new javax.xml.namespace.QName("http://www.w3.org/2001/sw/DataAccess/sparql-protocol-types", "query-result"));
+        _oper.setReturnType(new javax.xml.namespace.QName("http://www.w3.org/2001/sw/DataAccess/sparql-protocol-types", ">query-result"));
         _oper.setElementQName(new javax.xml.namespace.QName("", "query"));
         _myOperationsList.add(_oper);
         if (_myOperations.get("query") == null) {

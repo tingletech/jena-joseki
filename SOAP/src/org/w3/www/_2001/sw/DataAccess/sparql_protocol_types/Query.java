@@ -150,7 +150,7 @@ public class Query  implements java.io.Serializable {
         new org.apache.axis.description.TypeDesc(Query.class, true);
 
     static {
-        typeDesc.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2001/sw/DataAccess/sparql-protocol-types", "query"));
+        typeDesc.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2001/sw/DataAccess/sparql-protocol-types", ">query"));
         org.apache.axis.description.ElementDesc elemField = new org.apache.axis.description.ElementDesc();
         elemField.setFieldName("sparqlQuery");
         elemField.setXmlName(new javax.xml.namespace.QName("", "sparql-query"));

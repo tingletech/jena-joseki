@@ -1,4 +1,9 @@
 #!/bin/bash
+
+echo "Use ant"
+exit
+
+
 export AXIS_HOME="$SYS/axis-1_2_1"
 
 CP="$(make_classpath $AXIS_HOME)"
@@ -6,7 +11,7 @@ CP="$CP;classes"
 
 
 # Output in "org.joseki.ws1"
-rm -f src/org/joseki/ws1/*.java
+## rm -f src/org/joseki/ws1/*.java
 
 # WSDL to Web Service (Server)
 # Args: -c --implementationClassName

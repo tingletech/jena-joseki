@@ -25,11 +25,11 @@ public class QuerySoapBindingStub extends org.apache.axis.client.Stub implements
         org.apache.axis.description.ParameterDesc param;
         oper = new org.apache.axis.description.OperationDesc();
         oper.setName("query");
-        param = new org.apache.axis.description.ParameterDesc(new javax.xml.namespace.QName("", "query"), org.apache.axis.description.ParameterDesc.IN, new javax.xml.namespace.QName("http://www.w3.org/2001/sw/DataAccess/sparql-protocol-types", "query"), org.w3.www._2001.sw.DataAccess.sparql_protocol_types.Query.class, false, false);
+        param = new org.apache.axis.description.ParameterDesc(new javax.xml.namespace.QName("http://www.w3.org/2001/sw/DataAccess/sparql-protocol-types", "query"), org.apache.axis.description.ParameterDesc.IN, new javax.xml.namespace.QName("http://www.w3.org/2001/sw/DataAccess/sparql-protocol-types", ">query"), org.w3.www._2001.sw.DataAccess.sparql_protocol_types.Query.class, false, false);
         oper.addParameter(param);
-        oper.setReturnType(new javax.xml.namespace.QName("http://www.w3.org/2001/sw/DataAccess/sparql-protocol-types", "query-result"));
+        oper.setReturnType(new javax.xml.namespace.QName("http://www.w3.org/2001/sw/DataAccess/sparql-protocol-types", ">query-result"));
         oper.setReturnClass(org.w3.www._2001.sw.DataAccess.sparql_protocol_types.QueryResult.class);
-        oper.setReturnQName(new javax.xml.namespace.QName("", "response"));
+        oper.setReturnQName(new javax.xml.namespace.QName("http://www.w3.org/2001/sw/DataAccess/sparql-protocol-types", "query-result"));
         oper.setStyle(org.apache.axis.constants.Style.DOCUMENT);
         oper.setUse(org.apache.axis.constants.Use.LITERAL);
         _operations[0] = oper;
@@ -128,14 +128,14 @@ public class QuerySoapBindingStub extends org.apache.axis.client.Stub implements
             cachedSerFactories.add(simplesf);
             cachedDeserFactories.add(simpledf);
 
-            qName = new javax.xml.namespace.QName("http://www.w3.org/2001/sw/DataAccess/sparql-protocol-types", "query");
+            qName = new javax.xml.namespace.QName("http://www.w3.org/2001/sw/DataAccess/sparql-protocol-types", ">query");
             cachedSerQNames.add(qName);
             cls = org.w3.www._2001.sw.DataAccess.sparql_protocol_types.Query.class;
             cachedSerClasses.add(cls);
             cachedSerFactories.add(beansf);
             cachedDeserFactories.add(beandf);
 
-            qName = new javax.xml.namespace.QName("http://www.w3.org/2001/sw/DataAccess/sparql-protocol-types", "query-result");
+            qName = new javax.xml.namespace.QName("http://www.w3.org/2001/sw/DataAccess/sparql-protocol-types", ">query-result");
             cachedSerQNames.add(qName);
             cls = org.w3.www._2001.sw.DataAccess.sparql_protocol_types.QueryResult.class;
             cachedSerClasses.add(cls);
