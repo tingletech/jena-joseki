@@ -11,5 +11,5 @@
 
   <!-- Services from JosekiQueryService WSDL service -->
 
-  <service name="queryPort"/>
+  <service name="sparql-query"/>
 </undeployment>

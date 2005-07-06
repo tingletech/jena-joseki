@@ -5,4 +5,4 @@ export AXIS_HOME="$SYS/axis-1_2_1"
 
 CP="$(make_classpath $AXIS_HOME)"
 
-java -cp "$CP" org.apache.axis.client.AdminClient "$*"
+java -cp "$CP" org.apache.axis.client.AdminClient "$@"

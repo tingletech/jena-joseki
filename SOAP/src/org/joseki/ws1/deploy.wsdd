@@ -12,12 +12,12 @@
 
   <!-- Services from JosekiQueryService WSDL service -->
 
-  <service name="queryPort" provider="java:RPC" style="document" use="literal">
+  <service name="sparql-query" provider="java:RPC" style="document" use="literal">
       <parameter name="wsdlTargetNamespace" value="http://www.w3.org/2005/01/sparql-protocol-query"/>
       <parameter name="wsdlServiceElement" value="JosekiQueryService"/>
       <parameter name="schemaQualified" value="http://www.w3.org/2001/sw/DataAccess/rf1/result2"/>
       <parameter name="schemaUnqualified" value="http://www.w3.org/2001/sw/DataAccess/sparql-protocol-types"/>
-      <parameter name="wsdlServicePort" value="queryPort"/>
+      <parameter name="wsdlServicePort" value="sparql-query"/>
       <parameter name="className" value="org.joseki.ws1.QuerySoapBindingImpl"/>
       <parameter name="wsdlPortType" value="QueryType"/>
       <parameter name="typeMappingVersion" value="1.2"/>

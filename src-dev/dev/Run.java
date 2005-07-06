@@ -17,6 +17,7 @@ public class Run
 
     public static void main(String[] args)
     {
+        WSClient.main(args) ; System.exit(0) ;
         runJosekiServer(args) ; System.exit(0) ;
         //runLimitedGraph() ;  System.exit(0) ;
     }

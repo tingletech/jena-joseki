@@ -5,9 +5,9 @@
  * by the Apache Axis 1.2.1 Jun 14, 2005 (09:15:57 EDT) WSDL2Java emitter.
  */
 
-package org.joseki.ws1;
+package org.joseki.ws1client;
 
-public class JosekiQueryServiceLocator extends org.apache.axis.client.Service implements org.joseki.ws1.JosekiQueryService {
+public class JosekiQueryServiceLocator extends org.apache.axis.client.Service implements org.joseki.ws1client.JosekiQueryService {
 
     public JosekiQueryServiceLocator() {
     }
@@ -39,7 +39,7 @@ public class JosekiQueryServiceLocator extends org.apache.axis.client.Service im
         SparqlQueryWSDDServiceName = name;
     }
 
-    public org.joseki.ws1.QueryType getSparqlQuery() throws javax.xml.rpc.ServiceException {
+    public org.joseki.ws1client.QueryType getSparqlQuery() throws javax.xml.rpc.ServiceException {
        java.net.URL endpoint;
         try {
             endpoint = new java.net.URL(SparqlQuery_address);
@@ -50,9 +50,9 @@ public class JosekiQueryServiceLocator extends org.apache.axis.client.Service im
         return getSparqlQuery(endpoint);
     }
 
-    public org.joseki.ws1.QueryType getSparqlQuery(java.net.URL portAddress) throws javax.xml.rpc.ServiceException {
+    public org.joseki.ws1client.QueryType getSparqlQuery(java.net.URL portAddress) throws javax.xml.rpc.ServiceException {
         try {
-            org.joseki.ws1.QuerySoapBindingStub _stub = new org.joseki.ws1.QuerySoapBindingStub(portAddress, this);
+            org.joseki.ws1client.QuerySoapBindingStub _stub = new org.joseki.ws1client.QuerySoapBindingStub(portAddress, this);
             _stub.setPortName(getSparqlQueryWSDDServiceName());
             return _stub;
         }
@@ -72,8 +72,8 @@ public class JosekiQueryServiceLocator extends org.apache.axis.client.Service im
      */
     public java.rmi.Remote getPort(Class serviceEndpointInterface) throws javax.xml.rpc.ServiceException {
         try {
-            if (org.joseki.ws1.QueryType.class.isAssignableFrom(serviceEndpointInterface)) {
-                org.joseki.ws1.QuerySoapBindingStub _stub = new org.joseki.ws1.QuerySoapBindingStub(new java.net.URL(SparqlQuery_address), this);
+            if (org.joseki.ws1client.QueryType.class.isAssignableFrom(serviceEndpointInterface)) {
+                org.joseki.ws1client.QuerySoapBindingStub _stub = new org.joseki.ws1client.QuerySoapBindingStub(new java.net.URL(SparqlQuery_address), this);
                 _stub.setPortName(getSparqlQueryWSDDServiceName());
                 return _stub;
             }

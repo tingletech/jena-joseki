@@ -25,7 +25,7 @@
       <setproxy socksproxyhost="socks-server"/>
     </target>
 
-    <target name="sparql-11" depends="socks">
+    <target name="sparql-11-server" depends="socks">
       <wsdl2java
                url="sparql-11.wsdl"
                output="src"
@@ -37,7 +37,19 @@
       </wsdl2java>
     </target>
 
-    <target name="compile">
+    <target name="sparql-11-client" depends="socks">
+      <wsdl2java
+               url="sparql-11.wsdl"
+               output="src"
+               deployscope="session"
+               serverSide="no"
+	       >
+        <mapping namespace="http://www.w3.org/2005/01/sparql-protocol-query" 
+		 package="org.joseki.ws1client"/>
+      </wsdl2java>
+    </target>
+
+    <target name="compile"> <!-- depends="sparql-11-server"> -->
        <mkdir dir="${build.classes}"/>
         <javac destdir="${build.classes}" debug="on">
             <classpath refid="classpath" />

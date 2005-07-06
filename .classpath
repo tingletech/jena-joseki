@@ -17,7 +17,16 @@
 	<classpathentry sourcepath="jena-src.zip" kind="lib" path="lib/jena.jar"/>
 	<classpathentry kind="lib" path="lib/log4j-1.2.9.jar"/>
 	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="src" path="src-soap"/>
 	<classpathentry kind="src" path="src-dev"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/ARQ"/>
+	<classpathentry kind="lib" path="lib2/activation.jar"/>
+	<classpathentry kind="lib" path="lib2/axis.jar"/>
+	<classpathentry kind="lib" path="lib2/axis-ant.jar"/>
+	<classpathentry kind="lib" path="lib2/commons-discovery-0.2.jar"/>
+	<classpathentry kind="lib" path="lib2/jaxrpc.jar"/>
+	<classpathentry kind="lib" path="lib2/mailapi.jar"/>
+	<classpathentry kind="lib" path="lib2/saaj.jar"/>
+	<classpathentry kind="lib" path="lib2/wsdl4j-1.5.1.jar"/>
 	<classpathentry kind="output" path="classes"/>
 </classpath>

@@ -70,8 +70,8 @@
 
 
   <wsdl:service name="JosekiQueryService">
-    <wsdl:port binding="tns:QuerySoapBinding" name="queryPort">
-      <soap:address location="http://localhost:8080/axis/services/WSQuery"/>
+    <wsdl:port binding="tns:QuerySoapBinding" name="sparql-query">
+      <soap:address location="http://localhost:2525/axis/services/sparql-query"/>
     </wsdl:port>
   </wsdl:service>
 
