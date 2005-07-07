@@ -1,0 +1,15 @@
+#!/bin/bash
+# Run the Joseki RDF server 
+
+[ "$JOSEKIROOT" = "" ] && { echo "JOSEKIROOT unset" 1>&2 ; exit 1 ; }
+CP="$($JOSEKIROOT/bin/joseki_path)"
+
+
+LOGCONFIG=${LOGCONFIG:-file:$JOSEKIROOT/etc/log4j.properties}
+## #LOGCONFIG=${LOGCONFIG:-file:$JOSEKIROOT/etc/log4j-detail.properties}
+
+LOG1="-Dlog4j.configuration=${LOGCONFIG}"
+LOG2="-Dorg.apache.commons.logging.Log=org.apache.commons.logging.impl.Log4JLogger"
+LOG="$LOG1 $LOG2"
+
+exec java $LOG -cp "$CP" joseki.rdfserver "$@"

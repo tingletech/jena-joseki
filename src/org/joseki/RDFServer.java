@@ -16,7 +16,7 @@ import org.apache.commons.logging.* ;
 
 /** Standalone server.
  * 
- * @version $Id: RDFServer.java,v 1.4 2005-06-27 15:45:04 andy_seaborne Exp $
+ * @version $Id: RDFServer.java,v 1.5 2005-07-07 14:36:01 andy_seaborne Exp $
  * @author  Andy Seaborne
  */
 
@@ -99,6 +99,7 @@ public class RDFServer
             
             webAppContextJoseki = 
                     server.addWebApplication(serverBaseURI, "./webapps/joseki/") ;
+            webAppContextJoseki.setDefaultsDescriptor("etc/webdefault-mininal.xml") ;
             
             if ( webAppContextJoseki == null )
                 throw new JosekiServerException("Failed to create the web application (null returned)") ;

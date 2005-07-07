@@ -16,6 +16,8 @@ import java.io.* ;
 import javax.servlet.http.*;
 import javax.servlet.* ;
 
+import com.hp.hpl.jena.util.FileUtils;
+
 public class DumpServlet extends HttpServlet
 {
     private static final long serialVersionUID = 99L;  // Serilizable.
@@ -66,6 +68,13 @@ public class DumpServlet extends HttpServlet
             out.println("==== Environment");
             out.println() ;
             out.print(dumpEnvironment());
+            out.println() ;
+
+            out.println("==== Body");
+            out.println() ;
+            ServletInputStream in = req.getInputStream() ;
+            String s = FileUtils.readWholeFileAsUTF8(in) ;
+            out.print(s) ;
             out.println() ;
 
             out.println("</pre>") ;

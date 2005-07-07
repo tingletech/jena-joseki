@@ -360,6 +360,7 @@
       <dispatcher>REQUEST</dispatcher>
       <dispatcher>FORWARD</dispatcher>
       <dispatcher>INCLUDE</dispatcher>
+      <dispatcher>ERROR</dispatcher>
   </filter-mapping>
   -->
   

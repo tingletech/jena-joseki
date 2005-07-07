@@ -1,9 +1,0 @@
-@prefix : <http://example.org/ns#> .
-
-:x :a 1 .
-:x :a 2 .
-:x :a 3 .
-:x :a 4 .
-:x :a 5 .
-:x :a 6 .
-:x :a 7 .

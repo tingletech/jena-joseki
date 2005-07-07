@@ -30,7 +30,7 @@ public class WSClient
 //            hc.verifyClientIsHappy(false) ;
 
             String endpoint = "http://localhost:2525/axis/services/sparql-query" ;
-            
+            //String endpoint = "http://localhost:2020/dump" ;
             JosekiQueryServiceLocator  service = new JosekiQueryServiceLocator();
 
             QueryType qt = service.getSparqlQuery() ;

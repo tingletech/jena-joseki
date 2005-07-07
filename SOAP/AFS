@@ -1,8 +1,0 @@
-1/ Add activiation.jar (JAF) and mailapi.jar (javamail)
-   to stop warning messages
-
-2/ Running Axis server
-   Copy conf/
-   Ensure conf/Catalina/localhost/ has no admin file.
-
-3/ Run tomcat 5.
