@@ -30,14 +30,12 @@
     </xs:complexType>
   </xs:element>
 
-  <!--
     <xs:complexType name="rdf-dataset">
       <xs:sequence>
 	<xs:element minOccurs="0" maxOccurs="1" name="default-graph-uri" type="xs:anyURI"></xs:element>
 	<xs:element minOccurs="0" maxOccurs="unbounded" name="named-graph-uri" type="xs:anyURI"></xs:element>
       </xs:sequence>
     </xs:complexType>
-  -->
 
   <xs:element name="query-result">
     <xs:complexType>
