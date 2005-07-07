@@ -6,17 +6,19 @@
 
 package dev;
 
-import javax.xml.namespace.QName;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import org.apache.axis.AxisFault;
-import org.apache.axis.client.Call;
-//import org.apache.axis.client.Service;
+import org.apache.axis.types.URI;
 import org.joseki.ws1client.JosekiQueryServiceLocator;
 import org.joseki.ws1client.QueryType;
+
 import org.w3.www._2001.sw.DataAccess.rf1.result2.Binding;
 import org.w3.www._2001.sw.DataAccess.rf1.result2.Result;
 import org.w3.www._2001.sw.DataAccess.rf1.result2.Results;
 import org.w3.www._2001.sw.DataAccess.rf1.result2.Variable;
+
 import org.w3.www._2001.sw.DataAccess.sparql_protocol_types.Query;
 import org.w3.www._2001.sw.DataAccess.sparql_protocol_types.QueryResult;
 
@@ -24,33 +26,32 @@ public class WSClient
 {
     public static void main(String[] args)
     {
-        
         try {
+            //String fmt = "yyyy-MM-dd'T'HH:mm:ss.SZ" ;
+            String fmt = "HH:mm:ss" ;
+            
+            SimpleDateFormat dFmt = new SimpleDateFormat(fmt) ;
+            String now = dFmt.format(new Date()) ;
+            
 //            HappyClient hc = new HappyClient(System.out) ;
 //            hc.verifyClientIsHappy(false) ;
 
             String endpoint = "http://localhost:2525/axis/services/sparql-query" ;
-            //String endpoint = "http://localhost:2020/dump" ;
+            //String endpoint = "http://localhost:2020/dump-body" ;
             JosekiQueryServiceLocator  service = new JosekiQueryServiceLocator();
+            service.setSparqlQueryEndpointAddress(endpoint) ;
 
             QueryType qt = service.getSparqlQuery() ;
             Query q = new Query() ;
-            q.setSparqlQuery("SELECT!") ;
-
-            
-            Call call = (Call)service.createCall() ;
-            call.setTargetEndpointAddress( new java.net.URL(endpoint) );
-            
-            call.setOperationName(
-               new QName("http://www.w3.org/2005/01/sparql-protocol-query", "query")); 
-
-            
-           
-            // Arguments
+            q.setSparqlQuery("SELECT ("+now+")") ;
+            q.setDefaultGraphUri(new URI("http://default")) ;
+            q.setNamedGraphUri(new URI[]{
+                new URI("http://host/name1"),
+                new URI("http://host/name2")
+            }) ;
             
             // Do it.
             QueryResult qr = qt.query(q) ;
-            
             
             Variable[] vars = qr.getSparql().getHead().getVariable() ;
             

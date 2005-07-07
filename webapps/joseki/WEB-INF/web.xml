@@ -10,14 +10,7 @@ PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.2//EN"
 
   <!-- SERVLETS -->
 
-  <!-- A well-known servlet for testing -->
-
-  <servlet>
-    <servlet-name>Dumper</servlet-name>
-    <servlet-class>
-      org.joseki.servlets.DumpServlet
-    </servlet-class>
-  </servlet>
+  <!-- Joseki servlet -->
 
   <servlet>
     <!-- NOT rdfserver (the application name) -->
@@ -30,6 +23,22 @@ PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.2//EN"
       <param-value>etc/joseki.n3</param-value>
     </init-param>
 
+  </servlet>
+
+  <!-- A well-known servlets for testing -->
+
+  <servlet>
+    <servlet-name>Dumper</servlet-name>
+    <servlet-class>
+      org.joseki.servlets.DumpServlet
+    </servlet-class>
+  </servlet>
+
+  <servlet>
+    <servlet-name>DumpBody</servlet-name>
+    <servlet-class>
+      org.joseki.servlets.DumpBodyServlet
+    </servlet-class>
   </servlet>
 
   <!-- MAPPINGS -->
@@ -67,6 +76,11 @@ PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.2//EN"
   <servlet-mapping>
     <servlet-name>Dumper</servlet-name>
     <url-pattern>/dump</url-pattern>
+  </servlet-mapping>
+
+  <servlet-mapping>
+    <servlet-name>DumpBody</servlet-name>
+    <url-pattern>/dump-body</url-pattern>
   </servlet-mapping>
 
   <!-- Note: the URL pattern is very general -->

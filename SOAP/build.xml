@@ -1,26 +1,27 @@
 <?xml version="1.0"?>
-<project basedir="." default="jar">
+<project name="WSDL" basedir="." default="jar">
     <property environment="env"/>
-    
-	<property name="src"                location="src-soap"/>
-	<property name="build.classes"      location="classes"/>
+
+    <property name="src"                location="../src-soap"/>
+    <property name="build.classes"      location="classes"/>
     <property name="wsdl.file"          value="sparql-11.wsdl"/>
     <property name="wsdl.server.pkg"    value="org.joseki.ws1"/>
     <property name="wsdl.client.pkg"    value="org.joseki.ws1client"/>
+    <property name="jar.service"        value="sparql-11.jar"/>
     
     <!-- Compile time jars -->
 	<path id="classpath">
-		<pathelement location="lib2/activation.jar"/>
-		<pathelement location="lib2/axis-ant.jar"/>
-		<pathelement location="lib2/axis.jar"/>
-		<pathelement location="lib2/commons-discovery-0.2.jar"/>
-		<!-- <pathelement location="lib2/commons-logging-1.0.4.jar"/> -->
-		<pathelement location="lib2/jaxrpc.jar"/>
-		<!-- <pathelement location="lib2/log4j-1.2.8.jar"/> -->
-		<pathelement location="lib2/mailapi.jar"/>
-		<pathelement location="lib2/saaj.jar"/>
-		<pathelement location="lib2/wsdl4j-1.5.1.jar"/>
-		<pathelement location="classes"/>
+		<pathelement location="../lib2/activation.jar"/>
+		<pathelement location="../lib2/axis-ant.jar"/>
+		<pathelement location="../lib2/axis.jar"/>
+		<pathelement location="../lib2/commons-discovery-0.2.jar"/>
+		<pathelement location="../lib2/commons-logging-1.0.4.jar"/>
+		<pathelement location="../lib2/jaxrpc.jar"/>
+		<pathelement location="../lib2/log4j-1.2.8.jar"/>
+		<pathelement location="../lib2/mailapi.jar"/>
+		<pathelement location="../lib2/saaj.jar"/>
+		<pathelement location="../lib2/wsdl4j-1.5.1.jar"/>
+		<!-- <pathelement location="../classes"/> -->
 	</path>
     
     <!--   
@@ -63,7 +64,7 @@
         <!-- Use <get> or <uptodate>to make this conditional -->      
 		<wsdl2java
                url="${wsdl.file}"
-               output="src"
+               output="${src}"
                deployscope="session"
                serverSide="yes">
 			<mapping namespace="http://www.w3.org/2005/01/sparql-protocol-query" 
@@ -74,7 +75,7 @@
 	<target name="sparql-11-client" depends="init.wsdl">
 		<wsdl2java
                url="${wsdl.file}"
-               output="src"
+               output="${src}"
                deployscope="session"
                serverSide="no">
 			<mapping namespace="http://www.w3.org/2005/01/sparql-protocol-query" 
@@ -82,24 +83,27 @@
 		</wsdl2java>
 	</target>
 
-	<target name="compile">
+	<target name="compile-service">
 		<!-- depends="sparql-11-server"> -->
 		<mkdir dir="${build.classes}"/>
-		<javac destdir="${build.classes}" debug="on">
+		<javac destdir="${build.classes}" srcdir="${src}" debug="on">
 			<classpath refid="classpath" />
-			<src path="${src}"/>
+            <include name="**/org/joseki/ws1/*.java" />
+            <include name="**/org/w3/www/_2001/sw/**/*.java"/>
 		</javac>
 	</target>
 
-	<target name="jar" depends="compile">
+	<target name="jar" depends="compile-service">
+        <!--      
 		<copy todir="${build.classes}">
 			<fileset dir="." casesensitive="yes" >
 				<include name="**/*.wsdd"/>
 			</fileset>
 		</copy>
-		<jar jarfile="sparql-11.jar" basedir="${build.classes}" >
+        -->
+		<jar jarfile="${jar.service}" basedir="${build.classes}" >
 			<include name="**" />
-			<manifest>
+   		<manifest>
 				<section name="org/apache/ws4j2ee">
 					<attribute name="Implementation-Title" value="Apache Axis"/>
 					<attribute name="Implementation-Vendor" value="Apache Web Services"/>
@@ -108,4 +112,9 @@
 		</jar>
 		<delete dir="${build.classes}"/>
 	</target>
+ 
+    <target name="deploy"> <!-- depends="jar"> -->
+        <move file="${jar.service}" todir="../webapps/axis/WEB-INF/lib"/>
+    </target>
+    
 </project>

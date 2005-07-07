@@ -1,4 +1,4 @@
-<project name="jena.rdfserver" default="main" basedir=".">
+<project name="Joseki" default="main" basedir=".">
 
     <property name="Name"            value="Joseki"/>
     <property name="name"            value="joseki"/>
