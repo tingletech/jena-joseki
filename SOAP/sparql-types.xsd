@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <xs:schema version="$Id$"
-	   targetNamespace="http://www.w3.org/2001/sw/DataAccess/sparql-protocol-types"
-	   xmlns:spt="http://www.w3.org/2001/sw/DataAccess/sparql-protocol-types"
-	   xmlns:xs="http://www.w3.org/2001/XMLSchema"
-	   xmlns:vbr="http://www.w3.org/2001/sw/DataAccess/rf1/result2"
-	   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-	   xmlns="http://www.w3.org/2001/XMLSchema"
-	   >
+           targetNamespace="http://www.w3.org/2001/sw/DataAccess/sparql-protocol-types"
+           xmlns:spt="http://www.w3.org/2001/sw/DataAccess/sparql-protocol-types"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:vbr="http://www.w3.org/2001/sw/DataAccess/rf1/result2"
+           xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+           xmlns="http://www.w3.org/2001/XMLSchema"
+           >
 
   <!--
   <xs:import namespace="http://www.w3.org/2001/sw/DataAccess/rf1/result2"
-	     schemaLocation="http://www.w3.org/2001/sw/DataAccess/rf1/result2.xsd">
+             schemaLocation="http://www.w3.org/2001/sw/DataAccess/rf1/result2.xsd">
   </xs:import>
   -->
 
@@ -23,28 +23,30 @@
   <xs:element name="query">
     <xs:complexType>
       <xs:all>
-	<xs:element minOccurs="1" maxOccurs="1" name="sparql-query" type="xs:string"/>
-	<xs:element minOccurs="0" maxOccurs="1" name="default-graph-uri" type="xs:anyURI"/>
-	<xs:element minOccurs="0" maxOccurs="unbounded" name="named-graph-uri" type="xs:anyURI"/>
+        <xs:element minOccurs="1" maxOccurs="1" name="sparql-query" type="xs:string"/>
+        <xs:element minOccurs="0" maxOccurs="1" name="default-graph-uri" type="xs:anyURI"/>
+        <xs:element minOccurs="0" maxOccurs="unbounded" name="named-graph-uri" type="xs:anyURI"/>
       </xs:all>
     </xs:complexType>
   </xs:element>
 
+	<!--
     <xs:complexType name="rdf-dataset">
       <xs:sequence>
-	<xs:element minOccurs="0" maxOccurs="1" name="default-graph-uri" type="xs:anyURI"></xs:element>
-	<xs:element minOccurs="0" maxOccurs="unbounded" name="named-graph-uri" type="xs:anyURI"></xs:element>
+        <xs:element minOccurs="0" maxOccurs="1" name="default-graph-uri" type="xs:anyURI"></xs:element>
+        <xs:element minOccurs="0" maxOccurs="unbounded" name="named-graph-uri" type="xs:anyURI"></xs:element>
       </xs:sequence>
     </xs:complexType>
-
+	-->
+	
   <xs:element name="query-result">
     <xs:complexType>
       <xs:choice>
-	<xs:element minOccurs="0" maxOccurs="1" ref="vbr:sparql"></xs:element>
-	<!--
-	<xs:element minOccurs="0" maxOccurs="1" ref="rdf:RDF"/>
-	-->
-	<xs:any/>
+        <xs:element minOccurs="0" maxOccurs="1" ref="vbr:sparql"></xs:element>
+        <!--
+        <xs:element minOccurs="0" maxOccurs="1" ref="rdf:RDF"/>
+        -->
+        <xs:any/>
       </xs:choice>
     </xs:complexType>
   </xs:element>
