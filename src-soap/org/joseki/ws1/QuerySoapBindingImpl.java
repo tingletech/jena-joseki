@@ -7,6 +7,7 @@
 
 package org.joseki.ws1;
 //import org.apache.axis.message.MessageElement;
+import org.apache.axis.message.MessageElement;
 import org.apache.axis.types.NMToken;
 import org.apache.axis.types.URI;
 import org.w3.www._2001.sw.DataAccess.rf1.result2.*;
@@ -37,6 +38,16 @@ public class QuerySoapBindingImpl implements org.joseki.ws1.QueryType
                     System.out.println("Named graph: "+stringOrNull(u)) ;
                 }
             }
+            
+            if ( false )
+            {
+                //RDF/XML
+                // Try custom serialization as well??
+               
+                MessageElement m = new MessageElement() ;
+                
+            }
+            
             // A result
             QueryResult result = new QueryResult() ;
             Sparql r = new Sparql();
@@ -50,6 +61,7 @@ public class QuerySoapBindingImpl implements org.joseki.ws1.QueryType
             Binding b2 = new Binding() ;
             b2.setName(new NMToken("y")) ;
             b2.setBnode("BNODE") ;
+            
 //            Literal lit = new Literal() ;
 //            MessageElement mElt = new MessageElement() ;
 //            mElt.setValue("I'm a literal") ;

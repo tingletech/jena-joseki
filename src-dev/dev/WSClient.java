@@ -53,6 +53,10 @@ public class WSClient
             // Do it.
             QueryResult qr = qt.query(q) ;
             
+            // Yukky stringization
+            qr.get_any()[0].getAsDOM() ;
+            
+            
             Variable[] vars = qr.getSparql().getHead().getVariable() ;
             
             for ( int i = 0 ; i < vars.length; i++ )
