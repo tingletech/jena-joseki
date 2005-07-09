@@ -1,8 +1,17 @@
 <?xml version="1.0"?>
+<!-- TODO Modularize
+<!DOCTYPE project [
+        <!ENTITY file SYSTEM "file:file.xml">
+        <!ENTITY taskdefs SYSTEM "file:taskdefs.xml">
+]>
+and use &file; 
+-->
+
+    
 <project name="WSDL" basedir="." default="jar">
   <property environment="env"/>
 
-  <property name="src"                location="src-soap"/>
+  <property name="src"                location="src-soap"/> <!-- !!! Local copy of source !!! -->
   <property name="build.classes"      location="classes"/>
   <property name="wsdl.file"          value="sparql-11.wsdl"/>
   <property name="wsdl.server.pkg"    value="org.joseki.ws1"/>
