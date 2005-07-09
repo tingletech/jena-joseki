@@ -6,48 +6,139 @@
 
 package org.joseki.http;
 
-import com.hp.hpl.jena.query.Query;
+import java.io.IOException;
+
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import com.hp.hpl.jena.query.QueryException;
 import com.hp.hpl.jena.query.ResultSet;
 import com.hp.hpl.jena.query.ResultSetFormatter;
 import com.hp.hpl.jena.rdf.model.Model;
-import com.hp.hpl.jena.shared.NotFoundException;
+import com.hp.hpl.jena.shared.JenaException;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.joseki.*;
 
 
-public class ResponseHttp
+public class ResponseHttp extends NResponse
 {
-    static Log log = LogFactory.getLog(ResponseHttp.class) ;
-    // TEMPORARY
-    private Response response ;
-    private Request request ;
+    // TODO ResponseCallback 
+    // Pass in as anon call with its own ref to the query execution to free
+    
+    private static Log log = LogFactory.getLog(ResponseHttp.class) ;
+    HttpResultSerializer ser = new HttpResultSerializer() ;
+    
+    static AcceptItem defaultCharset      = new AcceptItem(Joseki.charsetUTF8) ;
+    static AcceptList prefCharset         = new AcceptList("utf-8") ;
+    
+    // These EXCLUDE application/xml
+    static AcceptItem defaultContentType  = new AcceptItem(Joseki.contentTypeRDFXML) ;
+    
+    static String[] x = { //Joseki.contentTypeXML ,
+                          Joseki.contentTypeRDFXML ,
+                          Joseki.contentTypeTurtle ,
+                          Joseki.contentTypeAppN3 ,
+                          Joseki.contentTypeTextN3 ,
+                          Joseki.contentTypeNTriples } ;
+
+    static AcceptList prefContentType     = new AcceptList(x) ;
+
+    private HttpServletResponse httpResponse ;
+    private HttpServletRequest httpRequest ; 
+    
     static final String paramStyleSheet = "stylesheet" ;
 
-    ResponseHttp(Request request, Response response)
+    ResponseHttp(Request request, HttpServletRequest httpRequest, HttpServletResponse httpResponse) 
     { 
-        this.request = request ; 
-        this.response = response ;
-        }
-    
-    public void doResponse(Query query, Model model)
-    {
-        // Refactor
-        response.doResponse(model) ;
+        super(request) ;
+        this.httpResponse = httpResponse ;
+        this.httpRequest = httpRequest ; 
     }
     
-    public void doResponse(Query query, ResultSet resultSet) throws QueryExecutionException
+    protected void doResponseModel(Model model) throws QueryExecutionException
     {
-        boolean wantsAppXML = response.accepts("Accept", "application/xml") ;
+        // TODO Move content negotiation to constructor so early failures.
         
-        if ( false )
+        String mimeType = null ;
+        String writerMimeType = null ;
+        String charset = null ;
+        
+        // TODO : should this be text/plain?
+        String f = httpRequest.getHeader("Accept") ;
+        String textContentType =  HttpUtils.match(f, "text/*") ; 
+
+        if ( textContentType != null )
+        {
+            // Send to a browser.  Send as whatever the default type is for the 
+            writerMimeType = Joseki.contentTypeForText ;
+            mimeType = Joseki.contentTypeForText ;
+            log.debug("MIME type (text-like): "+writerMimeType) ;
+        }
+        
+        if ( mimeType == null )
+        {
+            AcceptItem i = HttpUtils.chooseContentType(httpRequest, prefContentType, defaultContentType) ; 
+            mimeType = i.getAcceptType() ;
+        }
+        
+        if ( charset == null )
+        {
+            AcceptItem i = HttpUtils.chooseCharset(httpRequest,  prefCharset, defaultCharset) ;
+            charset = i.getAcceptType() ;
+        }
+        
+        if ( writerMimeType == null )
+            writerMimeType = mimeType ;
+        
+        ser.setHttpResponse(httpRequest, httpResponse, mimeType, charset);   
+        
+        try {
+            try {
+                ser.writeModel(model, request, httpRequest, httpResponse, writerMimeType) ;
+            }
+            catch (JenaException jEx)
+            {
+                //msg(Level.WARNING, "RDFException", rdfEx);
+                log.warn("JenaException", jEx);
+                //printStackTrace(printName + "(execute)", rdfEx);
+                httpResponse.sendError(
+                        HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
+                        "JenaException: " + jEx);
+                return;
+            } catch (Exception ex)
+            {
+                try {
+                    log.warn("Internal server error", ex) ;
+                    httpResponse.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR) ;
+                } catch (Exception e) {}
+            }
+        } catch (IOException ioEx)
+        {
+            //msg(Level.WARNING,"IOException in normal response") ;
+            log.warn("IOException in normal response") ;
+            try {
+                httpResponse.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+                httpResponse.flushBuffer();
+                httpResponse.getWriter().close();
+            } catch (Exception e) { }
+        }
+    }
+    
+    
+    protected void doResponseResultSet(ResultSet resultSet) throws QueryExecutionException
+    {
+        String f = httpRequest.getHeader("Accept") ;
+        boolean wantsAppXML = HttpUtils.accept(f, "application/xml") ; 
+        
+        if ( ! wantsAppXML )
         {
             // As model
-            ResultSetFormatter rsFmt = new  ResultSetFormatter(resultSet, query.getPrefixMapping()) ;
+            ResultSetFormatter rsFmt = new  ResultSetFormatter(resultSet) ;
             Model m = rsFmt.toModel() ;
-            doResponse(query, m) ;
+            doResponseModel(m) ;
             return ;
         }
         
@@ -65,25 +156,46 @@ public class ResponseHttp
         
         try {
             ResultSetFormatter fmt = new ResultSetFormatter(resultSet) ;
-            
-            response.setMimeType(Joseki.contentTypeXML) ;
-            response.setResponseCode(Response.rcOK) ;
-            response.startResponse() ;
-            fmt.outputAsXML(response.getOutputStream(), stylesheetURL) ;
-            response.finishResponse() ;
+            ser.setHttpResponse(httpRequest, httpResponse, Joseki.contentTypeXML, null);  
+            httpResponse.setStatus(HttpServletResponse.SC_OK) ;
+            httpResponse.setHeader(Joseki.httpHeaderField, Joseki.httpHeaderValue);
+            ServletOutputStream out = httpResponse.getOutputStream() ;
+            fmt.outputAsXML(out, stylesheetURL) ;
+            out.flush() ;
         }
-        //throw new QueryExecutionException(Response.rcNotImplemented, "SPARQL.execQueryXML") ;
         catch (QueryException qEx)
         {
             log.info("Query execution error (SELECT/XML): "+qEx) ;
             throw new QueryExecutionException(ExecutionError.rcQueryExecutionFailure, qEx.getMessage()) ;
         }
-        catch (NotFoundException ex)
+        catch (IOException ioEx)
         {
-            log.info("Query execution error (SELECT/XML): "+ex) ;
-            throw new QueryExecutionException(ExecutionError.rcQueryExecutionFailure, ex.getMessage()) ;
+            log.warn("IOExceptionecution "+ioEx) ;
         }
+//        catch (NotFoundException ex)
+//        {
+//            log.info("Query execution error (SELECT/XML): "+ex) ;
+//            throw new QueryExecutionException(ExecutionError.rcQueryExecutionFailure, ex.getMessage()) ;
+//        }
     }
+    
+    
+    protected void doException(ExecutionException execEx)
+    {
+        HttpResultSerializer httpSerializer = new HttpResultSerializer() ;
+        httpSerializer.setHttpResponse(httpRequest, httpResponse, null, null) ;
+        
+        String httpMsg = execEx.shortMessage ;
+        if (execEx.shortMessage == null)
+            httpMsg = ExecutionError.errorString(execEx.returnCode);;
+
+            //msg("Error in operation: URI = " + uri + " : " + httpMsg);
+        log.info("Error: URI = " + request.getServiceURI() + " : " + httpMsg) ;
+        httpSerializer.sendError(execEx, httpResponse) ;
+    }
+    
+
+
 }
 
 /*

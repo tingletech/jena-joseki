@@ -14,10 +14,7 @@ import org.apache.axis.types.URI;
 import org.joseki.ws1client.JosekiQueryServiceLocator;
 import org.joseki.ws1client.QueryType;
 
-import org.w3.www._2001.sw.DataAccess.rf1.result2.Binding;
-import org.w3.www._2001.sw.DataAccess.rf1.result2.Result;
-import org.w3.www._2001.sw.DataAccess.rf1.result2.Results;
-import org.w3.www._2001.sw.DataAccess.rf1.result2.Variable;
+import org.w3.www._2001.sw.DataAccess.rf1.result2.*;
 
 import org.w3.www._2001.sw.DataAccess.sparql_protocol_types.Query;
 import org.w3.www._2001.sw.DataAccess.sparql_protocol_types.QueryResult;
@@ -53,43 +50,20 @@ public class WSClient
             // Do it.
             QueryResult qr = qt.query(q) ;
             
-            // Yukky stringization
-            qr.get_any()[0].getAsDOM() ;
-            
-            
-            Variable[] vars = qr.getSparql().getHead().getVariable() ;
-            
-            for ( int i = 0 ; i < vars.length; i++ )
+            if ( qr.get_any() != null )
             {
-                Variable v = vars[i] ; 
-                String vn = v.getName().toString() ;
-                System.out.println("Var = "+vn) ;
-            }
-
-            Results results = qr.getSparql().getResults() ;
-            Result[] r = results.getResult() ;
-            for ( int i = 0 ; i < r.length; i++ )
-            {
-                Result result = r[i] ;
-                Binding[] bindings = result.getBinding() ;
-                for ( int j = 0 ; j < bindings.length; j++ )
-                {
-                    Binding bind = bindings[j] ;
-                    String vn = bind.getName().toString() ;
-                    System.out.print("Binding: ("+vn+" = ") ;
-                    String bLab = bind.getBnode() ;
-                    if ( bLab != null )
-                        System.out.print("_:"+bLab) ;
-                    String uri = bind.getUri() ;
-                    if ( uri != null )
-                        System.out.print("<"+uri+">") ;
-                    System.out.println(")") ;
-                }
+                qr.get_any()[0].getAsDOM() ;
+                return ;
             }
             
+            if ( qr.getSparql() != null )
+            {
+                processResultSet(qr.getSparql()) ;
+                return ;
+            }
             
+            System.err.println("Unknown result element!!") ;
             
-            //String ret = (String) call.invoke( new Object[] { "Hello!" } );
         } catch (AxisFault ex)
         {
             System.err.println(ex.getFaultReason()) ;
@@ -102,6 +76,41 @@ public class WSClient
             System.err.println(ex.getMessage()) ;
             //ex.printStackTrace(System.err) ;
         }
+    }
+        
+        
+    private static void processResultSet(Sparql resultSet)
+    {
+        Variable[] vars = resultSet.getHead().getVariable() ;
+
+        for ( int i = 0 ; i < vars.length; i++ )
+        {
+            Variable v = vars[i] ; 
+            String vn = v.getName().toString() ;
+            System.out.println("Var = "+vn) ;
+        }
+
+        Results results = resultSet.getResults() ;
+        Result[] r = results.getResult() ;
+        for ( int i = 0 ; i < r.length; i++ )
+        {
+            Result result = r[i] ;
+            Binding[] bindings = result.getBinding() ;
+            for ( int j = 0 ; j < bindings.length; j++ )
+            {
+                Binding bind = bindings[j] ;
+                String vn = bind.getName().toString() ;
+                System.out.print("Binding: ("+vn+" = ") ;
+                String bLab = bind.getBnode() ;
+                if ( bLab != null )
+                    System.out.print("_:"+bLab) ;
+                String uri = bind.getUri() ;
+                if ( uri != null )
+                    System.out.print("<"+uri+">") ;
+                System.out.println(")") ;
+            }
+        }
+        
     }
 }
 

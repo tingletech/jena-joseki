@@ -7,6 +7,10 @@
 
 package org.joseki.ws1;
 //import org.apache.axis.message.MessageElement;
+
+import javax.xml.soap.SOAPException;
+
+import org.apache.axis.MessageContext;
 import org.apache.axis.message.MessageElement;
 import org.apache.axis.types.NMToken;
 import org.apache.axis.types.URI;
@@ -19,12 +23,16 @@ public class QuerySoapBindingImpl implements org.joseki.ws1.QueryType
 	{
         try {
     		System.out.println("Hello") ;
+            
+            // OK - so Axis has already parsed the message into nice Java datastructures.
+            MessageContext cxt = MessageContext.getCurrentContext() ;
+            String name = cxt.getMessage().getSOAPBody().getFirstChild().getNodeName() ;
+            
             String queryString = request.getSparqlQuery() ;
-    
+            
             System.out.println("Query string: "+stringOrNull(queryString)) ;
             
             URI uri = request.getDefaultGraphUri() ;
-            
             System.out.println("Default Graph: "+stringOrNull(uri)) ;
             
             URI[] names = request.getNamedGraphUri() ;
@@ -50,6 +58,19 @@ public class QuerySoapBindingImpl implements org.joseki.ws1.QueryType
             
             // A result
             QueryResult result = new QueryResult() ;
+
+            if ( false )
+            {
+                // Use "Message" style
+                //<service ... style="m"
+                // No WSDL - it's all in the deployment deploy.wsdd file.
+                MessageElement elt = new MessageElement() ;
+                // provide own serilization
+                Object obj = new ModelResult() ;
+                elt.setObjectValue(obj) ;
+                result.set_any(new MessageElement[]{elt}) ;
+            }
+            
             Sparql r = new Sparql();
             Results xmlResults = new Results() ;
             Result soln = new Result() ;
@@ -88,6 +109,12 @@ public class QuerySoapBindingImpl implements org.joseki.ws1.QueryType
             System.err.println(ex.getMessage()) ;
             ex.printStackTrace(System.err) ;
             throw ex ;
+        }
+        catch (SOAPException ex)
+        {
+            System.err.println("SOAP: "+ex.getMessage()) ;
+            ex.printStackTrace(System.err) ;
+            throw new RuntimeException("SOAP", ex) ;
         }
     }
     

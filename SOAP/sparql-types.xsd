@@ -19,7 +19,13 @@
   <xs:import namespace="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
   </xs:import>
   -->
+    <!-- "Define" rdf:RDF as an XSD any -->
+    <!--<xs:element targetNamespace="http://www.w3.org/1999/02/22-rdf-syntax-ns#">-->
 
+  <!--
+  <xs:element name="rdf:RDF" minOccurs="1" maxOccurs="1" type="xs:any"/>
+  -->
+  
   <xs:element name="query">
     <xs:complexType>
       <xs:all>

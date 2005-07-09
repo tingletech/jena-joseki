@@ -2,7 +2,7 @@
 <project name="WSDL" basedir="." default="jar">
   <property environment="env"/>
 
-  <property name="src"                location="../src-soap"/>
+  <property name="src"                location="src-soap"/>
   <property name="build.classes"      location="classes"/>
   <property name="wsdl.file"          value="sparql-11.wsdl"/>
   <property name="wsdl.server.pkg"    value="org.joseki.ws1"/>

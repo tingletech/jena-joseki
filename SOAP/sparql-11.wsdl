@@ -40,7 +40,7 @@
 
   <wsdl:import namespace="http://www.w3.org/2001/sw/DataAccess/sparql-protocol-types"
                location="sparql-types.xsd"/>
-
+  
   <wsdl:message name="queryRequest">
     <wsdl:part name="query" element="st:query"/>
   </wsdl:message>
@@ -67,7 +67,6 @@
       </wsdl:output>
     </wsdl:operation>
   </wsdl:binding>
-
 
   <wsdl:service name="JosekiQueryService">
     <wsdl:port binding="tns:QuerySoapBinding" name="sparql-query">
