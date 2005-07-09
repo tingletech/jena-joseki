@@ -45,7 +45,9 @@
 
   <!-- WSDL processing -->
   
-  <target name="init.wsdl" depends="socks"/>
+  <target name="init.wsdl" depends="socks">
+    <echo>Source ==> ${src}</echo>
+  </target>   
   <!--   
     And use if="wsdl.build.server.required" etc
     <uptodate property="wsdl.build.server.required"
