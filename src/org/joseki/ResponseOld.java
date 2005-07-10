@@ -20,7 +20,7 @@ import org.joseki.http.AcceptList;
 import org.joseki.http.HttpResultSerializer;
 import org.joseki.http.HttpUtils;
 
-import org.joseki.ExecutionError;
+import org.joseki.ReturnCodes;
 import org.joseki.ExecutionException;
 import org.joseki.Request;
 
@@ -30,9 +30,9 @@ import org.joseki.Request;
 
 /** Abstaction of an operation response
  * @author      Andy Seaborne
- * @version     $Id: ResponseOld.java,v 1.1 2005-07-10 17:26:15 andy_seaborne Exp $
+ * @version     $Id: ResponseOld.java,v 1.2 2005-07-10 17:28:09 andy_seaborne Exp $
  */
-public class ResponseOld  extends ExecutionError
+public class ResponseOld  extends ReturnCodes
 {
     // This is really "ResponseHttp" - will become that and have an interface for Response. 
     static Log log = LogFactory.getLog(ResponseOld.class) ;
@@ -180,7 +180,7 @@ public class ResponseOld  extends ExecutionError
         
         String httpMsg = execEx.shortMessage ;
         if (execEx.shortMessage == null)
-            httpMsg = ExecutionError.errorString(execEx.returnCode);;
+            httpMsg = ReturnCodes.errorString(execEx.returnCode);;
 
             //msg("Error in operation: URI = " + uri + " : " + httpMsg);
         log.info("Error: URI = " + request.getServiceURI() + " : " + httpMsg) ;

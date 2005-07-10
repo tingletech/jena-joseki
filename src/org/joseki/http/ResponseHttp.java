@@ -166,7 +166,7 @@ public class ResponseHttp extends Response
         catch (QueryException qEx)
         {
             log.info("Query execution error (SELECT/XML): "+qEx) ;
-            throw new QueryExecutionException(ExecutionError.rcQueryExecutionFailure, qEx.getMessage()) ;
+            throw new QueryExecutionException(ReturnCodes.rcQueryExecutionFailure, qEx.getMessage()) ;
         }
         catch (IOException ioEx)
         {
@@ -195,7 +195,7 @@ public class ResponseHttp extends Response
           catch (QueryException qEx)
           {
               log.info("Query execution error (ASK): "+qEx) ;
-              throw new QueryExecutionException(ExecutionError.rcQueryExecutionFailure, null) ;
+              throw new QueryExecutionException(ReturnCodes.rcQueryExecutionFailure, null) ;
           }
           catch (IOException ioEx)
           {
@@ -210,7 +210,7 @@ public class ResponseHttp extends Response
         
         String httpMsg = execEx.shortMessage ;
         if (execEx.shortMessage == null)
-            httpMsg = ExecutionError.errorString(execEx.returnCode);;
+            httpMsg = ReturnCodes.errorString(execEx.returnCode);;
 
             //msg("Error in operation: URI = " + uri + " : " + httpMsg);
         log.info("Error: URI = " + request.getServiceURI() + " : " + httpMsg) ;

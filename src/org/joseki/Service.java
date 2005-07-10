@@ -24,7 +24,7 @@ public class Service
     public void exec(Request request, Response response) throws ExecutionException
     {
         if ( ! isAvailable() )
-            throw new ExecutionException(ExecutionError.rcServiceUnavailable, "Service is not currently available") ;
+            throw new ExecutionException(ReturnCodes.rcServiceUnavailable, "Service is not currently available") ;
         processor.exec(request, response, dataset) ;
     }
     

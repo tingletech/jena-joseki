@@ -62,7 +62,7 @@ abstract public class Response
         if ( responseModel == null && responseResultSet == null && responseBoolean == null )
         {
             log.warn("Nothing to send as a response") ;
-            throw new QueryExecutionException(ExecutionError.rcInternalError,
+            throw new QueryExecutionException(ReturnCodes.rcInternalError,
                                               "Nothing to send as response") ;
         }
         
@@ -98,19 +98,19 @@ abstract public class Response
        if ( done )
        {
            log.warn("State error: already done") ;
-           throw new QueryExecutionException(ExecutionError.rcInternalError,
+           throw new QueryExecutionException(ReturnCodes.rcInternalError,
                                              "State error: already done") ;
        }
        if ( responseModel != null )
        {
            log.warn("State error: model already set") ;
-           throw new QueryExecutionException(ExecutionError.rcInternalError,
+           throw new QueryExecutionException(ReturnCodes.rcInternalError,
                                              "State error: model already set") ;
        }
        if ( responseResultSet != null )
        {
            log.warn("State error: result set already set") ;
-           throw new QueryExecutionException(ExecutionError.rcInternalError,
+           throw new QueryExecutionException(ReturnCodes.rcInternalError,
                                              "State error: result set already set") ;
        }
     }

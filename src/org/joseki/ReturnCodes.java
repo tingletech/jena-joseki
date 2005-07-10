@@ -6,11 +6,11 @@
 package org.joseki;
 
 /**
- * @version     $Id: ExecutionError.java,v 1.1 2005-06-23 09:55:59 andy_seaborne Exp $
+ * @version     $Id: ReturnCodes.java,v 1.1 2005-07-10 17:28:09 andy_seaborne Exp $
  * @author      Andy Seaborne
  */
 
-public class ExecutionError
+public class ReturnCodes
 {
     static public final int rcOK                     = 0 ;
     static public final int rcNoSuchQueryLanguage    = 3 ;

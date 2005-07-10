@@ -71,13 +71,13 @@ public class SPARQL extends QueryCom implements Loadable
             if  (queryString == null )
             {
                 log.debug("No query argument") ;
-                throw new QueryExecutionException(ExecutionError.rcQueryExecutionFailure,
+                throw new QueryExecutionException(ReturnCodes.rcQueryExecutionFailure,
                     "No query string");    
             }
             if ( queryString.equals("") )
             {
                 log.debug("Empty query string") ;
-                throw new QueryExecutionException(ExecutionError.rcQueryExecutionFailure,
+                throw new QueryExecutionException(ReturnCodes.rcQueryExecutionFailure,
                     "Empty query string");    
             }
             
@@ -97,11 +97,11 @@ public class SPARQL extends QueryCom implements Loadable
                 //    OutputString out = response.getOutputStream() ;
                 //    out.write(something meaning full)
                 String tmp = queryString +"\n\r" + ex.getMessage() ;
-                throw new QueryExecutionException(ExecutionError.rcQueryParseFailure, "Parse error: \n"+tmp) ;
+                throw new QueryExecutionException(ReturnCodes.rcQueryParseFailure, "Parse error: \n"+tmp) ;
             } catch (Throwable thrown)
             {
                 log.info("Query unknown error during parsing: "+queryStringLog, thrown) ;
-                throw new QueryExecutionException(ExecutionError.rcQueryParseFailure, "Unknown Parse error") ;
+                throw new QueryExecutionException(ReturnCodes.rcQueryParseFailure, "Unknown Parse error") ;
             }
             
             // Check arguments
@@ -110,9 +110,9 @@ public class SPARQL extends QueryCom implements Loadable
             {
                 // Restrict to service dataset only. 
                if ( datasetInProtocol(request) )
-                   throw new QueryExecutionException(ExecutionError.rcArgumentError, "This service does not allow the dataset to be specified in the protocol request") ;
+                   throw new QueryExecutionException(ReturnCodes.rcArgumentError, "This service does not allow the dataset to be specified in the protocol request") ;
                if ( query.hasDatasetDescription() )
-                   throw new QueryExecutionException(ExecutionError.rcArgumentError, "This service does not allow the dataset to be specified in the query") ;
+                   throw new QueryExecutionException(ReturnCodes.rcArgumentError, "This service does not allow the dataset to be specified in the query") ;
             }
             
             // ---- Dataset
@@ -139,7 +139,7 @@ public class SPARQL extends QueryCom implements Loadable
             }
             
             if ( !useQueryDesc && dataset == null )
-                throw new QueryExecutionException(ExecutionError.rcQueryExecutionFailure, "No datatset given") ;
+                throw new QueryExecutionException(ReturnCodes.rcQueryExecutionFailure, "No datatset given") ;
             
             QueryExecution qexec = null ;
             
@@ -191,7 +191,7 @@ public class SPARQL extends QueryCom implements Loadable
         catch (QueryException qEx)
         {
             log.info("Query execution error: "+qEx) ;
-            QueryExecutionException qExEx = new QueryExecutionException(ExecutionError.rcQueryExecutionFailure, qEx.getMessage()) ;
+            QueryExecutionException qExEx = new QueryExecutionException(ReturnCodes.rcQueryExecutionFailure, qEx.getMessage()) ;
             throw qExEx ;
         }
     }
@@ -248,7 +248,7 @@ public class SPARQL extends QueryCom implements Loadable
                 {
                     log.info("Failed to load "+graphURL+" : "+ex.getMessage()) ;
                     throw new QueryExecutionException(
-                                                      ExecutionError.rcArgumentUnreadable,
+                                                      ReturnCodes.rcArgumentUnreadable,
                                                       "Failed to load URL "+graphURL) ;
                 }
             }
@@ -278,7 +278,7 @@ public class SPARQL extends QueryCom implements Loadable
                     {
                         log.info("Failer to load (named) "+uri+" : "+ex.getMessage()) ;
                         throw new QueryExecutionException(
-                                                          ExecutionError.rcArgumentUnreadable,
+                                                          ReturnCodes.rcArgumentUnreadable,
                                                           "Failed to load URL "+uri) ;
                     }
                 }
@@ -290,7 +290,7 @@ public class SPARQL extends QueryCom implements Loadable
         {
             log.info("SPARQL parameter error",ex) ;
             throw new QueryExecutionException(
-                                              ExecutionError.rcArgumentError, "Parameter error");
+                                              ReturnCodes.rcArgumentError, "Parameter error");
         }
         
     }

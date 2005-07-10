@@ -21,7 +21,7 @@ import com.hp.hpl.jena.shared.JenaException;
 /** Extracting operation data from HTTP servlet requests and formatting results for sending back.
  * 
  * @author      Andy Seaborne
- * @version     $Id: HttpResultSerializer.java,v 1.1 2005-06-23 09:55:58 andy_seaborne Exp $
+ * @version     $Id: HttpResultSerializer.java,v 1.2 2005-07-10 17:28:10 andy_seaborne Exp $
  */
 public class HttpResultSerializer
 {
@@ -139,54 +139,54 @@ public class HttpResultSerializer
             int httpRC = -1;
             String httpMsg = execEx.shortMessage ;
             if (execEx.shortMessage == null)
-                httpMsg = ExecutionError.errorString(execEx.returnCode);;
+                httpMsg = ReturnCodes.errorString(execEx.returnCode);;
     
             // Map from internal error codes to HTTP ones.
             switch (execEx.returnCode)
             {
-                case ExecutionError.rcOK :
+                case ReturnCodes.rcOK :
                     httpRC = 200;
                     break;
-                case ExecutionError.rcQueryParseFailure :
+                case ReturnCodes.rcQueryParseFailure :
                     httpRC = HttpServletResponse.SC_BAD_REQUEST;
                     break;
-                case ExecutionError.rcQueryExecutionFailure :
+                case ReturnCodes.rcQueryExecutionFailure :
                     httpRC = HttpServletResponse.SC_BAD_REQUEST;
                     break;
-                case ExecutionError.rcNoSuchQueryLanguage :
+                case ReturnCodes.rcNoSuchQueryLanguage :
                     httpRC = HttpServletResponse.SC_NOT_IMPLEMENTED ;
                     break;
-                case ExecutionError.rcInternalError :
+                case ReturnCodes.rcInternalError :
                     httpRC = HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
                     break;
-                case ExecutionError.rcRDFException :
+                case ReturnCodes.rcRDFException :
                     httpRC = HttpServletResponse.SC_BAD_REQUEST ;
                     break ;
-                case ExecutionError.rcNoSuchURI:
+                case ReturnCodes.rcNoSuchURI:
                     httpRC = HttpServletResponse.SC_NOT_FOUND ;
                     break ;
-                case ExecutionError.rcSecurityError:
+                case ReturnCodes.rcSecurityError:
                     httpRC = HttpServletResponse.SC_FORBIDDEN ;
                     break ;
-                case ExecutionError.rcOperationNotSupported:
+                case ReturnCodes.rcOperationNotSupported:
                     httpRC = HttpServletResponse.SC_NOT_IMPLEMENTED ;
                     break ;
-                case ExecutionError.rcArgumentUnreadable:
+                case ReturnCodes.rcArgumentUnreadable:
                     httpRC = HttpServletResponse.SC_BAD_REQUEST ;
                     break ;
-                case ExecutionError.rcImmutableModel:
+                case ReturnCodes.rcImmutableModel:
                     httpRC = HttpServletResponse.SC_METHOD_NOT_ALLOWED ;
                     break ;
-                case ExecutionError.rcConfigurationError:
+                case ReturnCodes.rcConfigurationError:
                     httpRC = HttpServletResponse.SC_INTERNAL_SERVER_ERROR ;
                     break ;
-                case ExecutionError.rcArgumentError:
+                case ReturnCodes.rcArgumentError:
                     httpRC = HttpServletResponse.SC_BAD_REQUEST ;
                     break ;
-                case ExecutionError.rcNotImplemented:
+                case ReturnCodes.rcNotImplemented:
                     httpRC = HttpServletResponse.SC_NOT_IMPLEMENTED ;
                     break ;
-                case ExecutionError.rcServiceUnavailable:
+                case ReturnCodes.rcServiceUnavailable:
                     httpRC = HttpServletResponse.SC_SERVICE_UNAVAILABLE ;
                     break ;
                 default :
