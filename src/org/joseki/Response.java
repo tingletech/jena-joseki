@@ -1,301 +1,125 @@
 /*
- * (c) Copyright 2003, 2004, 2005 Hewlett-Packard Development Company, LP
+ * (c) Copyright 2005 Hewlett-Packard Development Company, LP
+ * All rights reserved.
  * [See end of file]
  */
 
 package org.joseki;
 
-import java.io.IOException;
-import java.io.OutputStream;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
+import com.hp.hpl.jena.query.ResultSet;
 import com.hp.hpl.jena.rdf.model.Model;
-import com.hp.hpl.jena.shared.JenaException;
 
-import org.apache.commons.logging.* ;
-import org.joseki.http.AcceptItem;
-import org.joseki.http.AcceptList;
-import org.joseki.http.HttpResultSerializer;
-import org.joseki.http.HttpUtils;
 
-import org.joseki.ExecutionError;
-import org.joseki.ExecutionException;
-import org.joseki.Request;
-
-////import javax.servlet.ServletOutputStream; 
-//import javax.servlet.http.HttpServletRequest;
-//import javax.servlet.http.HttpServletResponse;
-
-/** Abstaction of an operation response
- * @author      Andy Seaborne
- * @version     $Id: Response.java,v 1.1 2005-06-23 09:55:59 andy_seaborne Exp $
- */
-public class Response  extends ExecutionError
+abstract public class Response
 {
-    // This is really "ResponseHttp" - will become that and have an interface for Response. 
-    static Log log = LogFactory.getLog(Response.class) ;
-    String mimeType = null ;
-    String writerMimeType = null ;
-    
-    String charset = null ;
-    int responseCode = rcOK ;
-    String responseMessage = null ;
-    
-    Request request ;
-    boolean responseCommitted = false ;
-    boolean responseSent = false ;
+    private static Log log = LogFactory.getLog(Response.class) ;
 
-    static AcceptItem defaultCharset      = new AcceptItem(Joseki.charsetUTF8) ;
-    static AcceptList prefCharset         = new AcceptList("utf-8") ;
+    private ResponseCallback callback = null ;
     
-    // These EXCLUDE application/xml
-    static AcceptItem defaultContentType  = new AcceptItem(Joseki.contentTypeRDFXML) ;
+    private Model responseModel = null ;
+    private ResultSet responseResultSet = null ;
+    private Boolean responseBoolean = null ; 
     
-    static String[] x = { //Joseki.contentTypeXML ,
-                          Joseki.contentTypeRDFXML ,
-                          Joseki.contentTypeTurtle ,
-                          Joseki.contentTypeAppN3 ,
-                          Joseki.contentTypeTextN3 ,
-                          Joseki.contentTypeNTriples } ;
-
-    static AcceptList prefContentType     = new AcceptList(x) ;
+    private boolean done = false ;
+    protected Request request ;
     
-    HttpServletRequest httpRequest = null ;
-    HttpServletResponse httpResponse = null ;
-    HttpResultSerializer ser = new HttpResultSerializer() ;
+    protected Response(Request request)
+    { this.request = request ; }
     
-    public Response(Request request,
-                    HttpServletRequest httpRequest,
-                    HttpServletResponse httpResponse)
+    public void setCallback(ResponseCallback callback)
+    { this.callback = callback ; }
+    
+    public void setModel(Model model) throws QueryExecutionException
+    { checkState() ; this.responseModel = model ; }
+    
+    public void setResultSet(ResultSet rs) throws QueryExecutionException
+    { checkState() ; this.responseResultSet = rs ; }
+    
+    public void setBoolean(boolean b) throws QueryExecutionException
+    { checkState() ; this.responseBoolean = new Boolean(b) ; }
+    
+    public void sendException(ExecutionException execEx)
     {
-        this.request = request ;
-        this.httpRequest = httpRequest ;
-        this.httpResponse = httpResponse ;
-    }
-    
-    public void startResponse()
-    {
-        responseCommitted = true ;
-        ser.setHttpResponse(httpRequest, httpResponse, mimeType, charset);        
-    }
-        
-    public void finishResponse()
-    {
-        try { getOutputStream().flush() ; } catch (Exception ex) {}
-        responseSent = true ;
-    }
-    
-    public void doResponse(Model resultModel)
-    {
-        if ( this.responseSent )
-        {
-            log.fatal("doResponse: Response already sent: "+request.getRequestURL()) ;
-            return ;
-        }
-        
-        if (resultModel == null)
-        {
-            log.warn("Result is null pointer for result model") ;
-            ser.sendPanic(request, httpRequest, httpResponse, null,
-                      "Server internal error: processor returned a null pointer, not a model") ;
-            return ;                  
-        }
-
-        // HTTP-isms
-        // Set content-type
-        
-        // TODO : should this be text/plain?
-        String textContentType = match("Accept", "text/*") ;
-        
-        if ( textContentType != null )
-        {
-            // Send to a browser.  Send as whatever the default type is for the 
-            writerMimeType = Joseki.contentTypeForText ;
-            setMimeType(Joseki.contentTypeForText) ;
-            log.debug("MIME type (text-like): "+writerMimeType) ;
-        }
-        
-        if ( getMimeType() == null )
-        {
-            AcceptItem i = HttpUtils.chooseContentType(httpRequest, prefContentType, defaultContentType) ; 
-            setMimeType(i.getAcceptType()) ;
-        }
-        
-        if ( charset == null )
-        {
-            AcceptItem i = HttpUtils.chooseCharset(httpRequest,  prefCharset, defaultCharset) ;
-            setCharset(i.getAcceptType()) ;
-        }
-        
-        if ( writerMimeType == null )
-            writerMimeType = mimeType ;
-        
-        startResponse() ;
-        
-        try {
-            try {
-                ser.writeModel(resultModel, request, httpRequest, httpResponse, writerMimeType) ;
-            }
-            catch (JenaException jEx)
-            {
-                //msg(Level.WARNING, "RDFException", rdfEx);
-                log.warn("JenaException", jEx);
-                //printStackTrace(printName + "(execute)", rdfEx);
-                httpResponse.sendError(
-                        HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
-                        "JenaException: " + jEx);
-                return;
-            } catch (Exception ex)
-            {
-                try {
-                    log.warn("Internal server error", ex) ;
-                    httpResponse.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR) ;
-                } catch (Exception e) {}
-            }
-        } catch (IOException ioEx)
-        {
-            //msg(Level.WARNING,"IOException in normal response") ;
-            log.warn("IOException in normal response") ;
-            try {
-                httpResponse.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-                httpResponse.flushBuffer();
-                httpResponse.getWriter().close();
-            } catch (Exception e) { }
-        }
-        responseSent = true ;
-    }
-
-    public void doException(ExecutionException execEx) 
-    {
-        if ( this.responseSent )
+        if ( done )
         {
             log.fatal("doException: Response already sent: "+request.getRequestURL()) ;
             return ;
         }
-        
-        HttpResultSerializer httpSerializer = new HttpResultSerializer() ;
-        httpSerializer.setHttpResponse(httpRequest, httpResponse, null, null) ;
-        
-        String httpMsg = execEx.shortMessage ;
-        if (execEx.shortMessage == null)
-            httpMsg = ExecutionError.errorString(execEx.returnCode);;
-
-            //msg("Error in operation: URI = " + uri + " : " + httpMsg);
-        log.info("Error: URI = " + request.getServiceURI() + " : " + httpMsg) ;
-        httpSerializer.sendError(execEx, httpResponse) ;
-        responseSent = true ;
+        doException(execEx) ;
     }
     
-    // Desparate way to reply
-    
-    protected void doPanic(int reason)
+    public void sendResponse() throws QueryExecutionException
     {
-        if ( this.responseSent )
+        if ( done )
         {
-            log.fatal("doPanic: Response already sent: "+request.getRequestURL()) ;
+            log.warn("Already sent response") ;
             return ;
         }
-        try {                
-            httpResponse.setHeader(Joseki.httpHeaderField, Joseki.httpHeaderValue) ;
-            httpResponse.setStatus(reason) ;
-            httpResponse.flushBuffer() ;
-            httpResponse.getWriter().close() ;
-        } catch (Exception e) {}
-        responseSent = true ;
-
-    }
-    
-    public boolean accepts(String field, String cType)
-    {
-        String f = httpRequest.getHeader(field) ;
-        return HttpUtils.accept(f, cType) ;
-    }
-
-    public String match(String field, String cType)
-    {
-        String f = httpRequest.getHeader(field) ;
-        return HttpUtils.match(f, cType) ;
-    }
-
-    public OutputStream getOutputStream()
-    { 
-        try {
-            return httpResponse.getOutputStream() ;
-        } catch (IOException ex)
+        
+        if ( responseModel == null && responseResultSet == null && responseBoolean == null )
         {
-            log.fatal("IOexception", ex) ;
-            return null ;
+            log.warn("Nothing to send as a response") ;
+            throw new QueryExecutionException(ExecutionError.rcInternalError,
+                                              "Nothing to send as response") ;
         }
+        
+        done = true ;
+        if ( responseModel != null )
+            doResponseModel(responseModel) ;
+        
+        if ( responseResultSet != null )
+            doResponseResultSet(responseResultSet) ;
+        
+        if ( responseBoolean != null )
+            doResponseBoolean(responseBoolean) ;
+        
+        responseModel = null ;
+        responseResultSet = null ;
+        responseBoolean = null ;
+        
+        if( callback != null )
+            callback.exec() ;
+        return ;
     }
     
-    /**
-     * @return Returns the mimeType.
-     */
-    public String getMimeType()
-    {
-        return mimeType;
-    }
-    /**
-     * @param mimeType The mimeType to set.
-     */
-    public void setMimeType(String mimeType)
-    {
-        this.mimeType = mimeType;
-    }
+    abstract protected void doResponseModel(Model model)  throws QueryExecutionException ;
     
+    abstract protected void doResponseResultSet(ResultSet resultSet)  throws QueryExecutionException ;
 
-    /**
-     * @return Returns the charset.
-     */
-    public String getCharset() { return charset ; }
-
-    /**
-     * @param charset The charset to set.
-     */
-    public void setCharset(String charset) { this.charset = charset; }
+    abstract protected void doResponseBoolean(Boolean bool)  throws QueryExecutionException ;
     
-    /**
-     * @return Returns the responseCode.
-     */
-    public int getResponseCode()
+    abstract protected void doException(ExecutionException execEx) ;
+    
+    private void checkState() throws QueryExecutionException
     {
-        return responseCode;
+       if ( done )
+       {
+           log.warn("State error: already done") ;
+           throw new QueryExecutionException(ExecutionError.rcInternalError,
+                                             "State error: already done") ;
+       }
+       if ( responseModel != null )
+       {
+           log.warn("State error: model already set") ;
+           throw new QueryExecutionException(ExecutionError.rcInternalError,
+                                             "State error: model already set") ;
+       }
+       if ( responseResultSet != null )
+       {
+           log.warn("State error: result set already set") ;
+           throw new QueryExecutionException(ExecutionError.rcInternalError,
+                                             "State error: result set already set") ;
+       }
     }
-    /**
-     * @param responseCode The responseCode to set.
-     */
-    public void setResponseCode(int responseCode)
-    {
-        if ( responseCommitted )
-        {
-            log.warn("Response started - can't set responseCode to "+
-                     HttpUtils.httpResponseCode(responseCode)) ;
-            return ;
-        }
-        this.responseCode = responseCode;
-    }
-    /**
-     * @return Returns the responseMessage.
-     */
-    public String getResponseMessage()
-    {
-        return responseMessage;
-    }
-    /**
-     * @param responseMessage The responseMessage to set.
-     */
-    public void setResponseMessage(String responseMessage)
-    {
-        this.responseMessage = responseMessage;
-    }
+
 }
 
-
 /*
- *  (c) Copyright 2003, 2004, 2005 Hewlett-Packard Development Company, LP
- *  All rights reserved.
+ * (c) Copyright 2005 Hewlett-Packard Development Company, LP
+ * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -319,4 +143,3 @@ public class Response  extends ExecutionError
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
- 

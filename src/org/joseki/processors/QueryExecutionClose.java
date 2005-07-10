@@ -4,11 +4,26 @@
  * [See end of file]
  */
 
-package org.joseki.http ;
+package org.joseki.processors;
 
-interface ResponseCallback
+import com.hp.hpl.jena.query.QueryExecution;
+
+import org.joseki.ResponseCallback;
+
+
+public class QueryExecutionClose implements ResponseCallback
 {
-    public void exec() ;
+    private QueryExecution qexec ;
+
+    public QueryExecutionClose(QueryExecution qexec)
+    {
+        this.qexec = qexec ;
+    }
+    
+    public void exec()
+    {
+        qexec.close() ;
+    }
 }
 
 /*

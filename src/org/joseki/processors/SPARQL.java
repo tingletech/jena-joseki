@@ -11,7 +11,6 @@ import java.util.List;
 
 import com.hp.hpl.jena.query.*;
 import com.hp.hpl.jena.rdf.model.*;
-import com.hp.hpl.jena.shared.NotFoundException;
 import com.hp.hpl.jena.util.FileManager;
 
 import org.apache.commons.logging.*;
@@ -154,145 +153,48 @@ public class SPARQL extends QueryCom implements Loadable
             else
                 qexec = QueryExecutionFactory.create(query, dataset) ;
             
-            // Test for SELECT in XML result set form
-            boolean wantsAppXML = response.accepts("Accept", "application/xml") ;
+            response.setCallback(new QueryExecutionClose(qexec)) ;
             
-            // Tests needed:
-            // is app/xml prefed over app/rdf+xml?
-            // test for is type X acceptable
-            // response.acceptable(
-            
-            // Browser tests:
-            // is text/* preferred over 
-            
-            if ( query.isSelectType() && wantsAppXML )
+            if ( query.isSelectType() )
             {
-                // Includes text
-                execQuerySelectXML(query, qexec, request, response) ;
-                log.info("OK: "+queryStringLog) ;
+                response.setResultSet(qexec.execSelect()) ;
+                log.info("OK/select: "+queryStringLog) ;
                 return ;
             }
             
-            if ( query.isAskType() )
-                execQueryAsk(query, qexec, request, response) ;
-            else
+            if ( query.isConstructType() )
             {
-                // SELECT / RDF results, CONSTRUCT or DESCRIBE
-                Model results = execQueryModel(query, qexec) ;
-                response.doResponse(results) ;
+                Model model = qexec.execConstruct() ;
+                response.setModel(model) ;
+                log.info("OK/construct: "+queryStringLog) ;
+                return ;
             }
-            log.info("OK - "+queryStringLog) ;
+
+            if ( query.isDescribeType() )
+            {
+                Model model = qexec.execDescribe() ;
+                response.setModel(model) ;
+                log.info("OK/describe: "+queryStringLog) ;
+                return ;
+            }
+
+            if ( query.isAskType() )
+            {
+                boolean b = qexec.execAsk() ;
+                response.setBoolean(b) ;
+                log.info("OK/ask: "+queryStringLog) ;
+                return ;
+            }
+
+            log.warn("Unknown query type - "+queryStringLog) ;
         }
         catch (QueryException qEx)
         {
             log.info("Query execution error: "+qEx) ;
             QueryExecutionException qExEx = new QueryExecutionException(ExecutionError.rcQueryExecutionFailure, qEx.getMessage()) ;
             throw qExEx ;
-            //response.doException(qExEx) ;
         }
     }
-
-    private Model execQueryModel(Query query, QueryExecution qexec) throws QueryExecutionException
-    {
-        try {
-            if ( query.isSelectType() )
-            {
-                ResultSet results = qexec.execSelect() ;
-                ResultSetFormatter rsFmt = new  ResultSetFormatter(results, query.getPrefixMapping()) ;
-                return rsFmt.toModel() ;
-            }
-            
-            if ( query.isConstructType() )
-                return qexec.execConstruct() ;
-            
-            if ( query.isDescribeType() )
-                return qexec.execDescribe() ; 
-            
-            log.warn("Unknown query type") ;
-            throw new QueryExecutionException(ExecutionError.rcOperationNotSupported, "Unknown query type") ;
-        }
-        catch (QueryException qEx)
-        {
-            log.info("Query execution error (Graph results): "+qEx) ;
-            throw new QueryExecutionException(ExecutionError.rcQueryExecutionFailure, null) ;
-        }
-    }
-  
-    static final String paramStyleSheet = "stylesheet" ;
-    
-    private void execQuerySelectXML(Query query, QueryExecution qexec, Request request, Response response)
-    throws QueryExecutionException
-    {
-        String stylesheetURL = null ;
-        if ( request.containsParam(paramStyleSheet) )
-        {
-            stylesheetURL = request.getParam(paramStyleSheet) ;
-            if ( stylesheetURL != null )
-            {
-                stylesheetURL = stylesheetURL.trim() ;
-                if ( stylesheetURL.length() == 0 )
-                    stylesheetURL = null ;
-            }
-        }
-        
-        try {
-            ResultSetFormatter fmt = new ResultSetFormatter(qexec.execSelect(), query.getPrefixMapping()) ;
-            
-            response.setMimeType(Joseki.contentTypeXML) ;
-            // See doResponse as well - more header setting?  How to abstract?
-            response.setResponseCode(Response.rcOK) ;
-            response.startResponse() ;
-            fmt.outputAsXML(response.getOutputStream(), stylesheetURL) ;
-            response.finishResponse() ;
-        }
-        //throw new QueryExecutionException(Response.rcNotImplemented, "SPARQL.execQueryXML") ;
-        catch (QueryException qEx)
-        {
-            log.info("Query execution error (SELECT/XML): "+qEx) ;
-            throw new QueryExecutionException(ExecutionError.rcQueryExecutionFailure, qEx.getMessage()) ;
-        }
-        catch (NotFoundException ex)
-        {
-            log.info("Query execution error (SELECT/XML): "+ex) ;
-            throw new QueryExecutionException(ExecutionError.rcQueryExecutionFailure, ex.getMessage()) ;
-        }
-    }
-
-    
-    private void execQueryAsk(Query query, QueryExecution qexec, Request request, Response response)
-    throws QueryExecutionException
-    {
-        String stylesheetURL = null ;
-        if ( request.containsParam(paramStyleSheet) )
-        {
-            stylesheetURL = request.getParam(paramStyleSheet) ;
-            if ( stylesheetURL != null )
-            {
-                stylesheetURL = stylesheetURL.trim() ;
-                if ( stylesheetURL.length() == 0 )
-                    stylesheetURL = null ;
-            }
-        }
-        
-        
-        try {
-            boolean result = qexec.execAsk() ;
-            
-            response.setMimeType(Joseki.contentTypeXML) ;
-            response.setResponseCode(Response.rcOK) ;
-            response.startResponse() ;
-            ResultSetFormatter.outputAsXML(response.getOutputStream(), result) ;
-            response.finishResponse() ;
-        }
-        //throw new QueryExecutionException(Response.rcNotImplemented, "SPARQL.execQueryXML") ;
-        catch (QueryException qEx)
-        {
-            log.info("Query execution error (ASK): "+qEx) ;
-            throw new QueryExecutionException(ExecutionError.rcQueryExecutionFailure, null) ;
-        }
-        
-    }
-    
     
     private String formatForLog(String queryString)
     {

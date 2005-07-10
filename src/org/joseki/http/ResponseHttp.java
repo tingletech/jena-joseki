@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.hp.hpl.jena.query.QueryException;
 import com.hp.hpl.jena.query.ResultSet;
 import com.hp.hpl.jena.query.ResultSetFormatter;
+import com.hp.hpl.jena.query.resultset.XMLOutputASK;
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.shared.JenaException;
 
@@ -23,7 +24,7 @@ import org.apache.commons.logging.LogFactory;
 import org.joseki.*;
 
 
-public class ResponseHttp extends NResponse
+public class ResponseHttp extends Response
 {
     // TODO ResponseCallback 
     // Pass in as anon call with its own ref to the query execution to free
@@ -127,7 +128,6 @@ public class ResponseHttp extends NResponse
         }
     }
     
-    
     protected void doResponseResultSet(ResultSet resultSet) throws QueryExecutionException
     {
         String f = httpRequest.getHeader("Accept") ;
@@ -180,6 +180,29 @@ public class ResponseHttp extends NResponse
     }
     
     
+    protected void doResponseBoolean(Boolean result) throws QueryExecutionException
+    {
+        try {
+            ser.setHttpResponse(httpRequest, httpResponse, Joseki.contentTypeXML, null) ;
+            httpResponse.setStatus(HttpServletResponse.SC_OK) ;
+            httpResponse.setHeader(Joseki.httpHeaderField, Joseki.httpHeaderValue);
+            
+            ServletOutputStream outStream = httpResponse.getOutputStream() ;
+            XMLOutputASK fmt = new XMLOutputASK(outStream, null) ;
+            fmt.exec(result.booleanValue()) ;
+            outStream.flush() ;
+          } 
+          catch (QueryException qEx)
+          {
+              log.info("Query execution error (ASK): "+qEx) ;
+              throw new QueryExecutionException(ExecutionError.rcQueryExecutionFailure, null) ;
+          }
+          catch (IOException ioEx)
+          {
+              log.warn("IOExceptionecution "+ioEx) ;
+          }
+      }
+
     protected void doException(ExecutionException execEx)
     {
         HttpResultSerializer httpSerializer = new HttpResultSerializer() ;
@@ -193,9 +216,6 @@ public class ResponseHttp extends NResponse
         log.info("Error: URI = " + request.getServiceURI() + " : " + httpMsg) ;
         httpSerializer.sendError(execEx, httpResponse) ;
     }
-    
-
-
 }
 
 /*

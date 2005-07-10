@@ -19,7 +19,7 @@ import org.joseki.*;
 
 /** The servlet class.
  * @author  Andy Seaborne
- * @version $Id: Servlet.java,v 1.6 2005-06-27 17:06:04 andy_seaborne Exp $
+ * @version $Id: Servlet.java,v 1.7 2005-07-10 17:26:16 andy_seaborne Exp $
  */
 
 public class Servlet extends HttpServlet implements Connector
@@ -184,21 +184,7 @@ public class Servlet extends HttpServlet implements Connector
                 }
             }
             
-            Response response = new Response(request, httpRequest, httpResponse) ; 
-
             Service service = serviceRegistry.find(serviceURI) ;
-            if ( service == null )
-            {
-                // Pass to static handler.
-                //RequestDispatcher dispatcher = httpRequest.getRequestDispatcher(aDestination.toString());
-                //dispatcher.forward(httpRequest, httpResponse);
-                
-                log.info("404 - Service not found") ;
-                //doErrorNoSuchService() ;
-                httpResponse.sendError(HttpServletResponse.SC_NOT_FOUND, "Service <"+serviceURI+"> not found") ;
-                return ;
-            }
-            
             if ( !service.isAvailable() )
             {
                 log.info("Service is not available") ;
@@ -207,15 +193,39 @@ public class Servlet extends HttpServlet implements Connector
                                        "Service <"+serviceURI+"> unavailable") ;
                 return ;
             }
-                
+
+            Response response = new ResponseHttp(request, httpRequest, httpResponse) ;
             
+//            Response response = new Response(request, httpRequest, httpResponse) ; 
+//
+//            if ( service == null )
+//            {
+//                // Pass to static handler.
+//                //RequestDispatcher dispatcher = httpRequest.getRequestDispatcher(aDestination.toString());
+//                //dispatcher.forward(httpRequest, httpResponse);
+//                
+//                log.info("404 - Service not found") ;
+//                //doErrorNoSuchService() ;
+//                httpResponse.sendError(HttpServletResponse.SC_NOT_FOUND, "Service <"+serviceURI+"> not found") ;
+//                return ;
+//            }
+//            
+//            try {
+//                service.exec(request, response) ;
+//            }
+//            catch (QueryExecutionException ex)
+//            {
+//                response.doException(ex) ;
+//            }
             try {
-                service.exec(request, response) ;
-            }
-            catch (QueryExecutionException ex)
-            {
-                response.doException(ex) ;
-            }
+              service.exec(request, response) ;
+              response.sendResponse() ;
+             }
+              catch (QueryExecutionException ex)
+              {
+                  response.sendException(ex) ;
+                  return ;
+              }
             catch (ExecutionException ex)
             {
                 log.warn("Service execution error", ex) ;
