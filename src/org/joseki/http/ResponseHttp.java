@@ -162,6 +162,7 @@ public class ResponseHttp extends Response
             ServletOutputStream out = httpResponse.getOutputStream() ;
             fmt.outputAsXML(out, stylesheetURL) ;
             out.flush() ;
+            httpResponse.flushBuffer();
         }
         catch (QueryException qEx)
         {
