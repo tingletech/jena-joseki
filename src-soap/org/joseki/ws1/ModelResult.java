@@ -63,13 +63,15 @@ public class ModelResult implements Serializable
     
     static class ModelSerializer implements Serializer
     {
-        ModelSerializer() {}
+        //public ModelSerializer(Class javaType, QName xmlType)
+        public ModelSerializer() {}
         
         
         public void serialize(QName qname, Attributes attributes, Object object,
                               SerializationContext cxt) throws IOException
         {
             //cxt.writeDOMElement() ;
+            // May need pipes
             //cxt.writeString() ;
         }
 
