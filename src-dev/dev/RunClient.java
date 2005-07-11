@@ -12,8 +12,10 @@ public class RunClient
 
     public static void main(String[] args)
     {
-        WSClient.main(args) ; System.exit(0) ;
-
+        WSClient.clientOM() ; System.exit(0) ;
+        
+        //WSClient.clientRaw() ; System.exit(0) ;
+        
         //runLimitedGraph() ;  System.exit(0) ;
     }
 }

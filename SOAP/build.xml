@@ -71,8 +71,11 @@ and use &file;
     <classpath refid="classpath"/>
   </taskdef>
 
-  <!-- Do types separately? -->   
-  <target name="sparql-11-server" depends="init.wsdl">
+  <!-- Do types separately? -->
+  <!-- Need both client and server targets?
+       serverSide="yes" seems to still generate client
+   -->   
+  <target name="sparql-11" depends="init.wsdl">
     <!-- Use <get> or <uptodate>to make this conditional -->      
     <wsdl2java url="${wsdl.file}"
 	       output="${src}"
@@ -83,6 +86,7 @@ and use &file;
     </wsdl2java>
   </target>
 
+ <!--   
   <target name="sparql-11-client" depends="init.wsdl">
     <wsdl2java url="${wsdl.file}"
 	       output="${src}"
@@ -92,7 +96,8 @@ and use &file;
                package="${wsdl.client.pkg}"/>
     </wsdl2java>
   </target>
-
+-->
+    
   <target name="compile-service">
     <!-- depends="sparql-11-server"> -->
     <mkdir dir="${build.classes}"/>

@@ -4,7 +4,7 @@
  * [See end of file]
  */
 
-package org.joseki.ws1;
+package org.joseki.soap;
 
 import java.io.StringReader;
 

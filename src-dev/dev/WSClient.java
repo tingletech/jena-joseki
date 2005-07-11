@@ -25,9 +25,9 @@ import org.apache.axis.encoding.TypeMappingRegistry;
 import org.apache.axis.message.MessageElement;
 import org.apache.axis.message.SOAPBodyElement;
 import org.apache.axis.types.URI;
-import org.joseki.ws1.GraphDeserializerFactory;
-import org.joseki.ws1client.JosekiQueryServiceLocator;
-import org.joseki.ws1client.QueryType;
+import org.joseki.soap.GraphDeserializerFactory;
+import org.joseki.ws1.JosekiQueryServiceLocator;
+import org.joseki.ws1.QueryType;
 
 import org.w3.www._2001.sw.DataAccess.rf1.result2.*;
 
@@ -37,20 +37,14 @@ import org.w3.www._2001.sw.DataAccess.sparql_protocol_types.QueryResult;
 public class WSClient
 {
     static String now = null ;
-    
-    public static void main(String[] args)
-    {
-        //String fmt = "yyyy-MM-dd'T'HH:mm:ss.SZ" ;
+    static {
         String fmt = "HH:mm:ss" ;
         
         SimpleDateFormat dFmt = new SimpleDateFormat(fmt) ;
         now = dFmt.format(new Date()) ;
-        
-        //clientOM() ; System.exit(0) ;
-        clientRaw() ; System.exit(0) ;
     }
     
-    private static void clientRaw()
+    public static void clientRaw()
     {
         try {
             String endpoint = "http://localhost:2525/axis/services/sparql-query" ;

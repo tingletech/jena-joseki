@@ -4,50 +4,65 @@
  * [See end of file]
  */
 
-package org.joseki.ws1;
+package org.joseki.soap;
 
-import java.util.Iterator;
-import java.util.Vector;
+import java.io.IOException;
+import java.io.StringWriter;
 
 import javax.xml.namespace.QName;
 
+import com.hp.hpl.jena.rdf.model.Model;
+import com.hp.hpl.jena.rdf.model.RDFWriter;
+
 import org.apache.axis.Constants;
-import org.apache.axis.encoding.SerializerFactory;
+import org.apache.axis.encoding.SerializationContext;
 import org.apache.axis.encoding.Serializer;
+import org.apache.axis.wsdl.fromJava.Types;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.w3c.dom.Element;
+import org.xml.sax.Attributes;
 
 
-public class GraphSerializerFactory implements SerializerFactory
+public class GraphSerializer implements Serializer
 {
-    private static Log log = LogFactory.getLog(GraphSerializerFactory.class) ;
+    private static Log log = LogFactory.getLog(GraphSerializer.class) ;
     
-    // Third way
-    public GraphSerializerFactory() { System.err.println("GraphSerializerFactory()") ;}
+    //public GraphSerializer(Class javaType, QName xmlType)
+    public GraphSerializer() {}
     
-    // Second way to call
-    public GraphSerializerFactory(Class javaType, QName xmlType)
-    { System.err.println("GraphSerializerFactory/2") ; } 
+    
+    public void serialize(QName qname, Attributes attributes,
+                          Object value, SerializationContext cxt) throws IOException
+    {
+        log.info("serialize: qname="+qname) ;
+        
+        //cxt.writeDOMElement() ;
+        // May need pipes
+        //cxt.writeString() ;
+        
+        if ( ! ( value instanceof Model ) )
+        {
+            log.warn("Attempt to serialize a "+value.getClass().getName()) ;
+            return ;
+        }
+            
+        
+        Model model = (Model)value ;
+        // Pipe would be better.
+        StringWriter sw = new StringWriter() ;
+        RDFWriter w = model.getWriter("RDF/XML-ABBREV") ;
+        w.setProperty("showXmlDeclaration", "false") ;
+        w.write(model, sw, null) ;
+        cxt.writeString("\n") ;
+        cxt.writeString(sw.toString()) ;
+    }
 
-//    // First way to call
-//    public static Serializer create(Class javaType, QName xmlType)
-//    { 
-//        System.err.println("GraphSerializerFactory.create") ;
-//        return new GraphSerializer() ;
-//    }
-    
-    public Serializer getSerializerAs(String mechanismType)
-    {
-        //log.info("getSerializerAs("+mechanismType+")") ;
-        return new GraphSerializer() ;
-    }
-    
-    public Iterator getSupportedMechanismTypes()
-    {
-        Vector v = new Vector() ;
-        v.add(Constants.AXIS_SAX);
-        return v.iterator();
-    }
+    public Element writeSchema(Class javaType, Types types) throws Exception
+    { return null ; }
+
+    public String getMechanismType()
+    { return Constants.AXIS_SAX ; }
 }
 /*
  * (c) Copyright 2005 Hewlett-Packard Development Company, LP

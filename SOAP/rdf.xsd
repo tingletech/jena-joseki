@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema version="$Id: rdf.xsd,v 1.1 2005-07-11 19:56:22 andy_seaborne Exp $"
+           targetNamespace="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+           xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns="http://www.w3.org/2001/XMLSchema"
+           >
+
+  <!-- "Define" rdf:RDF -->
+  <xs:element name="RDF" minOccurs="1" maxOccurs="1"/>
+
+</xs:schema>

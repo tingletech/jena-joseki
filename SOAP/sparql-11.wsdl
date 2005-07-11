@@ -22,12 +22,7 @@
      schemaLocation="http://www.w3.org/2004/08/wsdl" 
      >
 
-
-<!--
-  <wsdl:import namespace="http://www.w3.org/1999/02/22-rdf-syntax-ns#"/>
--->
-
-  <!-- WSDL 2-ism?
+  <!--
   <wsdl:types>
     <xs:import namespace="http://www.w3.org/2001/sw/DataAccess/rf1/result"/>
     <xs:import namespace="http://www.w3.org/2001/sw/DataAccess/sparql-protocol-types"/>
@@ -35,13 +30,9 @@
   </wsdl:types>
   -->
 
-<!--
-  <wsdl:types>
-    <xs:schema targetNamespace="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
-      <xs:element name="RDF" minOccurs="1" maxOccurs="1"/>
-    </xs:schema>
-  </wsdl:types>
--->
+  <wsdl:import namespace="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+               location="rdf.xsd"/>
+  
   <wsdl:import namespace="http://www.w3.org/2001/sw/DataAccess/rf1/result2"
                location="result2.xsd"/>
 

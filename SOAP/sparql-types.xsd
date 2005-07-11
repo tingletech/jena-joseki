@@ -9,23 +9,7 @@
            xmlns="http://www.w3.org/2001/XMLSchema"
            >
 
-  <!--
-  <xs:import namespace="http://www.w3.org/2001/sw/DataAccess/rf1/result2"
-             schemaLocation="http://www.w3.org/2001/sw/DataAccess/rf1/result2.xsd">
-  </xs:import>
-  -->
-
-  <!--
-  <xs:import namespace="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
-  </xs:import>
-  -->
-
-  <!-- "Define" rdf:RDF -->
-
-  <xs:element targetNamespace="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-	      name="RDF" minOccurs="1" maxOccurs="1"/>
-  
-  <xs:element name="query">
+    <xs:element name="query">
     <xs:complexType>
       <xs:all>
         <xs:element minOccurs="1" maxOccurs="1" name="sparql-query" type="xs:string"/>
@@ -49,7 +33,6 @@
       <xs:choice>
         <xs:element minOccurs="0" maxOccurs="1" ref="vbr:sparql"/>
         <xs:element minOccurs="0" maxOccurs="1" ref="rdf:RDF"/>
-        <!--<xs:any/>-->
       </xs:choice>
     </xs:complexType>
   </xs:element>
