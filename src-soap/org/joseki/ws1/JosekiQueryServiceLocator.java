@@ -21,39 +21,39 @@ public class JosekiQueryServiceLocator extends org.apache.axis.client.Service im
         super(wsdlLoc, sName);
     }
 
-    // Use to get a proxy class for queryPort
-    private java.lang.String queryPort_address = "http://localhost:8080/axis/services/WSQuery";
+    // Use to get a proxy class for SparqlQuery
+    private java.lang.String SparqlQuery_address = "http://localhost:2525/axis/services/sparql-query";
 
-    public java.lang.String getqueryPortAddress() {
-        return queryPort_address;
+    public java.lang.String getSparqlQueryAddress() {
+        return SparqlQuery_address;
     }
 
     // The WSDD service name defaults to the port name.
-    private java.lang.String queryPortWSDDServiceName = "queryPort";
+    private java.lang.String SparqlQueryWSDDServiceName = "sparql-query";
 
-    public java.lang.String getqueryPortWSDDServiceName() {
-        return queryPortWSDDServiceName;
+    public java.lang.String getSparqlQueryWSDDServiceName() {
+        return SparqlQueryWSDDServiceName;
     }
 
-    public void setqueryPortWSDDServiceName(java.lang.String name) {
-        queryPortWSDDServiceName = name;
+    public void setSparqlQueryWSDDServiceName(java.lang.String name) {
+        SparqlQueryWSDDServiceName = name;
     }
 
-    public org.joseki.ws1.QueryType getqueryPort() throws javax.xml.rpc.ServiceException {
+    public org.joseki.ws1.QueryType getSparqlQuery() throws javax.xml.rpc.ServiceException {
        java.net.URL endpoint;
         try {
-            endpoint = new java.net.URL(queryPort_address);
+            endpoint = new java.net.URL(SparqlQuery_address);
         }
         catch (java.net.MalformedURLException e) {
             throw new javax.xml.rpc.ServiceException(e);
         }
-        return getqueryPort(endpoint);
+        return getSparqlQuery(endpoint);
     }
 
-    public org.joseki.ws1.QueryType getqueryPort(java.net.URL portAddress) throws javax.xml.rpc.ServiceException {
+    public org.joseki.ws1.QueryType getSparqlQuery(java.net.URL portAddress) throws javax.xml.rpc.ServiceException {
         try {
             org.joseki.ws1.QuerySoapBindingStub _stub = new org.joseki.ws1.QuerySoapBindingStub(portAddress, this);
-            _stub.setPortName(getqueryPortWSDDServiceName());
+            _stub.setPortName(getSparqlQueryWSDDServiceName());
             return _stub;
         }
         catch (org.apache.axis.AxisFault e) {
@@ -61,8 +61,8 @@ public class JosekiQueryServiceLocator extends org.apache.axis.client.Service im
         }
     }
 
-    public void setqueryPortEndpointAddress(java.lang.String address) {
-        queryPort_address = address;
+    public void setSparqlQueryEndpointAddress(java.lang.String address) {
+        SparqlQuery_address = address;
     }
 
     /**
@@ -73,8 +73,8 @@ public class JosekiQueryServiceLocator extends org.apache.axis.client.Service im
     public java.rmi.Remote getPort(Class serviceEndpointInterface) throws javax.xml.rpc.ServiceException {
         try {
             if (org.joseki.ws1.QueryType.class.isAssignableFrom(serviceEndpointInterface)) {
-                org.joseki.ws1.QuerySoapBindingStub _stub = new org.joseki.ws1.QuerySoapBindingStub(new java.net.URL(queryPort_address), this);
-                _stub.setPortName(getqueryPortWSDDServiceName());
+                org.joseki.ws1.QuerySoapBindingStub _stub = new org.joseki.ws1.QuerySoapBindingStub(new java.net.URL(SparqlQuery_address), this);
+                _stub.setPortName(getSparqlQueryWSDDServiceName());
                 return _stub;
             }
         }
@@ -94,8 +94,8 @@ public class JosekiQueryServiceLocator extends org.apache.axis.client.Service im
             return getPort(serviceEndpointInterface);
         }
         java.lang.String inputPortName = portName.getLocalPart();
-        if ("queryPort".equals(inputPortName)) {
-            return getqueryPort();
+        if ("sparql-query".equals(inputPortName)) {
+            return getSparqlQuery();
         }
         else  {
             java.rmi.Remote _stub = getPort(serviceEndpointInterface);
@@ -113,7 +113,7 @@ public class JosekiQueryServiceLocator extends org.apache.axis.client.Service im
     public java.util.Iterator getPorts() {
         if (ports == null) {
             ports = new java.util.HashSet();
-            ports.add(new javax.xml.namespace.QName("http://www.w3.org/2005/01/sparql-protocol-query", "queryPort"));
+            ports.add(new javax.xml.namespace.QName("http://www.w3.org/2005/01/sparql-protocol-query", "sparql-query"));
         }
         return ports.iterator();
     }
@@ -123,8 +123,8 @@ public class JosekiQueryServiceLocator extends org.apache.axis.client.Service im
     */
     public void setEndpointAddress(java.lang.String portName, java.lang.String address) throws javax.xml.rpc.ServiceException {
         
-if ("queryPort".equals(portName)) {
-            setqueryPortEndpointAddress(address);
+if ("SparqlQuery".equals(portName)) {
+            setSparqlQueryEndpointAddress(address);
         }
         else 
 { // Unknown Port Name

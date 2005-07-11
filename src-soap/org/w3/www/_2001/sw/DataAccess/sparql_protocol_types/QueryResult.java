@@ -7,18 +7,18 @@
 
 package org.w3.www._2001.sw.DataAccess.sparql_protocol_types;
 
-public class QueryResult  implements java.io.Serializable, org.apache.axis.encoding.AnyContentType {
+public class QueryResult  implements java.io.Serializable {
     private org.w3.www._2001.sw.DataAccess.rf1.result2.Sparql sparql;
-    private org.apache.axis.message.MessageElement [] _any;
+    private java.lang.Object RDF;
 
     public QueryResult() {
     }
 
     public QueryResult(
            org.w3.www._2001.sw.DataAccess.rf1.result2.Sparql sparql,
-           org.apache.axis.message.MessageElement [] _any) {
+           java.lang.Object RDF) {
            this.sparql = sparql;
-           this._any = _any;
+           this.RDF = RDF;
     }
 
 
@@ -43,22 +43,22 @@ public class QueryResult  implements java.io.Serializable, org.apache.axis.encod
 
 
     /**
-     * Gets the _any value for this QueryResult.
+     * Gets the RDF value for this QueryResult.
      * 
-     * @return _any
+     * @return RDF
      */
-    public org.apache.axis.message.MessageElement [] get_any() {
-        return _any;
+    public java.lang.Object getRDF() {
+        return RDF;
     }
 
 
     /**
-     * Sets the _any value for this QueryResult.
+     * Sets the RDF value for this QueryResult.
      * 
-     * @param _any
+     * @param RDF
      */
-    public void set_any(org.apache.axis.message.MessageElement [] _any) {
-        this._any = _any;
+    public void setRDF(java.lang.Object RDF) {
+        this.RDF = RDF;
     }
 
     private java.lang.Object __equalsCalc = null;
@@ -76,9 +76,9 @@ public class QueryResult  implements java.io.Serializable, org.apache.axis.encod
             ((this.sparql==null && other.getSparql()==null) || 
              (this.sparql!=null &&
               this.sparql.equals(other.getSparql()))) &&
-            ((this._any==null && other.get_any()==null) || 
-             (this._any!=null &&
-              java.util.Arrays.equals(this._any, other.get_any())));
+            ((this.RDF==null && other.getRDF()==null) || 
+             (this.RDF!=null &&
+              this.RDF.equals(other.getRDF())));
         __equalsCalc = null;
         return _equals;
     }
@@ -93,16 +93,8 @@ public class QueryResult  implements java.io.Serializable, org.apache.axis.encod
         if (getSparql() != null) {
             _hashCode += getSparql().hashCode();
         }
-        if (get_any() != null) {
-            for (int i=0;
-                 i<java.lang.reflect.Array.getLength(get_any());
-                 i++) {
-                java.lang.Object obj = java.lang.reflect.Array.get(get_any(), i);
-                if (obj != null &&
-                    !obj.getClass().isArray()) {
-                    _hashCode += obj.hashCode();
-                }
-            }
+        if (getRDF() != null) {
+            _hashCode += getRDF().hashCode();
         }
         __hashCodeCalc = false;
         return _hashCode;
@@ -118,6 +110,13 @@ public class QueryResult  implements java.io.Serializable, org.apache.axis.encod
         elemField.setFieldName("sparql");
         elemField.setXmlName(new javax.xml.namespace.QName("http://www.w3.org/2001/sw/DataAccess/rf1/result2", "sparql"));
         elemField.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2001/sw/DataAccess/rf1/result2", "sparql"));
+        elemField.setMinOccurs(0);
+        elemField.setNillable(false);
+        typeDesc.addFieldDesc(elemField);
+        elemField = new org.apache.axis.description.ElementDesc();
+        elemField.setFieldName("RDF");
+        elemField.setXmlName(new javax.xml.namespace.QName("http://www.w3.org/1999/02/22-rdf-syntax-ns#", "RDF"));
+        elemField.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/1999/02/22-rdf-syntax-ns#", "RDF"));
         elemField.setMinOccurs(0);
         elemField.setNillable(false);
         typeDesc.addFieldDesc(elemField);

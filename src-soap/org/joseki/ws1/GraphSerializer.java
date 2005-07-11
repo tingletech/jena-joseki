@@ -7,88 +7,62 @@
 package org.joseki.ws1;
 
 import java.io.IOException;
-import java.io.Serializable;
+import java.io.StringWriter;
 
 import javax.xml.namespace.QName;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import com.hp.hpl.jena.rdf.model.Model;
+import com.hp.hpl.jena.rdf.model.RDFWriter;
 
 import org.apache.axis.Constants;
-import org.apache.axis.encoding.*;
+import org.apache.axis.encoding.SerializationContext;
+import org.apache.axis.encoding.Serializer;
 import org.apache.axis.wsdl.fromJava.Types;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.w3c.dom.Element;
 import org.xml.sax.Attributes;
 
 
-
-public class ModelResult implements Serializable
+public class GraphSerializer implements Serializer
 {
-    private static Log log = LogFactory.getLog(ModelResult.class) ;
-    private static final long serialVersionUID = 75264722L;
+    private static Log log = LogFactory.getLog(GraphSerializer.class) ;
     
-    // See org.apache.axis.encoding.ser.
+    //public GraphSerializer(Class javaType, QName xmlType)
+    public GraphSerializer() {}
     
-    public ModelResult(/*Model model*/)
-    {}
     
-    // See UserGuide deploy: <typeMapping 
-    
-//    // Type metadata
-//    private static org.apache.axis.description.TypeDesc typeDesc =
-//        new org.apache.axis.description.TypeDesc(Variable.class, true);
-    /**
-     * Get Custom Serializer
-     */
-    public static Serializer getSerializer(
-           String mechType, 
-           Class _javaType,  
-           QName _xmlType) {
-        return 
-          new  ModelResult.ModelSerializer() ;
-    }
-
-    /**
-     * Get Custom Deserializer
-     */
-    public static Deserializer getDeserializer(
-           String mechType, 
-           Class _javaType,  
-           QName _xmlType) {
-        return 
-          new ModelResult.ModelDeserializer() ;
-    }
-
-    // -------- Serializer
-    
-    static class ModelSerializer implements Serializer
+    public void serialize(QName qname, Attributes attributes,
+                          Object value, SerializationContext cxt) throws IOException
     {
-        //public ModelSerializer(Class javaType, QName xmlType)
-        public ModelSerializer() {}
+        log.info("serialize: qname="+qname) ;
         
+        //cxt.writeDOMElement() ;
+        // May need pipes
+        //cxt.writeString() ;
         
-        public void serialize(QName qname, Attributes attributes, Object object,
-                              SerializationContext cxt) throws IOException
+        if ( ! ( value instanceof Model ) )
         {
-            //cxt.writeDOMElement() ;
-            // May need pipes
-            //cxt.writeString() ;
+            log.warn("Attempt to serialize a "+value.getClass().getName()) ;
+            return ;
         }
-
-        public Element writeSchema(Class javaType, Types types) throws Exception
-        { return null ; }
-
-        public String getMechanismType()
-        { return Constants.AXIS_SAX ; }
+            
+        
+        Model model = (Model)value ;
+        // Pipe would be better.
+        StringWriter sw = new StringWriter() ;
+        RDFWriter w = model.getWriter("RDF/XML-ABBREV") ;
+        w.setProperty("showXmlDeclaration", "false") ;
+        w.write(model, sw, null) ;
+        cxt.writeString(sw.toString()) ;
     }
-    
-    // -------- Deserializer
 
-    static class ModelDeserializer extends DeserializerImpl
-    {
-    }
+    public Element writeSchema(Class javaType, Types types) throws Exception
+    { return null ; }
+
+    public String getMechanismType()
+    { return Constants.AXIS_SAX ; }
 }
-
 /*
  * (c) Copyright 2005 Hewlett-Packard Development Company, LP
  * All rights reserved.

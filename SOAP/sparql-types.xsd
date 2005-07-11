@@ -19,12 +19,11 @@
   <xs:import namespace="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
   </xs:import>
   -->
-    <!-- "Define" rdf:RDF as an XSD any -->
-    <!--<xs:element targetNamespace="http://www.w3.org/1999/02/22-rdf-syntax-ns#">-->
 
-  <!--
-  <xs:element name="rdf:RDF" minOccurs="1" maxOccurs="1" type="xs:any"/>
-  -->
+  <!-- "Define" rdf:RDF -->
+
+  <xs:element targetNamespace="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+	      name="RDF" minOccurs="1" maxOccurs="1"/>
   
   <xs:element name="query">
     <xs:complexType>
@@ -48,11 +47,9 @@
   <xs:element name="query-result">
     <xs:complexType>
       <xs:choice>
-        <xs:element minOccurs="0" maxOccurs="1" ref="vbr:sparql"></xs:element>
-        <!--
+        <xs:element minOccurs="0" maxOccurs="1" ref="vbr:sparql"/>
         <xs:element minOccurs="0" maxOccurs="1" ref="rdf:RDF"/>
-        -->
-        <xs:any/>
+        <!--<xs:any/>-->
       </xs:choice>
     </xs:complexType>
   </xs:element>

@@ -9,8 +9,16 @@ package dev;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import javax.xml.namespace.QName;
+
+import com.hp.hpl.jena.rdf.model.Model;
+import com.hp.hpl.jena.vocabulary.RDF;
+
 import org.apache.axis.AxisFault;
+import org.apache.axis.encoding.TypeMapping;
+import org.apache.axis.encoding.TypeMappingRegistry;
 import org.apache.axis.types.URI;
+import org.joseki.ws1.GraphDeserializerFactory;
 import org.joseki.ws1client.JosekiQueryServiceLocator;
 import org.joseki.ws1client.QueryType;
 
@@ -33,11 +41,19 @@ public class WSClient
 //            HappyClient hc = new HappyClient(System.out) ;
 //            hc.verifyClientIsHappy(false) ;
 
+            // Install deserialier for rdf:RDF
             String endpoint = "http://localhost:2525/axis/services/sparql-query" ;
             //String endpoint = "http://localhost:2020/dump-body" ;
             JosekiQueryServiceLocator  service = new JosekiQueryServiceLocator();
             service.setSparqlQueryEndpointAddress(endpoint) ;
-
+            
+            TypeMappingRegistry reg = service.getEngine().getTypeMappingRegistry() ;
+            TypeMapping tm = (TypeMapping)reg.getTypeMapping("") ;
+            tm.register(Model.class,
+                        new QName(RDF.getURI(), "RDF") ,
+                        null, 
+                        new GraphDeserializerFactory()) ;
+            
             QueryType qt = service.getSparqlQuery() ;
             Query q = new Query() ;
             q.setSparqlQuery("SELECT ("+now+")") ;
@@ -50,9 +66,9 @@ public class WSClient
             // Do it.
             QueryResult qr = qt.query(q) ;
             
-            if ( qr.get_any() != null )
+            if ( qr.getRDF() != null )
             {
-                qr.get_any()[0].getAsDOM() ;
+                System.err.println("RDF!") ;
                 return ;
             }
             

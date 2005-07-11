@@ -4,18 +4,21 @@
  * [See end of file]
  */
 
-package org.joseki.ws1;
-
-import org.w3c.dom.Document;
+package dev;
 
 
-public class MessageService
+public class AxisServer
 {
-    public Document query(Document body)
+
+    /**
+     * @param args
+     */
+    public static void main(String[] args)
     {
-        
-        return null ;
+        String[] a = { "-p" , "2525" } ;
+        org.apache.axis.transport.http.SimpleAxisServer.main(a) ;
     }
+
 }
 
 /*

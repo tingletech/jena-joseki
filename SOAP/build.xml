@@ -46,6 +46,7 @@ and use &file;
   
   <target name="setsocks" if="env.SOCKSHOST">
     <setproxy socksproxyhost="${env.SOCKSHOST}"/>
+    <echo>Socks server: ${env.SOCKSHOST}</echo>
   </target>
 
   <target name="nosocks" unless="env.SOCKSHOST">

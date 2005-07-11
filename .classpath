@@ -7,7 +7,7 @@
 	<classpathentry kind="lib" path="lib/icu4j.jar"/>
 	<classpathentry kind="lib" path="lib/jakarta-oro-2.0.5.jar"/>
 	<classpathentry kind="lib" path="lib/javax.servlet.jar"/>
-    <classpathentry kind="lib" path="lib/jena.jar"/>
+	<classpathentry kind="lib" path="lib/jena.jar"/>
 	<classpathentry kind="lib" path="lib/junit.jar"/>
 	<classpathentry kind="lib" path="lib/org.mortbay.jetty.jar"/>
 	<classpathentry kind="lib" path="lib/org.mortbay.jmx.jar"/>
@@ -19,7 +19,7 @@
 	<classpathentry kind="src" path="src-dev"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/ARQ"/>
 	<classpathentry kind="lib" path="lib2/activation.jar"/>
-	<classpathentry kind="lib" path="lib2/axis.jar"/>
+	<classpathentry sourcepath="src-axis.zip" kind="lib" path="lib2/axis.jar"/>
 	<classpathentry kind="lib" path="lib2/axis-ant.jar"/>
 	<classpathentry kind="lib" path="lib2/commons-discovery-0.2.jar"/>
 	<classpathentry kind="lib" path="lib2/jaxrpc.jar"/>

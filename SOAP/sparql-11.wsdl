@@ -23,9 +23,6 @@
      >
 
 
-  <wsdl:import namespace="http://www.w3.org/2001/sw/DataAccess/rf1/result2"
-               location="result2.xsd"/>
-
 <!--
   <wsdl:import namespace="http://www.w3.org/1999/02/22-rdf-syntax-ns#"/>
 -->
@@ -37,6 +34,16 @@
     <xs:import namespace="http://www.w3.org/1999/02/22-rdf-syntax-ns#"/>
   </wsdl:types>
   -->
+
+<!--
+  <wsdl:types>
+    <xs:schema targetNamespace="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+      <xs:element name="RDF" minOccurs="1" maxOccurs="1"/>
+    </xs:schema>
+  </wsdl:types>
+-->
+  <wsdl:import namespace="http://www.w3.org/2001/sw/DataAccess/rf1/result2"
+               location="result2.xsd"/>
 
   <wsdl:import namespace="http://www.w3.org/2001/sw/DataAccess/sparql-protocol-types"
                location="sparql-types.xsd"/>

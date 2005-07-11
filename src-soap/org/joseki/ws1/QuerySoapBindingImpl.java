@@ -10,8 +10,13 @@ package org.joseki.ws1;
 
 import javax.xml.soap.SOAPException;
 
+import com.hp.hpl.jena.rdf.model.Model;
+import com.hp.hpl.jena.rdf.model.ModelFactory;
+import com.hp.hpl.jena.rdf.model.Property;
+import com.hp.hpl.jena.rdf.model.Resource;
+
 import org.apache.axis.MessageContext;
-import org.apache.axis.message.MessageElement;
+//import org.apache.axis.message.MessageElement;
 import org.apache.axis.types.NMToken;
 import org.apache.axis.types.URI;
 import org.w3.www._2001.sw.DataAccess.rf1.result2.*;
@@ -47,28 +52,18 @@ public class QuerySoapBindingImpl implements org.joseki.ws1.QueryType
                 }
             }
             
-            if ( false )
-            {
-                //RDF/XML
-                // Try custom serialization as well??
-               
-                MessageElement m = new MessageElement() ;
-                
-            }
-            
             // A result
             QueryResult result = new QueryResult() ;
 
-            if ( false )
+            if ( true )
             {
-                // Use "Message" style
-                //<service ... style="m"
-                // No WSDL - it's all in the deployment deploy.wsdd file.
-                MessageElement elt = new MessageElement() ;
-                // provide own serilization
-                Object obj = new ModelResult() ;
-                elt.setObjectValue(obj) ;
-                result.set_any(new MessageElement[]{elt}) ;
+                // Custom type
+                Model model = ModelFactory.createDefaultModel() ;
+                Resource r = model.createResource("http://example.org/r1") ;
+                Property p = model.createProperty("http://example.org/r1") ;
+                model.add(r, p, "value") ;
+                result.setRDF(model) ;
+                return result ;
             }
             
             Sparql r = new Sparql();
