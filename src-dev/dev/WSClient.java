@@ -68,7 +68,8 @@ public class WSClient
             
             if ( qr.getRDF() != null )
             {
-                System.err.println("RDF!") ;
+                Model m = (Model)qr.getRDF() ;
+                m.write(System.out, "N3") ;
                 return ;
             }
             

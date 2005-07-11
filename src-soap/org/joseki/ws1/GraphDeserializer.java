@@ -6,6 +6,8 @@
 
 package org.joseki.ws1;
 
+import java.io.StringReader;
+
 import com.hp.hpl.jena.rdf.arp.SAX2Model;
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
@@ -13,11 +15,10 @@ import com.hp.hpl.jena.rdf.model.ModelFactory;
 import org.apache.axis.encoding.DeserializationContext;
 import org.apache.axis.encoding.Deserializer;
 import org.apache.axis.encoding.DeserializerImpl;
+import org.apache.axis.message.MessageElement;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.xerces.parsers.SAXParser;
 import org.xml.sax.SAXException;
-import org.xml.sax.XMLReader;
 
 
 public class GraphDeserializer
@@ -32,6 +33,7 @@ public class GraphDeserializer
     {
     }
     
+    
     public void startElement(String namespace,
                              String localName,
                              String prefix,
@@ -39,17 +41,20 @@ public class GraphDeserializer
                              DeserializationContext cxt)
     throws SAXException
     {
-        XMLReader saxParser = new SAXParser();
-        SAX2Model handler = null ;
         try {
-            handler = SAX2Model.newInstance(null, m);
+            MessageElement elt = cxt.getCurElement() ;
+            //DOM
+//            Element e = elt.getAsDOM() ;  // This serializes the message element!!!!
+//            DOM2Model d2m = new DOM2Model(null, m) ;
+//            d2m.load(e) ;
+            
+            String s = elt.getAsString() ; // This serializes the message element
+            m.read(new StringReader(s),null) ;
+            super.setValue(m) ;
         } catch (Exception ex)
         {
-            _log.warn("SAX2Model", ex) ;
-            return ;
+            _log.warn("Exception: "+ex.getMessage(), ex) ;
         }
-        //SAX2RDF.installHandlers(cxt, handler);
-        super.setValue(m) ;
     }
     
 //    public void onStartElement(String namespace, String localName,
