@@ -54,6 +54,7 @@ public class GraphSerializer implements Serializer
         RDFWriter w = model.getWriter("RDF/XML-ABBREV") ;
         w.setProperty("showXmlDeclaration", "false") ;
         w.write(model, sw, null) ;
+        cxt.writeString("\n") ;
         cxt.writeString(sw.toString()) ;
     }
 

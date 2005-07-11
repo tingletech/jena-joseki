@@ -6,6 +6,7 @@
 
 package dev;
 
+import java.io.StringWriter;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -15,8 +16,14 @@ import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.vocabulary.RDF;
 
 import org.apache.axis.AxisFault;
+import org.apache.axis.MessageContext;
+import org.apache.axis.client.Call;
+import org.apache.axis.client.Service;
+import org.apache.axis.encoding.SerializationContext;
 import org.apache.axis.encoding.TypeMapping;
 import org.apache.axis.encoding.TypeMappingRegistry;
+import org.apache.axis.message.MessageElement;
+import org.apache.axis.message.SOAPBodyElement;
 import org.apache.axis.types.URI;
 import org.joseki.ws1.GraphDeserializerFactory;
 import org.joseki.ws1client.JosekiQueryServiceLocator;
@@ -29,15 +36,58 @@ import org.w3.www._2001.sw.DataAccess.sparql_protocol_types.QueryResult;
 
 public class WSClient
 {
+    static String now = null ;
+    
     public static void main(String[] args)
     {
+        //String fmt = "yyyy-MM-dd'T'HH:mm:ss.SZ" ;
+        String fmt = "HH:mm:ss" ;
+        
+        SimpleDateFormat dFmt = new SimpleDateFormat(fmt) ;
+        now = dFmt.format(new Date()) ;
+        
+        //clientOM() ; System.exit(0) ;
+        clientRaw() ; System.exit(0) ;
+    }
+    
+    private static void clientRaw()
+    {
         try {
-            //String fmt = "yyyy-MM-dd'T'HH:mm:ss.SZ" ;
-            String fmt = "HH:mm:ss" ;
+            String endpoint = "http://localhost:2525/axis/services/sparql-query" ;
+            Service  service = new Service();
+            Call call = (Call) service.createCall();
+            MessageContext msgContext = call.getMessageContext() ;
             
-            SimpleDateFormat dFmt = new SimpleDateFormat(fmt) ;
-            String now = dFmt.format(new Date()) ;
+            call.setTargetEndpointAddress( new java.net.URL(endpoint) );
+            call.setOperationName(new QName("", "query")) ;
             
+            QName op = new QName("http://www.w3.org/2001/sw/DataAccess/sparql-protocol-types",
+                                 "query",  
+                                 "sparql") ;
+            
+            SOAPBodyElement bodyElt = new SOAPBodyElement(op) ;
+            MessageElement mElt = new MessageElement(new QName("sparql-query")) ;
+            mElt.addTextNode("SELECT -- RAW -- "+now) ;
+            bodyElt.addChild(mElt) ;
+
+            String tmp = elementAsString(msgContext, bodyElt) ;
+            System.out.println(tmp) ; 
+            
+            System.out.println() ;
+            Object ret = (Object) call.invoke(new Object[]{bodyElt}) ;
+            System.out.println("Return:"+ret) ;
+            
+        }
+         catch (Exception ex)
+         {
+             System.err.println(ex.getMessage()) ;
+             ex.printStackTrace(System.err) ;
+         }
+    }
+
+    public static void clientOM()
+    {
+        try {
 //            HappyClient hc = new HappyClient(System.out) ;
 //            hc.verifyClientIsHappy(false) ;
 
@@ -62,7 +112,6 @@ public class WSClient
                 new URI("http://host/name1"),
                 new URI("http://host/name2")
             }) ;
-            
             // Do it.
             QueryResult qr = qt.query(q) ;
             
@@ -129,6 +178,18 @@ public class WSClient
         }
         
     }
+    
+    private static String elementAsString(MessageContext msgContext, MessageElement elt) throws Exception
+    {
+        StringWriter writer = new StringWriter();
+        SerializationContext serializeContext = new SerializationContext(writer, msgContext);
+        serializeContext.setSendDecl(false) ;
+        serializeContext.setPretty(true) ;
+        elt.output(serializeContext);
+        writer.close();
+        return writer.getBuffer().toString() ;
+    }
+
 }
 
 /*

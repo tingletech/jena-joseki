@@ -8,6 +8,8 @@
 package org.joseki.ws1;
 //import org.apache.axis.message.MessageElement;
 
+import java.io.StringWriter;
+
 import javax.xml.soap.SOAPException;
 
 import com.hp.hpl.jena.rdf.model.Model;
@@ -16,7 +18,10 @@ import com.hp.hpl.jena.rdf.model.Property;
 import com.hp.hpl.jena.rdf.model.Resource;
 
 import org.apache.axis.MessageContext;
-//import org.apache.axis.message.MessageElement;
+
+import org.apache.axis.encoding.SerializationContext;
+import org.apache.axis.message.MessageElement;
+import org.apache.axis.message.SOAPBody;
 import org.apache.axis.types.NMToken;
 import org.apache.axis.types.URI;
 import org.w3.www._2001.sw.DataAccess.rf1.result2.*;
@@ -30,8 +35,14 @@ public class QuerySoapBindingImpl implements org.joseki.ws1.QueryType
     		System.out.println("Hello") ;
             
             // OK - so Axis has already parsed the message into nice Java datastructures.
-            MessageContext cxt = MessageContext.getCurrentContext() ;
-            String name = cxt.getMessage().getSOAPBody().getFirstChild().getNodeName() ;
+            
+            if ( true )
+            {
+                MessageContext cxt = MessageContext.getCurrentContext() ;
+                SOAPBody b = (SOAPBody)cxt.getMessage().getSOAPBody() ;
+                String s = elementAsString(cxt, b) ;
+                System.out.println(s) ;
+            }
             
             String queryString = request.getSparqlQuery() ;
             
@@ -97,19 +108,19 @@ public class QuerySoapBindingImpl implements org.joseki.ws1.QueryType
             h.setVariable(new Variable[]{v1, v2}) ;
             r.setHead(h) ;
             return result ;
-            
-            
-        } catch (RuntimeException ex)
-        {
-            System.err.println(ex.getMessage()) ;
-            ex.printStackTrace(System.err) ;
-            throw ex ;
         }
+            
         catch (SOAPException ex)
         {
             System.err.println("SOAP: "+ex.getMessage()) ;
             ex.printStackTrace(System.err) ;
             throw new RuntimeException("SOAP", ex) ;
+        }
+        catch (Exception ex)
+        {
+            System.err.println(ex.getMessage()) ;
+            ex.printStackTrace(System.err) ;
+            return null ;
         }
     }
     
@@ -119,4 +130,16 @@ public class QuerySoapBindingImpl implements org.joseki.ws1.QueryType
             return "<<null>>" ;
         return s.toString() ;
     }
+    
+    private static String elementAsString(MessageContext msgContext, MessageElement elt) throws Exception
+    {
+        StringWriter writer = new StringWriter();
+        SerializationContext serializeContext = new SerializationContext(writer, msgContext);
+        serializeContext.setSendDecl(false) ;
+        serializeContext.setPretty(true) ;
+        elt.output(serializeContext);
+        writer.close();
+        return writer.getBuffer().toString() ;
+    }
+
 }
