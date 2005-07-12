@@ -28,9 +28,7 @@ public class GraphSerializer implements Serializer
 {
     private static Log log = LogFactory.getLog(GraphSerializer.class) ;
     
-    //public GraphSerializer(Class javaType, QName xmlType)
     public GraphSerializer() {}
-    
     
     public void serialize(QName qname, Attributes attributes,
                           Object value, SerializationContext cxt) throws IOException

@@ -23,18 +23,15 @@ public class GraphSerializerFactory implements SerializerFactory
     private static Log log = LogFactory.getLog(GraphSerializerFactory.class) ;
     
     // Third way
-    public GraphSerializerFactory() { System.err.println("GraphSerializerFactory()") ;}
-    
-    // Second way to call
+    public GraphSerializerFactory() { }
+//    
+//    // Second way to call
     public GraphSerializerFactory(Class javaType, QName xmlType)
-    { System.err.println("GraphSerializerFactory/2") ; } 
+    { } 
 
-//    // First way to call
-//    public static Serializer create(Class javaType, QName xmlType)
-//    { 
-//        System.err.println("GraphSerializerFactory.create") ;
-//        return new GraphSerializer() ;
-//    }
+    // First way to call
+    public static SerializerFactory create(Class javaType, QName xmlType)
+    { return new GraphSerializerFactory(javaType, xmlType) ; } 
     
     public Serializer getSerializerAs(String mechanismType)
     {
