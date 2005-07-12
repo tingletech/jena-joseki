@@ -19,7 +19,7 @@ import org.joseki.*;
 
 /** The servlet class.
  * @author  Andy Seaborne
- * @version $Id: Servlet.java,v 1.7 2005-07-10 17:26:16 andy_seaborne Exp $
+ * @version $Id: Servlet.java,v 1.8 2005-07-12 19:50:03 andy_seaborne Exp $
  */
 
 public class Servlet extends HttpServlet implements Connector
@@ -185,6 +185,13 @@ public class Servlet extends HttpServlet implements Connector
             }
             
             Service service = serviceRegistry.find(serviceURI) ;
+            if ( service == null )
+            {
+                log.info("404 - Service <"+serviceURI+"> not found") ;
+                httpResponse.sendError(HttpServletResponse.SC_NOT_FOUND, "Service <"+serviceURI+"> not found") ;
+                return ;
+            }
+            
             if ( !service.isAvailable() )
             {
                 log.info("Service is not available") ;
@@ -196,27 +203,6 @@ public class Servlet extends HttpServlet implements Connector
 
             Response response = new ResponseHttp(request, httpRequest, httpResponse) ;
             
-//            Response response = new Response(request, httpRequest, httpResponse) ; 
-//
-//            if ( service == null )
-//            {
-//                // Pass to static handler.
-//                //RequestDispatcher dispatcher = httpRequest.getRequestDispatcher(aDestination.toString());
-//                //dispatcher.forward(httpRequest, httpResponse);
-//                
-//                log.info("404 - Service not found") ;
-//                //doErrorNoSuchService() ;
-//                httpResponse.sendError(HttpServletResponse.SC_NOT_FOUND, "Service <"+serviceURI+"> not found") ;
-//                return ;
-//            }
-//            
-//            try {
-//                service.exec(request, response) ;
-//            }
-//            catch (QueryExecutionException ex)
-//            {
-//                response.doException(ex) ;
-//            }
             try {
               service.exec(request, response) ;
               response.sendResponse() ;
@@ -234,10 +220,6 @@ public class Servlet extends HttpServlet implements Connector
 //                httpResponse.getWriter().close() ;
                 httpResponse.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR) ;
             } 
-            
-            //msg(Level.FINE, "Get: URL= "+uri) ;
-            //msg(Level.FINE, "  QueryString = "+request.getQueryString()) ;
-            
         }
         catch (Exception ex)
         {
@@ -352,6 +334,8 @@ public class Servlet extends HttpServlet implements Connector
 
     private boolean initServiceRegistry(ServiceRegistry registry)
     {
+        // TODO Add load from resource for classpath usage.
+        
 //      String tmp = System.getProperty(RDFServer.configurationFile) ;
 //      if ( tmp != null && tmp.equals(RDFServer.noConfValue))
 //          return false ;

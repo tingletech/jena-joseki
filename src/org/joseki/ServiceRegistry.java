@@ -8,10 +8,9 @@ package org.joseki;
 
 import java.util.* ;
 
-/** Registry of DescribeHandlers.     
- * 
+/** 
  * @author Andy Seaborne
- * @version $Id: ServiceRegistry.java,v 1.1 2005-06-23 09:55:59 andy_seaborne Exp $
+ * @version $Id: ServiceRegistry.java,v 1.2 2005-07-12 19:50:03 andy_seaborne Exp $
  */
 
 public class ServiceRegistry
