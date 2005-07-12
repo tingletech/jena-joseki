@@ -6,6 +6,7 @@
 
 package org.joseki;
 
+import java.io.InputStream;
 import java.util.*;
 
 
@@ -48,6 +49,24 @@ public class Configuration
     
     int warnings = 0 ;
     
+    public Configuration(InputStream in, ServiceRegistry registry)
+    {
+        try {
+            log.info("==== Configuration ====") ;
+            // No import processing.
+            confModel = ModelFactory.createDefaultModel() ;
+            confModel.read(in, null) ;
+            processModel() ;
+        } catch (RuntimeException ex)
+        {
+            log.fatal("Failed to process configuration file", ex) ;
+            confModel = null ;
+            services = null ;
+            datasets = null ;
+            throw ex ;
+        }
+    }
+    
     public Configuration(String filename, ServiceRegistry registry)
     {
         filename = RelURI.resolveFileURL(filename) ;
@@ -58,15 +77,7 @@ public class Configuration
         try {
             log.info("==== Configuration ====") ;
             readConfFile(confModel, filename, filesDone) ;
-            checkServiceReferences() ;
-            server = findServer() ;
-            log.info("==== Datasets ====") ;
-            findDataSets() ;
-            log.info("==== Services ====") ;
-            findServices() ;
-            log.info("==== Bind services to the server ====") ;
-            bindServices(registry) ;
-            log.info("==== End Configuration ====") ;
+            processModel() ;
         } catch (RuntimeException ex)
         {
             log.fatal("Failed to parse configuration file", ex) ;
@@ -78,6 +89,19 @@ public class Configuration
         }
     }
 
+    private void processModel()
+    {
+        checkServiceReferences() ;
+        server = findServer() ;
+        log.info("==== Datasets ====") ;
+        findDataSets() ;
+        log.info("==== Services ====") ;
+        findServices() ;
+        log.info("==== Bind services to the server ====") ;
+        bindServices(registry) ;
+        log.info("==== End Configuration ====") ;
+    }
+    
     public int getWarnings() { return warnings ; }
 
     /** @return Returns the numDatasets. */
