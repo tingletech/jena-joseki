@@ -8,7 +8,7 @@ and use &file;
 -->
 
     
-<project name="WSDL" basedir="." default="jar">
+<project name="WSDL" basedir="." default="sparql-11">
   <property environment="env"/>
 
   <property name="src"                location="src-soap"/> <!-- !!! Local copy of source !!! -->
@@ -67,7 +67,7 @@ and use &file;
   -->
   <taskdef name="wsdl2java"
            classname="org.apache.axis.tools.ant.wsdl.Wsdl2javaAntTask"
-           loaderref="axis" >
+           loaderref="axis">
     <classpath refid="classpath"/>
   </taskdef>
 
@@ -75,7 +75,8 @@ and use &file;
   <!-- Need both client and server targets?
        serverSide="yes" seems to still generate client
    -->   
-  <target name="sparql-11" depends="init.wsdl">
+  <target name="sparql-11" depends="init.wsdl"
+         description="Produce Java (server, client, type code) from WSDL" >
     <!-- Use <get> or <uptodate>to make this conditional -->      
     <wsdl2java url="${wsdl.file}"
 	       output="${src}"

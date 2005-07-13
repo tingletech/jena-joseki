@@ -8,37 +8,14 @@
 package org.w3.www._2001.sw.DataAccess.rf1.result2;
 
 public class Results  implements java.io.Serializable {
-    private java.lang.Boolean _boolean;
     private org.w3.www._2001.sw.DataAccess.rf1.result2.Result[] result;
 
     public Results() {
     }
 
     public Results(
-           java.lang.Boolean _boolean,
            org.w3.www._2001.sw.DataAccess.rf1.result2.Result[] result) {
-           this._boolean = _boolean;
            this.result = result;
-    }
-
-
-    /**
-     * Gets the _boolean value for this Results.
-     * 
-     * @return _boolean
-     */
-    public java.lang.Boolean get_boolean() {
-        return _boolean;
-    }
-
-
-    /**
-     * Sets the _boolean value for this Results.
-     * 
-     * @param _boolean
-     */
-    public void set_boolean(java.lang.Boolean _boolean) {
-        this._boolean = _boolean;
     }
 
 
@@ -81,9 +58,6 @@ public class Results  implements java.io.Serializable {
         __equalsCalc = obj;
         boolean _equals;
         _equals = true && 
-            ((this._boolean==null && other.get_boolean()==null) || 
-             (this._boolean!=null &&
-              this._boolean.equals(other.get_boolean()))) &&
             ((this.result==null && other.getResult()==null) || 
              (this.result!=null &&
               java.util.Arrays.equals(this.result, other.getResult())));
@@ -98,9 +72,6 @@ public class Results  implements java.io.Serializable {
         }
         __hashCodeCalc = true;
         int _hashCode = 1;
-        if (get_boolean() != null) {
-            _hashCode += get_boolean().hashCode();
-        }
         if (getResult() != null) {
             for (int i=0;
                  i<java.lang.reflect.Array.getLength(getResult());
@@ -123,13 +94,6 @@ public class Results  implements java.io.Serializable {
     static {
         typeDesc.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2001/sw/DataAccess/rf1/result2", ">results"));
         org.apache.axis.description.ElementDesc elemField = new org.apache.axis.description.ElementDesc();
-        elemField.setFieldName("_boolean");
-        elemField.setXmlName(new javax.xml.namespace.QName("http://www.w3.org/2001/sw/DataAccess/rf1/result2", "boolean"));
-        elemField.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2001/sw/DataAccess/rf1/result2", "boolean"));
-        elemField.setMinOccurs(0);
-        elemField.setNillable(false);
-        typeDesc.addFieldDesc(elemField);
-        elemField = new org.apache.axis.description.ElementDesc();
         elemField.setFieldName("result");
         elemField.setXmlName(new javax.xml.namespace.QName("http://www.w3.org/2001/sw/DataAccess/rf1/result2", "result"));
         elemField.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2001/sw/DataAccess/rf1/result2", "result"));

@@ -14,11 +14,21 @@
   <xs:attributeGroup name="xmlLang">
     <xs:attribute ref="xml:lang" use="required"/>
   </xs:attributeGroup>
+  <!--
+    Using xsi namespaced terms such as xsi:schemaLocation
+    is tricky. as Relax requires them to be given when used.  However,
+    WXS has this knowledge built in and validators complain when they
+    are explicitly listed without a schemaLocation (which is forbidden by
+    the WXS spec)..
+  -->
   <xs:element name="sparql">
     <xs:complexType>
       <xs:sequence>
         <xs:element ref="res:head"/>
-        <xs:element ref="res:results"/>
+        <xs:choice>
+          <xs:element ref="res:results"/>
+          <xs:element ref="res:boolean"/>
+        </xs:choice>
       </xs:sequence>
       <xs:attribute ref="xml:lang"/>
     </xs:complexType>
@@ -27,6 +37,7 @@
     <xs:complexType>
       <xs:sequence>
         <xs:element minOccurs="0" maxOccurs="unbounded" ref="res:variable"/>
+        <xs:element minOccurs="0" ref="res:link"/>
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -38,12 +49,19 @@
   <xs:attributeGroup name="nameAttr">
     <xs:attribute name="name" use="required" type="xs:NMTOKEN"/>
   </xs:attributeGroup>
+  <xs:attributeGroup name="hrefAttr">
+    <xs:attribute name="href" use="required" type="res:URI-reference"/>
+  </xs:attributeGroup>
+  <xs:element name="link">
+    <xs:complexType>
+      <xs:attributeGroup ref="res:hrefAttr"/>
+    </xs:complexType>
+  </xs:element>
   <xs:element name="results">
     <xs:complexType>
-      <xs:choice>
-        <xs:element ref="res:boolean"/>
+      <xs:sequence>
         <xs:element minOccurs="0" maxOccurs="unbounded" ref="res:result"/>
-      </xs:choice>
+      </xs:sequence>
     </xs:complexType>
   </xs:element>
   <!-- ASK -->

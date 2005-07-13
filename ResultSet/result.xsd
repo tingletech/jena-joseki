@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  
+  RELAX NG Schema for SPARQL Variable Binding Results XML Format
+  
+  This XML schema is experimental and may change at any time.
+  
+  Dave Beckett 2004-12-08
+  
+  
+-->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" targetNamespace="http://www.w3.org/2001/sw/DataAccess/rf1/result" xmlns:res="http://www.w3.org/2001/sw/DataAccess/rf1/result">
+  <xs:import namespace="http://www.w3.org/XML/1998/namespace" schemaLocation="http://www.w3.org/2001/xml.xsd"/>
+  <xs:attributeGroup name="xmllang">
+    <xs:attribute ref="xml:lang" use="required"/>
+  </xs:attributeGroup>
+  <xs:element name="sparql">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="res:head"/>
+        <xs:element ref="res:results"/>
+      </xs:sequence>
+      <xs:attribute ref="xml:lang"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="head">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="res:variable"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="variable">
+    <xs:complexType>
+      <xs:attributeGroup ref="res:nameAttr"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:attributeGroup name="nameAttr">
+    <xs:attribute name="name" use="required" type="xs:NMTOKEN"/>
+  </xs:attributeGroup>
+  <xs:element name="results">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="res:result"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="result">
+    <xs:complexType>
+      <xs:group minOccurs="0" maxOccurs="unbounded" ref="res:var"/>
+      <xs:attribute ref="xml:lang"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:group name="var">
+    <xs:sequence>
+      <xs:any namespace="##targetNamespace" processContents="skip"/>
+    </xs:sequence>
+  </xs:group>
+  <xs:attributeGroup name="uriAttr">
+    <xs:attribute name="uri" use="required" type="res:URI-reference"/>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="datatypeAttr">
+    <xs:attribute name="datatype" use="required" type="res:URI-reference"/>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="bnodeidAttr">
+    <xs:attribute name="bnodeid" use="required" type="xs:NMTOKEN"/>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="boundAttr">
+    <xs:attribute name="bound" use="required">
+      <xs:simpleType>
+        <xs:restriction base="xs:token">
+          <xs:enumeration value="false"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:attribute>
+  </xs:attributeGroup>
+  <xs:simpleType name="URI-reference">
+    <xs:restriction base="xs:anyURI"/>
+  </xs:simpleType>
+  <xs:simpleType name="literal">
+    <xs:restriction base="xs:string"/>
+  </xs:simpleType>
+</xs:schema>

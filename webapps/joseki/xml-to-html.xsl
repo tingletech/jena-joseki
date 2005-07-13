@@ -63,7 +63,7 @@
 </xsl:text>
     <table style="border-collapse: collapse ; border: 1px solid black">
       <tr>
-	<xsl:for-each select="res:head/*">
+	<xsl:for-each select="res:head/res:variable">
 	  <th><xsl:value-of select="@name"/></th>
 	</xsl:for-each>
       </tr>

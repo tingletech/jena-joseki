@@ -79,6 +79,13 @@ public class QuerySoapBindingStub extends org.apache.axis.client.Stub implements
             cachedSerFactories.add(beansf);
             cachedDeserFactories.add(beandf);
 
+            qName = new javax.xml.namespace.QName("http://www.w3.org/2001/sw/DataAccess/rf1/result2", ">link");
+            cachedSerQNames.add(qName);
+            cls = org.w3.www._2001.sw.DataAccess.rf1.result2.Link.class;
+            cachedSerClasses.add(cls);
+            cachedSerFactories.add(beansf);
+            cachedDeserFactories.add(beandf);
+
             qName = new javax.xml.namespace.QName("http://www.w3.org/2001/sw/DataAccess/rf1/result2", ">literal");
             cachedSerQNames.add(qName);
             cls = org.w3.www._2001.sw.DataAccess.rf1.result2.Literal.class;

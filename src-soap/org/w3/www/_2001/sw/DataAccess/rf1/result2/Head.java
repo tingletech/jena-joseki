@@ -9,13 +9,16 @@ package org.w3.www._2001.sw.DataAccess.rf1.result2;
 
 public class Head  implements java.io.Serializable {
     private org.w3.www._2001.sw.DataAccess.rf1.result2.Variable[] variable;
+    private org.w3.www._2001.sw.DataAccess.rf1.result2.Link link;
 
     public Head() {
     }
 
     public Head(
-           org.w3.www._2001.sw.DataAccess.rf1.result2.Variable[] variable) {
+           org.w3.www._2001.sw.DataAccess.rf1.result2.Variable[] variable,
+           org.w3.www._2001.sw.DataAccess.rf1.result2.Link link) {
            this.variable = variable;
+           this.link = link;
     }
 
 
@@ -46,6 +49,26 @@ public class Head  implements java.io.Serializable {
         this.variable[i] = _value;
     }
 
+
+    /**
+     * Gets the link value for this Head.
+     * 
+     * @return link
+     */
+    public org.w3.www._2001.sw.DataAccess.rf1.result2.Link getLink() {
+        return link;
+    }
+
+
+    /**
+     * Sets the link value for this Head.
+     * 
+     * @param link
+     */
+    public void setLink(org.w3.www._2001.sw.DataAccess.rf1.result2.Link link) {
+        this.link = link;
+    }
+
     private java.lang.Object __equalsCalc = null;
     public synchronized boolean equals(java.lang.Object obj) {
         if (!(obj instanceof Head)) return false;
@@ -60,7 +83,10 @@ public class Head  implements java.io.Serializable {
         _equals = true && 
             ((this.variable==null && other.getVariable()==null) || 
              (this.variable!=null &&
-              java.util.Arrays.equals(this.variable, other.getVariable())));
+              java.util.Arrays.equals(this.variable, other.getVariable()))) &&
+            ((this.link==null && other.getLink()==null) || 
+             (this.link!=null &&
+              this.link.equals(other.getLink())));
         __equalsCalc = null;
         return _equals;
     }
@@ -83,6 +109,9 @@ public class Head  implements java.io.Serializable {
                 }
             }
         }
+        if (getLink() != null) {
+            _hashCode += getLink().hashCode();
+        }
         __hashCodeCalc = false;
         return _hashCode;
     }
@@ -100,6 +129,13 @@ public class Head  implements java.io.Serializable {
         elemField.setMinOccurs(0);
         elemField.setNillable(false);
         elemField.setMaxOccursUnbounded(true);
+        typeDesc.addFieldDesc(elemField);
+        elemField = new org.apache.axis.description.ElementDesc();
+        elemField.setFieldName("link");
+        elemField.setXmlName(new javax.xml.namespace.QName("http://www.w3.org/2001/sw/DataAccess/rf1/result2", "link"));
+        elemField.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2001/sw/DataAccess/rf1/result2", "link"));
+        elemField.setMinOccurs(0);
+        elemField.setNillable(false);
         typeDesc.addFieldDesc(elemField);
     }
 

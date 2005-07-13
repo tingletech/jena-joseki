@@ -20,7 +20,7 @@
 <xsl:stylesheet version="1.0"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   xmlns="http://www.w3.org/1999/xhtml"
-  xmlns:res="http://www.w3.org/2001/sw/DataAccess/rf1/result2"
+  xmlns:res="http://www.w3.org/2005/06/sparqlResults"
   exclude-result-prefixes="res xsl">
 
   <!--
@@ -63,7 +63,7 @@
 </xsl:text>
     <table style="border-collapse: collapse ; border: 1px solid black">
       <tr>
-	<xsl:for-each select="res:head/*">
+	<xsl:for-each select="res:head/res:variable">
 	  <th><xsl:value-of select="@name"/></th>
 	</xsl:for-each>
       </tr>

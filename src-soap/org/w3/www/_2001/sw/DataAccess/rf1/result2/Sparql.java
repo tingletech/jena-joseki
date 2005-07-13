@@ -10,15 +10,18 @@ package org.w3.www._2001.sw.DataAccess.rf1.result2;
 public class Sparql  implements java.io.Serializable {
     private org.w3.www._2001.sw.DataAccess.rf1.result2.Head head;
     private org.w3.www._2001.sw.DataAccess.rf1.result2.Results results;
+    private java.lang.Boolean _boolean;
 
     public Sparql() {
     }
 
     public Sparql(
            org.w3.www._2001.sw.DataAccess.rf1.result2.Head head,
-           org.w3.www._2001.sw.DataAccess.rf1.result2.Results results) {
+           org.w3.www._2001.sw.DataAccess.rf1.result2.Results results,
+           java.lang.Boolean _boolean) {
            this.head = head;
            this.results = results;
+           this._boolean = _boolean;
     }
 
 
@@ -61,6 +64,26 @@ public class Sparql  implements java.io.Serializable {
         this.results = results;
     }
 
+
+    /**
+     * Gets the _boolean value for this Sparql.
+     * 
+     * @return _boolean
+     */
+    public java.lang.Boolean get_boolean() {
+        return _boolean;
+    }
+
+
+    /**
+     * Sets the _boolean value for this Sparql.
+     * 
+     * @param _boolean
+     */
+    public void set_boolean(java.lang.Boolean _boolean) {
+        this._boolean = _boolean;
+    }
+
     private java.lang.Object __equalsCalc = null;
     public synchronized boolean equals(java.lang.Object obj) {
         if (!(obj instanceof Sparql)) return false;
@@ -78,7 +101,10 @@ public class Sparql  implements java.io.Serializable {
               this.head.equals(other.getHead()))) &&
             ((this.results==null && other.getResults()==null) || 
              (this.results!=null &&
-              this.results.equals(other.getResults())));
+              this.results.equals(other.getResults()))) &&
+            ((this._boolean==null && other.get_boolean()==null) || 
+             (this._boolean!=null &&
+              this._boolean.equals(other.get_boolean())));
         __equalsCalc = null;
         return _equals;
     }
@@ -95,6 +121,9 @@ public class Sparql  implements java.io.Serializable {
         }
         if (getResults() != null) {
             _hashCode += getResults().hashCode();
+        }
+        if (get_boolean() != null) {
+            _hashCode += get_boolean().hashCode();
         }
         __hashCodeCalc = false;
         return _hashCode;
@@ -116,6 +145,14 @@ public class Sparql  implements java.io.Serializable {
         elemField.setFieldName("results");
         elemField.setXmlName(new javax.xml.namespace.QName("http://www.w3.org/2001/sw/DataAccess/rf1/result2", "results"));
         elemField.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2001/sw/DataAccess/rf1/result2", "results"));
+        elemField.setMinOccurs(0);
+        elemField.setNillable(false);
+        typeDesc.addFieldDesc(elemField);
+        elemField = new org.apache.axis.description.ElementDesc();
+        elemField.setFieldName("_boolean");
+        elemField.setXmlName(new javax.xml.namespace.QName("http://www.w3.org/2001/sw/DataAccess/rf1/result2", "boolean"));
+        elemField.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2001/sw/DataAccess/rf1/result2", "boolean"));
+        elemField.setMinOccurs(0);
         elemField.setNillable(false);
         typeDesc.addFieldDesc(elemField);
     }
