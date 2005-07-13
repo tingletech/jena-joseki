@@ -6,6 +6,7 @@
 package org.joseki;
 
 import java.util.* ;
+
 import org.mortbay.jetty.* ;
 import org.mortbay.util.MultiException;
 
@@ -16,7 +17,7 @@ import org.apache.commons.logging.* ;
 
 /** Standalone server.
  * 
- * @version $Id: RDFServer.java,v 1.5 2005-07-07 14:36:01 andy_seaborne Exp $
+ * @version $Id: RDFServer.java,v 1.6 2005-07-13 14:34:28 andy_seaborne Exp $
  * @author  Andy Seaborne
  */
 
@@ -31,7 +32,6 @@ public class RDFServer
     Server server = null ;
     WebApplicationContext webAppContextJoseki = null ;
     boolean earlyInitialize = true ;
-    Configuration config = null ;
     
     int port = -1 ;
 
@@ -40,7 +40,7 @@ public class RDFServer
 
     /** Override the web.xml init-param for the configuration file.
      */  
-    public static final String configurationFile   = "org.joseki.rdfserver.config" ;
+    public static final String configurationProperty   = "org.joseki.rdfserver.config" ;
     
     /** Default location for the Joseki server */
     public static final String defaultServerBaseURI = "/" ;
@@ -48,10 +48,6 @@ public class RDFServer
     /** Default configuration file */
     public static final String defaultConfigFile = "joseki-config.ttl" ;
 
-    /** Value for the config file meaning "no configuration"
-     */  
-    public static final String noConfValue         = "<<null>>" ;
-    
     /** Create a new RDFServer on the default port or as specifed by the system property jena.rdfserver.port */
     public RDFServer() { this(defaultConfigFile) ; }
 
@@ -83,14 +79,13 @@ public class RDFServer
 
     private void init(String configFile, int port, String serverBaseURI) 
     {
-        boolean earlyInitialize = true ;
-        
         if (earlyInitialize)
-            config = createConfiguration(configFile) ;
+            Dispatcher.initServiceRegistry() ;
         else
-            // Set it so the servlet finds it later
-            // probably during servlet creation on first request.
-            System.setProperty(configurationFile, configFile) ;
+            // Set system property so the dispatcher finds it later,
+            // probably during servlet creation on first request,
+            // or SOAP service initialization 
+            System.setProperty(configurationProperty, configFile) ;
 
         // Build the web application and server
         try {
@@ -153,12 +148,6 @@ public class RDFServer
     
     public void start()
     {
-        if ( config.getWarnings() > 0 )
-        {
-            log.fatal("Configuration warnings") ;
-            throw new ConfigurationErrorException("Configuration warnings") ;
-        }
-        
         try {
             if ( ! server.isStarted() )
                 server.start() ;

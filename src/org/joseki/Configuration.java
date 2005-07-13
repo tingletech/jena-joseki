@@ -6,7 +6,6 @@
 
 package org.joseki;
 
-import java.io.InputStream;
 import java.util.*;
 
 
@@ -49,26 +48,14 @@ public class Configuration
     
     int warnings = 0 ;
     
-    public Configuration(InputStream in, ServiceRegistry registry)
-    {
-        try {
-            log.info("==== Configuration ====") ;
-            // No import processing.
-            confModel = ModelFactory.createDefaultModel() ;
-            confModel.read(in, null) ;
-            processModel() ;
-        } catch (RuntimeException ex)
-        {
-            log.fatal("Failed to process configuration file", ex) ;
-            confModel = null ;
-            services = null ;
-            datasets = null ;
-            throw ex ;
-        }
-    }
-    
     public Configuration(String filename, ServiceRegistry registry)
     {
+        this(FileManager.get(), filename, registry) ;
+    }
+    
+    public Configuration(FileManager fileManager, String filename, ServiceRegistry registry)
+    {
+        this.registry = registry ;
         filename = RelURI.resolveFileURL(filename) ;
         confModel = ModelFactory.createDefaultModel() ;
 
@@ -76,7 +63,7 @@ public class Configuration
         
         try {
             log.info("==== Configuration ====") ;
-            readConfFile(confModel, filename, filesDone) ;
+            readConfFile(fileManager, confModel, filename, filesDone) ;
             processModel() ;
         } catch (RuntimeException ex)
         {
@@ -136,7 +123,7 @@ public class Configuration
         this.numServiceTriples = numServiceTriples ;
     }
 
-    private void readConfFile(Model confModel2, String filename, Set filesDone)
+    private void readConfFile(FileManager fileManager, Model confModel2, String filename, Set filesDone)
     {
         if ( filesDone.contains(filename) )
             return ;
@@ -146,7 +133,7 @@ public class Configuration
         Model conf = null ; 
             
         try {
-            conf = FileManager.get().loadModel(filename) ;
+            conf = fileManager.loadModel(filename) ;
             filesDone.add(filename) ;
         } catch (NotFoundException ex)
         {
@@ -186,7 +173,7 @@ public class Configuration
         for ( Iterator iter = includes.iterator() ; iter.hasNext() ; )
         {
             String fn = (String)iter.next() ; 
-            readConfFile(confModel, fn, filesDone) ; 
+            readConfFile(fileManager, confModel, fn, filesDone) ; 
         }
     }
     

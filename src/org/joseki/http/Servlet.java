@@ -11,15 +11,13 @@ import org.apache.commons.logging.*;
 import javax.servlet.*;
 import javax.servlet.http.*;
 
-import com.hp.hpl.jena.rdf.model.RDFException;
-import com.hp.hpl.jena.shared.NotFoundException;
 import com.hp.hpl.jena.util.FileManager;
 
 import org.joseki.*;
 
 /** The servlet class.
  * @author  Andy Seaborne
- * @version $Id: Servlet.java,v 1.8 2005-07-12 19:50:03 andy_seaborne Exp $
+ * @version $Id: Servlet.java,v 1.9 2005-07-13 14:35:41 andy_seaborne Exp $
  */
 
 public class Servlet extends HttpServlet implements Connector
@@ -44,8 +42,6 @@ public class Servlet extends HttpServlet implements Connector
     static boolean initAttempted = false ;
     
     int urlLimit = 8*1024 ;
-    
-    ServiceRegistry serviceRegistry = null ;
     
     protected HttpResultSerializer httpSerializer = new HttpResultSerializer() ;
     
@@ -85,51 +81,34 @@ public class Servlet extends HttpServlet implements Connector
         if ( initAttempted )
         {
             log.info("Re-initialization of servlet attempted") ;
-            if ( serviceRegistry == null )
-                serviceRegistry = new ServiceRegistry() ;
             return ;
         }
+
         initAttempted = true ; 
         
         servletConfig = config;
         
+        // Modifiy the (Jena) global filemanager to include loading by servlet context  
+        FileManager fileManager = FileManager.get() ;
+
         if (config != null)
         {
             servletContext = config.getServletContext();
-            // Modifiy the (Jena) global filemanager to include loading by servlet context  
-            FileManager.get().addLocator(new LocatorServletContext(servletContext)) ;
+            fileManager.addLocator(new LocatorServletContext(servletContext)) ;
         }
-
+        
+        
         printName = config.getServletName();
         
         servletEnv() ;
-        initServiceRegistry() ;
-    }
-        
-    public void initServiceRegistry() throws ServletException
-    {
-        if ( serviceRegistry != null )
-            return ;
-        
-        serviceRegistry = (ServiceRegistry)Registry.find(RDFServer.ServiceRegistryName) ;
-        
-        // No global one.
-        if ( serviceRegistry == null )
+        try {
+            Dispatcher.initServiceRegistry(fileManager) ;
+        } catch (ConfigurationErrorException confEx)
         {
-            log.info("Creating service registry") ;
-            ServiceRegistry tmp = new ServiceRegistry() ;
-            // Initialize it.
-            try {
-                initServiceRegistry(tmp);
-            } catch (ConfigurationErrorException confEx)
-            {
-                throw new ServletException("Joseki configuration error", confEx) ;
-            }
-            Registry.add(RDFServer.ServiceRegistryName, tmp) ;
-            serviceRegistry = (ServiceRegistry)Registry.find(RDFServer.ServiceRegistryName) ;
+            throw new ServletException("Joseki configuration error", confEx) ;
         }
     }
-    
+        
     /** Destroys the servlet.
     */
     public void destroy()
@@ -184,42 +163,9 @@ public class Servlet extends HttpServlet implements Connector
                 }
             }
             
-            Service service = serviceRegistry.find(serviceURI) ;
-            if ( service == null )
-            {
-                log.info("404 - Service <"+serviceURI+"> not found") ;
-                httpResponse.sendError(HttpServletResponse.SC_NOT_FOUND, "Service <"+serviceURI+"> not found") ;
-                return ;
-            }
-            
-            if ( !service.isAvailable() )
-            {
-                log.info("Service is not available") ;
-                //doErrorNoSuchService() ;
-                httpResponse.sendError(HttpServletResponse.SC_SERVICE_UNAVAILABLE,
-                                       "Service <"+serviceURI+"> unavailable") ;
-                return ;
-            }
-
             Response response = new ResponseHttp(request, httpRequest, httpResponse) ;
-            
-            try {
-              service.exec(request, response) ;
-              response.sendResponse() ;
-             }
-              catch (QueryExecutionException ex)
-              {
-                  response.sendException(ex) ;
-                  return ;
-              }
-            catch (ExecutionException ex)
-            {
-                log.warn("Service execution error", ex) ;
-//                httpResponse.setStatus() ;
-//                httpResponse.flushBuffer() ;
-//                httpResponse.getWriter().close() ;
-                httpResponse.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR) ;
-            } 
+
+            Dispatcher.dispatch(serviceURI, request, response) ;
         }
         catch (Exception ex)
         {
@@ -318,81 +264,6 @@ public class Servlet extends HttpServlet implements Connector
     //private void logResponse(HttpServletRequest request, HttpServletResponse response)
     //{
     //}
-
-
-    
-
-    // This method contains the pragmatic algorithm to determine the server model map.
-    //
-    // In this order (i.e. specific to general) to find the filename:
-    //    System property:         jena.rdfserver.modelmap
-    //    Webapp init parameter:   jena.rdfserver.modelmap
-    //    Servlet init parameter:  jena.rdfserver.modelmap
-    // and then the file is loaded.
-    // 
-    // If the system property is explicit set a well known value, this is skipped. 
-
-    private boolean initServiceRegistry(ServiceRegistry registry)
-    {
-        // TODO Add load from resource for classpath usage.
-        
-//      String tmp = System.getProperty(RDFServer.configurationFile) ;
-//      if ( tmp != null && tmp.equals(RDFServer.noConfValue))
-//          return false ;
-//      
-//      if ( tmp != null )
-//          if (attemptLoad(tmp, "System property: " + RDFServer.configurationFile, registry))
-//              return true;
-//
-      if (servletConfig != null
-          && attemptLoad(
-              servletConfig.getInitParameter(RDFServer.configurationFile),
-              "Servlet configuration parameter: " + RDFServer.configurationFile,
-              registry) )
-          return true;
-
-      // Try default name and location
-      if (attemptLoad(RDFServer.defaultConfigFile, "Default filename", registry) )
-          return true;
-
-      return false;
-    }
-
-   
-
-    private boolean attemptLoad(String filename, String reason, ServiceRegistry registry)
-        throws ConfigurationErrorException
-    {
-        if (filename == null)
-            return false;
-
-        try
-        {
-            Configuration c = new Configuration(filename, registry) ;
-            log.info("Loaded data source configuration: " + filename);
-            return true;
-        } catch (RDFException rdfEx)
-        {
-            // Trouble processing a configuration 
-            throw new ConfigurationErrorException("RDF Exception: "+rdfEx.getMessage(), rdfEx) ;
-            //return false ;
-        } catch (NotFoundException ex)
-        {
-            throw new ConfigurationErrorException("Not found: "+ex.getMessage(), ex) ;
-            //return false;
-        }
-    }
-
-    public void setServiceRegistry(ServiceRegistry r)
-    {
-        serviceRegistry = r ;
-    }
-
-    public ServiceRegistry getServiceRegistry()
-    {
-        return serviceRegistry ;
-    }
-
 
     private void servletEnv()
     {
