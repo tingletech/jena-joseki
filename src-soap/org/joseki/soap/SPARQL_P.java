@@ -8,7 +8,6 @@ package org.joseki.soap;
 
 
 import javax.xml.namespace.QName;
-import javax.xml.rpc.soap.SOAPFaultException;
 import javax.xml.soap.SOAPException;
 import javax.xml.soap.SOAPMessage;
 
@@ -19,7 +18,6 @@ import com.hp.hpl.jena.rdf.model.Resource;
 
 import org.apache.axis.MessageContext;
 import org.apache.axis.handlers.soap.SOAPService;
-import org.apache.axis.message.Detail;
 import org.apache.axis.message.SOAPBody;
 import org.apache.axis.types.NMToken;
 import org.apache.axis.types.URI;
@@ -28,6 +26,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.joseki.Dispatcher;
 import org.joseki.Request;
+import org.joseki.ReturnCodes;
 import org.joseki.processors.SPARQL;
 
 import org.w3.www._2001.sw.DataAccess.rf1.result2.*;
@@ -76,14 +75,12 @@ public class SPARQL_P
             
 
             String target = cxt.getTargetService() ;
-            System.out.println("Target: "+target) ;
             
             String url = (String)cxt.getProperty("transport.url") ;
             String path = (String)cxt.getProperty("path") ;
             String realpath = (String)cxt.getProperty("realpath") ;
             
-            // TODO Mapping from SOAP endpoint to URI. 
-            
+            System.out.println("Path = "+path) ;
             String serviceURI = "service" ;
             Request serviceRequest = new Request(serviceURI) ;
 
@@ -126,7 +123,8 @@ public class SPARQL_P
             // ---- Response
             
             ResponseSOAP serviceResponse = new ResponseSOAP(serviceRequest) ;
-            
+            if ( true )
+                throw new QueryFault(ReturnCodes.rcInternalError, "Internal server error") ;
             if ( false )
             {
                 try {
@@ -136,13 +134,14 @@ public class SPARQL_P
                 {
                     log.warn("Internal server error", ex) ;
                     QName faultCode = null ;
-                    String faultString = null ;
-                    String faultActor = null ;
-                    Detail detail = null ;
-                    throw new SOAPFaultException(faultCode,
-                                                 faultString,
-                                                 faultActor,
-                                                 detail) ;
+                    throw new QueryFault(ReturnCodes.rcInternalError, "Internal server error") ;
+//                    String faultString = null ;
+//                    String faultActor = null ;
+//                    Detail detail = null ;
+//                    throw new SOAPFaultException(faultCode,
+//                                                 faultString,
+//                                                 faultActor,
+//                                                 detail) ;
                 }     
             }
             

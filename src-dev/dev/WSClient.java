@@ -33,6 +33,7 @@ import org.joseki.ws1.QueryType;
 import org.w3.www._2001.sw.DataAccess.rf1.result2.*;
 
 import org.w3.www._2001.sw.DataAccess.sparql_protocol_types.Query;
+import org.w3.www._2001.sw.DataAccess.sparql_protocol_types.QueryFault;
 import org.w3.www._2001.sw.DataAccess.sparql_protocol_types.QueryResult;
 
 public class WSClient
@@ -125,7 +126,18 @@ public class WSClient
                 new URI("http://host/name2")
             }) ;
             // Do it.
-            QueryResult qr = qt.query(q) ;
+            QueryResult qr = null ;
+            
+            try {
+                qt.query(q) ;
+            } catch (QueryFault ex)
+            {
+               System.err.println("RC = "+ex.getFaultCode1()+" "+ex.getFaultString1()) ;
+               System.err.println("RC = "+ex.getFaultCode()+" "+ex.getFaultString()) ;
+               return ;
+            }
+            
+
             
             if ( qr.getRDF() != null )
             {
@@ -152,7 +164,7 @@ public class WSClient
         catch (Exception ex)
         {
             System.err.println(ex.getMessage()) ;
-            //ex.printStackTrace(System.err) ;
+            ex.printStackTrace(System.err) ;
         }
     }
         
