@@ -48,10 +48,13 @@ public class SPARQL_P
             // Axis has already parsed the message into nice Java datastructures.  
             MessageContext cxt = MessageContext.getCurrentContext() ;
             cxt.setProperty("disablePrettyXML", new Boolean(false)) ;
+            
             if ( true )
             {
+                // Print incoming.
                 SOAPMessage msg = cxt.getMessage() ;
-                SOAPBody b = (SOAPBody)cxt.getMessage().getSOAPBody() ;
+                
+                SOAPBody b = (SOAPBody)msg.getSOAPBody() ;
                 String s = SOAPUtils.elementAsString(cxt, b) ;
                 log.info("\n"+s) ;
             }
@@ -81,7 +84,9 @@ public class SPARQL_P
             String realpath = (String)cxt.getProperty("realpath") ;
             
             System.out.println("Path = "+path) ;
-            String serviceURI = "service" ;
+            int ind = path.lastIndexOf('/') ;
+            // Works if i = -1.
+            String serviceURI = path.substring(ind+1) ;
             Request serviceRequest = new Request(serviceURI) ;
 
             // ---- Query
