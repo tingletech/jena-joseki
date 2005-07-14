@@ -31,9 +31,9 @@ public class SPARQL extends QueryCom implements Loadable
     static final Literal XSD_TRUE   = m.createTypedLiteral(true) ; 
     static final Literal XSD_FALSE  = m.createTypedLiteral(false) ;
     
-    static final String P_QUERY          = "query" ;
-    static final String P_NAMED_GRAPH    = "named-graph-uri" ;
-    static final String P_DEFAULT_GRAPH  = "default-graph-uri" ;
+    public static final String P_QUERY          = "query" ;
+    public static final String P_NAMED_GRAPH    = "named-graph-uri" ;
+    public static final String P_DEFAULT_GRAPH  = "default-graph-uri" ;
     
     boolean allowDatasetDesc = false ;
     boolean allowWebLoading  = false ;

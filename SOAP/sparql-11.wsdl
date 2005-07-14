@@ -47,10 +47,21 @@
     <wsdl:part name="response" element="st:query-result"/>
   </wsdl:message>
 
+   <wsdl:message name="queryFault">
+    <wsdl:part name="fault" element="st:query-fault"/>
+  </wsdl:message>
+
+
+  <!--
+  <wsdl:fault name="MalformedQuery" element="st:faultDetails"/>
+  <wsdl:fault name="QueryRequestRefused" element="st:faultDetails"/>
+  -->
+  
   <wsdl:portType name="QueryType">
     <wsdl:operation name="query">
-      <wsdl:input message="tns:queryRequest"/>
+      <wsdl:input  message="tns:queryRequest"/>
       <wsdl:output message="tns:queryResponse"/>
+      <wsdl:fault  message="tns:queryFault"  name="queryFault" />
     </wsdl:operation>
   </wsdl:portType>
 
@@ -63,6 +74,9 @@
       <wsdl:output>
         <soap:body use="literal"/>
       </wsdl:output>
+      <wsdl:fault name="queryFault">
+	<soap:fault use="literal"/>
+      </wsdl:fault>
     </wsdl:operation>
   </wsdl:binding>
 

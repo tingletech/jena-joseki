@@ -17,7 +17,7 @@ import org.joseki.*;
 
 /** The servlet class.
  * @author  Andy Seaborne
- * @version $Id: Servlet.java,v 1.9 2005-07-13 14:35:41 andy_seaborne Exp $
+ * @version $Id: Servlet.java,v 1.10 2005-07-14 14:54:36 andy_seaborne Exp $
  */
 
 public class Servlet extends HttpServlet implements Connector
@@ -150,7 +150,7 @@ public class Servlet extends HttpServlet implements Connector
             String qs = httpRequest.getQueryString() ;
             
             // Assemble parameters
-            Request request = new Request(serviceURI, requestURL) ;
+            Request request = new Request(serviceURI) ;
             // params => request items
             for ( Enumeration en = httpRequest.getParameterNames() ; en.hasMoreElements() ; )
             {

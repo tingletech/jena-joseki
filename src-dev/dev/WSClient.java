@@ -6,7 +6,6 @@
 
 package dev;
 
-import java.io.StringWriter;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -19,13 +18,13 @@ import org.apache.axis.AxisFault;
 import org.apache.axis.MessageContext;
 import org.apache.axis.client.Call;
 import org.apache.axis.client.Service;
-import org.apache.axis.encoding.SerializationContext;
 import org.apache.axis.encoding.TypeMapping;
 import org.apache.axis.encoding.TypeMappingRegistry;
 import org.apache.axis.message.MessageElement;
 import org.apache.axis.message.SOAPBodyElement;
 import org.apache.axis.types.URI;
 import org.joseki.soap.GraphDeserializerFactory;
+import org.joseki.soap.SOAPUtils;
 import org.joseki.ws1.JosekiQueryServiceLocator;
 import org.joseki.ws1.QueryType;
 
@@ -64,7 +63,7 @@ public class WSClient
             mElt.addTextNode("SELECT -- RAW -- "+now) ;
             bodyElt.addChild(mElt) ;
 
-            String tmp = elementAsString(msgContext, bodyElt) ;
+            String tmp = SOAPUtils.elementAsString(msgContext, bodyElt) ;
             System.out.println(tmp) ; 
             
             System.out.println() ;
@@ -172,18 +171,6 @@ public class WSClient
         }
         
     }
-    
-    private static String elementAsString(MessageContext msgContext, MessageElement elt) throws Exception
-    {
-        StringWriter writer = new StringWriter();
-        SerializationContext serializeContext = new SerializationContext(writer, msgContext);
-        serializeContext.setSendDecl(false) ;
-        serializeContext.setPretty(true) ;
-        elt.output(serializeContext);
-        writer.close();
-        return writer.getBuffer().toString() ;
-    }
-
 }
 
 /*

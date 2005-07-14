@@ -4,28 +4,26 @@
  * [See end of file]
  */
 
-package org.joseki.ws1;
+package org.joseki.soap;
+
+import java.io.StringWriter;
+
+import org.apache.axis.MessageContext;
+import org.apache.axis.encoding.SerializationContext;
+import org.apache.axis.message.MessageElement;
 
 
-import org.joseki.soap.SPARQL_P;
-import org.w3.www._2001.sw.DataAccess.sparql_protocol_types.Query;
-import org.w3.www._2001.sw.DataAccess.sparql_protocol_types.QueryResult;
-
-
-public class QuerySoapBindingImpl
-    extends SPARQL_P 
-    implements org.joseki.ws1.QueryType
+public class SOAPUtils
 {
-    // Put the implementation elsewhere because this file
-    // can be produced by the Axis WSDL->Java tool
-    // Axis does not overwrite but if the code is produced
-    // in a separate source tree and copied about there is also
-    // a danger of loosing the implementation code. 
-    
-    public QueryResult query(Query request) throws java.rmi.RemoteException
-	{
-        // Be explicit
-        return super.query(request) ;
+    public static String elementAsString(MessageContext msgContext, MessageElement elt) throws Exception
+    {
+        StringWriter writer = new StringWriter();
+        SerializationContext serializeContext = new SerializationContext(writer, msgContext);
+        serializeContext.setSendDecl(false) ;
+        serializeContext.setPretty(true) ;
+        elt.output(serializeContext);
+        writer.close();
+        return writer.getBuffer().toString() ;
     }
 }
 

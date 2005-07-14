@@ -11,23 +11,21 @@ import java.util.*;
 
 /** General Request 
  * @author      Andy Seaborne
- * @version     $Id: Request.java,v 1.2 2005-06-24 13:45:47 andy_seaborne Exp $
+ * @version     $Id: Request.java,v 1.3 2005-07-14 14:54:36 andy_seaborne Exp $
  */
 public class Request
 {
     // How the operation was described.
     String serviceURI = null ;
-    String requestURL = null ;
 
     final static Object noValue = new Object() ; 
     // Parameters :: key => List of values pairs
     
     Map params = new HashMap();
 
-    public Request(String uri, String url)
+    public Request(String uri)
     {
         serviceURI = uri ;
-        requestURL = url ;
     }
     
     // ---- Parameters
@@ -87,12 +85,6 @@ public class Request
         return x.iterator() ;
     }
     
-    /** @return Returns the requestURL. */
-    public String getRequestURL()
-    {
-        return requestURL ;
-    }
-
     /** @return Returns the serviceURI. */
     public String getServiceURI()
     {

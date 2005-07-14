@@ -45,7 +45,7 @@ abstract public class Response
     {
         if ( done )
         {
-            log.fatal("doException: Response already sent: "+request.getRequestURL()) ;
+            log.fatal("doException: Response already sent: "+request.getServiceURI()) ;
             return ;
         }
         doException(execEx) ;

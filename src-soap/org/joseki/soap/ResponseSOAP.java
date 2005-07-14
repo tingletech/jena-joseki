@@ -4,29 +4,49 @@
  * [See end of file]
  */
 
-package org.joseki.ws1;
+package org.joseki.soap;
+
+import com.hp.hpl.jena.query.ResultSet;
+import com.hp.hpl.jena.rdf.model.Model;
+
+import org.joseki.ExecutionException;
+import org.joseki.QueryExecutionException;
+import org.joseki.Request;
+import org.joseki.Response;
 
 
-import org.joseki.soap.SPARQL_P;
-import org.w3.www._2001.sw.DataAccess.sparql_protocol_types.Query;
-import org.w3.www._2001.sw.DataAccess.sparql_protocol_types.QueryResult;
-
-
-public class QuerySoapBindingImpl
-    extends SPARQL_P 
-    implements org.joseki.ws1.QueryType
+public class ResponseSOAP extends Response
 {
-    // Put the implementation elsewhere because this file
-    // can be produced by the Axis WSDL->Java tool
-    // Axis does not overwrite but if the code is produced
-    // in a separate source tree and copied about there is also
-    // a danger of loosing the implementation code. 
-    
-    public QueryResult query(Query request) throws java.rmi.RemoteException
-	{
-        // Be explicit
-        return super.query(request) ;
+
+    public ResponseSOAP(Request request)
+    {
+        super(request) ;
     }
+    
+    protected void doResponseModel(Model model) throws QueryExecutionException
+    {
+        // TODO Auto-generated method stub
+        
+    }
+
+    protected void doResponseResultSet(ResultSet resultSet) throws QueryExecutionException
+    {
+        // TODO Auto-generated method stub
+        
+    }
+
+    protected void doResponseBoolean(Boolean bool) throws QueryExecutionException
+    {
+        // TODO Auto-generated method stub
+        
+    }
+
+    protected void doException(ExecutionException execEx)
+    {
+        // TODO Auto-generated method stub
+        
+    }
+
 }
 
 /*
