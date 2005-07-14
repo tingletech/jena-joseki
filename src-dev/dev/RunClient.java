@@ -12,9 +12,11 @@ public class RunClient
 
     public static void main(String[] args)
     {
-        WSClient.clientOM() ; System.exit(0) ;
-        
-        //WSClient.clientRaw() ; System.exit(0) ;
+//        System.out.println("Object version") ;
+//        WSClient.clientOM() ; 
+        System.out.println() ;
+        System.out.println("Raw version") ;
+        WSClient.clientRaw() ; System.exit(0) ;
         
         //runLimitedGraph() ;  System.exit(0) ;
     }

@@ -8,6 +8,7 @@ package dev;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Vector;
 
 import javax.xml.namespace.QName;
 
@@ -21,6 +22,7 @@ import org.apache.axis.client.Service;
 import org.apache.axis.encoding.TypeMapping;
 import org.apache.axis.encoding.TypeMappingRegistry;
 import org.apache.axis.message.MessageElement;
+import org.apache.axis.message.RPCElement;
 import org.apache.axis.message.SOAPBodyElement;
 import org.apache.axis.types.URI;
 import org.joseki.soap.GraphDeserializerFactory;
@@ -43,6 +45,11 @@ public class WSClient
         now = dFmt.format(new Date()) ;
     }
     
+    public static void main(String[] args)
+    {
+        clientRaw() ;
+    }
+    
     public static void clientRaw()
     {
         try {
@@ -59,6 +66,10 @@ public class WSClient
                                  "sparql") ;
             
             SOAPBodyElement bodyElt = new SOAPBodyElement(op) ;
+            bodyElt.addNamespaceDeclaration("st",
+                                         "http://www.w3.org/2001/sw/DataAccess/sparql-protocol-types") ;
+//            MessageElement mElt = new MessageElement(new QName("http://www.w3.org/2001/sw/DataAccess/sparql-protocol-types",
+//                                                               "sparql-query")) ;
             MessageElement mElt = new MessageElement(new QName("sparql-query")) ;
             mElt.addTextNode("SELECT -- RAW -- "+now) ;
             bodyElt.addChild(mElt) ;
@@ -68,7 +79,15 @@ public class WSClient
             
             System.out.println() ;
             Object ret = (Object) call.invoke(new Object[]{bodyElt}) ;
-            System.out.println("Return:"+ret) ;
+            //System.out.println("Return:("+ret.getClass().getSimpleName()+")"+ret) ;
+            Object obj = ((Vector)ret).get(0) ;
+            //System.out.println("Return1:("+obj.getClass().getSimpleName()+")"+obj) ;
+            RPCElement e = (RPCElement)obj ;
+            msgContext.setProperty("disablePrettyXML", new Boolean(false)) ;
+            System.out.println(SOAPUtils.elementAsString(msgContext, e)) ;
+
+            //e.deserialize() ;
+            // Not sure where the deserialized version goes to
             
         }
          catch (Exception ex)

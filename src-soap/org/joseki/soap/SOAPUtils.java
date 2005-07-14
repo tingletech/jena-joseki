@@ -20,6 +20,7 @@ public class SOAPUtils
         StringWriter writer = new StringWriter();
         SerializationContext serializeContext = new SerializationContext(writer, msgContext);
         serializeContext.setSendDecl(false) ;
+        // Overridden by context disablePrettyXML
         serializeContext.setPretty(true) ;
         elt.output(serializeContext);
         writer.close();

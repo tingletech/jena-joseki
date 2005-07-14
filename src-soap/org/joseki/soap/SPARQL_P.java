@@ -6,6 +6,7 @@
 
 package org.joseki.soap;
 
+
 import javax.xml.namespace.QName;
 import javax.xml.rpc.soap.SOAPFaultException;
 import javax.xml.soap.SOAPException;
@@ -17,6 +18,7 @@ import com.hp.hpl.jena.rdf.model.Property;
 import com.hp.hpl.jena.rdf.model.Resource;
 
 import org.apache.axis.MessageContext;
+import org.apache.axis.handlers.soap.SOAPService;
 import org.apache.axis.message.Detail;
 import org.apache.axis.message.SOAPBody;
 import org.apache.axis.types.NMToken;
@@ -45,17 +47,43 @@ public class SPARQL_P
         try {
             
             // Axis has already parsed the message into nice Java datastructures.  
-            
+            MessageContext cxt = MessageContext.getCurrentContext() ;
+            cxt.setProperty("disablePrettyXML", new Boolean(false)) ;
             if ( true )
             {
-                MessageContext cxt = MessageContext.getCurrentContext() ;
                 SOAPMessage msg = cxt.getMessage() ;
                 SOAPBody b = (SOAPBody)cxt.getMessage().getSOAPBody() ;
                 String s = SOAPUtils.elementAsString(cxt, b) ;
-                log.debug("\n"+s) ;
+                log.info("\n"+s) ;
             }
 
+            SOAPService srv = cxt.getService() ;
+            
+//            System.out.println("ALL") ;
+//            for ( Iterator iter = cxt.getAllPropertyNames() ; iter.hasNext() ; )
+//            {
+//                String p = (String)iter.next() ; 
+//                Object v = cxt.getProperty(p) ;
+//                System.out.println(p+" = "+v) ; 
+//            }
+//            System.out.println("NAMES") ;
+//            for ( Iterator iter = cxt.getPropertyNames() ; iter.hasNext() ; )
+//            {
+//                String p = (String)iter.next() ; 
+//                Object v = cxt.getProperty(p) ;
+//                System.out.println(p+" = "+v) ; 
+//            }
+            
+
+            String target = cxt.getTargetService() ;
+            System.out.println("Target: "+target) ;
+            
+            String url = (String)cxt.getProperty("transport.url") ;
+            String path = (String)cxt.getProperty("path") ;
+            String realpath = (String)cxt.getProperty("realpath") ;
+            
             // TODO Mapping from SOAP endpoint to URI. 
+            
             String serviceURI = "service" ;
             Request serviceRequest = new Request(serviceURI) ;
 
@@ -99,22 +127,24 @@ public class SPARQL_P
             
             ResponseSOAP serviceResponse = new ResponseSOAP(serviceRequest) ;
             
-            try {
-                Dispatcher.dispatch(serviceURI, serviceRequest, serviceResponse) ;
-            }
-            catch (Exception ex)
+            if ( false )
             {
-                log.warn("Internal server error", ex) ;
-                QName faultCode = null ;
-                String faultString = null ;
-                String faultActor = null ;
-                Detail detail = null ;
-                throw new SOAPFaultException(faultCode,
-                                             faultString,
-                                             faultActor,
-                                             detail) ;
-            }     
-            
+                try {
+                    Dispatcher.dispatch(serviceURI, serviceRequest, serviceResponse) ;
+                }
+                catch (Exception ex)
+                {
+                    log.warn("Internal server error", ex) ;
+                    QName faultCode = null ;
+                    String faultString = null ;
+                    String faultActor = null ;
+                    Detail detail = null ;
+                    throw new SOAPFaultException(faultCode,
+                                                 faultString,
+                                                 faultActor,
+                                                 detail) ;
+                }     
+            }
             
             
             // A result

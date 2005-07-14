@@ -8,5 +8,5 @@
 package org.joseki.ws1;
 
 public interface QueryType extends java.rmi.Remote {
-    public org.w3.www._2001.sw.DataAccess.sparql_protocol_types.QueryResult query(org.w3.www._2001.sw.DataAccess.sparql_protocol_types.Query query) throws java.rmi.RemoteException;
+    public org.w3.www._2001.sw.DataAccess.sparql_protocol_types.QueryResult query(org.w3.www._2001.sw.DataAccess.sparql_protocol_types.Query query) throws java.rmi.RemoteException, org.w3.www._2001.sw.DataAccess.sparql_protocol_types.QueryFault;
 }

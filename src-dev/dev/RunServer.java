@@ -14,6 +14,7 @@ public class RunServer
 
     public static void main(String[] args)
     {
+        AxisServer.main(args) ; System.exit(0) ;
         runJosekiServer(args) ; System.exit(0) ;
     }
     

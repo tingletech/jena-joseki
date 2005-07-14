@@ -32,6 +32,12 @@ public class QuerySoapBindingStub extends org.apache.axis.client.Stub implements
         oper.setReturnQName(new javax.xml.namespace.QName("http://www.w3.org/2001/sw/DataAccess/sparql-protocol-types", "query-result"));
         oper.setStyle(org.apache.axis.constants.Style.DOCUMENT);
         oper.setUse(org.apache.axis.constants.Use.LITERAL);
+        oper.addFault(new org.apache.axis.description.FaultDesc(
+                      new javax.xml.namespace.QName("http://www.w3.org/2001/sw/DataAccess/sparql-protocol-types", "query-fault"),
+                      "org.w3.www._2001.sw.DataAccess.sparql_protocol_types.QueryFault",
+                      new javax.xml.namespace.QName("http://www.w3.org/2001/sw/DataAccess/sparql-protocol-types", ">query-fault"), 
+                      true
+                     ));
         _operations[0] = oper;
 
     }
@@ -142,6 +148,13 @@ public class QuerySoapBindingStub extends org.apache.axis.client.Stub implements
             cachedSerFactories.add(beansf);
             cachedDeserFactories.add(beandf);
 
+            qName = new javax.xml.namespace.QName("http://www.w3.org/2001/sw/DataAccess/sparql-protocol-types", ">query-fault");
+            cachedSerQNames.add(qName);
+            cls = org.w3.www._2001.sw.DataAccess.sparql_protocol_types.QueryFault.class;
+            cachedSerClasses.add(cls);
+            cachedSerFactories.add(beansf);
+            cachedDeserFactories.add(beandf);
+
             qName = new javax.xml.namespace.QName("http://www.w3.org/2001/sw/DataAccess/sparql-protocol-types", ">query-result");
             cachedSerQNames.add(qName);
             cls = org.w3.www._2001.sw.DataAccess.sparql_protocol_types.QueryResult.class;
@@ -215,7 +228,7 @@ public class QuerySoapBindingStub extends org.apache.axis.client.Stub implements
         }
     }
 
-    public org.w3.www._2001.sw.DataAccess.sparql_protocol_types.QueryResult query(org.w3.www._2001.sw.DataAccess.sparql_protocol_types.Query query) throws java.rmi.RemoteException {
+    public org.w3.www._2001.sw.DataAccess.sparql_protocol_types.QueryResult query(org.w3.www._2001.sw.DataAccess.sparql_protocol_types.Query query) throws java.rmi.RemoteException, org.w3.www._2001.sw.DataAccess.sparql_protocol_types.QueryFault {
         if (super.cachedEndpoint == null) {
             throw new org.apache.axis.NoEndPointException();
         }
@@ -245,6 +258,14 @@ public class QuerySoapBindingStub extends org.apache.axis.client.Stub implements
             }
         }
   } catch (org.apache.axis.AxisFault axisFaultException) {
+    if (axisFaultException.detail != null) {
+        if (axisFaultException.detail instanceof java.rmi.RemoteException) {
+              throw (java.rmi.RemoteException) axisFaultException.detail;
+         }
+        if (axisFaultException.detail instanceof org.w3.www._2001.sw.DataAccess.sparql_protocol_types.QueryFault) {
+              throw (org.w3.www._2001.sw.DataAccess.sparql_protocol_types.QueryFault) axisFaultException.detail;
+         }
+   }
   throw axisFaultException;
 }
     }

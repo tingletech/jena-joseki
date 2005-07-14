@@ -33,7 +33,8 @@ public class GraphSerializer implements Serializer
     public void serialize(QName qname, Attributes attributes,
                           Object value, SerializationContext cxt) throws IOException
     {
-        log.info("serialize: qname="+qname) ;
+        if ( log.isDebugEnabled() )
+            log.debug("serialize: qname="+qname) ;
         
         //cxt.writeDOMElement() ;
         // May need pipes
