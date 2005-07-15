@@ -40,8 +40,8 @@
   <xs:element name="query-fault">
     <xs:complexType>
       <xs:all>
-        <xs:element minOccurs="1" maxOccurs="1" name="fault-code" type="xs:int"/>
-        <xs:element minOccurs="1" maxOccurs="1" name="fault-string" type="xs:string"/>
+        <xs:element minOccurs="1" maxOccurs="1" name="query-fault-code" type="xs:int"/>
+        <xs:element minOccurs="1" maxOccurs="1" name="query-fault-message" type="xs:string"/>
       </xs:all>
     </xs:complexType>
   </xs:element>

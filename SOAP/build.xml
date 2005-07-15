@@ -7,33 +7,34 @@
 and use &file; 
 -->
 
-    
-<project name="WSDL" basedir="." default="sparql-11">
-  <property environment="env"/>
 
-  <property name="src"                location="src-soap"/> <!-- !!! Local copy of source !!! -->
-  <property name="build.classes"      location="classes"/>
-  <property name="wsdl.file"          value="sparql-11.wsdl"/>
-  <property name="wsdl.server.pkg"    value="org.joseki.ws1"/>
-  <property name="wsdl.client.pkg"    value="org.joseki.ws1client"/>
-  <property name="jar.service"        value="sparql-11.jar"/>
-  
-  <!-- Compile time jars -->
-  <path id="classpath">
-    <pathelement location="../lib2/activation.jar"/>
-    <pathelement location="../lib2/axis-ant.jar"/>
-    <pathelement location="../lib2/axis.jar"/>
-    <pathelement location="../lib2/commons-discovery-0.2.jar"/>
-    <pathelement location="../lib2/commons-logging-1.0.4.jar"/>
-    <pathelement location="../lib2/jaxrpc.jar"/>
-    <pathelement location="../lib2/log4j-1.2.8.jar"/>
-    <pathelement location="../lib2/mailapi.jar"/>
-    <pathelement location="../lib2/saaj.jar"/>
-    <pathelement location="../lib2/wsdl4j-1.5.1.jar"/>
-    <!-- <pathelement location="../classes"/> -->
-  </path>
-  
-  <!--   
+<project name="WSDL" basedir="." default="sparql-11">
+	<property environment="env"/>
+
+    <property name="src-name"           value="src-soap"/>
+	<property name="src"                location="${src-name}"/>
+	<!-- !!! Local copy of source !!! -->
+	<property name="build.classes"      location="classes"/>
+	<property name="wsdl.file"          value="sparql-11.wsdl"/>
+	<property name="wsdl.code.pkg"      value="org.joseki.ws1"/>
+	<property name="jar.service"        value="sparql-11.jar"/>
+
+	<!-- Compile time jars -->
+	<path id="classpath">
+		<pathelement location="../lib2/activation.jar"/>
+		<pathelement location="../lib2/axis-ant.jar"/>
+		<pathelement location="../lib2/axis.jar"/>
+		<pathelement location="../lib2/commons-discovery-0.2.jar"/>
+		<pathelement location="../lib2/commons-logging-1.0.4.jar"/>
+		<pathelement location="../lib2/jaxrpc.jar"/>
+		<pathelement location="../lib2/log4j-1.2.8.jar"/>
+		<pathelement location="../lib2/mailapi.jar"/>
+		<pathelement location="../lib2/saaj.jar"/>
+		<pathelement location="../lib2/wsdl4j-1.5.1.jar"/>
+		<!-- <pathelement location="../classes"/> -->
+	</path>
+
+	<!--   
     add ... if="wsdlBuild.required" ...
     <uptodate property="wsdlBuild.required"
     srcfile=""
@@ -41,96 +42,93 @@ and use &file;
     </uptodate>   
   -->
 
-  <!-- SOCKs setup -->   
-  <target name="socks" depends="setsocks,nosocks"/>
-  
-  <target name="setsocks" if="env.SOCKSHOST">
-    <setproxy socksproxyhost="${env.SOCKSHOST}"/>
-    <echo>Socks server: ${env.SOCKSHOST}</echo>
-  </target>
+	<!-- SOCKs setup -->
+	<target name="socks" depends="setsocks,nosocks"/>
 
-  <target name="nosocks" unless="env.SOCKSHOST">
-    <echo>No socks</echo>
-  </target>
+	<target name="setsocks" if="env.SOCKSHOST">
+		<setproxy socksproxyhost="${env.SOCKSHOST}"/>
+		<echo>Socks server: ${env.SOCKSHOST}</echo>
+	</target>
 
-  <!-- WSDL processing -->
-  
-  <target name="init.wsdl" depends="socks">
-    <echo>Source ==> ${src}</echo>
-  </target>   
-  <!--   
+	<target name="nosocks" unless="env.SOCKSHOST">
+		<echo>No socks</echo>
+	</target>
+
+	<!-- WSDL processing -->
+
+	<target name="init.wsdl" depends="socks">
+		<echo>Source ==> ${src}</echo>
+	</target>
+	<!--   
     And use if="wsdl.build.server.required" etc
     <uptodate property="wsdl.build.server.required"
     srcfile="${wsdl.file}"
     targetfile="??"   
     </uptodate> 
   -->
-  <taskdef name="wsdl2java"
+	<taskdef name="wsdl2java"
            classname="org.apache.axis.tools.ant.wsdl.Wsdl2javaAntTask"
            loaderref="axis">
-    <classpath refid="classpath"/>
-  </taskdef>
+		<classpath refid="classpath"/>
+	</taskdef>
 
-  <!-- Do types separately? -->
-  <!-- Need both client and server targets?
+	<!-- Do types separately? -->
+	<!-- Need both client and server targets?
        serverSide="yes" seems to still generate client
-   -->   
-  <target name="sparql-11" depends="init.wsdl"
-         description="Produce Java (server, client, type code) from WSDL" >
-    <!-- Use <get> or <uptodate>to make this conditional -->      
-    <wsdl2java url="${wsdl.file}"
-	       output="${src}"
-	       deployscope="session"
-	       serverSide="yes">
-      <mapping namespace="http://www.w3.org/2005/01/sparql-protocol-query" 
-               package="${wsdl.server.pkg}"/>
-    </wsdl2java>
-  </target>
+   -->
+	<target name="wsdl" depends="init.wsdl" description="Produce Java (server, client, type code) from WSDL">
+		<!-- Use <get> or <uptodate>to make this conditional -->
+		<wsdl2java url="${wsdl.file}" output="${src}" deployscope="session" serverSide="yes">
+			<mapping namespace="http://www.w3.org/2005/01/sparql-protocol-query" package="${wsdl.code.pkg}" />
+		</wsdl2java>
+	</target>
 
- <!--   
-  <target name="sparql-11-client" depends="init.wsdl">
-    <wsdl2java url="${wsdl.file}"
-	       output="${src}"
-	       deployscope="session"
-	       serverSide="no">
-      <mapping namespace="http://www.w3.org/2005/01/sparql-protocol-query" 
-               package="${wsdl.client.pkg}"/>
-    </wsdl2java>
-  </target>
--->
-    
-  <target name="compile-service">
-    <!-- depends="sparql-11-server"> -->
-    <mkdir dir="${build.classes}"/>
-    <javac destdir="${build.classes}" srcdir="${src}" debug="on">
-      <classpath refid="classpath" />
-      <include name="**/org/joseki/ws1/*.java" />
-      <include name="**/org/w3/www/_2001/sw/**/*.java"/>
-    </javac>
-  </target>
+    <target name="copy-java" description="Copy code to the developement area">
+        <copy todir="../${src-name}">
+            <fileset dir="${src}">   
+                <!-- Don't copy these files anywhere
+                     deploy.wsdd need extra work for the customer serializer
+                 -->
+                <exclude name="**.wsdd"/>
+            </fileset>   
+        </copy>
+    </target>      
 
-  <target name="jar" depends="compile-service">
-    <!--      
+    <target name="sparql-11" depends="wsdl,copy-java"/>
+                
+	<target name="compile-service">
+		<!-- depends="sparql-11-server"> -->
+		<mkdir dir="${build.classes}"/>
+		<javac destdir="${build.classes}" srcdir="${src}" debug="on">
+			<classpath refid="classpath" />
+			<include name="**/org/joseki/ws1/*.java" />
+			<include name="**/org/w3/www/_2001/sw/**/*.java"/>
+		</javac>
+	</target>
+
+	<target name="jar" depends="compile-service">
+		<!--      
       <copy todir="${build.classes}">
       <fileset dir="." casesensitive="yes" >
       <include name="**/*.wsdd"/>
       </fileset>
       </copy>
     -->
-    <jar jarfile="${jar.service}" basedir="${build.classes}" >
-      <include name="**" />
-      <manifest>
-        <section name="org/apache/ws4j2ee">
-          <attribute name="Implementation-Title" value="Apache Axis"/>
-          <attribute name="Implementation-Vendor" value="Apache Web Services"/>
-        </section>
-      </manifest>
-    </jar>
-    <delete dir="${build.classes}"/>
-  </target>
-  
-  <target name="deploy"> <!-- depends="jar"> -->
-    <move file="${jar.service}" todir="../webapps/axis/WEB-INF/lib"/>
-  </target>
-  
+		<jar jarfile="${jar.service}" basedir="${build.classes}" >
+			<include name="**" />
+			<manifest>
+				<section name="org/apache/ws4j2ee">
+					<attribute name="Implementation-Title" value="Apache Axis"/>
+					<attribute name="Implementation-Vendor" value="Apache Web Services"/>
+				</section>
+			</manifest>
+		</jar>
+		<delete dir="${build.classes}"/>
+	</target>
+
+	<target name="deploy">
+		<!-- depends="jar"> -->
+		<move file="${jar.service}" todir="../webapps/axis/WEB-INF/lib"/>
+	</target>
+
 </project>

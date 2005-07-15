@@ -91,6 +91,11 @@ public class WSClient
             // Not sure where the deserialized version goes to
             
         }
+        catch (QueryFault ex)
+        {
+            System.err.println("RC = "+ex.getQueryFaultCode()+" "+ex.getQueryFaultMessage()) ;
+
+        }
          catch (Exception ex)
          {
              System.err.println(ex.getMessage()) ;
@@ -132,9 +137,15 @@ public class WSClient
                 qt.query(q) ;
             } catch (QueryFault ex)
             {
-               System.err.println("RC = "+ex.getFaultCode1()+" "+ex.getFaultString1()) ;
-               System.err.println("RC = "+ex.getFaultCode()+" "+ex.getFaultString()) ;
+               System.err.println("RC = "+ex.getQueryFaultCode()+" "+ex.getQueryFaultMessage()) ;
+               //System.err.println("RC = "+ex.getFaultCode()+" "+ex.getFaultString()) ;
                return ;
+            }
+            catch (AxisFault axisFault)
+            {
+                System.err.println("Axis fault: "+axisFault.getFaultCode()) ;
+                System.err.println(axisFault.getFaultString()) ;
+                return ;
             }
             
 

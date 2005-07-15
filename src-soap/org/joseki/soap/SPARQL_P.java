@@ -129,7 +129,10 @@ public class SPARQL_P
             
             ResponseSOAP serviceResponse = new ResponseSOAP(serviceRequest) ;
             if ( true )
+            {
+                log.info("Sending exception") ;
                 throw new QueryFault(ReturnCodes.rcInternalError, "Internal server error") ;
+            }
             if ( false )
             {
                 try {
@@ -197,7 +200,9 @@ public class SPARQL_P
             r.setHead(h) ;
             return result ;
         }
-            
+        
+        // Pass out exceptions that are supposed to be generated 
+        catch (QueryFault ex) { throw ex ; }
         catch (SOAPException ex)
         {
             System.err.println("SOAP: "+ex.getMessage()) ;

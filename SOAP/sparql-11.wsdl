@@ -75,7 +75,7 @@
         <soap:body use="literal"/>
       </wsdl:output>
       <wsdl:fault name="queryFault">
-	<soap:fault use="literal"/>
+        <soap:fault use="literal"/>
       </wsdl:fault>
     </wsdl:operation>
   </wsdl:binding>

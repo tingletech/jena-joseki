@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<deployment xmlns="http://xml.apache.org/axis/wsdd/" xmlns:java="http://xml.apache.org/axis/wsdd/providers/java">
+ <globalConfiguration>
+  <parameter name="adminPassword" value="admin"/>
+  <parameter name="enableNamespacePrefixOptimization" value="true"/>
+  <parameter name="dotNetSoapEncFix" value="true"/>
+  <parameter name="disablePrettyXML" value="true"/>
+  <parameter name="sendMultiRefs" value="true"/>
+  <parameter name="sendXsiTypes" value="true"/>
+  <parameter name="attachments.implementation" value="org.apache.axis.attachments.AttachmentsImpl"/>
+  <parameter name="sendXMLDeclaration" value="true"/>
+  <requestFlow>
+   <handler type="java:org.apache.axis.handlers.JWSHandler">
+    <parameter name="scope" value="session"/>
+   </handler>
+   <handler type="java:org.apache.axis.handlers.JWSHandler">
+    <parameter name="scope" value="request"/>
+    <parameter name="extension" value=".jwr"/>
+   </handler>
+  </requestFlow>
+ </globalConfiguration>
+ <handler name="LocalResponder" type="java:org.apache.axis.transport.local.LocalResponder"/>
+ <handler name="URLMapper" type="java:org.apache.axis.handlers.http.URLMapper"/>
+ <handler name="Authenticate" type="java:org.apache.axis.handlers.SimpleAuthenticationHandler"/>
+ <service name="AdminService" provider="java:MSG">
+  <parameter name="allowedMethods" value="AdminService"/>
+  <parameter name="enableRemoteAdmin" value="false"/>
+  <parameter name="className" value="org.apache.axis.utils.Admin"/>
+  <namespace>http://xml.apache.org/axis/wsdd/</namespace>
+ </service>
+ <service name="Version" provider="java:RPC">
+  <parameter name="allowedMethods" value="getVersion"/>
+  <parameter name="className" value="org.apache.axis.Version"/>
+ </service>
+ <service name="sparql-query" provider="java:RPC" style="document" use="literal">
+  <operation name="query" qname="query" returnQName="ns1:query-result" returnType="ns1:query-result" soapAction="" xmlns:ns1="http://www.w3.org/2001/sw/DataAccess/sparql-protocol-types">
+   <parameter qname="ns1:query" type="ns1:query"/>
+  </operation>
+  <parameter name="wsdlServicePort" value="sparql-query"/>
+  <parameter name="schemaQualified" value="http://www.w3.org/2001/sw/DataAccess/rf1/result2"/>
+  <parameter name="className" value="org.joseki.ws1.QuerySoapBindingImpl"/>
+  <parameter name="allowedMethods" value="query"/>
+  <parameter name="typeMappingVersion" value="1.2"/>
+  <parameter name="wsdlServiceElement" value="JosekiQueryService"/>
+  <parameter name="wsdlTargetNamespace" value="http://www.w3.org/2005/01/sparql-protocol-query"/>
+  <parameter name="wsdlPortType" value="QueryType"/>
+  <parameter name="scope" value="Session"/>
+  <parameter name="schemaUnqualified" value="http://www.w3.org/2001/sw/DataAccess/sparql-protocol-types"/>
+  <typeMapping deserializer="org.joseki.soap.GraphDeserializerFactory" encodingStyle="" qname="ns2:RDF" serializer="org.joseki.soap.GraphSerializerFactory" type="java:com.hp.hpl.jena.rdf.model.Model" xmlns:ns2="http://www.w3.org/1999/02/22-rdf-syntax-ns#"/>
+  <typeMapping deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle="" qname="ns3:&gt;query" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" type="java:org.w3.www._2001.sw.DataAccess.sparql_protocol_types.Query" xmlns:ns3="http://www.w3.org/2001/sw/DataAccess/sparql-protocol-types"/>
+  <typeMapping deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle="" qname="ns4:&gt;variable" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" type="java:org.w3.www._2001.sw.DataAccess.rf1.result2.Variable" xmlns:ns4="http://www.w3.org/2001/sw/DataAccess/rf1/result2"/>
+  <typeMapping deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle="" qname="ns5:&gt;literal" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" type="java:org.w3.www._2001.sw.DataAccess.rf1.result2.Literal" xmlns:ns5="http://www.w3.org/2001/sw/DataAccess/rf1/result2"/>
+  <typeMapping deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle="" qname="ns6:&gt;unbound" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" type="java:org.w3.www._2001.sw.DataAccess.rf1.result2.Unbound" xmlns:ns6="http://www.w3.org/2001/sw/DataAccess/rf1/result2"/>
+  <typeMapping deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle="" qname="ns7:&gt;results" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" type="java:org.w3.www._2001.sw.DataAccess.rf1.result2.Results" xmlns:ns7="http://www.w3.org/2001/sw/DataAccess/rf1/result2"/>
+  <typeMapping deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle="" qname="ns8:&gt;result" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" type="java:org.w3.www._2001.sw.DataAccess.rf1.result2.Result" xmlns:ns8="http://www.w3.org/2001/sw/DataAccess/rf1/result2"/>
+  <typeMapping deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle="" qname="ns9:&gt;head" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" type="java:org.w3.www._2001.sw.DataAccess.rf1.result2.Head" xmlns:ns9="http://www.w3.org/2001/sw/DataAccess/rf1/result2"/>
+  <typeMapping deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle="" qname="ns10:&gt;query-result" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" type="java:org.w3.www._2001.sw.DataAccess.sparql_protocol_types.QueryResult" xmlns:ns10="http://www.w3.org/2001/sw/DataAccess/sparql-protocol-types"/>
+  <typeMapping deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle="" qname="ns11:&gt;binding" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" type="java:org.w3.www._2001.sw.DataAccess.rf1.result2.Binding" xmlns:ns11="http://www.w3.org/2001/sw/DataAccess/rf1/result2"/>
+  <typeMapping deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle="" qname="ns12:&gt;sparql" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" type="java:org.w3.www._2001.sw.DataAccess.rf1.result2.Sparql" xmlns:ns12="http://www.w3.org/2001/sw/DataAccess/rf1/result2"/>
+  <typeMapping deserializer="org.apache.axis.encoding.ser.SimpleDeserializerFactory" encodingStyle="" qname="ns13:URI-reference" serializer="org.apache.axis.encoding.ser.SimpleSerializerFactory" type="java:org.apache.axis.types.URI" xmlns:ns13="http://www.w3.org/2001/sw/DataAccess/rf1/result2"/>
+ </service>
+ <transport name="http">
+  <requestFlow>
+   <handler type="URLMapper"/>
+   <handler type="java:org.apache.axis.handlers.http.HTTPAuthHandler"/>
+  </requestFlow>
+  <parameter name="qs:list" value="org.apache.axis.transport.http.QSListHandler"/>
+  <parameter name="qs:wsdl" value="org.apache.axis.transport.http.QSWSDLHandler"/>
+  <parameter name="qs:method" value="org.apache.axis.transport.http.QSMethodHandler"/>
+ </transport>
+ <transport name="local">
+  <responseFlow>
+   <handler type="LocalResponder"/>
+  </responseFlow>
+ </transport>
+</deployment>

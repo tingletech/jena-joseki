@@ -8,57 +8,57 @@
 package org.w3.www._2001.sw.DataAccess.sparql_protocol_types;
 
 public class QueryFault  extends org.apache.axis.AxisFault  implements java.io.Serializable {
-    private int faultCode1;
-    private java.lang.String faultString1;
+    private int queryFaultCode;
+    private java.lang.String queryFaultMessage;
 
     public QueryFault() {
     }
 
     public QueryFault(
-           int faultCode1,
-           java.lang.String faultString1) {
-        this.faultCode1 = faultCode1;
-        this.faultString1 = faultString1;
+           int queryFaultCode,
+           java.lang.String queryFaultMessage) {
+        this.queryFaultCode = queryFaultCode;
+        this.queryFaultMessage = queryFaultMessage;
     }
 
 
     /**
-     * Gets the faultCode1 value for this QueryFault.
+     * Gets the queryFaultCode value for this QueryFault.
      * 
-     * @return faultCode1
+     * @return queryFaultCode
      */
-    public int getFaultCode1() {
-        return faultCode1;
+    public int getQueryFaultCode() {
+        return queryFaultCode;
     }
 
 
     /**
-     * Sets the faultCode1 value for this QueryFault.
+     * Sets the queryFaultCode value for this QueryFault.
      * 
-     * @param faultCode1
+     * @param queryFaultCode
      */
-    public void setFaultCode1(int faultCode1) {
-        this.faultCode1 = faultCode1;
+    public void setQueryFaultCode(int queryFaultCode) {
+        this.queryFaultCode = queryFaultCode;
     }
 
 
     /**
-     * Gets the faultString1 value for this QueryFault.
+     * Gets the queryFaultMessage value for this QueryFault.
      * 
-     * @return faultString1
+     * @return queryFaultMessage
      */
-    public java.lang.String getFaultString1() {
-        return faultString1;
+    public java.lang.String getQueryFaultMessage() {
+        return queryFaultMessage;
     }
 
 
     /**
-     * Sets the faultString1 value for this QueryFault.
+     * Sets the queryFaultMessage value for this QueryFault.
      * 
-     * @param faultString1
+     * @param queryFaultMessage
      */
-    public void setFaultString1(java.lang.String faultString1) {
-        this.faultString1 = faultString1;
+    public void setQueryFaultMessage(java.lang.String queryFaultMessage) {
+        this.queryFaultMessage = queryFaultMessage;
     }
 
     private java.lang.Object __equalsCalc = null;
@@ -73,10 +73,10 @@ public class QueryFault  extends org.apache.axis.AxisFault  implements java.io.S
         __equalsCalc = obj;
         boolean _equals;
         _equals = true && 
-            this.faultCode1 == other.getFaultCode1() &&
-            ((this.faultString1==null && other.getFaultString1()==null) || 
-             (this.faultString1!=null &&
-              this.faultString1.equals(other.getFaultString1())));
+            this.queryFaultCode == other.getQueryFaultCode() &&
+            ((this.queryFaultMessage==null && other.getQueryFaultMessage()==null) || 
+             (this.queryFaultMessage!=null &&
+              this.queryFaultMessage.equals(other.getQueryFaultMessage())));
         __equalsCalc = null;
         return _equals;
     }
@@ -88,9 +88,9 @@ public class QueryFault  extends org.apache.axis.AxisFault  implements java.io.S
         }
         __hashCodeCalc = true;
         int _hashCode = 1;
-        _hashCode += getFaultCode1();
-        if (getFaultString1() != null) {
-            _hashCode += getFaultString1().hashCode();
+        _hashCode += getQueryFaultCode();
+        if (getQueryFaultMessage() != null) {
+            _hashCode += getQueryFaultMessage().hashCode();
         }
         __hashCodeCalc = false;
         return _hashCode;
@@ -103,14 +103,14 @@ public class QueryFault  extends org.apache.axis.AxisFault  implements java.io.S
     static {
         typeDesc.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2001/sw/DataAccess/sparql-protocol-types", ">query-fault"));
         org.apache.axis.description.ElementDesc elemField = new org.apache.axis.description.ElementDesc();
-        elemField.setFieldName("faultCode1");
-        elemField.setXmlName(new javax.xml.namespace.QName("", "fault-code"));
+        elemField.setFieldName("queryFaultCode");
+        elemField.setXmlName(new javax.xml.namespace.QName("", "query-fault-code"));
         elemField.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "int"));
         elemField.setNillable(false);
         typeDesc.addFieldDesc(elemField);
         elemField = new org.apache.axis.description.ElementDesc();
-        elemField.setFieldName("faultString1");
-        elemField.setXmlName(new javax.xml.namespace.QName("", "fault-string"));
+        elemField.setFieldName("queryFaultMessage");
+        elemField.setXmlName(new javax.xml.namespace.QName("", "query-fault-message"));
         elemField.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "string"));
         elemField.setNillable(false);
         typeDesc.addFieldDesc(elemField);
