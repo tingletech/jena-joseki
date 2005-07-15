@@ -14,14 +14,15 @@ public class RunServer
 
     public static void main(String[] args)
     {
+        RunUtils.setLog4j() ;
+        
         AxisServer.main(args) ; System.exit(0) ;
+        
         runJosekiServer(args) ; System.exit(0) ;
     }
     
     public static void runJosekiServer(String[] args) 
     {
-        RunUtils.setLog4j() ;
-
         if ( args == null || args.length == 0 )
             args = new String[]{"joseki-config.ttl"} ;
 

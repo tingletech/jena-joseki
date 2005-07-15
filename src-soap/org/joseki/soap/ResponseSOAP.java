@@ -9,42 +9,47 @@ package org.joseki.soap;
 import com.hp.hpl.jena.query.ResultSet;
 import com.hp.hpl.jena.rdf.model.Model;
 
-import org.joseki.ExecutionException;
-import org.joseki.QueryExecutionException;
-import org.joseki.Request;
-import org.joseki.Response;
+import org.joseki.*;
+import org.w3.www._2001.sw.DataAccess.rf1.result2.Sparql;
+import org.w3.www._2001.sw.DataAccess.sparql_protocol_types.QueryFault;
+import org.w3.www._2001.sw.DataAccess.sparql_protocol_types.QueryResult;
 
 
 public class ResponseSOAP extends Response
 {
-
+    QueryResult result = new QueryResult() ;
+    private QueryFault fault = null ;
+    
     public ResponseSOAP(Request request)
     {
         super(request) ;
     }
     
+    public void execException() throws QueryFault
+    {
+        if ( fault != null )
+            throw fault ;
+    }
+    public QueryResult get() { return result ; }
+    
     protected void doResponseModel(Model model) throws QueryExecutionException
     {
-        // TODO Auto-generated method stub
-        
+        result.setRDF(model) ;
     }
 
     protected void doResponseResultSet(ResultSet resultSet) throws QueryExecutionException
     {
-        // TODO Auto-generated method stub
-        
+        Sparql r = AxisUtils.resultSetToProtocol(resultSet) ;
+        result.setSparql(r) ;
     }
 
     protected void doResponseBoolean(Boolean bool) throws QueryExecutionException
     {
-        // TODO Auto-generated method stub
-        
     }
 
     protected void doException(ExecutionException execEx)
     {
-        // TODO Auto-generated method stub
-        
+        fault = new QueryFault(execEx.returnCode, execEx.shortMessage) ;
     }
 
 }

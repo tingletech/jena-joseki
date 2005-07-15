@@ -67,6 +67,18 @@
     joseki:processor    joseki:ProcessorSPARQL_FixedDS ;
     .
 
+## Axis/SAOP testing
+[]
+    rdf:type            joseki:Service ;
+    rdfs:label          "SPARQL/SOAP testing" ;
+    joseki:serviceRef   "sparql-query" ;
+    # dataset part
+    joseki:dataset      _:books ;
+    # Service part.
+    # This processor will not allow either the protocol,
+    # nor the query, to specify the datset.
+    joseki:processor    joseki:ProcessorSPARQL_FixedDS ;
+    .
 
 ## Add a FOAF named graph example.
 

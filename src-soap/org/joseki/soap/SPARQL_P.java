@@ -41,7 +41,120 @@ public class SPARQL_P
 {
     static private Log log = LogFactory.getLog(SPARQL_P.class) ; 
     
+    static { Dispatcher.initServiceRegistry() ; } 
+    
     public QueryResult query(Query request) throws java.rmi.RemoteException
+    {
+        if ( log.isDebugEnabled() )
+            log.debug("SOAP request received") ;
+        try {
+            // Axis has already parsed the message into nice Java datastructures.  
+            MessageContext cxt = MessageContext.getCurrentContext() ;
+            cxt.setProperty("disablePrettyXML", new Boolean(false)) ;
+            
+            if ( true )
+            {
+                // Print incoming.
+                SOAPMessage msg = cxt.getMessage() ;
+                
+                SOAPBody b = (SOAPBody)msg.getSOAPBody() ;
+                String s = SOAPUtils.elementAsString(cxt, b) ;
+                log.info("\n"+s) ;
+            }
+
+            SOAPService srv = cxt.getService() ;
+            
+            String target = cxt.getTargetService() ;
+            String url = (String)cxt.getProperty("transport.url") ;
+            String path = (String)cxt.getProperty("path") ;
+            String realpath = (String)cxt.getProperty("realpath") ;
+            
+            int ind = path.lastIndexOf('/') ;
+            // Works if i = -1.
+            String serviceURI = path.substring(ind+1) ;
+            Request serviceRequest = new Request(serviceURI) ;
+
+            // ---- Query
+            
+            String queryString = request.getSparqlQuery() ;
+            
+            if ( log.isDebugEnabled() )
+                log.debug("Query string: "+stringOrNull(queryString)) ;
+           
+            serviceRequest.setParam(SPARQL.P_QUERY, queryString) ;
+            
+            // ---- Default graph
+            
+            URI uri = request.getDefaultGraphUri() ;
+            
+            if ( log.isDebugEnabled() )
+                log.debug("Default Graph: "+stringOrNull(uri)) ;
+            
+            if ( uri != null && !uri.equals("") )
+                serviceRequest.setParam(SPARQL.P_DEFAULT_GRAPH, uri.toString()) ;
+            
+            // ---- Named graphs
+            URI[] names = request.getNamedGraphUri() ;
+            if ( names == null )
+            {
+                if ( log.isDebugEnabled() )
+                    log.debug("No named graphs") ;
+            }
+            else
+            {
+                for ( int i = 0 ; i < names.length ; i++ )
+                {
+                    URI u = names[i] ;
+                    if ( log.isDebugEnabled() )
+                        log.debug("Named graph: "+stringOrNull(u)) ;
+                    serviceRequest.setParam(SPARQL.P_NAMED_GRAPH, queryString) ;
+                }
+            }
+
+            // ---- Response
+            
+            ResponseSOAP serviceResponse = new ResponseSOAP(serviceRequest) ;
+
+            try {
+                Dispatcher.dispatch(serviceURI, serviceRequest, serviceResponse) ;
+                serviceResponse.execException() ;
+                QueryResult r = serviceResponse.get() ; 
+                return r ;
+            }
+            catch (QueryFault f) { throw f ; }  
+            catch (Exception ex)
+            {
+                log.warn("Internal server error", ex) ;
+                QName faultCode = null ;
+                throw new QueryFault(ReturnCodes.rcInternalError, "Internal server error") ;
+//                    String faultString = null ;
+//                    String faultActor = null ;
+//                    Detail detail = null ;
+//                    throw new SOAPFaultException(faultCode,
+//                                                 faultString,
+//                                                 faultActor,
+//                                                 detail) ;
+            }
+        }
+        
+        // Pass out exceptions that are supposed to be generated 
+        catch (QueryFault ex) { throw ex ; }
+        catch (SOAPException ex)
+        {
+            System.err.println("SOAP: "+ex.getMessage()) ;
+            ex.printStackTrace(System.err) ;
+            throw new RuntimeException("SOAP", ex) ;
+        }
+        catch (Exception ex)
+        {
+            System.err.println(ex.getMessage()) ;
+            ex.printStackTrace(System.err) ;
+            return null ;
+        }
+    }
+
+    // To go.
+    public QueryResult query2(Query request) throws java.rmi.RemoteException
     {
         if ( log.isDebugEnabled() )
             log.debug("SOAP request received") ;

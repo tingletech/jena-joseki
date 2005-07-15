@@ -1,0 +1,56 @@
+# This file is written in N3 / Turtle
+
+@prefix rdfs:   <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xsd:    <http://www.w3.org/2001/XMLSchema#> .
+
+@prefix module: <http://joseki.org/2003/06/module#> .
+@prefix joseki: <http://joseki.org/2005/06/configuration#> .
+@prefix ql:     <http://jena.hpl.hp.com/2003/07/query/> .
+
+@prefix jms:    <http://jena.hpl.hp.com/2003/08/jms#> .
+
+## --------------------------------------------------------------
+## About this configuration
+
+<> joseki:include <file:joseki-defs.ttl> .
+    # Include other configuration information
+ 
+## --------------------------------------------------------------
+## About this server
+
+[]  rdf:type joseki:Server ;
+    joseki:serverDebug   "true" ;
+    .
+
+## --------------------------------------------------------------
+## Services
+
+[]
+    rdf:type            joseki:Service ;
+    rdfs:label          "SPARQL/SOAP testing" ;
+    joseki:serviceRef   "sparql-query" ;
+    # dataset part
+    joseki:dataset      _:books ;
+    # Service part.
+    # This processor will not allow either the protocol,
+    # nor the query, to specify the datset.
+    joseki:processor    joseki:ProcessorSPARQL_FixedDS ;
+    .
+
+## --------------------------------------------------------------
+
+# A dataset of one model as the default graph
+
+_:books   rdf:type joseki:RDFDataSet ;
+    rdfs:label "Books" ;
+    joseki:defaultGraph
+      [ rdfs:label "books.n3" ;
+        jms:loadWith  <file:../Data/books.n3> ] ;
+    .
+## --------------------------------------------------------------
+
+# Local Variables:
+# tab-width: 4
+# indent-tabs-mode: nil
+# End:
