@@ -12,6 +12,8 @@ import java.util.Vector;
 
 import javax.xml.namespace.QName;
 
+import com.hp.hpl.jena.query.ResultSet;
+import com.hp.hpl.jena.query.ResultSetFormatter;
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.vocabulary.RDF;
 
@@ -26,6 +28,7 @@ import org.apache.axis.message.RPCElement;
 import org.apache.axis.message.SOAPBodyElement;
 import org.apache.axis.types.URI;
 import org.joseki.soap.GraphDeserializerFactory;
+import org.joseki.soap.ResultSetAxis;
 import org.joseki.soap.SOAPUtils;
 import org.joseki.ws1.JosekiQueryServiceLocator;
 import org.joseki.ws1.QueryType;
@@ -134,7 +137,7 @@ public class WSClient
             QueryResult qr = null ;
             
             try {
-                qt.query(q) ;
+                qr = qt.query(q) ;
             } catch (QueryFault ex)
             {
                System.err.println("RC = "+ex.getQueryFaultCode()+" "+ex.getQueryFaultMessage()) ;
@@ -147,8 +150,6 @@ public class WSClient
                 System.err.println(axisFault.getFaultString()) ;
                 return ;
             }
-            
-
             
             if ( qr.getRDF() != null )
             {
@@ -182,6 +183,13 @@ public class WSClient
         
     private static void processResultSet(Sparql resultSet)
     {
+        ResultSet rs = new ResultSetAxis(resultSet) ;
+        ResultSetFormatter.out(System.out, rs) ;
+    }
+    
+    private static void XXprocessResultSet(Sparql resultSet)
+    {
+    
         Variable[] vars = resultSet.getHead().getVariable() ;
 
         for ( int i = 0 ; i < vars.length; i++ )

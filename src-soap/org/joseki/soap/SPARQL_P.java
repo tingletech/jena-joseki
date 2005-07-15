@@ -18,7 +18,9 @@ import com.hp.hpl.jena.rdf.model.Resource;
 
 import org.apache.axis.MessageContext;
 import org.apache.axis.handlers.soap.SOAPService;
+import org.apache.axis.message.MessageElement;
 import org.apache.axis.message.SOAPBody;
+import org.apache.axis.message.Text;
 import org.apache.axis.types.NMToken;
 import org.apache.axis.types.URI;
 
@@ -128,7 +130,7 @@ public class SPARQL_P
             // ---- Response
             
             ResponseSOAP serviceResponse = new ResponseSOAP(serviceRequest) ;
-            if ( true )
+            if ( false  )
             {
                 log.info("Sending exception") ;
                 throw new QueryFault(ReturnCodes.rcInternalError, "Internal server error") ;
@@ -157,7 +159,7 @@ public class SPARQL_P
             // A result
             QueryResult result = new QueryResult() ;
 
-            if ( true )
+            if ( false )
             {
                 // Custom type
                 Model model = ModelFactory.createDefaultModel() ;
@@ -178,14 +180,17 @@ public class SPARQL_P
 
             Binding b2 = new Binding() ;
             b2.setName(new NMToken("y")) ;
-            b2.setBnode("BNODE") ;
+//            b2.setBnode("BNODE") ;
             
-//            Literal lit = new Literal() ;
-//            MessageElement mElt = new MessageElement() ;
-//            mElt.setValue("I'm a literal") ;
-//            lit.set_any(new MessageElement[]{mElt}) ;
-//            b2.setLiteral(lit) ;
-//            
+            Literal lit = new Literal() ;
+            Text txt = new Text("I'm a literal") ;
+            MessageElement mElt = new MessageElement(txt) ;
+//            AttributesImpl a = new AttributesImpl() ;
+//            a.addAttribute("", "", "xml:lang", "CDATA", "en") ;
+//            mElt.setAllAttributes(a) ;
+            lit.set_any(new MessageElement[]{mElt}) ;
+            b2.setLiteral(lit) ;
+            
             soln.setBinding(new Binding[]{b1, b2}) ;
             xmlResults.setResult(new Result[]{soln}) ;
             r.setResults(xmlResults) ;
