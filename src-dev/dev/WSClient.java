@@ -11,6 +11,7 @@ import java.util.Date;
 import java.util.Vector;
 
 import javax.xml.namespace.QName;
+import javax.xml.soap.SOAPMessage;
 
 import com.hp.hpl.jena.query.ResultSet;
 import com.hp.hpl.jena.query.ResultSetFormatter;
@@ -25,11 +26,13 @@ import org.apache.axis.encoding.TypeMapping;
 import org.apache.axis.encoding.TypeMappingRegistry;
 import org.apache.axis.message.MessageElement;
 import org.apache.axis.message.RPCElement;
+import org.apache.axis.message.SOAPBody;
 import org.apache.axis.message.SOAPBodyElement;
 import org.joseki.soap.GraphDeserializerFactory;
 import org.joseki.soap.ResultSetAxis;
 import org.joseki.soap.SOAPUtils;
 import org.joseki.ws1.JosekiQueryServiceLocator;
+import org.joseki.ws1.QuerySoapBindingStub;
 import org.joseki.ws1.QueryType;
 
 import org.w3.www._2001.sw.DataAccess.rf1.result2.*;
@@ -96,6 +99,19 @@ public class WSClient
                 System.err.println("Axis fault: "+axisFault.getFaultCode()) ;
                 System.err.println(axisFault.getFaultString()) ;
                 return ;
+            }
+
+            if ( true )
+            {
+                MessageContext cxt = ((QuerySoapBindingStub)qt)._getCall().getMessageContext() ;
+                cxt.setProperty("disablePrettyXML", new Boolean(false)) ;
+//              Print incoming.
+                SOAPMessage msg = cxt.getMessage() ;
+                
+                SOAPBody b = (SOAPBody)msg.getSOAPBody() ;
+                String s = SOAPUtils.elementAsString(cxt, b) ;
+                System.out.println(s) ;
+                System.out.println() ;
             }
             
             if ( qr.getRDF() != null )
