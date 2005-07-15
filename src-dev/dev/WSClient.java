@@ -51,7 +51,7 @@ public class WSClient
     
     public static void main(String[] args)
     {
-        clientRaw() ;
+        clientOM() ;
     }
     
     public static void clientRaw()

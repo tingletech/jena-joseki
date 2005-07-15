@@ -85,7 +85,6 @@ public class SPARQL_P
             String path = (String)cxt.getProperty("path") ;
             String realpath = (String)cxt.getProperty("realpath") ;
             
-            System.out.println("Path = "+path) ;
             int ind = path.lastIndexOf('/') ;
             // Works if i = -1.
             String serviceURI = path.substring(ind+1) ;
@@ -182,6 +181,7 @@ public class SPARQL_P
             b2.setName(new NMToken("y")) ;
 //            b2.setBnode("BNODE") ;
             
+            // May need custom serializer :-(
             Literal lit = new Literal() ;
             Text txt = new Text("I'm a literal") ;
             MessageElement mElt = new MessageElement(txt) ;
@@ -190,6 +190,7 @@ public class SPARQL_P
 //            mElt.setAllAttributes(a) ;
             lit.set_any(new MessageElement[]{mElt}) ;
             b2.setLiteral(lit) ;
+            
             
             soln.setBinding(new Binding[]{b1, b2}) ;
             xmlResults.setResult(new Result[]{soln}) ;
