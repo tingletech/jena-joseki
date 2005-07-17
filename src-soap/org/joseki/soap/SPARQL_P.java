@@ -7,6 +7,9 @@
 package org.joseki.soap;
 
 
+import java.io.File;
+import java.io.IOException;
+
 import javax.xml.namespace.QName;
 import javax.xml.soap.SOAPException;
 import javax.xml.soap.SOAPMessage;
@@ -41,10 +44,32 @@ public class SPARQL_P
 {
     static private Log log = LogFactory.getLog(SPARQL_P.class) ; 
     
-    static { Dispatcher.initServiceRegistry() ; } 
+    static boolean initialized = false ;
     
+    public static void init()
+    {
+        if ( initialized )
+            return ;
+        
+        initialized = true ;
+        File f = new File(".") ;
+        // Because user.dir may have been changed. 
+        log.info("File base: "+f.getAbsolutePath()) ;
+        try{
+            log.info("File base: "+f.getCanonicalPath()) ;
+        } catch (IOException ex)
+        {
+            log.info("File base 9absolute path): "+f.getAbsolutePath()) ;
+        }
+        //log.info("user.dir = "+System.getProperty("user.dir")) ;
+        
+        // Initialize the service registry (ir it is not already initialized)
+        Dispatcher.initServiceRegistry() ;
+    }
+
     public QueryResult query(Query request) throws java.rmi.RemoteException
     {
+        init() ;
         if ( log.isDebugEnabled() )
             log.debug("SOAP request received") ;
         try {
