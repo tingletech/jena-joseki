@@ -1,8 +1,11 @@
-1/ Add activiation.jar (JAF) and mailapi.jar (javamail)
-   to stop warning messages
+Local copies:
 
-2/ Running Axis server
+xml.xsd, XMLSchema.dtd, datatypes.dtd
+result2.xsd
+
+ Add activiation.jar (JAF) and mailapi.jar (javamail)
+ to stop warning messages
+
+ Running Axis server with Tomcat
    Copy conf/
    Ensure conf/Catalina/localhost/ has no admin file.
-
-3/ Run tomcat 5.5

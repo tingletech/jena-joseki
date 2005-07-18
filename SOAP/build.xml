@@ -90,6 +90,7 @@ and use &file;
                      deploy.wsdd need extra work for the customer serializer
                  -->
                 <exclude name="**.wsdd"/>
+                <exclude name="org/joseki/ws1/QuerySoapBindingImpl.java"/>   
             </fileset>   
         </copy>
     </target>      

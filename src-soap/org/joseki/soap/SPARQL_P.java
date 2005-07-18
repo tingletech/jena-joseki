@@ -102,13 +102,24 @@ public class SPARQL_P
             
             // ---- Default graph
             
-            URI uri = request.getDefaultGraphUri() ;
+            URI[] dftURIs = request.getNamedGraphUri() ;
+            if ( dftURIs == null )
+            {
+                if ( log.isDebugEnabled() )
+                    log.debug("No default graphs") ;
+                
+            }
+            else
+            {
+                for ( int i = 0 ; i < dftURIs.length ; i++ )
+                {
+                    URI u = dftURIs[i] ;
+                    if ( log.isDebugEnabled() )
+                        log.debug("Default graph: "+stringOrNull(u)) ;
+                    serviceRequest.setParam(SPARQL.P_DEFAULT_GRAPH, queryString) ;
+                }
+            }
             
-            if ( log.isDebugEnabled() )
-                log.debug("Default Graph: "+stringOrNull(uri)) ;
-            
-            if ( uri != null && !uri.equals("") )
-                serviceRequest.setParam(SPARQL.P_DEFAULT_GRAPH, uri.toString()) ;
             
             // ---- Named graphs
             URI[] names = request.getNamedGraphUri() ;

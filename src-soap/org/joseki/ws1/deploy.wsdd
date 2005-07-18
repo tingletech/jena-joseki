@@ -16,7 +16,7 @@
       <parameter name="wsdlTargetNamespace" value="http://www.w3.org/2005/01/sparql-protocol-query"/>
       <parameter name="wsdlServiceElement" value="JosekiQueryService"/>
       <parameter name="schemaQualified" value="http://www.w3.org/2001/sw/DataAccess/rf1/result2"/>
-      <parameter name="schemaUnqualified" value="http://www.w3.org/1999/02/22-rdf-syntax-ns#,http://www.w3.org/2001/sw/DataAccess/sparql-protocol-types"/>
+      <parameter name="schemaUnqualified" value="http://www.w3.org/XML/1998/namespace,http://www.w3.org/1999/02/22-rdf-syntax-ns#,http://www.w3.org/2001/sw/DataAccess/sparql-protocol-types"/>
       <parameter name="wsdlServicePort" value="sparql-query"/>
       <parameter name="className" value="org.joseki.ws1.QuerySoapBindingImpl"/>
       <parameter name="wsdlPortType" value="QueryInterface"/>
@@ -77,17 +77,17 @@
         encodingStyle=""
       />
       <typeMapping
-        xmlns:ns="http://www.w3.org/2001/sw/DataAccess/rf1/result2"
-        qname="ns:>variable"
-        type="java:org.w3.www._2001.sw.DataAccess.rf1.result2.Variable"
+        xmlns:ns="http://www.w3.org/2001/sw/DataAccess/sparql-protocol-types"
+        qname="ns:>query"
+        type="java:org.w3.www._2001.sw.DataAccess.sparql_protocol_types.Query"
         serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
         deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
         encodingStyle=""
       />
       <typeMapping
-        xmlns:ns="http://www.w3.org/2001/sw/DataAccess/sparql-protocol-types"
-        qname="ns:>query"
-        type="java:org.w3.www._2001.sw.DataAccess.sparql_protocol_types.Query"
+        xmlns:ns="http://www.w3.org/2001/sw/DataAccess/rf1/result2"
+        qname="ns:>variable"
+        type="java:org.w3.www._2001.sw.DataAccess.rf1.result2.Variable"
         serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
         deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
         encodingStyle=""

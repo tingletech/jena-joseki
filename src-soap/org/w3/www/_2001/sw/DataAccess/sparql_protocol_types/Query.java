@@ -9,7 +9,7 @@ package org.w3.www._2001.sw.DataAccess.sparql_protocol_types;
 
 public class Query  implements java.io.Serializable {
     private java.lang.String sparqlQuery;
-    private org.apache.axis.types.URI defaultGraphUri;
+    private org.apache.axis.types.URI[] defaultGraphUri;
     private org.apache.axis.types.URI[] namedGraphUri;
 
     public Query() {
@@ -17,7 +17,7 @@ public class Query  implements java.io.Serializable {
 
     public Query(
            java.lang.String sparqlQuery,
-           org.apache.axis.types.URI defaultGraphUri,
+           org.apache.axis.types.URI[] defaultGraphUri,
            org.apache.axis.types.URI[] namedGraphUri) {
            this.sparqlQuery = sparqlQuery;
            this.defaultGraphUri = defaultGraphUri;
@@ -50,7 +50,7 @@ public class Query  implements java.io.Serializable {
      * 
      * @return defaultGraphUri
      */
-    public org.apache.axis.types.URI getDefaultGraphUri() {
+    public org.apache.axis.types.URI[] getDefaultGraphUri() {
         return defaultGraphUri;
     }
 
@@ -60,8 +60,16 @@ public class Query  implements java.io.Serializable {
      * 
      * @param defaultGraphUri
      */
-    public void setDefaultGraphUri(org.apache.axis.types.URI defaultGraphUri) {
+    public void setDefaultGraphUri(org.apache.axis.types.URI[] defaultGraphUri) {
         this.defaultGraphUri = defaultGraphUri;
+    }
+
+    public org.apache.axis.types.URI getDefaultGraphUri(int i) {
+        return this.defaultGraphUri[i];
+    }
+
+    public void setDefaultGraphUri(int i, org.apache.axis.types.URI _value) {
+        this.defaultGraphUri[i] = _value;
     }
 
 
@@ -109,7 +117,7 @@ public class Query  implements java.io.Serializable {
               this.sparqlQuery.equals(other.getSparqlQuery()))) &&
             ((this.defaultGraphUri==null && other.getDefaultGraphUri()==null) || 
              (this.defaultGraphUri!=null &&
-              this.defaultGraphUri.equals(other.getDefaultGraphUri()))) &&
+              java.util.Arrays.equals(this.defaultGraphUri, other.getDefaultGraphUri()))) &&
             ((this.namedGraphUri==null && other.getNamedGraphUri()==null) || 
              (this.namedGraphUri!=null &&
               java.util.Arrays.equals(this.namedGraphUri, other.getNamedGraphUri())));
@@ -128,7 +136,15 @@ public class Query  implements java.io.Serializable {
             _hashCode += getSparqlQuery().hashCode();
         }
         if (getDefaultGraphUri() != null) {
-            _hashCode += getDefaultGraphUri().hashCode();
+            for (int i=0;
+                 i<java.lang.reflect.Array.getLength(getDefaultGraphUri());
+                 i++) {
+                java.lang.Object obj = java.lang.reflect.Array.get(getDefaultGraphUri(), i);
+                if (obj != null &&
+                    !obj.getClass().isArray()) {
+                    _hashCode += obj.hashCode();
+                }
+            }
         }
         if (getNamedGraphUri() != null) {
             for (int i=0;
@@ -163,6 +179,7 @@ public class Query  implements java.io.Serializable {
         elemField.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "anyURI"));
         elemField.setMinOccurs(0);
         elemField.setNillable(false);
+        elemField.setMaxOccursUnbounded(true);
         typeDesc.addFieldDesc(elemField);
         elemField = new org.apache.axis.description.ElementDesc();
         elemField.setFieldName("namedGraphUri");
