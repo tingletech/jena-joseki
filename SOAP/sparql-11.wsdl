@@ -57,7 +57,7 @@
   <wsdl:fault name="QueryRequestRefused" element="st:faultDetails"/>
   -->
   
-  <wsdl:portType name="QueryType">
+  <wsdl:portType name="QueryInterface">
     <wsdl:operation name="query">
       <wsdl:input  message="tns:queryRequest"/>
       <wsdl:output message="tns:queryResponse"/>
@@ -65,7 +65,7 @@
     </wsdl:operation>
   </wsdl:portType>
 
-  <wsdl:binding name="QuerySoapBinding" type="tns:QueryType">
+  <wsdl:binding name="QuerySoapBinding" type="tns:QueryInterface">
     <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
     <wsdl:operation name="query">
       <wsdl:input>

@@ -130,5 +130,11 @@ and use &file;
 		<!-- depends="jar"> -->
 		<move file="${jar.service}" todir="../webapps/axis/WEB-INF/lib"/>
 	</target>
+ 
+    <target name="clean">
+        <delete>
+           <fileset dir="${src}" excludes="org/joseki/ws1/QuerySoapBindingImpl.java"/>
+        </delete>   
+    </target>
 
 </project>

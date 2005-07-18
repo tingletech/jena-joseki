@@ -7,7 +7,7 @@
 
 package org.joseki.ws1;
 
-public class QuerySoapBindingStub extends org.apache.axis.client.Stub implements org.joseki.ws1.QueryType {
+public class QuerySoapBindingStub extends org.apache.axis.client.Stub implements org.joseki.ws1.QueryInterface {
     private java.util.Vector cachedSerClasses = new java.util.Vector();
     private java.util.Vector cachedSerQNames = new java.util.Vector();
     private java.util.Vector cachedSerFactories = new java.util.Vector();

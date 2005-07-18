@@ -19,7 +19,7 @@
       <parameter name="schemaUnqualified" value="http://www.w3.org/1999/02/22-rdf-syntax-ns#,http://www.w3.org/2001/sw/DataAccess/sparql-protocol-types"/>
       <parameter name="wsdlServicePort" value="sparql-query"/>
       <parameter name="className" value="org.joseki.ws1.QuerySoapBindingImpl"/>
-      <parameter name="wsdlPortType" value="QueryType"/>
+      <parameter name="wsdlPortType" value="QueryInterface"/>
       <parameter name="typeMappingVersion" value="1.2"/>
       <operation name="query" qname="query" returnQName="retNS:query-result" xmlns:retNS="http://www.w3.org/2001/sw/DataAccess/sparql-protocol-types" returnType="rtns:>query-result" xmlns:rtns="http://www.w3.org/2001/sw/DataAccess/sparql-protocol-types" >
         <parameter qname="pns:query" xmlns:pns="http://www.w3.org/2001/sw/DataAccess/sparql-protocol-types" type="tns:>query" xmlns:tns="http://www.w3.org/2001/sw/DataAccess/sparql-protocol-types"/>

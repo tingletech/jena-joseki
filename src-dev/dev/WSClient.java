@@ -33,7 +33,7 @@ import org.joseki.soap.ResultSetAxis;
 import org.joseki.soap.SOAPUtils;
 import org.joseki.ws1.JosekiQueryServiceLocator;
 import org.joseki.ws1.QuerySoapBindingStub;
-import org.joseki.ws1.QueryType;
+import org.joseki.ws1.QueryInterface;
 
 import org.w3.www._2001.sw.DataAccess.rf1.result2.*;
 
@@ -75,7 +75,7 @@ public class WSClient
                         null, 
                         new GraphDeserializerFactory()) ;
             
-            QueryType qt = service.getSparqlQuery() ;
+            QueryInterface qt = service.getSparqlQuery() ;
             Query q = new Query() ;
             q.setSparqlQuery("SELECT ?z {?x ?y ?z . FILTER regex(?z, 'Harry')}") ;
 //            q.setDefaultGraphUri(new URI("http://default")) ;

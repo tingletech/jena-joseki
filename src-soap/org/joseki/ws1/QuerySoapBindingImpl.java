@@ -1,57 +1,19 @@
-/*
- * (c) Copyright 2005 Hewlett-Packard Development Company, LP
- * All rights reserved.
- * [See end of file]
+/**
+ * QuerySoapBindingImpl.java
+ *
+ * This file was auto-generated from WSDL
+ * by the Apache Axis 1.2.1 Jun 14, 2005 (09:15:57 EDT) WSDL2Java emitter.
  */
 
 package org.joseki.ws1;
-
-
 import org.joseki.soap.SPARQL_P;
-import org.w3.www._2001.sw.DataAccess.sparql_protocol_types.Query;
-import org.w3.www._2001.sw.DataAccess.sparql_protocol_types.QueryResult;
+import org.w3.www._2001.sw.DataAccess.sparql_protocol_types.* ;
 
-
-public class QuerySoapBindingImpl
-    extends SPARQL_P 
-    implements org.joseki.ws1.QueryType
+public class QuerySoapBindingImpl extends SPARQL_P implements org.joseki.ws1.QueryInterface
 {
-    // Put the implementation elsewhere because this file
-    // can be produced by the Axis WSDL->Java tool
-    // Axis does not overwrite but if the code is produced
-    // in a separate source tree and copied about there is also
-    // a danger of loosing the implementation code. 
-    
-    public QueryResult query(Query request) throws java.rmi.RemoteException
-	{
-        // Be explicit
+    public QueryResult query(Query request) throws java.rmi.RemoteException, QueryFault
+    {
         return super.query(request) ;
     }
-}
 
-/*
- * (c) Copyright 2005 Hewlett-Packard Development Company, LP
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions
- * are met:
- * 1. Redistributions of source code must retain the above copyright
- *    notice, this list of conditions and the following disclaimer.
- * 2. Redistributions in binary form must reproduce the above copyright
- *    notice, this list of conditions and the following disclaimer in the
- *    documentation and/or other materials provided with the distribution.
- * 3. The name of the author may not be used to endorse or promote products
- *    derived from this software without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
- * IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
- * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
- * IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,
- * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
- * NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
- * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
- * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
- * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
+}
