@@ -51,10 +51,10 @@ public class WSClient
         now = dFmt.format(new Date()) ;
     }
     
-    public static void main(String[] args)
-    {
-        clientOM() ;
-    }
+    
+    
+    
+    // ============ OLD CODE ==============================
     
     public static void clientOM()
     {

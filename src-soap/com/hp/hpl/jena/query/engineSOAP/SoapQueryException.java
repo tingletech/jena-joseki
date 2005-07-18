@@ -4,56 +4,17 @@
  * [See end of file]
  */
 
-package org.joseki.soap;
+package com.hp.hpl.jena.query.engineSOAP;
 
-import com.hp.hpl.jena.query.ResultSet;
-import com.hp.hpl.jena.rdf.model.Model;
-
-import org.joseki.*;
-import org.w3.www._2001.sw.DataAccess.rf1.result2.Sparql;
-import org.w3.www._2001.sw.DataAccess.sparql_protocol_types.QueryFault;
-import org.w3.www._2001.sw.DataAccess.sparql_protocol_types.QueryResult;
+import com.hp.hpl.jena.query.QueryException;
 
 
-public class ResponseSOAP extends Response
+public class SoapQueryException extends QueryException
 {
-    QueryResult result = new QueryResult() ;
-    private QueryFault fault = null ;
-    
-    public ResponseSOAP(Request request)
-    {
-        super(request) ;
-    }
-    
-    public void execException() throws QueryFault
-    {
-        if ( fault != null )
-            throw fault ;
-    }
-    public QueryResult get() { return result ; }
-    
-    protected void doResponseModel(Model model) throws QueryExecutionException
-    {
-        result.setRDF(model) ;
-    }
-
-    protected void doResponseResultSet(ResultSet resultSet) throws QueryExecutionException
-    {
-        Sparql r = AxisUtils.resultSetToProtocol(resultSet) ;
-        result.setSparql(r) ;
-    }
-
-    protected void doResponseBoolean(Boolean bool) throws QueryExecutionException
-    {
-        Sparql r = new Sparql() ;
-        r.set_boolean(bool) ;
-        result.setSparql(r) ;
-    }
-
-    protected void doException(ExecutionException execEx)
-    {
-        fault = new QueryFault(execEx.returnCode, execEx.shortMessage) ;
-    }
+    public SoapQueryException() { super() ; }
+    public SoapQueryException(Throwable cause) { super(cause) ; }
+    public SoapQueryException(String msg) { super(msg) ; }
+    public SoapQueryException(String msg, Throwable cause) { super(msg, cause) ; }
 
 }
 
