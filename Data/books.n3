@@ -28,6 +28,10 @@
 :book5
     dc:title    "Harry Potter and the Order of the Phoenix".
     
+:book6
+    dc:title    "Harry Potter and the Half-Blood Prince".
+    
+    
 
 _:a
     vcard:FN "J.K. Rowling" ;

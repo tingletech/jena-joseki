@@ -9,12 +9,12 @@ package com.hp.hpl.jena.query.engineSOAP;
 import com.hp.hpl.jena.query.QueryException;
 
 
-public class SoapQueryException extends QueryException
+public class QueryExceptionSOAP extends QueryException
 {
-    public SoapQueryException() { super() ; }
-    public SoapQueryException(Throwable cause) { super(cause) ; }
-    public SoapQueryException(String msg) { super(msg) ; }
-    public SoapQueryException(String msg, Throwable cause) { super(msg, cause) ; }
+    public QueryExceptionSOAP() { super() ; }
+    public QueryExceptionSOAP(Throwable cause) { super(cause) ; }
+    public QueryExceptionSOAP(String msg) { super(msg) ; }
+    public QueryExceptionSOAP(String msg, Throwable cause) { super(msg, cause) ; }
 
 }
 

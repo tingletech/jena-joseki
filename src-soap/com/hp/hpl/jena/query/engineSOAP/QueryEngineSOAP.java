@@ -80,7 +80,7 @@ public class QueryEngineSOAP implements QueryExecution
         try {
             soapQuery = service.getSparqlQuery() ;
         } catch (javax.xml.rpc.ServiceException ex)
-        { throw new SoapQueryException(ex.getMessage()) ; }
+        { throw new QueryExceptionSOAP(ex.getMessage()) ; }
     }
     
     private QueryResult exec()
@@ -93,15 +93,15 @@ public class QueryEngineSOAP implements QueryExecution
         } catch (QueryFault ex)
         {
             log.debug("QueryFault: "+ex.getQueryFaultCode()+" "+ex.getQueryFaultMessage()) ;
-            throw new SoapQueryException(ex.getQueryFaultMessage(), ex) ;
+            throw new QueryExceptionSOAP(ex.getQueryFaultMessage(), ex) ;
         } catch (AxisFault axisFault)
         {
             log.debug("Axis Fault: "+axisFault.getFaultCode()+ ""+ axisFault.getFaultString()) ;
-            throw new SoapQueryException("Axis Fault: "+axisFault.getFaultString(), axisFault); 
+            throw new QueryExceptionSOAP("Axis Fault: "+axisFault.getFaultString(), axisFault); 
         } catch (RemoteException e)
         {
             log.debug("Remote Exception: "+e.getMessage(), e) ;
-            throw new SoapQueryException("Remote Exception: "+e.getMessage(), e) ; 
+            throw new QueryExceptionSOAP("Remote Exception: "+e.getMessage(), e) ; 
         }
     }
 
@@ -119,7 +119,7 @@ public class QueryEngineSOAP implements QueryExecution
     {
         QueryResult result = exec() ;
         if ( result.getSparql() == null )
-            throw new SoapQueryException("Not a SELECT query: "+queryString) ;
+            throw new QueryExceptionSOAP("Not a SELECT query: "+queryString) ;
         
         return new ResultSetAxis(result.getSparql()) ;
     }
@@ -128,7 +128,7 @@ public class QueryEngineSOAP implements QueryExecution
     {
         QueryResult result = exec() ;
         if ( result.getRDF() == null )
-            throw new SoapQueryException("Not a CONSTRUCT query: "+queryString) ;
+            throw new QueryExceptionSOAP("Not a CONSTRUCT query: "+queryString) ;
             
         return (Model)result.getRDF() ;
     }
@@ -137,7 +137,7 @@ public class QueryEngineSOAP implements QueryExecution
     {
         QueryResult result = exec() ;
         if ( result.getRDF() == null )
-            throw new SoapQueryException("Not a DESCRIBE query: "+queryString) ;
+            throw new QueryExceptionSOAP("Not a DESCRIBE query: "+queryString) ;
             
         return (Model)result.getRDF() ;
     }
@@ -146,7 +146,7 @@ public class QueryEngineSOAP implements QueryExecution
     {
         QueryResult result = exec() ;
         if ( result.getSparql() == null )
-            throw new SoapQueryException("Not an ASK query: "+queryString) ;
+            throw new QueryExceptionSOAP("Not an ASK query: "+queryString) ;
         return result.getSparql().get_boolean().booleanValue() ;
     }
 
