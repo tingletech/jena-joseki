@@ -1,4 +1,6 @@
-#Mon Jul 18 15:34:06 BST 2005
+#Tue Jul 19 11:20:15 BST 2005
 eclipse.preferences.version=1
 encoding//SOAP/deploy.wsdd=UTF-8
+encoding//SOAP/server-config.wsdd=UTF-8
 encoding//SOAP/sparql-11.wsdl=UTF-8
+encoding/server-config.wsdd=UTF-8
