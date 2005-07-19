@@ -17,7 +17,7 @@ import com.hp.hpl.jena.rdf.model.Model;
 
 public class RunClient
 {
-
+    static String endpoint = "http://localhost:2525/axis/services/sparql-query" ;
     public static void main(String[] args)
     {
         //doOneSelectQuery() ; System.exit(0) ;
@@ -36,7 +36,6 @@ public class RunClient
     
     public static void doOneSelectQuery()
     {
-        String endpoint = "http://localhost:2525/axis/services/sparql-query" ;
         String queryStr = "SELECT ?z {?x ?y ?z . FILTER regex(?z, 'Harry')}" ;
         Query query = QueryFactory.create(queryStr) ; 
         

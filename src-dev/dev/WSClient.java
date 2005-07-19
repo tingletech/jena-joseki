@@ -11,35 +11,22 @@ import java.util.Date;
 import java.util.Vector;
 
 import javax.xml.namespace.QName;
-import javax.xml.soap.SOAPMessage;
 
 import com.hp.hpl.jena.query.ResultSet;
 import com.hp.hpl.jena.query.ResultSetFormatter;
-import com.hp.hpl.jena.rdf.model.Model;
-import com.hp.hpl.jena.vocabulary.RDF;
 
-import org.apache.axis.AxisFault;
 import org.apache.axis.MessageContext;
 import org.apache.axis.client.Call;
 import org.apache.axis.client.Service;
-import org.apache.axis.encoding.TypeMapping;
-import org.apache.axis.encoding.TypeMappingRegistry;
 import org.apache.axis.message.MessageElement;
 import org.apache.axis.message.RPCElement;
-import org.apache.axis.message.SOAPBody;
 import org.apache.axis.message.SOAPBodyElement;
-import org.joseki.soap.GraphDeserializerFactory;
 import org.joseki.soap.ResultSetAxis;
 import org.joseki.soap.SOAPUtils;
-import org.joseki.ws1.JosekiQueryServiceLocator;
-import org.joseki.ws1.QuerySoapBindingStub;
-import org.joseki.ws1.QueryInterface;
 
 import org.w3.www._2001.sw.DataAccess.rf1.result2.*;
 
-import org.w3.www._2001.sw.DataAccess.sparql_protocol_types.Query;
 import org.w3.www._2001.sw.DataAccess.sparql_protocol_types.QueryFault;
-import org.w3.www._2001.sw.DataAccess.sparql_protocol_types.QueryResult;
 
 public class WSClient
 {
@@ -56,94 +43,6 @@ public class WSClient
     
     // ============ OLD CODE ==============================
     
-    public static void clientOM()
-    {
-        try {
-//            HappyClient hc = new HappyClient(System.out) ;
-//            hc.verifyClientIsHappy(false) ;
-
-            // Install deserialier for rdf:RDF
-            String endpoint = "http://localhost:2525/axis/services/sparql-query" ;
-            //String endpoint = "http://localhost:2020/dump-body" ;
-            JosekiQueryServiceLocator  service = new JosekiQueryServiceLocator();
-            service.setSparqlQueryEndpointAddress(endpoint) ;
-            
-            TypeMappingRegistry reg = service.getEngine().getTypeMappingRegistry() ;
-            TypeMapping tm = (TypeMapping)reg.getTypeMapping("") ;
-            tm.register(Model.class,
-                        new QName(RDF.getURI(), "RDF") ,
-                        null, 
-                        new GraphDeserializerFactory()) ;
-            
-            QueryInterface qt = service.getSparqlQuery() ;
-            Query q = new Query() ;
-            q.setSparqlQuery("SELECT ?z {?x ?y ?z . FILTER regex(?z, 'Harry')}") ;
-//            q.setDefaultGraphUri(new URI("http://default")) ;
-//            q.setNamedGraphUri(new URI[]{
-//                new URI("http://host/name1"),
-//                new URI("http://host/name2")
-//            }) ;
-            // Do it.
-            QueryResult qr = null ;
-            
-            try {
-                qr = qt.query(q) ;
-            } catch (QueryFault ex)
-            {
-               System.err.println("RC = "+ex.getQueryFaultCode()+" "+ex.getQueryFaultMessage()) ;
-               //System.err.println("RC = "+ex.getFaultCode()+" "+ex.getFaultString()) ;
-               return ;
-            }
-            catch (AxisFault axisFault)
-            {
-                System.err.println("Axis fault: "+axisFault.getFaultCode()) ;
-                System.err.println(axisFault.getFaultString()) ;
-                return ;
-            }
-
-            if ( true )
-            {
-                MessageContext cxt = ((QuerySoapBindingStub)qt)._getCall().getMessageContext() ;
-                cxt.setProperty("disablePrettyXML", new Boolean(false)) ;
-//              Print incoming.
-                SOAPMessage msg = cxt.getMessage() ;
-                
-                SOAPBody b = (SOAPBody)msg.getSOAPBody() ;
-                String s = SOAPUtils.elementAsString(cxt, b) ;
-                System.out.println(s) ;
-                System.out.println() ;
-            }
-            
-            if ( qr.getRDF() != null )
-            {
-                Model m = (Model)qr.getRDF() ;
-                m.write(System.out, "N3") ;
-                return ;
-            }
-            
-            if ( qr.getSparql() != null )
-            {
-                processResultSet(qr.getSparql()) ;
-                return ;
-            }
-            
-            System.err.println("Unknown result element!!") ;
-            
-        } catch (AxisFault ex)
-        {
-            System.err.println(ex.getFaultReason()) ;
-            
-            System.err.println(ex.getMessage()) ;
-            //ex.printStackTrace(System.err) ;
-        }
-        catch (Exception ex)
-        {
-            System.err.println(ex.getMessage()) ;
-            ex.printStackTrace(System.err) ;
-        }
-    }
-        
-        
     private static void processResultSet(Sparql resultSet)
     {
         ResultSet rs = new ResultSetAxis(resultSet) ;

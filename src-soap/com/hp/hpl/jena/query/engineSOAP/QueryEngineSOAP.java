@@ -21,7 +21,7 @@ import org.joseki.ws1.JosekiQueryServiceLocator;
 import org.joseki.ws1.QueryInterface;
 import org.w3.www._2001.sw.DataAccess.sparql_protocol_types.*;
 
-// Clash with the types class of teh same name -- import com.hp.hpl.jena.query.Query;
+// Clash with the types class of the same name -- import com.hp.hpl.jena.query.Query;
 import com.hp.hpl.jena.query.QueryExecution;
 import com.hp.hpl.jena.query.QuerySolution;
 import com.hp.hpl.jena.query.ResultSet;
@@ -71,14 +71,20 @@ public class QueryEngineSOAP implements QueryExecution
         JosekiQueryServiceLocator  service = new JosekiQueryServiceLocator();
         service.setSparqlQueryEndpointAddress(endpoint) ;
         
+        
         TypeMappingRegistry reg = service.getEngine().getTypeMappingRegistry() ;
         TypeMapping tm = (TypeMapping)reg.getTypeMapping("") ;
         tm.register(Model.class,
                     new QName(RDF.getURI(), "RDF") ,
                     null, 
                     new GraphDeserializerFactory()) ;
+        
+        
+        
         try {
             soapQuery = service.getSparqlQuery() ;
+            // Change XML printing mode.
+            
         } catch (javax.xml.rpc.ServiceException ex)
         { throw new QueryExceptionSOAP(ex.getMessage()) ; }
     }

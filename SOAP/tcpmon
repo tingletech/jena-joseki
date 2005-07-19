@@ -1,0 +1,12 @@
+#!/bin/bash
+
+CP="$(alljars ../lib)"
+CP="$CP;$(alljars ../lib2)"
+#CP="../classes;$CP"
+
+LOGCONFIG=${LOGCONFIG:-file:log4j.properties}
+LOG="-Dlog4j.configuration=${LOGCONFIG}"
+
+# echo $CP
+# [listenPort targetHost targetPort]
+java -cp "$CP" $LOG org.apache.axis.utils.tcpmon "$@"
