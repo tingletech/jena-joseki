@@ -19,7 +19,6 @@ import org.joseki.*;
 import org.joseki.module.Loadable;
 import org.joseki.util.GraphUtils;
 
-
 public class SPARQL extends QueryCom implements Loadable
 {
     static Log log = LogFactory.getLog(SPARQL.class) ;

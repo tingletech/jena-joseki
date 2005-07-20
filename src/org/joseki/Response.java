@@ -85,11 +85,11 @@ abstract public class Response
         return ;
     }
     
-    abstract protected void doResponseModel(Model model)  throws QueryExecutionException ;
+    abstract protected void doResponseModel(Model model) throws QueryExecutionException ;
     
-    abstract protected void doResponseResultSet(ResultSet resultSet)  throws QueryExecutionException ;
+    abstract protected void doResponseResultSet(ResultSet resultSet) throws QueryExecutionException ;
 
-    abstract protected void doResponseBoolean(Boolean bool)  throws QueryExecutionException ;
+    abstract protected void doResponseBoolean(Boolean bool) throws QueryExecutionException ;
     
     abstract protected void doException(ExecutionException execEx) ;
     
