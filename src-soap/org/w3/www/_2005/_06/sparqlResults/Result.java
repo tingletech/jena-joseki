@@ -5,17 +5,17 @@
  * by the Apache Axis 1.2.1 Jun 14, 2005 (09:15:57 EDT) WSDL2Java emitter.
  */
 
-package org.w3.www._2001.sw.DataAccess.rf1.result2;
+package org.w3.www._2005._06.sparqlResults;
 
 public class Result  implements java.io.Serializable {
-    private org.w3.www._2001.sw.DataAccess.rf1.result2.Binding[] binding;
+    private org.w3.www._2005._06.sparqlResults.Binding[] binding;
     private org.apache.axis.types.PositiveInteger index;  // attribute
 
     public Result() {
     }
 
     public Result(
-           org.w3.www._2001.sw.DataAccess.rf1.result2.Binding[] binding,
+           org.w3.www._2005._06.sparqlResults.Binding[] binding,
            org.apache.axis.types.PositiveInteger index) {
            this.binding = binding;
            this.index = index;
@@ -27,7 +27,7 @@ public class Result  implements java.io.Serializable {
      * 
      * @return binding
      */
-    public org.w3.www._2001.sw.DataAccess.rf1.result2.Binding[] getBinding() {
+    public org.w3.www._2005._06.sparqlResults.Binding[] getBinding() {
         return binding;
     }
 
@@ -37,15 +37,15 @@ public class Result  implements java.io.Serializable {
      * 
      * @param binding
      */
-    public void setBinding(org.w3.www._2001.sw.DataAccess.rf1.result2.Binding[] binding) {
+    public void setBinding(org.w3.www._2005._06.sparqlResults.Binding[] binding) {
         this.binding = binding;
     }
 
-    public org.w3.www._2001.sw.DataAccess.rf1.result2.Binding getBinding(int i) {
+    public org.w3.www._2005._06.sparqlResults.Binding getBinding(int i) {
         return this.binding[i];
     }
 
-    public void setBinding(int i, org.w3.www._2001.sw.DataAccess.rf1.result2.Binding _value) {
+    public void setBinding(int i, org.w3.www._2005._06.sparqlResults.Binding _value) {
         this.binding[i] = _value;
     }
 
@@ -121,7 +121,7 @@ public class Result  implements java.io.Serializable {
         new org.apache.axis.description.TypeDesc(Result.class, true);
 
     static {
-        typeDesc.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2001/sw/DataAccess/rf1/result2", ">result"));
+        typeDesc.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2005/06/sparqlResults", ">result"));
         org.apache.axis.description.AttributeDesc attrField = new org.apache.axis.description.AttributeDesc();
         attrField.setFieldName("index");
         attrField.setXmlName(new javax.xml.namespace.QName("", "index"));
@@ -129,8 +129,8 @@ public class Result  implements java.io.Serializable {
         typeDesc.addFieldDesc(attrField);
         org.apache.axis.description.ElementDesc elemField = new org.apache.axis.description.ElementDesc();
         elemField.setFieldName("binding");
-        elemField.setXmlName(new javax.xml.namespace.QName("http://www.w3.org/2001/sw/DataAccess/rf1/result2", "binding"));
-        elemField.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2001/sw/DataAccess/rf1/result2", "binding"));
+        elemField.setXmlName(new javax.xml.namespace.QName("http://www.w3.org/2005/06/sparqlResults", "binding"));
+        elemField.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2005/06/sparqlResults", "binding"));
         elemField.setMinOccurs(0);
         elemField.setNillable(false);
         elemField.setMaxOccursUnbounded(true);

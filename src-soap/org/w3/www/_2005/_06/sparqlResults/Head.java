@@ -5,18 +5,18 @@
  * by the Apache Axis 1.2.1 Jun 14, 2005 (09:15:57 EDT) WSDL2Java emitter.
  */
 
-package org.w3.www._2001.sw.DataAccess.rf1.result2;
+package org.w3.www._2005._06.sparqlResults;
 
 public class Head  implements java.io.Serializable {
-    private org.w3.www._2001.sw.DataAccess.rf1.result2.Variable[] variable;
-    private org.w3.www._2001.sw.DataAccess.rf1.result2.Link link;
+    private org.w3.www._2005._06.sparqlResults.Variable[] variable;
+    private org.w3.www._2005._06.sparqlResults.Link link;
 
     public Head() {
     }
 
     public Head(
-           org.w3.www._2001.sw.DataAccess.rf1.result2.Variable[] variable,
-           org.w3.www._2001.sw.DataAccess.rf1.result2.Link link) {
+           org.w3.www._2005._06.sparqlResults.Variable[] variable,
+           org.w3.www._2005._06.sparqlResults.Link link) {
            this.variable = variable;
            this.link = link;
     }
@@ -27,7 +27,7 @@ public class Head  implements java.io.Serializable {
      * 
      * @return variable
      */
-    public org.w3.www._2001.sw.DataAccess.rf1.result2.Variable[] getVariable() {
+    public org.w3.www._2005._06.sparqlResults.Variable[] getVariable() {
         return variable;
     }
 
@@ -37,15 +37,15 @@ public class Head  implements java.io.Serializable {
      * 
      * @param variable
      */
-    public void setVariable(org.w3.www._2001.sw.DataAccess.rf1.result2.Variable[] variable) {
+    public void setVariable(org.w3.www._2005._06.sparqlResults.Variable[] variable) {
         this.variable = variable;
     }
 
-    public org.w3.www._2001.sw.DataAccess.rf1.result2.Variable getVariable(int i) {
+    public org.w3.www._2005._06.sparqlResults.Variable getVariable(int i) {
         return this.variable[i];
     }
 
-    public void setVariable(int i, org.w3.www._2001.sw.DataAccess.rf1.result2.Variable _value) {
+    public void setVariable(int i, org.w3.www._2005._06.sparqlResults.Variable _value) {
         this.variable[i] = _value;
     }
 
@@ -55,7 +55,7 @@ public class Head  implements java.io.Serializable {
      * 
      * @return link
      */
-    public org.w3.www._2001.sw.DataAccess.rf1.result2.Link getLink() {
+    public org.w3.www._2005._06.sparqlResults.Link getLink() {
         return link;
     }
 
@@ -65,7 +65,7 @@ public class Head  implements java.io.Serializable {
      * 
      * @param link
      */
-    public void setLink(org.w3.www._2001.sw.DataAccess.rf1.result2.Link link) {
+    public void setLink(org.w3.www._2005._06.sparqlResults.Link link) {
         this.link = link;
     }
 
@@ -121,19 +121,19 @@ public class Head  implements java.io.Serializable {
         new org.apache.axis.description.TypeDesc(Head.class, true);
 
     static {
-        typeDesc.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2001/sw/DataAccess/rf1/result2", ">head"));
+        typeDesc.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2005/06/sparqlResults", ">head"));
         org.apache.axis.description.ElementDesc elemField = new org.apache.axis.description.ElementDesc();
         elemField.setFieldName("variable");
-        elemField.setXmlName(new javax.xml.namespace.QName("http://www.w3.org/2001/sw/DataAccess/rf1/result2", "variable"));
-        elemField.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2001/sw/DataAccess/rf1/result2", "variable"));
+        elemField.setXmlName(new javax.xml.namespace.QName("http://www.w3.org/2005/06/sparqlResults", "variable"));
+        elemField.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2005/06/sparqlResults", "variable"));
         elemField.setMinOccurs(0);
         elemField.setNillable(false);
         elemField.setMaxOccursUnbounded(true);
         typeDesc.addFieldDesc(elemField);
         elemField = new org.apache.axis.description.ElementDesc();
         elemField.setFieldName("link");
-        elemField.setXmlName(new javax.xml.namespace.QName("http://www.w3.org/2001/sw/DataAccess/rf1/result2", "link"));
-        elemField.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2001/sw/DataAccess/rf1/result2", "link"));
+        elemField.setXmlName(new javax.xml.namespace.QName("http://www.w3.org/2005/06/sparqlResults", "link"));
+        elemField.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2005/06/sparqlResults", "link"));
         elemField.setMinOccurs(0);
         elemField.setNillable(false);
         typeDesc.addFieldDesc(elemField);

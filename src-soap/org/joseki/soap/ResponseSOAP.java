@@ -10,9 +10,9 @@ import com.hp.hpl.jena.query.ResultSet;
 import com.hp.hpl.jena.rdf.model.Model;
 
 import org.joseki.*;
-import org.w3.www._2001.sw.DataAccess.rf1.result2.Sparql;
 import org.w3.www._2001.sw.DataAccess.sparql_protocol_types.QueryFault;
 import org.w3.www._2001.sw.DataAccess.sparql_protocol_types.QueryResult;
+import org.w3.www._2005._06.sparqlResults.Sparql;
 
 
 public class ResponseSOAP extends Response

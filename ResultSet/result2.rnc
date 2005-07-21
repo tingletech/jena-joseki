@@ -8,7 +8,7 @@
 #
 
 namespace local = ""
-namespace res = "http://www.w3.org/2001/sw/DataAccess/rf1/result2"
+namespace res = "http://www.w3.org/2005/06/sparqlResults"
 namespace xsi = "http://www.w3.org/2001/XMLSchema-instance"
 datatypes xsd = "http://www.w3.org/2001/XMLSchema-datatypes"
 
@@ -51,8 +51,16 @@ link = element res:link {
     hrefAttr
 }
 
+ordered = attribute local:ordered {
+    xsd:boolean
+}
+
+distinct = attribute local:distinct {
+    xsd:boolean
+}
+
 results = element res:results { 
-    result*
+    ordered, distinct, result*
 }
 
 

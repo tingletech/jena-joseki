@@ -22,7 +22,7 @@ import org.apache.axis.message.MessageElement;
 import org.apache.axis.message.Text;
 import org.apache.axis.types.NMToken;
 import org.apache.commons.logging.LogFactory;
-import org.w3.www._2001.sw.DataAccess.rf1.result2.*;
+import org.w3.www._2005._06.sparqlResults.*;
 
 
 public class AxisUtils
@@ -31,8 +31,10 @@ public class AxisUtils
     {
         Sparql sparqlResults = new Sparql() ;
         Results xmlResults = new Results() ;
+        xmlResults.setOrdered(resultSet.isOrdered()) ;
+        xmlResults.setDistinct(resultSet.isDistinct()) ;
+        
         Head head = new Head() ;
-
         sparqlResults.setHead(head) ;
         sparqlResults.setResults(xmlResults) ;
         

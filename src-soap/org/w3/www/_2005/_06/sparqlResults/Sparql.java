@@ -5,19 +5,19 @@
  * by the Apache Axis 1.2.1 Jun 14, 2005 (09:15:57 EDT) WSDL2Java emitter.
  */
 
-package org.w3.www._2001.sw.DataAccess.rf1.result2;
+package org.w3.www._2005._06.sparqlResults;
 
 public class Sparql  implements java.io.Serializable {
-    private org.w3.www._2001.sw.DataAccess.rf1.result2.Head head;
-    private org.w3.www._2001.sw.DataAccess.rf1.result2.Results results;
+    private org.w3.www._2005._06.sparqlResults.Head head;
+    private org.w3.www._2005._06.sparqlResults.Results results;
     private java.lang.Boolean _boolean;
 
     public Sparql() {
     }
 
     public Sparql(
-           org.w3.www._2001.sw.DataAccess.rf1.result2.Head head,
-           org.w3.www._2001.sw.DataAccess.rf1.result2.Results results,
+           org.w3.www._2005._06.sparqlResults.Head head,
+           org.w3.www._2005._06.sparqlResults.Results results,
            java.lang.Boolean _boolean) {
            this.head = head;
            this.results = results;
@@ -30,7 +30,7 @@ public class Sparql  implements java.io.Serializable {
      * 
      * @return head
      */
-    public org.w3.www._2001.sw.DataAccess.rf1.result2.Head getHead() {
+    public org.w3.www._2005._06.sparqlResults.Head getHead() {
         return head;
     }
 
@@ -40,7 +40,7 @@ public class Sparql  implements java.io.Serializable {
      * 
      * @param head
      */
-    public void setHead(org.w3.www._2001.sw.DataAccess.rf1.result2.Head head) {
+    public void setHead(org.w3.www._2005._06.sparqlResults.Head head) {
         this.head = head;
     }
 
@@ -50,7 +50,7 @@ public class Sparql  implements java.io.Serializable {
      * 
      * @return results
      */
-    public org.w3.www._2001.sw.DataAccess.rf1.result2.Results getResults() {
+    public org.w3.www._2005._06.sparqlResults.Results getResults() {
         return results;
     }
 
@@ -60,7 +60,7 @@ public class Sparql  implements java.io.Serializable {
      * 
      * @param results
      */
-    public void setResults(org.w3.www._2001.sw.DataAccess.rf1.result2.Results results) {
+    public void setResults(org.w3.www._2005._06.sparqlResults.Results results) {
         this.results = results;
     }
 
@@ -134,24 +134,24 @@ public class Sparql  implements java.io.Serializable {
         new org.apache.axis.description.TypeDesc(Sparql.class, true);
 
     static {
-        typeDesc.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2001/sw/DataAccess/rf1/result2", ">sparql"));
+        typeDesc.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2005/06/sparqlResults", ">sparql"));
         org.apache.axis.description.ElementDesc elemField = new org.apache.axis.description.ElementDesc();
         elemField.setFieldName("head");
-        elemField.setXmlName(new javax.xml.namespace.QName("http://www.w3.org/2001/sw/DataAccess/rf1/result2", "head"));
-        elemField.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2001/sw/DataAccess/rf1/result2", "head"));
+        elemField.setXmlName(new javax.xml.namespace.QName("http://www.w3.org/2005/06/sparqlResults", "head"));
+        elemField.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2005/06/sparqlResults", "head"));
         elemField.setNillable(false);
         typeDesc.addFieldDesc(elemField);
         elemField = new org.apache.axis.description.ElementDesc();
         elemField.setFieldName("results");
-        elemField.setXmlName(new javax.xml.namespace.QName("http://www.w3.org/2001/sw/DataAccess/rf1/result2", "results"));
-        elemField.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2001/sw/DataAccess/rf1/result2", "results"));
+        elemField.setXmlName(new javax.xml.namespace.QName("http://www.w3.org/2005/06/sparqlResults", "results"));
+        elemField.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2005/06/sparqlResults", "results"));
         elemField.setMinOccurs(0);
         elemField.setNillable(false);
         typeDesc.addFieldDesc(elemField);
         elemField = new org.apache.axis.description.ElementDesc();
         elemField.setFieldName("_boolean");
-        elemField.setXmlName(new javax.xml.namespace.QName("http://www.w3.org/2001/sw/DataAccess/rf1/result2", "boolean"));
-        elemField.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2001/sw/DataAccess/rf1/result2", "boolean"));
+        elemField.setXmlName(new javax.xml.namespace.QName("http://www.w3.org/2005/06/sparqlResults", "boolean"));
+        elemField.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2005/06/sparqlResults", "boolean"));
         elemField.setMinOccurs(0);
         elemField.setNillable(false);
         typeDesc.addFieldDesc(elemField);

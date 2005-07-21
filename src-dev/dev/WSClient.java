@@ -24,7 +24,7 @@ import org.apache.axis.message.SOAPBodyElement;
 import org.joseki.soap.ResultSetAxis;
 import org.joseki.soap.SOAPUtils;
 
-import org.w3.www._2001.sw.DataAccess.rf1.result2.*;
+import org.w3.www._2005._06.sparqlResults.*;
 
 import org.w3.www._2001.sw.DataAccess.sparql_protocol_types.QueryFault;
 

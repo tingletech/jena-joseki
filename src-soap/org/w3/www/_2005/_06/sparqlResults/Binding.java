@@ -5,13 +5,13 @@
  * by the Apache Axis 1.2.1 Jun 14, 2005 (09:15:57 EDT) WSDL2Java emitter.
  */
 
-package org.w3.www._2001.sw.DataAccess.rf1.result2;
+package org.w3.www._2005._06.sparqlResults;
 
 public class Binding  implements java.io.Serializable {
     private java.lang.String uri;
     private java.lang.String bnode;
-    private org.w3.www._2001.sw.DataAccess.rf1.result2.Literal literal;
-    private org.w3.www._2001.sw.DataAccess.rf1.result2.Unbound unbound;
+    private org.w3.www._2005._06.sparqlResults.Literal literal;
+    private org.w3.www._2005._06.sparqlResults.Unbound unbound;
     private org.apache.axis.types.NMToken name;  // attribute
 
     public Binding() {
@@ -20,8 +20,8 @@ public class Binding  implements java.io.Serializable {
     public Binding(
            java.lang.String uri,
            java.lang.String bnode,
-           org.w3.www._2001.sw.DataAccess.rf1.result2.Literal literal,
-           org.w3.www._2001.sw.DataAccess.rf1.result2.Unbound unbound,
+           org.w3.www._2005._06.sparqlResults.Literal literal,
+           org.w3.www._2005._06.sparqlResults.Unbound unbound,
            org.apache.axis.types.NMToken name) {
            this.uri = uri;
            this.bnode = bnode;
@@ -76,7 +76,7 @@ public class Binding  implements java.io.Serializable {
      * 
      * @return literal
      */
-    public org.w3.www._2001.sw.DataAccess.rf1.result2.Literal getLiteral() {
+    public org.w3.www._2005._06.sparqlResults.Literal getLiteral() {
         return literal;
     }
 
@@ -86,7 +86,7 @@ public class Binding  implements java.io.Serializable {
      * 
      * @param literal
      */
-    public void setLiteral(org.w3.www._2001.sw.DataAccess.rf1.result2.Literal literal) {
+    public void setLiteral(org.w3.www._2005._06.sparqlResults.Literal literal) {
         this.literal = literal;
     }
 
@@ -96,7 +96,7 @@ public class Binding  implements java.io.Serializable {
      * 
      * @return unbound
      */
-    public org.w3.www._2001.sw.DataAccess.rf1.result2.Unbound getUnbound() {
+    public org.w3.www._2005._06.sparqlResults.Unbound getUnbound() {
         return unbound;
     }
 
@@ -106,7 +106,7 @@ public class Binding  implements java.io.Serializable {
      * 
      * @param unbound
      */
-    public void setUnbound(org.w3.www._2001.sw.DataAccess.rf1.result2.Unbound unbound) {
+    public void setUnbound(org.w3.www._2005._06.sparqlResults.Unbound unbound) {
         this.unbound = unbound;
     }
 
@@ -192,7 +192,7 @@ public class Binding  implements java.io.Serializable {
         new org.apache.axis.description.TypeDesc(Binding.class, true);
 
     static {
-        typeDesc.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2001/sw/DataAccess/rf1/result2", ">binding"));
+        typeDesc.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2005/06/sparqlResults", ">binding"));
         org.apache.axis.description.AttributeDesc attrField = new org.apache.axis.description.AttributeDesc();
         attrField.setFieldName("name");
         attrField.setXmlName(new javax.xml.namespace.QName("", "name"));
@@ -200,29 +200,29 @@ public class Binding  implements java.io.Serializable {
         typeDesc.addFieldDesc(attrField);
         org.apache.axis.description.ElementDesc elemField = new org.apache.axis.description.ElementDesc();
         elemField.setFieldName("uri");
-        elemField.setXmlName(new javax.xml.namespace.QName("http://www.w3.org/2001/sw/DataAccess/rf1/result2", "uri"));
-        elemField.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2001/sw/DataAccess/rf1/result2", "uri"));
+        elemField.setXmlName(new javax.xml.namespace.QName("http://www.w3.org/2005/06/sparqlResults", "uri"));
+        elemField.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2005/06/sparqlResults", "uri"));
         elemField.setMinOccurs(0);
         elemField.setNillable(false);
         typeDesc.addFieldDesc(elemField);
         elemField = new org.apache.axis.description.ElementDesc();
         elemField.setFieldName("bnode");
-        elemField.setXmlName(new javax.xml.namespace.QName("http://www.w3.org/2001/sw/DataAccess/rf1/result2", "bnode"));
-        elemField.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2001/sw/DataAccess/rf1/result2", "bnode"));
+        elemField.setXmlName(new javax.xml.namespace.QName("http://www.w3.org/2005/06/sparqlResults", "bnode"));
+        elemField.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2005/06/sparqlResults", "bnode"));
         elemField.setMinOccurs(0);
         elemField.setNillable(false);
         typeDesc.addFieldDesc(elemField);
         elemField = new org.apache.axis.description.ElementDesc();
         elemField.setFieldName("literal");
-        elemField.setXmlName(new javax.xml.namespace.QName("http://www.w3.org/2001/sw/DataAccess/rf1/result2", "literal"));
-        elemField.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2001/sw/DataAccess/rf1/result2", "literal"));
+        elemField.setXmlName(new javax.xml.namespace.QName("http://www.w3.org/2005/06/sparqlResults", "literal"));
+        elemField.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2005/06/sparqlResults", "literal"));
         elemField.setMinOccurs(0);
         elemField.setNillable(false);
         typeDesc.addFieldDesc(elemField);
         elemField = new org.apache.axis.description.ElementDesc();
         elemField.setFieldName("unbound");
-        elemField.setXmlName(new javax.xml.namespace.QName("http://www.w3.org/2001/sw/DataAccess/rf1/result2", "unbound"));
-        elemField.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2001/sw/DataAccess/rf1/result2", "unbound"));
+        elemField.setXmlName(new javax.xml.namespace.QName("http://www.w3.org/2005/06/sparqlResults", "unbound"));
+        elemField.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2005/06/sparqlResults", "unbound"));
         elemField.setMinOccurs(0);
         elemField.setNillable(false);
         typeDesc.addFieldDesc(elemField);

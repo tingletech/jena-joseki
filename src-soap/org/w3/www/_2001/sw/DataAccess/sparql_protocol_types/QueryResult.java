@@ -8,14 +8,14 @@
 package org.w3.www._2001.sw.DataAccess.sparql_protocol_types;
 
 public class QueryResult  implements java.io.Serializable {
-    private org.w3.www._2001.sw.DataAccess.rf1.result2.Sparql sparql;
+    private org.w3.www._2005._06.sparqlResults.Sparql sparql;
     private java.lang.Object RDF;
 
     public QueryResult() {
     }
 
     public QueryResult(
-           org.w3.www._2001.sw.DataAccess.rf1.result2.Sparql sparql,
+           org.w3.www._2005._06.sparqlResults.Sparql sparql,
            java.lang.Object RDF) {
            this.sparql = sparql;
            this.RDF = RDF;
@@ -27,7 +27,7 @@ public class QueryResult  implements java.io.Serializable {
      * 
      * @return sparql
      */
-    public org.w3.www._2001.sw.DataAccess.rf1.result2.Sparql getSparql() {
+    public org.w3.www._2005._06.sparqlResults.Sparql getSparql() {
         return sparql;
     }
 
@@ -37,7 +37,7 @@ public class QueryResult  implements java.io.Serializable {
      * 
      * @param sparql
      */
-    public void setSparql(org.w3.www._2001.sw.DataAccess.rf1.result2.Sparql sparql) {
+    public void setSparql(org.w3.www._2005._06.sparqlResults.Sparql sparql) {
         this.sparql = sparql;
     }
 
@@ -108,8 +108,8 @@ public class QueryResult  implements java.io.Serializable {
         typeDesc.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2001/sw/DataAccess/sparql-protocol-types", ">query-result"));
         org.apache.axis.description.ElementDesc elemField = new org.apache.axis.description.ElementDesc();
         elemField.setFieldName("sparql");
-        elemField.setXmlName(new javax.xml.namespace.QName("http://www.w3.org/2001/sw/DataAccess/rf1/result2", "sparql"));
-        elemField.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2001/sw/DataAccess/rf1/result2", "sparql"));
+        elemField.setXmlName(new javax.xml.namespace.QName("http://www.w3.org/2005/06/sparqlResults", "sparql"));
+        elemField.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2005/06/sparqlResults", "sparql"));
         elemField.setMinOccurs(0);
         elemField.setNillable(false);
         typeDesc.addFieldDesc(elemField);

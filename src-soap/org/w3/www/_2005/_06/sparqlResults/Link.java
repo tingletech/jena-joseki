@@ -5,7 +5,7 @@
  * by the Apache Axis 1.2.1 Jun 14, 2005 (09:15:57 EDT) WSDL2Java emitter.
  */
 
-package org.w3.www._2001.sw.DataAccess.rf1.result2;
+package org.w3.www._2005._06.sparqlResults;
 
 public class Link  implements java.io.Serializable {
     private org.apache.axis.types.URI href;  // attribute
@@ -76,11 +76,11 @@ public class Link  implements java.io.Serializable {
         new org.apache.axis.description.TypeDesc(Link.class, true);
 
     static {
-        typeDesc.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2001/sw/DataAccess/rf1/result2", ">link"));
+        typeDesc.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2005/06/sparqlResults", ">link"));
         org.apache.axis.description.AttributeDesc attrField = new org.apache.axis.description.AttributeDesc();
         attrField.setFieldName("href");
         attrField.setXmlName(new javax.xml.namespace.QName("", "href"));
-        attrField.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2001/sw/DataAccess/rf1/result2", "URI-reference"));
+        attrField.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2005/06/sparqlResults", "URI-reference"));
         typeDesc.addFieldDesc(attrField);
     }
 

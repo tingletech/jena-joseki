@@ -9,7 +9,7 @@
   
   
 -->
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" targetNamespace="http://www.w3.org/2001/sw/DataAccess/rf1/result2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:res="http://www.w3.org/2001/sw/DataAccess/rf1/result2">
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" targetNamespace="http://www.w3.org/2005/06/sparqlResults" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:res="http://www.w3.org/2005/06/sparqlResults">
   <xs:import namespace="http://www.w3.org/XML/1998/namespace" schemaLocation="http://www.w3.org/2001/xml.xsd"/>
   <xs:attributeGroup name="xmlLang">
     <xs:attribute ref="xml:lang" use="required"/>
@@ -57,11 +57,19 @@
       <xs:attributeGroup ref="res:hrefAttr"/>
     </xs:complexType>
   </xs:element>
+  <xs:attributeGroup name="ordered">
+    <xs:attribute name="ordered" use="required" type="xs:boolean"/>
+  </xs:attributeGroup>
+  <xs:attributeGroup name="distinct">
+    <xs:attribute name="distinct" use="required" type="xs:boolean"/>
+  </xs:attributeGroup>
   <xs:element name="results">
     <xs:complexType>
       <xs:sequence>
         <xs:element minOccurs="0" maxOccurs="unbounded" ref="res:result"/>
       </xs:sequence>
+      <xs:attributeGroup ref="res:ordered"/>
+      <xs:attributeGroup ref="res:distinct"/>
     </xs:complexType>
   </xs:element>
   <!-- ASK -->

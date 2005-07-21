@@ -5,7 +5,7 @@
  * by the Apache Axis 1.2.1 Jun 14, 2005 (09:15:57 EDT) WSDL2Java emitter.
  */
 
-package org.w3.www._2001.sw.DataAccess.rf1.result2;
+package org.w3.www._2005._06.sparqlResults;
 
 public class Literal  implements java.io.Serializable, org.apache.axis.encoding.MixedContentType {
     private org.apache.axis.message.MessageElement [] _any;  // attribute
@@ -113,11 +113,11 @@ public class Literal  implements java.io.Serializable, org.apache.axis.encoding.
         new org.apache.axis.description.TypeDesc(Literal.class, true);
 
     static {
-        typeDesc.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2001/sw/DataAccess/rf1/result2", ">literal"));
+        typeDesc.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2005/06/sparqlResults", ">literal"));
         org.apache.axis.description.AttributeDesc attrField = new org.apache.axis.description.AttributeDesc();
         attrField.setFieldName("datatype");
         attrField.setXmlName(new javax.xml.namespace.QName("", "datatype"));
-        attrField.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2001/sw/DataAccess/rf1/result2", "URI-reference"));
+        attrField.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2005/06/sparqlResults", "URI-reference"));
         typeDesc.addFieldDesc(attrField);
     }
 

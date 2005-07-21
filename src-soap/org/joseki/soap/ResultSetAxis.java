@@ -11,7 +11,7 @@ import java.util.List;
 
 import org.apache.axis.message.MessageElement;
 import org.apache.commons.logging.LogFactory;
-import org.w3.www._2001.sw.DataAccess.rf1.result2.*;
+import org.w3.www._2005._06.sparqlResults.*;
 
 import com.hp.hpl.jena.datatypes.RDFDatatype;
 import com.hp.hpl.jena.datatypes.TypeMapper;
@@ -31,6 +31,7 @@ public class ResultSetAxis implements ResultSet
     List rows = new ArrayList();
     List varNames = null ;
     boolean ordered = false ;
+    boolean distinct = false ;
     Result[] results ;
     int index ; 
     LabelToNodeMap bNodeLabels = new LabelToNodeMap(false) ;
@@ -41,9 +42,11 @@ public class ResultSetAxis implements ResultSet
     {
         setVarNames(rs) ;
         Results r = rs.getResults() ;
-        // Ordered?
         if ( r == null )
             throw new JosekiAxisException("Result set is not a result set!") ;
+
+        ordered = r.isOrdered() ;
+        distinct = r.isDistinct() ;
         results = r.getResult() ;
         index = 0 ;
     }
@@ -79,6 +82,9 @@ public class ResultSetAxis implements ResultSet
 
     public boolean isOrdered()
     { return ordered ; }
+
+    public boolean isDistinct()
+    { return distinct ; }
 
     public void remove()
     {
