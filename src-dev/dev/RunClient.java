@@ -18,8 +18,8 @@ public class RunClient
     static String endpoint = "http://localhost:2525/axis/services/sparql-query" ;
     public static void main(String[] args)
     {
-        //doOneSelectQuery() ; System.exit(0) ;
-        doOneConstructQuery() ; System.exit(0) ;
+        doOneSelectQuery() ; System.exit(0) ;
+        //doOneConstructQuery() ; System.exit(0) ;
         
         
 //        System.out.println("Object version") ;

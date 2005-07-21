@@ -5,4 +5,11 @@ CP="$(alljars ../lib)"
 CP="$CP;$(alljars ../lib2)"
 CP="../classes;$CP"
 
-java -cp "$CP" org.apache.axis.client.AdminClient "$@"
+## if [ $# == 0 ]
+## then
+##     args="-p 2525"
+## else
+##     args="$@"
+##     fi
+
+java -cp "$CP" org.apache.axis.client.AdminClient -p 2525 "$@"
