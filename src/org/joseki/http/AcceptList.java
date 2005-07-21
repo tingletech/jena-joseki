@@ -15,7 +15,7 @@ import org.apache.commons.logging.*;
 /** A class to handle a list of accept types
  * 
  * @author Andy Seaborne
- * @version $Id: AcceptList.java,v 1.2 2005-06-24 18:41:55 andy_seaborne Exp $
+ * @version $Id: AcceptList.java,v 1.3 2005-07-21 13:40:59 andy_seaborne Exp $
  */
 
 public class AcceptList
@@ -214,9 +214,10 @@ public class AcceptList
         boolean first = true ;
         for ( Iterator iter = x.iterator() ; iter.hasNext() ; )
         {
+            AcceptRange a = (AcceptRange)iter.next() ; 
             if ( ! first )
                 tmp = tmp +" " ;
-            tmp = tmp + (AcceptRange)iter.next() ;
+            tmp = tmp + a ;
             first = false ;
         }
         return tmp ;

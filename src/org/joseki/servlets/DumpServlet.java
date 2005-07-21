@@ -114,7 +114,6 @@ public class DumpServlet extends HttpServlet
             pw.println("getRemoteHost:          "+req.getRemoteHost());
             pw.println("getRequestedSessionId:  "+req.getRequestedSessionId());
             {
-                String tmp = "" ;
                 Cookie c[] = req.getCookies() ;
                 if ( c == null )
                     pw.println("getCookies:            <none>");

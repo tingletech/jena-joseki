@@ -209,7 +209,7 @@ public class SPARQL extends QueryCom implements Loadable
         if ( d != null && !d.equals("") )
             return true ;
         
-        List n = (List)request.getParams(P_NAMED_GRAPH) ;
+        List n = request.getParams(P_NAMED_GRAPH) ;
         if ( n != null && n.size() > 0 )
             return true ;
         return false ;

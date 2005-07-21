@@ -17,7 +17,7 @@ import org.apache.commons.logging.* ;
 
 /** Standalone server.
  * 
- * @version $Id: RDFServer.java,v 1.6 2005-07-13 14:34:28 andy_seaborne Exp $
+ * @version $Id: RDFServer.java,v 1.7 2005-07-21 13:40:48 andy_seaborne Exp $
  * @author  Andy Seaborne
  */
 
@@ -58,7 +58,7 @@ public class RDFServer
     {
         String tmp = System.getProperty(propertyPort, Joseki.defaultPort+"") ;
         int p = Integer.parseInt(tmp) ;
-        init(configFile, Joseki.defaultPort, defaultServerBaseURI) ;
+        init(configFile, p, defaultServerBaseURI) ;
     }
 
     /** Create a new RDFServer

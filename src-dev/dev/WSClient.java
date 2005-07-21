@@ -77,7 +77,7 @@ public class WSClient
                 System.out.println(tmp) ; 
                 
                 System.out.println() ;
-                Object ret = (Object) call.invoke(new Object[]{bodyElt}) ;
+                Object ret = call.invoke(new Object[]{bodyElt}) ;
                 //System.out.println("Return:("+ret.getClass().getSimpleName()+")"+ret) ;
                 Object obj = ((Vector)ret).get(0) ;
                 //System.out.println("Return1:("+obj.getClass().getSimpleName()+")"+obj) ;

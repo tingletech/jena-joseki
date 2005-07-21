@@ -9,7 +9,7 @@ package org.joseki.http;
 /** org.joseki.server.http.MainAccept
  * 
  * @author Andy Seaborne
- * @version $Id: MainAccept.java,v 1.1 2005-06-23 09:55:58 andy_seaborne Exp $
+ * @version $Id: MainAccept.java,v 1.2 2005-07-21 13:40:59 andy_seaborne Exp $
  */
 
 public class MainAccept
@@ -29,7 +29,6 @@ public class MainAccept
         
         AcceptItem dft = new AcceptItem("default") ;
         AcceptItem aText = new AcceptItem("text/*") ;
-        AcceptItem a = new AcceptItem("text/*") ;
         
         AcceptList myPrefs1 = new AcceptList(new String[]{"application/xml","text/*"}) ;
         AcceptList myPrefs2 = new AcceptList(new String[]{"application/rdf+xml"}) ;

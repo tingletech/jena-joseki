@@ -10,12 +10,10 @@ package org.joseki.soap;
 import java.io.File;
 import java.io.IOException;
 
-import javax.xml.namespace.QName;
 import javax.xml.soap.SOAPException;
 import javax.xml.soap.SOAPMessage;
 
 import org.apache.axis.MessageContext;
-import org.apache.axis.handlers.soap.SOAPService;
 import org.apache.axis.message.SOAPBody;
 import org.apache.axis.types.URI;
 
@@ -79,13 +77,13 @@ public class SPARQL_P
                 log.info("\n"+s) ;
             }
 
-            SOAPService srv = cxt.getService() ;
+//            SOAPService srv = cxt.getService() ;
             
-            String target = cxt.getTargetService() ;
-            String url = (String)cxt.getProperty("transport.url") ;
+//            String target = cxt.getTargetService() ;
+//            String url = (String)cxt.getProperty("transport.url") ;
+//            String realpath = (String)cxt.getProperty("realpath") ;
+            
             String path = (String)cxt.getProperty("path") ;
-            String realpath = (String)cxt.getProperty("realpath") ;
-            
             int ind = path.lastIndexOf('/') ;
             // Works if i = -1.
             String serviceURI = path.substring(ind+1) ;
@@ -153,7 +151,6 @@ public class SPARQL_P
             catch (Exception ex)
             {
                 log.warn("Internal server error", ex) ;
-                QName faultCode = null ;
                 throw new QueryFault(ReturnCodes.rcInternalError, "Internal server error") ;
 //                    String faultString = null ;
 //                    String faultActor = null ;

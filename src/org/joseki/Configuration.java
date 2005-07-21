@@ -276,8 +276,6 @@ public class Configuration
         Set serviceResources = new HashSet() ; 
         
         try {
-            Resource currentService = null ;
-            
             for ( ResultSet rs = qexec.execSelect() ; rs.hasNext() ; )
             {
                 QuerySolution qs = rs.nextSolution() ;
@@ -380,8 +378,6 @@ public class Configuration
         QueryExecution qexec = QueryExecutionFactory.create(query, confModel, rb) ;
         List x = new ArrayList() ;
         try {
-            Resource currentService = null ;
-            
             for ( ResultSet rs = qexec.execSelect() ; rs.hasNext() ; )
             {
                 QuerySolution qs = rs.nextSolution() ;
@@ -405,9 +401,6 @@ public class Configuration
 
     private void checkServicesImpls(Set definedServices)
     {
-        String[] s ;
-        Query q ;
-        QueryExecution qexec ;
         // ---- Check : class names for implementations
         List x = findByType(JosekiVocab.ServicePoint) ;
         for ( Iterator iter = x.iterator() ; iter.hasNext() ; )
@@ -578,7 +571,7 @@ public class Configuration
             {
                 QuerySolution qs = rs.nextSolution() ;
                 Resource x         = qs.getResource("x") ;
-                Resource ng        = qs.getResource("ng") ;
+                //Resource ng        = qs.getResource("ng") ;
                 Resource graphName = qs.getResource("graphName") ;
                 Resource graphData = qs.getResource("graphData") ;
                 

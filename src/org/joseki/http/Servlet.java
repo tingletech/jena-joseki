@@ -17,7 +17,7 @@ import org.joseki.*;
 
 /** The servlet class.
  * @author  Andy Seaborne
- * @version $Id: Servlet.java,v 1.10 2005-07-14 14:54:36 andy_seaborne Exp $
+ * @version $Id: Servlet.java,v 1.11 2005-07-21 13:40:59 andy_seaborne Exp $
  */
 
 public class Servlet extends HttpServlet implements Connector
@@ -133,7 +133,7 @@ public class Servlet extends HttpServlet implements Connector
             // getRequestURL is the exact string used by the caller in the request.
             // Internally, its the "request URI" that names the service
             
-            String requestURL = httpRequest.getRequestURL().toString() ;
+            //String requestURL = httpRequest.getRequestURL().toString() ;
             String uri = httpRequest.getRequestURI() ;
 
             if ( uri.length() > urlLimit )
@@ -146,8 +146,6 @@ public class Servlet extends HttpServlet implements Connector
             serviceURI = Service.canonical(serviceURI) ;
             
             log.info("Service URI = <"+serviceURI+">") ;
-            
-            String qs = httpRequest.getQueryString() ;
             
             // Assemble parameters
             Request request = new Request(serviceURI) ;

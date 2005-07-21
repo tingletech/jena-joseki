@@ -23,8 +23,7 @@ public class Utils
             Resource r = (Resource)n ;
             if ( r.isAnon() )
                 return null ;
-            else
-                return r.getURI() ;
+            return r.getURI() ;
         }        
         Literal lit = (Literal)n ;
         return lit.getLexicalForm() ;

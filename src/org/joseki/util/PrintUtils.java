@@ -12,7 +12,7 @@ import org.apache.commons.logging.* ;
 /** Code to format things for output 
  *  
  * @author     Andy Seaborne
- * @version    $Id: PrintUtils.java,v 1.3 2005-06-24 17:46:16 andy_seaborne Exp $
+ * @version    $Id: PrintUtils.java,v 1.4 2005-07-21 13:40:59 andy_seaborne Exp $
  */
  
 public class PrintUtils
@@ -39,7 +39,6 @@ public class PrintUtils
     static public void dumpResource(Log log, Resource r)
     {
         
-        String label = "" ;
         log.info("Resource: "+fmt(r)) ;
         
         StmtIterator iter = r.listProperties() ;

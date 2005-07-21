@@ -7,9 +7,7 @@
 
 package dev;
 
-import com.hp.hpl.jena.query.Query;
 import com.hp.hpl.jena.query.QueryExecution;
-import com.hp.hpl.jena.query.QueryFactory;
 import com.hp.hpl.jena.query.ResultSetFormatter;
 import com.hp.hpl.jena.query.engineSOAP.QueryEngineSOAP;
 import com.hp.hpl.jena.query.util.StringUtils;
@@ -37,8 +35,6 @@ public class RunClient
     public static void doOneSelectQuery()
     {
         String queryStr = "SELECT ?z {?x ?y ?z . FILTER regex(?z, 'Harry')}" ;
-        Query query = QueryFactory.create(queryStr) ; 
-        
         QueryExecution qexec = new QueryEngineSOAP(queryStr, endpoint) ;
         ResultSetFormatter.out(System.out, qexec.execSelect()) ;
         qexec.close() ;
@@ -54,8 +50,6 @@ public class RunClient
             
         String queryStr = concat(s) ; 
 
-        Query query = QueryFactory.create(queryStr) ; 
-        
         QueryExecution qexec = new QueryEngineSOAP(queryStr, endpoint) ;
         Model m = qexec.execConstruct() ;
         m.write(System.out, "N3") ;
