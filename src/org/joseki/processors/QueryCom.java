@@ -21,6 +21,7 @@ public abstract class QueryCom implements Processor
     {
         // Dataset ds = getDataset(request) ;
         // Do locking on dataset
+        // TODO Transactional lock
         
         lock.enterCriticalSection(Lock.READ) ;
         try {

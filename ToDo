@@ -12,6 +12,7 @@ Joseki3
   (need loading controls)
   Add a graph that limits the nuber of triples added/bulkupdated.
 
++ Transactional locking in QueryCom
 
 - - - - - - - - - - - -
 
