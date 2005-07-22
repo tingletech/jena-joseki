@@ -1,0 +1,18 @@
+Joseki3
+=======
+
+Joseki3 is not compatible with Joseki2.
+
+
+== Joseki 3.0 dev 1
+
+
+Features:
++ Query server - no update support
+
++ HTTP protocol - done
++ SOAP protocol - done
+
+
+
+

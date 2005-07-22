@@ -25,8 +25,8 @@
 	<classpathentry kind="lib" path="lib2/mailapi.jar"/>
 	<classpathentry kind="lib" path="lib2/saaj.jar"/>
 	<classpathentry kind="lib" path="lib2/wsdl4j-1.5.1.jar"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/ARQ"/>
 	<classpathentry kind="lib" path="lib/stax-1.1.1-dev.jar"/>
 	<classpathentry kind="lib" path="lib/stax-api-1.0.jar"/>
+	<classpathentry kind="lib" path="lib/arq.jar"/>
 	<classpathentry kind="output" path="classes"/>
 </classpath>

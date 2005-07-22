@@ -1,23 +1,31 @@
-/* CVS $Id: doc.css,v 1.1 2005-06-26 18:39:03 andy_seaborne Exp $ */
+/* CVS $Id: doc.css,v 1.2 2005-07-22 15:42:33 andy_seaborne Exp $ */
 
 /* Non media-specific rules */
 
 body {
 	font-family: Verdana, Arial, Helvetica, sans-serif ;
-	font-size: 10pt ;
-	line-height: 175% ;
 	color: black;
 	background: white ;
 	margin:0 ;
 }
 
-p { margin-left: 2% ; margin-right: 2% ; }
 
-/* Browser CSS2 table support is rather "individual" */
+/* If using fixed size fonts, do h1..h6 as well*/
+
+p  { font-size:10pt ; line-height:175% ; margin-left: 2ex ; margin-right: 2ex; }
+li { font-size:10pt ; line-height:175% ; margin-left: 2ex ; margin-right: 2ex; }
+code { font-size: 105%; }
+tt   { font-size: 105%; }
+
+h1 { font-size: 14pt ; }
+h2 { font-size: 12pt; }
+h3 { font-size: 11pt; }
+.todo { font-size: 9pt ; color: #777 ; }
+
+
 
 table {
   font-family: Verdana, Arial, sans-serif ;
-  font-size: 10pt ;
   border-color : black ;
   border-collapse: collapse;
   border-width: 1px;
@@ -34,7 +42,6 @@ td {
   padding: 5 ;
   spacing: 0 ;
   vertical-align:top;
-  text-align:center;
 }
 
 
@@ -55,72 +62,73 @@ th {
 
 /* Use this for the document title as displayed on the page at the top. */
 h1 {
-    font-size: 135%;
     font-weight: bold;
     color:#000;
     background:#CADFF4;
     padding-left: 1ex; padding-right: 1ex ;
-    padding-top: 2px; padding-bottom: 2px;
+    padding-top: 0.5ex; padding-bottom: 0.5ex;
     text-align:center;
 }
 
 h2 {
-    font-size: 110%;
     font-weight: bold;
-    color: #003399;
-    background:#CADFF4;
-    margin-bottom:5px;
+    color: black;
+    /* background:#CADFF4; */
+    margin-bottom:0.25ex;
     padding-left: 1ex; padding-right: 1ex ;
-    padding-top: 2px; padding-bottom: 2px;
+    padding-top: 0.5ex; padding-bottom: 0.5ex;
 }
 
-h3, h4, h5 {
+h3 { 
+     font-weight: bold;
+     margin-bottom:0.2ex;
+     padding-left: 2ex;
+    }
+
+h4, h5 {
     font-size: 100%;
     font-weight: bold;
-    margin-bottom:3px;
+    margin-bottom:0.2ex;
     padding-left: 2ex;
 }
 
 ul { list-style-type: disc }
-dt { margin-left:2ex ; font-weight: bold }
+dt { margin-top: 2ex; margin-left:2ex ; font-weight: bold }
 /* Change background/foreground colour on hover */
 
 A:link { color: rgb(0, 0, 255) }        /* for unvisited links */
-A:hover { color: rgb(255, 0, 0) }       /* when mouse is over link */
+A:visited { text-decoration:none; color:blue; background: white; }
+A:hover { text-decoration:none; color:white; background:  #65A2DF ; }
+
+A:hover.clear { background:  white ; }
 
 /* No extra space between paragraphs : inherits from body */
+
 pre {
-    font-family: monospace;
+    /*font-family: monospace;*/
     font-size: 10pt ;
-    margin-top: 1 ;
-    margin-bottom: 1 ;
+    line-height: 125% ;
+    margin-top: 1ex ;
+    margin-bottom: 1ex ;
     margin-left: 5ex ;
     margin-right: 5ex ;
     }
-.box { padding: 1ex ; border: 1 solid black ; background: #EEE ; }
+.box { padding: 1ex ; border: solid 1px black ; background: #EEE ; }
+pre.box {} 
 
-/* Some general utility definitions */
 .centered {
     text-align: center;
 }
 
-.caption {
-    text-align: center;
-    font-size: smaller;
-}
-
-code {
-    font-size: 10pt;
-}
-
 .footnote {
     font-size: smaller;
-    border-top: thin solid gray;
+    border-top: 1px solid gray;
 }
 
 /* Media-specific rules */
 
 @media print {
+	h1, h2 { border-top: solid 1px black ; }
 }
 
 @media screen, projection {

@@ -1,13 +1,9 @@
 Joseki3
 =======
 
-**** New codebase
-
 + Better error and warning hanlding when dynamically building a dataset
 
 + Test configuration (test of errors by looking in registry, and configuration members)
-
-+ Search and remove references to "dispatcher"
 
 + Dataset cache coupled to descriptions.
   need dataset set cache and "description key"
@@ -16,32 +12,13 @@ Joseki3
   (need loading controls)
   Add a graph that limits the nuber of triples added/bulkupdated.
 
+
 - - - - - - - - - - - -
-
-+ SPARQLer in CVS as supplied app
-  Need ant support
-
-+ XSLT update to latest
 
 + Option for server side XSLT
   Firefox refuses to execute from a different server?
-
-+ Use ModelSpecs
 
 + "Accept: */*" matches text/* and gets readable form.
   Should be application/rdf+xml.
   maybe test for application/rdf+xml, application/xml first?
 
-+ Testing 
-  Include Tomcat in JUnit test cycle?  Or too heavy?
-
-+ Allow fetch handlers (renamed) for DESCRIBE
-
-+ Management
-  At least keep some statistics (and provide a web page?!)
-    Server, per processor, per query processor
-    Part of "standard" processor interface to ensure compliance
-  May be JMX (later), 
-  javax.management in 1.5.0 MBean
-  
-+ SOAP connector (Axis?)
