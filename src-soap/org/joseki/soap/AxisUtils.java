@@ -22,7 +22,7 @@ import org.apache.axis.message.MessageElement;
 import org.apache.axis.message.Text;
 import org.apache.axis.types.NMToken;
 import org.apache.commons.logging.LogFactory;
-import org.w3.www._2005._06.sparqlResults.*;
+import org.w3.www._2005.sparql_results.*;
 
 
 public class AxisUtils

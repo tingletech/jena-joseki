@@ -3,13 +3,12 @@
   
   RELAX NG Schema for SPARQL Query Results XML Format
   
-  This XML schema is experimental and may change at any time.
-  
-  Dave Beckett 2005-04-25
+  This XML schema is normative.
+  $Id$
   
   
 -->
-<grammar xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:res="http://www.w3.org/2001/sw/DataAccess/rf1/result2" xmlns="http://relaxng.org/ns/structure/1.0" datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes">
+<grammar xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:res="http://www.w3.org/2005/sparql-results#" xmlns="http://relaxng.org/ns/structure/1.0" datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes">
   <start>
     <ref name="sparql"/>
   </start>
@@ -31,9 +30,6 @@
   <define name="sparql">
     <element name="res:sparql">
       <optional>
-        <ref name="xmlLang"/>
-      </optional>
-      <optional>
         <ref name="xsiSchemaLoc"/>
       </optional>
       <ref name="head"/>
@@ -48,9 +44,9 @@
       <zeroOrMore>
         <ref name="varName"/>
       </zeroOrMore>
-      <optional>
+      <zeroOrMore>
         <ref name="link"/>
-      </optional>
+      </zeroOrMore>
     </element>
   </define>
   <define name="varName">
@@ -73,8 +69,20 @@
       <ref name="hrefAttr"/>
     </element>
   </define>
+  <define name="ordered">
+    <attribute name="ordered">
+      <data type="boolean"/>
+    </attribute>
+  </define>
+  <define name="distinct">
+    <attribute name="distinct">
+      <data type="boolean"/>
+    </attribute>
+  </define>
   <define name="results">
     <element name="res:results">
+      <ref name="ordered"/>
+      <ref name="distinct"/>
       <zeroOrMore>
         <ref name="result"/>
       </zeroOrMore>
@@ -89,9 +97,6 @@
   <!-- SELECT solution, single match or row -->
   <define name="result">
     <element name="res:result">
-      <optional>
-        <ref name="xmlLang"/>
-      </optional>
       <optional>
         <ref name="indexAttr"/>
       </optional>

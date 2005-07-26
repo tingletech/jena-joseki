@@ -11,7 +11,7 @@ import java.util.List;
 
 import org.apache.axis.message.MessageElement;
 import org.apache.commons.logging.LogFactory;
-import org.w3.www._2005._06.sparqlResults.*;
+import org.w3.www._2005.sparql_results.*;
 
 import com.hp.hpl.jena.datatypes.RDFDatatype;
 import com.hp.hpl.jena.datatypes.TypeMapper;

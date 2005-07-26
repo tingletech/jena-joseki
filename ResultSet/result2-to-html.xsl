@@ -1,10 +1,10 @@
-<?xml version="1.0" encoding="iso8859-1"?>
+<?xml version="1.0" encoding="iso-8859-1"?>
 
 <!--
 
-  XSLT script to format SPARQL Query Results XML Format as xhtml
+  XSLT script to format SPARQL Query Results XML Format into xhtml
 
-  Copyright © 2004 World Wide Web Consortium, (Massachusetts
+  Copyright © 2004, 2005 World Wide Web Consortium, (Massachusetts
   Institute of Technology, European Research Consortium for
   Informatics and Mathematics, Keio University). All Rights
   Reserved. This work is distributed under the W3C® Software
@@ -14,12 +14,14 @@
 
   [1] http://www.w3.org/Consortium/Legal/2002/copyright-software-20021231
 
+  $Id$
+
 -->
 
 <xsl:stylesheet version="1.0"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
   xmlns="http://www.w3.org/1999/xhtml"
-  xmlns:res="http://www.w3.org/2005/06/sparqlResults"
+  xmlns:res="http://www.w3.org/2005/sparql-results#"
   exclude-result-prefixes="res xsl">
 
   <!--
@@ -42,14 +44,26 @@
     omit-xml-declaration="no" />
 
 
-  <xsl:template match="res:sparql">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
-  <head>
-    <title>SPARQL Query Results to XHTML table (XSLT)</title>
-  </head>
-  <body>
+  <xsl:template name="header">
+    <div>
+      <h2>Header</h2>
+    <xsl:for-each select="res:head/res:link"> 
+       <p>Link to <xsl:value-of select="@href"/></p>
+    </xsl:for-each>
+    </div>
+  </xsl:template>
 
-    <h1>SPARQL Query Results to XHTML table (XSLT)</h1>
+  <xsl:template name="boolean-result">
+    <div>
+      <h2>Boolean Result</h2>
+       <p>Value <xsl:value-of select="res:boolean"/></p>
+    </div>
+  </xsl:template>
+
+
+  <xsl:template name="vb-result">
+    <div>
+      <h2>Variable Bindings Result</h2>
 
     <p>Ordered: <xsl:value-of select="res:results/@ordered"/></p>
     <p>Distinct: <xsl:value-of select="res:results/@distinct"/></p>
@@ -71,22 +85,6 @@
 <tr>
 <xsl:text>
     </xsl:text>
-    <xsl:call-template name="result" />
-</tr>
-<xsl:text>
-    </xsl:text>
-  </xsl:for-each>
-
-    </table>
-
-
-  </body>
-</html>
-
-  </xsl:template>
-
-
-  <xsl:template name="result">
     <xsl:for-each select="res:binding"> 
      <xsl:variable name="name" select="@name" />
      <xsl:text>
@@ -139,6 +137,46 @@
     <xsl:text>
 </xsl:text>
     </xsl:for-each>
+
+</tr>
+<xsl:text>
+    </xsl:text>
+  </xsl:for-each>
+
+    </table>
+
+    </div>
+  </xsl:template>
+
+
+  <xsl:template match="res:sparql">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <title>SPARQL Query Results to XHTML (XSLT)</title>
+  </head>
+  <body>
+
+
+    <h1>SPARQL Query Results to XHTML (XSLT)</h1>
+
+<xsl:if test="res:head/res:link">
+      <xsl:call-template name="header"/>
+</xsl:if>
+
+<xsl:choose>
+  <xsl:when test="res:boolean">
+    <xsl:call-template name="boolean-result" />
+  </xsl:when>
+
+  <xsl:when test="res:results">
+    <xsl:call-template name="vb-result" />
+  </xsl:when>
+
+</xsl:choose>
+
+
+  </body>
+</html>
   </xsl:template>
 
 </xsl:stylesheet>

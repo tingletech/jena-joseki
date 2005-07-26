@@ -1,9 +1,9 @@
 xquery version "1.0";
 (:
 
-  XQuery script to format SPARQL Variable Results XML Format as xhtml
+  XQuery script to format SPARQL Query Results XML Format into xhtml
 
-  Copyright © 2004 World Wide Web Consortium, (Massachusetts
+  Copyright © 2004, 2005 World Wide Web Consortium, (Massachusetts
   Institute of Technology, European Research Consortium for
   Informatics and Mathematics, Keio University). All Rights
   Reserved. This work is distributed under the W3C® Software
@@ -13,11 +13,17 @@ xquery version "1.0";
 
   [1] http://www.w3.org/Consortium/Legal/2002/copyright-software-20021231
 
+  $Id$
+
 :)
 
 
-declare namespace res="http://www.w3.org/2005/06/sparqlResults";
-declare namespace default="http://www.w3.org/1999/xhtml";
+declare namespace res="http://www.w3.org/2005/sparql-results#";
+declare default element namespace "http://www.w3.org/1999/xhtml";
+
+
+(: URI of input SPARQL Query Results document :)
+declare variable $results-doc := doc( "output.xml" );
 
 
 (: How to set serialization parameters? :)
@@ -26,22 +32,36 @@ declare namespace default="http://www.w3.org/1999/xhtml";
 (: doctype-public = "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> :)
 
 
-declare variable $variableNames {
-   for $element in //res:sparql/res:head/res:variable
-     return string($element/@name)
+declare variable $variableNames :=
+   for $element in $results-doc/res:sparql/res:head/res:variable
+     return string( $element/@name )
+;
+
+
+declare function local:head($head as node()) {
+  <div> 
+    <h2>Header</h2> 
+  {
+    for $link in $head/res:link
+      return <p>Link to { string( $link/@href ) }</p>
+  } </div>
 };
 
 
-document {
-<html xmlns="http://www.w3.org/1999/xhtml">
-  <head>
-    <title>SPARQL Query Results to XHTML table (XQuery)</title>
-  </head>
-  <body>
-    <h1>SPARQL Query Results to XHTML table (XQuery)</h1>
+declare function local:boolean-result($bool as node()) {
+  <div>
+    <h2>Boolean Result</h2>
+    <p>Value: { string ($bool) } </p>
+  </div>
+};
 
-    <p>Ordered: { let $v := //res:results/@ordered return text { $v } } </p>
-    <p>Distinct: { let $v := //res:results/@distinct return text { $v } } </p>
+
+declare function local:vb-result($vbr as node()) {
+  <div>
+    <h2>Variable Bindings Results</h2>
+
+    <p>Ordered: { string( $vbr/@ordered ) } </p>
+    <p>Distinct: { string( $vbr/@distinct ) } </p>
 
     <table border="1">
 <tr> {
@@ -50,7 +70,7 @@ document {
 } </tr>
 
 
-{ for $result in //res:sparql/res:results/*
+{ for $result in $vbr/res:result
     return
 <tr> {
   for $name in $variableNames 
@@ -59,16 +79,16 @@ document {
 	<td> {
 	  if ($item/res:bnode) then
 	     (: blank node value :)
-	     text { "nodeID", string($item/res:bnode/text()) }
+	     ( "nodeID ", $item/res:bnode/text() )
 	  else if ($item/res:uri) then 
 	     (: URI value :)
-	     text { "URI", string($item/res:uri/text()) }
+	     ( "URI ", $item/res:uri/text() )
 	  else if ($item/res:literal/@datatype) then 
 	     (: datatyped literal value :)
-	     text { $item/res:literal/text(), "(datatype", string($item/res:literal/@datatype), ")" }
+	     fn:concat ( $item/res:literal, " (datatype ", $item/res:literal/@datatype, ")" )
 	  else if ($item/res:literal/@xml:lang) then 
 	     (: lang-string :)
-	     text { $item/res:literal/text(), "@", string($item/res:literal/@xml:lang) }
+	     fn:concat ( $item/res:literal, "@", $item/res:literal/@xml:lang )
 	  else if ($item/res:literal/res:unbound) then 
 	     (: unbound variable - empty cell :)
 	     "[unbound]"
@@ -77,17 +97,39 @@ document {
 	     $item/res:literal/text()
 	  else if ( exists($item/res:literal) ) then
 	     (: present and empty :)
-	     "[empty literal]" 
+	     "[empty literal]"
 	  else
 	     (: unbound variable - empty cell :)
 	     "[unbound]"
 	 } </td>
   } </tr>
 
+} </table>
+
+</div>
+};
+
+
+document {
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>SPARQL Query Results to XHTML (XQuery)</title>
+  </head>
+  <body>
+    <h1>SPARQL Query Results to XHTML (XQuery)</h1>
+
+{
+  local:head($results-doc/res:sparql/res:head)
 }
 
-    </table>
+{
+if ($results-doc/res:sparql/res:boolean) then 
+  local:boolean-result($results-doc/res:sparql/res:boolean)
+else
+  local:vb-result($results-doc/res:sparql/res:results)
+}
 
   </body>
 </html>
+
 }    

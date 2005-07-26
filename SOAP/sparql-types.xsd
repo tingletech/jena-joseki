@@ -4,7 +4,7 @@
 	   targetNamespace="http://www.w3.org/2001/sw/DataAccess/sparql-protocol-types"
 	   xmlns:spt="http://www.w3.org/2001/sw/DataAccess/sparql-protocol-types"
 	   xmlns:xs="http://www.w3.org/2001/XMLSchema"
-	   xmlns:xres="http://www.w3.org/2005/06/sparqlResults"
+	   xmlns:xres="http://www.w3.org/2005/sparql-results#"
 	   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
 	   xmlns="http://www.w3.org/2001/XMLSchema"
 	   >

@@ -1,14 +1,13 @@
 #
 # RELAX NG Schema for SPARQL Query Results XML Format
 #
-# This XML schema is experimental and may change at any time.
-#
-# Dave Beckett 2005-04-25
+# This XML schema is normative.
+# $Id$
 #
 #
 
 namespace local = ""
-namespace res = "http://www.w3.org/2005/06/sparqlResults"
+namespace res = "http://www.w3.org/2005/sparql-results#"
 namespace xsi = "http://www.w3.org/2001/XMLSchema-instance"
 datatypes xsd = "http://www.w3.org/2001/XMLSchema-datatypes"
 
@@ -27,12 +26,12 @@ xsiSchemaLoc = attribute xsi:schemaLocation { string }
 
 
 sparql = element res:sparql { 
-    xmlLang?, xsiSchemaLoc?, head,
+    xsiSchemaLoc?, head,
     (results | boolean)
 }
 
 head = element res:head {
-    varName*, link?
+    varName*, link*
 }
 
 varName = element res:variable {
@@ -71,7 +70,7 @@ boolean = element res:boolean {
 
 # SELECT solution, single match or row
 result = element res:result {
-    xmlLang?, indexAttr?, binding*
+    indexAttr?, binding*
 }
 
 # SELECT binding in a solution

@@ -92,70 +92,70 @@ public class QuerySoapBindingStub extends org.apache.axis.client.Stub implements
             cachedSerFactories.add(beansf);
             cachedDeserFactories.add(beandf);
 
-            qName = new javax.xml.namespace.QName("http://www.w3.org/2005/06/sparqlResults", ">binding");
+            qName = new javax.xml.namespace.QName("http://www.w3.org/2005/sparql-results#", ">binding");
             cachedSerQNames.add(qName);
-            cls = org.w3.www._2005._06.sparqlResults.Binding.class;
+            cls = org.w3.www._2005.sparql_results.Binding.class;
             cachedSerClasses.add(cls);
             cachedSerFactories.add(beansf);
             cachedDeserFactories.add(beandf);
 
-            qName = new javax.xml.namespace.QName("http://www.w3.org/2005/06/sparqlResults", ">head");
+            qName = new javax.xml.namespace.QName("http://www.w3.org/2005/sparql-results#", ">head");
             cachedSerQNames.add(qName);
-            cls = org.w3.www._2005._06.sparqlResults.Head.class;
+            cls = org.w3.www._2005.sparql_results.Head.class;
             cachedSerClasses.add(cls);
             cachedSerFactories.add(beansf);
             cachedDeserFactories.add(beandf);
 
-            qName = new javax.xml.namespace.QName("http://www.w3.org/2005/06/sparqlResults", ">link");
+            qName = new javax.xml.namespace.QName("http://www.w3.org/2005/sparql-results#", ">link");
             cachedSerQNames.add(qName);
-            cls = org.w3.www._2005._06.sparqlResults.Link.class;
+            cls = org.w3.www._2005.sparql_results.Link.class;
             cachedSerClasses.add(cls);
             cachedSerFactories.add(beansf);
             cachedDeserFactories.add(beandf);
 
-            qName = new javax.xml.namespace.QName("http://www.w3.org/2005/06/sparqlResults", ">literal");
+            qName = new javax.xml.namespace.QName("http://www.w3.org/2005/sparql-results#", ">literal");
             cachedSerQNames.add(qName);
-            cls = org.w3.www._2005._06.sparqlResults.Literal.class;
+            cls = org.w3.www._2005.sparql_results.Literal.class;
             cachedSerClasses.add(cls);
             cachedSerFactories.add(beansf);
             cachedDeserFactories.add(beandf);
 
-            qName = new javax.xml.namespace.QName("http://www.w3.org/2005/06/sparqlResults", ">result");
+            qName = new javax.xml.namespace.QName("http://www.w3.org/2005/sparql-results#", ">result");
             cachedSerQNames.add(qName);
-            cls = org.w3.www._2005._06.sparqlResults.Result.class;
+            cls = org.w3.www._2005.sparql_results.Result.class;
             cachedSerClasses.add(cls);
             cachedSerFactories.add(beansf);
             cachedDeserFactories.add(beandf);
 
-            qName = new javax.xml.namespace.QName("http://www.w3.org/2005/06/sparqlResults", ">results");
+            qName = new javax.xml.namespace.QName("http://www.w3.org/2005/sparql-results#", ">results");
             cachedSerQNames.add(qName);
-            cls = org.w3.www._2005._06.sparqlResults.Results.class;
+            cls = org.w3.www._2005.sparql_results.Results.class;
             cachedSerClasses.add(cls);
             cachedSerFactories.add(beansf);
             cachedDeserFactories.add(beandf);
 
-            qName = new javax.xml.namespace.QName("http://www.w3.org/2005/06/sparqlResults", ">sparql");
+            qName = new javax.xml.namespace.QName("http://www.w3.org/2005/sparql-results#", ">sparql");
             cachedSerQNames.add(qName);
-            cls = org.w3.www._2005._06.sparqlResults.Sparql.class;
+            cls = org.w3.www._2005.sparql_results.Sparql.class;
             cachedSerClasses.add(cls);
             cachedSerFactories.add(beansf);
             cachedDeserFactories.add(beandf);
 
-            qName = new javax.xml.namespace.QName("http://www.w3.org/2005/06/sparqlResults", ">unbound");
+            qName = new javax.xml.namespace.QName("http://www.w3.org/2005/sparql-results#", ">unbound");
             cachedSerQNames.add(qName);
-            cls = org.w3.www._2005._06.sparqlResults.Unbound.class;
+            cls = org.w3.www._2005.sparql_results.Unbound.class;
             cachedSerClasses.add(cls);
             cachedSerFactories.add(beansf);
             cachedDeserFactories.add(beandf);
 
-            qName = new javax.xml.namespace.QName("http://www.w3.org/2005/06/sparqlResults", ">variable");
+            qName = new javax.xml.namespace.QName("http://www.w3.org/2005/sparql-results#", ">variable");
             cachedSerQNames.add(qName);
-            cls = org.w3.www._2005._06.sparqlResults.Variable.class;
+            cls = org.w3.www._2005.sparql_results.Variable.class;
             cachedSerClasses.add(cls);
             cachedSerFactories.add(beansf);
             cachedDeserFactories.add(beandf);
 
-            qName = new javax.xml.namespace.QName("http://www.w3.org/2005/06/sparqlResults", "URI-reference");
+            qName = new javax.xml.namespace.QName("http://www.w3.org/2005/sparql-results#", "URI-reference");
             cachedSerQNames.add(qName);
             cls = org.apache.axis.types.URI.class;
             cachedSerClasses.add(cls);
