@@ -120,13 +120,32 @@ _:ds1   rdf:type joseki:RDFDataSet ;
     .
 
 # A dataset of one model as the default graph
+## _:books   rdf:type joseki:RDFDataSet ;
+##     rdfs:label "Books" ;
+##    joseki:defaultGraph
+##       [ rdfs:label "books.n3" ;
+##         jms:loadWith  <file:Data/books.n3> ] ;
+##     .
 
 _:books   rdf:type joseki:RDFDataSet ;
     rdfs:label "Books" ;
     joseki:defaultGraph
-      [ rdfs:label "books.n3" ;
-        jms:loadWith  <file:Data/books.n3> ] ;
+        [ # Ignored - jena bug - fixup applied - jms:modelName     "books" ;
+          jms:modelName     "books" ;
+          rdfs:label        "books-db" ;
+          jms:maker 
+            [ jms:reificationMode jms:rsMinimal ;
+              jms:hasConnection [
+                  jms:dbURL        <jdbc:mysql://localhost/data> ;
+                  jms:dbUser       "user" ;
+                  jms:dbPassword   "password" ;
+                  jms:dbType       "MySQL" ;
+                ] ;
+            ];
+        ] ;
     .
+
+
 
 ## --------------------------------------------------------------
 ## Individual graphs  (Jena calls them Models)
