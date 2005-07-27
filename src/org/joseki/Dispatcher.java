@@ -27,30 +27,31 @@ public class Dispatcher
     
     public static void dispatch(String serviceURI, Request request, Response response) throws ExecutionException
     {
+        
         if ( serviceRegistry == null )
         {
             log.fatal("Service registry not initialized") ;
             throw new ExecutionException(ReturnCodes.rcInternalError, "Service registry not initialized") ;
         }
         
-        Service service = serviceRegistry.find(serviceURI) ;
-        if ( service == null )
-        {
-            log.info("404 - Service <"+serviceURI+"> not found") ;
-            throw new ExecutionException(ReturnCodes.rcNoSuchURI, "Service <"+serviceURI+"> not found") ;
-        }
-        
-        if ( !service.isAvailable() )
-        {
-            log.info("Service is not available") ;
-            throw new ExecutionException(ReturnCodes.rcServiceUnavailable, "Service <"+serviceURI+"> unavailable") ;
-        }
-
         try {
+            Service service = serviceRegistry.find(serviceURI) ;
+            if ( service == null )
+            {
+                log.info("404 - Service <"+serviceURI+"> not found") ;
+                throw new ExecutionException(ReturnCodes.rcNoSuchURI, "Service <"+serviceURI+"> not found") ;
+            }
+            
+            if ( !service.isAvailable() )
+            {
+                log.info("Service is not available") ;
+                throw new ExecutionException(ReturnCodes.rcServiceUnavailable, "Service <"+serviceURI+"> unavailable") ;
+            }
+    
             service.exec(request, response) ;
             response.sendResponse() ;
         }
-        catch (QueryExecutionException ex)
+        catch (ExecutionException ex)
         {
             response.sendException(ex) ;
             return ;
