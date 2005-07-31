@@ -1,7 +1,13 @@
 Joseki3
 =======
 
-+ Better error and warning hanlding when dynamically building a dataset
++ Test harness
+
++ Documentation
+
++ Merge in SOAP code and lib2/ into a single codebase
+
++ Better error and warning handling when dynamically building a dataset
 
 + Test configuration (test of errors by looking in registry, and configuration members)
 
@@ -9,9 +15,7 @@ Joseki3
   need dataset set cache and "description key"
 
 + Check whether loading broken RDF causes a memory leak
-  (need loading controls)
-  Add a graph that limits the nuber of triples added/bulkupdated.
-
+  
 + Transactional locking in QueryCom
 
 - - - - - - - - - - - -
