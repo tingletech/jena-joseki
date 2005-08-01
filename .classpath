@@ -28,5 +28,6 @@
 	<classpathentry kind="lib" path="lib/stax-1.1.1-dev.jar"/>
 	<classpathentry kind="lib" path="lib/stax-api-1.0.jar"/>
 	<classpathentry kind="lib" path="lib/arq.jar"/>
+	<classpathentry kind="lib" path="lib-jdbc/mysql-connector-java-3.2.0-alpha-bin.jar"/>
 	<classpathentry kind="output" path="classes"/>
 </classpath>
