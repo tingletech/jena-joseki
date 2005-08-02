@@ -10,7 +10,7 @@ import java.util.* ;
 
 /** 
  * @author Andy Seaborne
- * @version $Id: ServiceRegistry.java,v 1.2 2005-07-12 19:50:03 andy_seaborne Exp $
+ * @version $Id: ServiceRegistry.java,v 1.3 2005-08-02 18:00:12 andy_seaborne Exp $
  */
 
 public class ServiceRegistry
@@ -53,6 +53,12 @@ public class ServiceRegistry
     {
         registry.clear() ;
     }
+    
+    public Iterator names()
+    {
+        return registry.keySet().iterator() ; 
+    }
+    
 }
 
 /*

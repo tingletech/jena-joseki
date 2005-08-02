@@ -13,7 +13,7 @@ import junit.framework.TestCase;
 /** org.joseki.server.http.TestContentNegotiation
  * 
  * @author Andy Seaborne
- * @version $Id: TestContentNegotiation.java,v 1.1 2005-06-23 09:55:58 andy_seaborne Exp $
+ * @version $Id: TestContentNegotiation.java,v 1.2 2005-08-02 18:04:02 andy_seaborne Exp $
  */
 
 public class TestContentNegotiation extends TestCase
@@ -30,26 +30,31 @@ public class TestContentNegotiation extends TestCase
     static final String ctStarStar           = "*/*" ;
     
     // It's easier to just write the content types in strings. 
-    public void testSimpleNeg1() { testMatch("text/plain", "text/plain", "text/plain") ; }
-    public void testSimpleNeg2() { testMatch("application/xml", "text/plain", null) ; }
-    public void testSimpleNeg3() { testMatch("text/*", "text/*", "text/*") ; }
+    public void testSimpleNeg1()
+    { testMatch("text/plain", "text/plain", "text/plain") ; }
     
-    public void testSimpleNeg4() { testMatch("text/xml", "text/*", "text/xml") ; }
-    public void testSimpleNeg5() { testMatch("text/*", "text/xml", "text/xml") ; }
+    public void testSimpleNeg2()
+    { testMatch("application/xml", "text/plain", null) ; }
     
+    public void testSimpleNeg3()
+    { testMatch("text/*", "text/*", "text/*") ; }
     
+    public void testSimpleNeg4()
+    { testMatch("text/xml", "text/*", "text/xml") ; }
     
-    public void testListItemNeg1() { testMatch("text/xml,text/*", "text/*", "text/xml") ; }
+    public void testSimpleNeg5()
+    { testMatch("text/*", "text/xml", "text/xml") ; }
+    
+    public void testListItemNeg1()
+    { testMatch("text/xml,text/*", "text/*", "text/xml") ; }
     
     public void testListListNeg1()
     { testMatch("text/xml,text/*", "text/plain,text/*", "text/plain") ; }
     
     public void testListListNeg2()
     { testMatch("text/xml,text/*", "text/*,text/plain", "text/xml") ; }
-
     
     public void testQualNeg1() { testMatch("text/xml;q=0.5,text/plain", "text/*", "text/plain") ; }
-    
     
     // Worker.  Does request 'header' match server 'offer' with 'result'?
     private void testMatch(String header, String offer, String result)
@@ -57,8 +62,7 @@ public class TestContentNegotiation extends TestCase
         AcceptList list1 = new AcceptList(header) ;
         AcceptList list2 = new AcceptList(offer) ;
         AcceptItem matchItem = AcceptList.match(list1, list2) ;
-        
-        
+
         if ( result == null )
         {
             assertNull("Match not null: from "+q(header)+" :: "+q(offer),

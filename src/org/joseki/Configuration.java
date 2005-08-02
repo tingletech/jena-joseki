@@ -86,6 +86,22 @@ public class Configuration
         findServices() ;
         log.info("==== Bind services to the server ====") ;
         bindServices(registry) ;
+        log.info("==== Initialize datasets ====") ;
+        for ( Iterator iter = registry.names() ; iter.hasNext() ; )
+        {
+            String name = (String)iter.next() ;
+            Service s = registry.find(name) ;
+            try {
+                if ( s.getDatasetDesc() != null )
+                    // Kick it now to make it initialize
+                    s.getDatasetDesc().getDataset() ;
+            } catch(Exception ex)
+            { 
+                log.warn("Failed to build dataset from description: "+ex.getMessage(), ex) ;
+                continue ;
+            }
+        }
+        
         log.info("==== End Configuration ====") ;
     }
     
