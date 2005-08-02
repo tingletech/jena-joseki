@@ -130,9 +130,8 @@ _:ds1   rdf:type joseki:RDFDataSet ;
 _:books   rdf:type joseki:RDFDataSet ;
     rdfs:label "Books" ;
     joseki:defaultGraph
-        [ # Ignored - jena bug - fixup applied - jms:modelName     "books" ;
+        [ rdfs:label        "books-db" ;
           jms:modelName     "books" ;
-          rdfs:label        "books-db" ;
           jms:maker 
             [ jms:reificationMode jms:rsMinimal ;
               jms:hasConnection [

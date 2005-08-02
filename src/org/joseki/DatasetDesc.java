@@ -78,18 +78,17 @@ public class DatasetDesc
     
     private Model buildModel(Resource r)
     {
-        ModelSpec mSpec = ModelFactory.createSpec(r, confModel) ; 
+        ModelSpec mSpec = ModelFactory.createSpec(r, confModel) ;
+
         if ( r.hasProperty(JenaModelSpec.modelName) )
         {
-            // TODO removed when ModelSpec or etc use modelName.
             String modelName = r.getProperty(JenaModelSpec.modelName).getString() ;
             log.info("Building named model: "+Utils.nodeLabel(r)+" / "+modelName) ;
-            Model m = mSpec.openModel(modelName) ;
-            return m ;
         }
+        else
+            log.info("Building model: "+Utils.nodeLabel(r)) ;
         
-        Model m = ModelFactory.createModel(mSpec) ;
-        log.info("Building model: "+Utils.nodeLabel(r)) ;
+        Model m = mSpec.openModel() ;
         return m ;
     }
     
