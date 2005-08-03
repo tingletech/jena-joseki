@@ -18,6 +18,7 @@ import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
 import com.hp.hpl.jena.rdf.model.ModelSpec;
 import com.hp.hpl.jena.rdf.model.Resource;
+import com.hp.hpl.jena.util.FileManager;
 import com.hp.hpl.jena.vocabulary.JenaModelSpec;
 
 
@@ -88,8 +89,31 @@ public class DatasetDesc
         else
             log.info("Building model: "+Utils.nodeLabel(r)) ;
         
-        Model m = mSpec.openModel() ;
-        return m ;
+        // TODO Use this code when Jena ModelSpecs are fixed 
+//        Model m = mSpec.openModel() ;
+//        return m ;   
+        
+        if ( r.hasProperty(JenaModelSpec.loadWith) )
+        {
+            // Assume it is a in-memory model
+            log.info("Creating a memory model") ;
+            Model m = ModelFactory.createDefaultModel() ;
+            String data = r.getProperty(JenaModelSpec.loadWith).getResource().getURI() ;
+            FileManager.get().readModel(m, data) ;
+            return m ;
+        }
+        
+        if ( r.hasProperty(JenaModelSpec.maker) )
+        {
+            Resource r2 = r.getProperty(JenaModelSpec.maker).getResource() ;
+            if ( r2.hasProperty(JenaModelSpec.hasConnection) )
+            {
+                // Database
+                Model m = mSpec.openModel() ;
+                return m ;        
+            }
+        }
+        throw new JosekiServerException("Unrecognized model description: "+Utils.nodeLabel(r)) ;
     }
     
     public String toString()
