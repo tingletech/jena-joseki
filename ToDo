@@ -1,6 +1,9 @@
 Joseki3
 =======
 
++ Add version id (build, ARQ) to HTTP headers
+
+
 + Test harness
 
 + Documentation

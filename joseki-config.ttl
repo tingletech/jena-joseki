@@ -135,7 +135,7 @@ _:books   rdf:type joseki:RDFDataSet ;
 ##           jms:maker 
 ##             [ jms:reificationMode jms:rsMinimal ;
 ##               jms:hasConnection [
-##                   jms:dbURL        <jdbc:mysql://localhost/data> ;
+##                   jms:dbURL        <jdbc:mysql://localhost/data?autoReconnect=true> ;
 ##                   jms:dbUser       "user" ;
 ##                   jms:dbPassword   "password" ;
 ##                   jms:dbType       "MySQL" ;
