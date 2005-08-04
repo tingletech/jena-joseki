@@ -34,7 +34,7 @@ public class RunClient
     
     public static void doOneSelectQuery()
     {
-        String queryStr = "SELECT ?z {?x ?y ?z . FILTER regex(?z, 'Harry')}" ;
+        String queryStr = "\nSELECT ?z {?x ?y ?z . FILTER regex(?z, 'Harry')}\n" ;
         QueryExecution qexec = new QueryEngineSOAP(queryStr, endpoint) ;
         ResultSetFormatter.out(System.out, qexec.execSelect()) ;
         qexec.close() ;
