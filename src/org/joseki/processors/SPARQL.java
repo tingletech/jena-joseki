@@ -87,7 +87,7 @@ public class SPARQL extends QueryCom implements Loadable
             
             Query query = null ;
             try {
-                // NB synatx is ARQ (a superset of SPARQL)
+                // NB syntax is ARQ (a superset of SPARQL)
                 query = QueryFactory.create(queryString, Syntax.syntaxARQ) ;
             } catch (QueryException ex)
             {
@@ -219,10 +219,10 @@ public class SPARQL extends QueryCom implements Loadable
     {
         try {
             
-            String graphURL = request.getParam(P_DEFAULT_GRAPH) ;
+            List graphURLs = request.getParams(P_DEFAULT_GRAPH) ;
             List namedGraphs = request.getParams(P_NAMED_GRAPH) ;
-            if ( ( graphURL == null || graphURL.equals("") )  
-                    && namedGraphs.size() == 0 )
+            
+            if ( graphURLs.size() == 0 && namedGraphs.size() == 0 )
                 return null ;
             
             DataSource dataset = null ;
@@ -232,24 +232,38 @@ public class SPARQL extends QueryCom implements Loadable
             
             // Look in cache for loaded graphs!!
             
-            if ( graphURL != null && ! graphURL.equals(""))
+            if ( graphURLs != null )
             {
                 if ( dataset == null )
                     dataset = DatasetFactory.create() ;
                 
-                try {
-                    //Model model = fileManager.loadModel(graphURL) ;
-                    Model model = GraphUtils.readModel(graphURL, maxTriples) ;
-                    
-                    dataset.setDefaultModel(model) ;
-                    log.info("Load "+graphURL) ;
-                } catch (Exception ex)
+                Model model = ModelFactory.createDefaultModel() ;
+                for ( Iterator iter = graphURLs.iterator() ; iter.hasNext() ; )
                 {
-                    log.info("Failed to load "+graphURL+" : "+ex.getMessage()) ;
-                    throw new QueryExecutionException(
-                                                      ReturnCodes.rcArgumentUnreadable,
-                                                      "Failed to load URL "+graphURL) ;
+                    String uri = (String)iter.next() ;
+                    if ( uri == null )
+                    {
+                        log.warn("Null "+P_DEFAULT_GRAPH+ " (ignored)") ;
+                        continue ;
+                    }
+                    if ( uri.equals("") )
+                    {
+                        log.warn("Empty "+P_DEFAULT_GRAPH+ " (ignored)") ;
+                        continue ;
+                    }
+                
+                    try {
+                        GraphUtils.loadModel(model, uri, maxTriples) ;
+                        log.info("Load (default) "+uri) ;
+                    } catch (Exception ex)
+                    {
+                        log.info("Failer to load (default) "+uri+" : "+ex.getMessage()) ;
+                        throw new QueryExecutionException(
+                                                          ReturnCodes.rcArgumentUnreadable,
+                                                          "Failed to load URL "+uri) ;
+                    }
                 }
+                dataset.setDefaultModel(model) ;
             }
             
             if ( namedGraphs != null )

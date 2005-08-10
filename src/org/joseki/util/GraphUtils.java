@@ -24,15 +24,59 @@ import com.hp.hpl.jena.util.FileUtils;
 
 public class GraphUtils
 {
+    // ---- Model level
+    
     public static Model readModel(String uri, int limit)
     {
         return readModel(uri, limit, FileUtils.guessLang(uri)) ;
     }
-    
+
     public static Model readModel(String uri, int limit, String syntax) 
     {
         Graph g = Factory.createGraphMem() ;
-        g = new LimitingGraph(g, limit) ;
+        return readUtil(g, uri, limit, syntax) ;
+    }
+    
+    public static void loadModel(Model model, String uri, int limit) 
+    {
+        loadModel(model, uri, limit) ;
+    }
+
+    public static void loadModel(Model model, String uri, int limit, String syntax) 
+    {
+        Graph g = model.getGraph() ;
+        readUtil(g, uri, limit, syntax) ;
+    }
+
+    // ---- Graph level
+    
+    public static Graph readGraph(String uri, int limit)
+    {
+        return readGraph(uri, limit, FileUtils.guessLang(uri)) ;
+    }
+    
+    public static Graph readGraph(String uri, int limit, String syntax) 
+    {
+        Graph g = Factory.createGraphMem() ;
+        Model m = readUtil(g, uri, limit, syntax) ;
+        return m.getGraph() ;
+    }
+    
+    public static void loadGraph(Graph g, String uri, int limit) 
+    {
+        loadGraph(g, uri, limit, FileUtils.guessLang(uri)) ;
+    }
+
+    public static void loadGraph(Graph g, String uri, int limit, String syntax) 
+    {
+        Model m = readUtil(g, uri, limit, syntax) ;
+    }
+    
+    
+    private static Model readUtil(Graph graph, String uri, int limit, String syntax) 
+    {
+        // Temporary model wrapper 
+        Graph g = new LimitingGraph(graph, limit) ;
         Model m = ModelFactory.createModelForGraph(g) ;
         RDFReader r = m.getReader(syntax) ;
         r.setErrorHandler(new GraphErrorHandler()) ;
@@ -40,24 +84,6 @@ public class GraphUtils
         r.read(m, in, uri) ;
         return m ;
     }
-    
-    public static Graph readGraph(String uri, int limit, String syntax) 
-    {
-        Graph g = Factory.createGraphMem() ;
-        g = new LimitingGraph(g, limit) ;
-        Model m = ModelFactory.createModelForGraph(g) ;
-        RDFReader r = m.getReader(syntax) ;
-        r.setErrorHandler(new GraphErrorHandler()) ;
-        InputStream in = FileManager.get().open(uri) ;
-        r.read(m, in, uri) ;
-        return g ;
-    }
-    
-    public static Graph readGraph(String uri, int limit)
-    {
-        return readGraph(uri, limit, FileUtils.guessLang(uri)) ;
-    }
-    
 }
 
 /*
