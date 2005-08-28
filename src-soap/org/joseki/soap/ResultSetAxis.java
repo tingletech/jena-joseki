@@ -18,9 +18,9 @@ import com.hp.hpl.jena.datatypes.TypeMapper;
 import com.hp.hpl.jena.graph.Node;
 import com.hp.hpl.jena.query.QuerySolution;
 import com.hp.hpl.jena.query.ResultSet;
-import com.hp.hpl.jena.query.core.QueryEngineUtils;
 import com.hp.hpl.jena.query.core.ResultBinding;
 import com.hp.hpl.jena.query.util.LabelToNodeMap;
+import com.hp.hpl.jena.query.util.NodeUtils;
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
 import com.hp.hpl.jena.rdf.model.RDFNode;
@@ -117,7 +117,7 @@ public class ResultSetAxis implements ResultSet
             {
                 String label = b.getBnode() ;
                 Node n = bNodeLabels.asNode(label) ;
-                RDFNode rdfNode = QueryEngineUtils.convertGraphNodeToRDFNode(n, model) ;
+                RDFNode rdfNode = NodeUtils.convertGraphNodeToRDFNode(n, model) ;
                 rb.add(varName, rdfNode) ;
                 continue ;
             }
