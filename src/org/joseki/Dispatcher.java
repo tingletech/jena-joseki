@@ -100,6 +100,12 @@ public class Dispatcher
             return ;
         }
         
+        if ( configURI == null )
+        {
+            log.fatal("Null for configuration URI") ;
+            return ;
+        }
+        
         // Already squirreled away somewhere?
         serviceRegistry = (ServiceRegistry)Registry.find(RDFServer.ServiceRegistryName) ;
         

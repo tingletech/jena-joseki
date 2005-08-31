@@ -17,7 +17,7 @@ import org.joseki.*;
 
 /** The servlet class.
  * @author  Andy Seaborne
- * @version $Id: Servlet.java,v 1.11 2005-07-21 13:40:59 andy_seaborne Exp $
+ * @version $Id: Servlet.java,v 1.12 2005-08-31 12:44:24 andy_seaborne Exp $
  */
 
 public class Servlet extends HttpServlet implements Connector
@@ -96,7 +96,6 @@ public class Servlet extends HttpServlet implements Connector
             servletContext = config.getServletContext();
             fileManager.addLocator(new LocatorServletContext(servletContext)) ;
         }
-        
         
         printName = config.getServletName();
         
