@@ -78,17 +78,21 @@ public class Dispatcher
     //  Servlet init parameter:  jena.rdfserver.modelmap
     //  and then the file is loaded.
 
-    public static synchronized void initServiceRegistry()
+    public static void initServiceRegistry()
     {
         initServiceRegistry(FileManager.get()) ;
     }
 
     
-    public static synchronized void initServiceRegistry(FileManager fileManager)
+    public static void initServiceRegistry(FileManager fileManager)
     {
-        // Decide the URI for the configuration
-        
-        String configURI = System.getProperty(configurationProperty, RDFServer.defaultConfigFile) ;
+        initServiceRegistry(fileManager, null) ;
+    }
+    
+    public static void initServiceRegistry(FileManager fileManager, String configURI)
+    {    
+        if ( configURI == null )
+            configURI = System.getProperty(configurationProperty, RDFServer.defaultConfigFile) ;
         setConfiguration(fileManager, configURI) ;
     }
     

@@ -17,7 +17,7 @@ import org.joseki.*;
 
 /** The servlet class.
  * @author  Andy Seaborne
- * @version $Id: Servlet.java,v 1.12 2005-08-31 12:44:24 andy_seaborne Exp $
+ * @version $Id: Servlet.java,v 1.13 2005-08-31 16:18:30 andy_seaborne Exp $
  */
 
 public class Servlet extends HttpServlet implements Connector
@@ -98,10 +98,10 @@ public class Servlet extends HttpServlet implements Connector
         }
         
         printName = config.getServletName();
-        
+        String configURI = config.getInitParameter(Dispatcher.configurationProperty) ;
         servletEnv() ;
         try {
-            Dispatcher.initServiceRegistry(fileManager) ;
+            Dispatcher.initServiceRegistry(fileManager, configURI) ;
         } catch (ConfigurationErrorException confEx)
         {
             throw new ServletException("Joseki configuration error", confEx) ;
