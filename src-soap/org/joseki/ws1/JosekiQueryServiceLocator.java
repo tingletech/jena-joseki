@@ -39,7 +39,7 @@ public class JosekiQueryServiceLocator extends org.apache.axis.client.Service im
         SparqlQueryWSDDServiceName = name;
     }
 
-    public org.joseki.ws1.QueryInterface getSparqlQuery() throws javax.xml.rpc.ServiceException {
+    public org.joseki.ws1.SparqlQuery getSparqlQuery() throws javax.xml.rpc.ServiceException {
        java.net.URL endpoint;
         try {
             endpoint = new java.net.URL(SparqlQuery_address);
@@ -50,7 +50,7 @@ public class JosekiQueryServiceLocator extends org.apache.axis.client.Service im
         return getSparqlQuery(endpoint);
     }
 
-    public org.joseki.ws1.QueryInterface getSparqlQuery(java.net.URL portAddress) throws javax.xml.rpc.ServiceException {
+    public org.joseki.ws1.SparqlQuery getSparqlQuery(java.net.URL portAddress) throws javax.xml.rpc.ServiceException {
         try {
             org.joseki.ws1.QuerySoapBindingStub _stub = new org.joseki.ws1.QuerySoapBindingStub(portAddress, this);
             _stub.setPortName(getSparqlQueryWSDDServiceName());
@@ -72,7 +72,7 @@ public class JosekiQueryServiceLocator extends org.apache.axis.client.Service im
      */
     public java.rmi.Remote getPort(Class serviceEndpointInterface) throws javax.xml.rpc.ServiceException {
         try {
-            if (org.joseki.ws1.QueryInterface.class.isAssignableFrom(serviceEndpointInterface)) {
+            if (org.joseki.ws1.SparqlQuery.class.isAssignableFrom(serviceEndpointInterface)) {
                 org.joseki.ws1.QuerySoapBindingStub _stub = new org.joseki.ws1.QuerySoapBindingStub(new java.net.URL(SparqlQuery_address), this);
                 _stub.setPortName(getSparqlQueryWSDDServiceName());
                 return _stub;

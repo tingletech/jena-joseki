@@ -9,9 +9,9 @@ package org.joseki.ws1;
 import org.joseki.soap.SPARQL_P;
 import org.w3.www._2001.sw.DataAccess.sparql_protocol_types.* ;
 
-public class QuerySoapBindingImpl extends SPARQL_P implements org.joseki.ws1.QueryInterface
+public class QuerySoapBindingImpl extends SPARQL_P implements SparqlQuery
 {
-    public QueryResult query(Query request) throws java.rmi.RemoteException, QueryFault
+    public QueryResult query(QueryRequest request) throws java.rmi.RemoteException, QueryFault
     {
         return super.query(request) ;
     }

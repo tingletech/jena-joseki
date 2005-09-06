@@ -57,7 +57,7 @@ public class SPARQL_P
         Dispatcher.initServiceRegistry() ;
     }
 
-    public QueryResult query(Query request) throws java.rmi.RemoteException
+    public QueryResult query(QueryRequest request) throws java.rmi.RemoteException
     {
         init() ;
         if ( log.isDebugEnabled() )
@@ -91,7 +91,7 @@ public class SPARQL_P
 
             // ---- Query
             
-            String queryString = request.getSparqlQuery() ;
+            String queryString = request.getQuery() ;
             
             if ( log.isDebugEnabled() )
                 log.debug("Query string: "+stringOrNull(queryString)) ;

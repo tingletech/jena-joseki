@@ -7,7 +7,7 @@
 
 package org.joseki.ws1;
 
-public class QuerySoapBindingStub extends org.apache.axis.client.Stub implements org.joseki.ws1.QueryInterface {
+public class QuerySoapBindingStub extends org.apache.axis.client.Stub implements org.joseki.ws1.SparqlQuery {
     private java.util.Vector cachedSerClasses = new java.util.Vector();
     private java.util.Vector cachedSerQNames = new java.util.Vector();
     private java.util.Vector cachedSerFactories = new java.util.Vector();
@@ -25,7 +25,7 @@ public class QuerySoapBindingStub extends org.apache.axis.client.Stub implements
         org.apache.axis.description.ParameterDesc param;
         oper = new org.apache.axis.description.OperationDesc();
         oper.setName("query");
-        param = new org.apache.axis.description.ParameterDesc(new javax.xml.namespace.QName("http://www.w3.org/2001/sw/DataAccess/sparql-protocol-types", "query"), org.apache.axis.description.ParameterDesc.IN, new javax.xml.namespace.QName("http://www.w3.org/2001/sw/DataAccess/sparql-protocol-types", ">query"), org.w3.www._2001.sw.DataAccess.sparql_protocol_types.Query.class, false, false);
+        param = new org.apache.axis.description.ParameterDesc(new javax.xml.namespace.QName("http://www.w3.org/2001/sw/DataAccess/sparql-protocol-types", "query-request"), org.apache.axis.description.ParameterDesc.IN, new javax.xml.namespace.QName("http://www.w3.org/2001/sw/DataAccess/sparql-protocol-types", ">query-request"), org.w3.www._2001.sw.DataAccess.sparql_protocol_types.QueryRequest.class, false, false);
         oper.addParameter(param);
         oper.setReturnType(new javax.xml.namespace.QName("http://www.w3.org/2001/sw/DataAccess/sparql-protocol-types", ">query-result"));
         oper.setReturnClass(org.w3.www._2001.sw.DataAccess.sparql_protocol_types.QueryResult.class);
@@ -71,16 +71,16 @@ public class QuerySoapBindingStub extends org.apache.axis.client.Stub implements
             java.lang.Class simpledf = org.apache.axis.encoding.ser.SimpleDeserializerFactory.class;
             java.lang.Class simplelistsf = org.apache.axis.encoding.ser.SimpleListSerializerFactory.class;
             java.lang.Class simplelistdf = org.apache.axis.encoding.ser.SimpleListDeserializerFactory.class;
-            qName = new javax.xml.namespace.QName("http://www.w3.org/2001/sw/DataAccess/sparql-protocol-types", ">query");
+            qName = new javax.xml.namespace.QName("http://www.w3.org/2001/sw/DataAccess/sparql-protocol-types", ">query-fault");
             cachedSerQNames.add(qName);
-            cls = org.w3.www._2001.sw.DataAccess.sparql_protocol_types.Query.class;
+            cls = org.w3.www._2001.sw.DataAccess.sparql_protocol_types.QueryFault.class;
             cachedSerClasses.add(cls);
             cachedSerFactories.add(beansf);
             cachedDeserFactories.add(beandf);
 
-            qName = new javax.xml.namespace.QName("http://www.w3.org/2001/sw/DataAccess/sparql-protocol-types", ">query-fault");
+            qName = new javax.xml.namespace.QName("http://www.w3.org/2001/sw/DataAccess/sparql-protocol-types", ">query-request");
             cachedSerQNames.add(qName);
-            cls = org.w3.www._2001.sw.DataAccess.sparql_protocol_types.QueryFault.class;
+            cls = org.w3.www._2001.sw.DataAccess.sparql_protocol_types.QueryRequest.class;
             cachedSerClasses.add(cls);
             cachedSerFactories.add(beansf);
             cachedDeserFactories.add(beandf);
@@ -228,7 +228,7 @@ public class QuerySoapBindingStub extends org.apache.axis.client.Stub implements
         }
     }
 
-    public org.w3.www._2001.sw.DataAccess.sparql_protocol_types.QueryResult query(org.w3.www._2001.sw.DataAccess.sparql_protocol_types.Query query) throws java.rmi.RemoteException, org.w3.www._2001.sw.DataAccess.sparql_protocol_types.QueryFault {
+    public org.w3.www._2001.sw.DataAccess.sparql_protocol_types.QueryResult query(org.w3.www._2001.sw.DataAccess.sparql_protocol_types.QueryRequest query) throws java.rmi.RemoteException, org.w3.www._2001.sw.DataAccess.sparql_protocol_types.QueryFault {
         if (super.cachedEndpoint == null) {
             throw new org.apache.axis.NoEndPointException();
         }

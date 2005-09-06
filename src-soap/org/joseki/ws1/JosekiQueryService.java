@@ -10,7 +10,7 @@ package org.joseki.ws1;
 public interface JosekiQueryService extends javax.xml.rpc.Service {
     public java.lang.String getSparqlQueryAddress();
 
-    public org.joseki.ws1.QueryInterface getSparqlQuery() throws javax.xml.rpc.ServiceException;
+    public org.joseki.ws1.SparqlQuery getSparqlQuery() throws javax.xml.rpc.ServiceException;
 
-    public org.joseki.ws1.QueryInterface getSparqlQuery(java.net.URL portAddress) throws javax.xml.rpc.ServiceException;
+    public org.joseki.ws1.SparqlQuery getSparqlQuery(java.net.URL portAddress) throws javax.xml.rpc.ServiceException;
 }

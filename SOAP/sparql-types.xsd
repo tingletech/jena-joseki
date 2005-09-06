@@ -9,10 +9,10 @@
 	   xmlns="http://www.w3.org/2001/XMLSchema"
 	   >
 
-  <xs:element name="query">
+  <xs:element name="query-request">
     <xs:complexType>
       <xs:all>
-	<xs:element minOccurs="1" maxOccurs="1" name="sparql-query" type="xs:string"/>
+	<xs:element minOccurs="1" maxOccurs="1" name="query" type="xs:string"/>
 	<xs:element minOccurs="0" maxOccurs="unbounded" name="default-graph-uri" type="xs:anyURI"/>
 	<xs:element minOccurs="0" maxOccurs="unbounded" name="named-graph-uri" type="xs:anyURI"/>
       </xs:all>

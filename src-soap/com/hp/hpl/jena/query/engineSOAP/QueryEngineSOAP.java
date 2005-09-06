@@ -18,7 +18,7 @@ import org.apache.commons.logging.LogFactory;
 import org.joseki.soap.GraphDeserializerFactory;
 import org.joseki.soap.ResultSetAxis;
 import org.joseki.ws1.JosekiQueryServiceLocator;
-import org.joseki.ws1.QueryInterface;
+import org.joseki.ws1.SparqlQuery;
 import org.w3.www._2001.sw.DataAccess.sparql_protocol_types.*;
 
 // Clash with the types class of the same name -- import com.hp.hpl.jena.query.Query;
@@ -35,7 +35,7 @@ public class QueryEngineSOAP implements QueryExecution
     String endpoint = null ;
     com.hp.hpl.jena.query.Query query = null ;
     String queryString = null ;
-    QueryInterface soapQuery = null ;
+    SparqlQuery soapQuery = null ;
     
     /** Create a execution of a query at a given endpoint
      * @param query
@@ -91,8 +91,8 @@ public class QueryEngineSOAP implements QueryExecution
     
     private QueryResult exec()
     {
-        Query q = new Query() ;
-        q.setSparqlQuery(queryString) ;
+        QueryRequest q = new QueryRequest() ;
+        q.setQuery(queryString) ;
         
         try {
             return soapQuery.query(q) ;

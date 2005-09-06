@@ -1,5 +1,5 @@
 /**
- * Query.java
+ * QueryRequest.java
  *
  * This file was auto-generated from WSDL
  * by the Apache Axis 1.2.1 Jun 14, 2005 (09:15:57 EDT) WSDL2Java emitter.
@@ -7,46 +7,46 @@
 
 package org.w3.www._2001.sw.DataAccess.sparql_protocol_types;
 
-public class Query  implements java.io.Serializable {
-    private java.lang.String sparqlQuery;
+public class QueryRequest  implements java.io.Serializable {
+    private java.lang.String query;
     private org.apache.axis.types.URI[] defaultGraphUri;
     private org.apache.axis.types.URI[] namedGraphUri;
 
-    public Query() {
+    public QueryRequest() {
     }
 
-    public Query(
-           java.lang.String sparqlQuery,
+    public QueryRequest(
+           java.lang.String query,
            org.apache.axis.types.URI[] defaultGraphUri,
            org.apache.axis.types.URI[] namedGraphUri) {
-           this.sparqlQuery = sparqlQuery;
+           this.query = query;
            this.defaultGraphUri = defaultGraphUri;
            this.namedGraphUri = namedGraphUri;
     }
 
 
     /**
-     * Gets the sparqlQuery value for this Query.
+     * Gets the query value for this QueryRequest.
      * 
-     * @return sparqlQuery
+     * @return query
      */
-    public java.lang.String getSparqlQuery() {
-        return sparqlQuery;
+    public java.lang.String getQuery() {
+        return query;
     }
 
 
     /**
-     * Sets the sparqlQuery value for this Query.
+     * Sets the query value for this QueryRequest.
      * 
-     * @param sparqlQuery
+     * @param query
      */
-    public void setSparqlQuery(java.lang.String sparqlQuery) {
-        this.sparqlQuery = sparqlQuery;
+    public void setQuery(java.lang.String query) {
+        this.query = query;
     }
 
 
     /**
-     * Gets the defaultGraphUri value for this Query.
+     * Gets the defaultGraphUri value for this QueryRequest.
      * 
      * @return defaultGraphUri
      */
@@ -56,7 +56,7 @@ public class Query  implements java.io.Serializable {
 
 
     /**
-     * Sets the defaultGraphUri value for this Query.
+     * Sets the defaultGraphUri value for this QueryRequest.
      * 
      * @param defaultGraphUri
      */
@@ -74,7 +74,7 @@ public class Query  implements java.io.Serializable {
 
 
     /**
-     * Gets the namedGraphUri value for this Query.
+     * Gets the namedGraphUri value for this QueryRequest.
      * 
      * @return namedGraphUri
      */
@@ -84,7 +84,7 @@ public class Query  implements java.io.Serializable {
 
 
     /**
-     * Sets the namedGraphUri value for this Query.
+     * Sets the namedGraphUri value for this QueryRequest.
      * 
      * @param namedGraphUri
      */
@@ -102,8 +102,8 @@ public class Query  implements java.io.Serializable {
 
     private java.lang.Object __equalsCalc = null;
     public synchronized boolean equals(java.lang.Object obj) {
-        if (!(obj instanceof Query)) return false;
-        Query other = (Query) obj;
+        if (!(obj instanceof QueryRequest)) return false;
+        QueryRequest other = (QueryRequest) obj;
         if (obj == null) return false;
         if (this == obj) return true;
         if (__equalsCalc != null) {
@@ -112,9 +112,9 @@ public class Query  implements java.io.Serializable {
         __equalsCalc = obj;
         boolean _equals;
         _equals = true && 
-            ((this.sparqlQuery==null && other.getSparqlQuery()==null) || 
-             (this.sparqlQuery!=null &&
-              this.sparqlQuery.equals(other.getSparqlQuery()))) &&
+            ((this.query==null && other.getQuery()==null) || 
+             (this.query!=null &&
+              this.query.equals(other.getQuery()))) &&
             ((this.defaultGraphUri==null && other.getDefaultGraphUri()==null) || 
              (this.defaultGraphUri!=null &&
               java.util.Arrays.equals(this.defaultGraphUri, other.getDefaultGraphUri()))) &&
@@ -132,8 +132,8 @@ public class Query  implements java.io.Serializable {
         }
         __hashCodeCalc = true;
         int _hashCode = 1;
-        if (getSparqlQuery() != null) {
-            _hashCode += getSparqlQuery().hashCode();
+        if (getQuery() != null) {
+            _hashCode += getQuery().hashCode();
         }
         if (getDefaultGraphUri() != null) {
             for (int i=0;
@@ -163,13 +163,13 @@ public class Query  implements java.io.Serializable {
 
     // Type metadata
     private static org.apache.axis.description.TypeDesc typeDesc =
-        new org.apache.axis.description.TypeDesc(Query.class, true);
+        new org.apache.axis.description.TypeDesc(QueryRequest.class, true);
 
     static {
-        typeDesc.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2001/sw/DataAccess/sparql-protocol-types", ">query"));
+        typeDesc.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2001/sw/DataAccess/sparql-protocol-types", ">query-request"));
         org.apache.axis.description.ElementDesc elemField = new org.apache.axis.description.ElementDesc();
-        elemField.setFieldName("sparqlQuery");
-        elemField.setXmlName(new javax.xml.namespace.QName("", "sparql-query"));
+        elemField.setFieldName("query");
+        elemField.setXmlName(new javax.xml.namespace.QName("", "query"));
         elemField.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "string"));
         elemField.setNillable(false);
         typeDesc.addFieldDesc(elemField);
