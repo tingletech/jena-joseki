@@ -1,6 +1,8 @@
 Joseki3
 =======
 
++ Update all XSD and WSDl to latest and rebuild
+
 + Need "application/sparql-query"
 
 = Check .srx file extension
