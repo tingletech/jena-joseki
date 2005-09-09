@@ -122,9 +122,6 @@ _:books-db   rdf:type joseki:RDFDataSet ;
 
 
 ## --------------------------------------------------------------
-## Individual graphs  (Jena calls them Models)
-## ---- A model, with RDF read from a file 
-## (syntax determined by file extension - defaults to RDF/XML)
 
 _:model  rdf:type jms:DefaultModelSpec ;
     rdfs:label "Model(plain)" ;

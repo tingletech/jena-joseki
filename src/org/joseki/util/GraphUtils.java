@@ -39,7 +39,7 @@ public class GraphUtils
     
     public static void loadModel(Model model, String uri, int limit) 
     {
-        loadModel(model, uri, limit) ;
+        loadModel(model, uri, limit, null) ;
     }
 
     public static void loadModel(Model model, String uri, int limit, String syntax) 

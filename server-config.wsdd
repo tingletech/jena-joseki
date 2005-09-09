@@ -34,7 +34,7 @@
  </service>
  <service name="sparql-query" provider="java:RPC" style="document" use="literal">
   <operation name="query" qname="query" returnQName="ns1:query-result" returnType="ns1:query-result" soapAction="" xmlns:ns1="http://www.w3.org/2001/sw/DataAccess/sparql-protocol-types">
-   <parameter qname="ns1:query" type="ns1:query"/>
+   <parameter qname="ns1:query-request" type="ns1:query-request"/>
    <fault class="org.w3.www._2001.sw.DataAccess.sparql_protocol_types.QueryFault" qname="ns1:query-fault" type="ns1:query-fault"/>
   </operation>
   <parameter name="wsdlServicePort" value="sparql-query"/>
@@ -44,7 +44,7 @@
   <parameter name="typeMappingVersion" value="1.2"/>
   <parameter name="wsdlServiceElement" value="JosekiQueryService"/>
   <parameter name="wsdlTargetNamespace" value="http://www.w3.org/2005/01/sparql-protocol-query"/>
-  <parameter name="wsdlPortType" value="QueryInterface"/>
+  <parameter name="wsdlPortType" value="SparqlQuery"/>
   <parameter name="scope" value="Session"/>
   <parameter name="schemaUnqualified" value="http://www.w3.org/XML/1998/namespace,http://www.w3.org/1999/02/22-rdf-syntax-ns#,http://www.w3.org/2001/sw/DataAccess/sparql-protocol-types"/>
   <typeMapping deserializer="org.joseki.soap.GraphDeserializerFactory" encodingStyle="" qname="ns2:RDF" serializer="org.joseki.soap.GraphSerializerFactory" type="java:com.hp.hpl.jena.rdf.model.Model" xmlns:ns2="http://www.w3.org/1999/02/22-rdf-syntax-ns#"/>
@@ -56,10 +56,10 @@
   <typeMapping deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle="" qname="ns8:&gt;binding" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" type="java:org.w3.www._2005.sparql_results.Binding" xmlns:ns8="http://www.w3.org/2005/sparql-results#"/>
   <typeMapping deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle="" qname="ns9:&gt;result" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" type="java:org.w3.www._2005.sparql_results.Result" xmlns:ns9="http://www.w3.org/2005/sparql-results#"/>
   <typeMapping deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle="" qname="ns10:&gt;link" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" type="java:org.w3.www._2005.sparql_results.Link" xmlns:ns10="http://www.w3.org/2005/sparql-results#"/>
-  <typeMapping deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle="" qname="ns11:&gt;query" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" type="java:org.w3.www._2001.sw.DataAccess.sparql_protocol_types.Query" xmlns:ns11="http://www.w3.org/2001/sw/DataAccess/sparql-protocol-types"/>
-  <typeMapping deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle="" qname="ns12:&gt;results" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" type="java:org.w3.www._2005.sparql_results.Results" xmlns:ns12="http://www.w3.org/2005/sparql-results#"/>
-  <typeMapping deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle="" qname="ns13:&gt;literal" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" type="java:org.w3.www._2005.sparql_results.Literal" xmlns:ns13="http://www.w3.org/2005/sparql-results#"/>
-  <typeMapping deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle="" qname="ns14:&gt;query-fault" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" type="java:org.w3.www._2001.sw.DataAccess.sparql_protocol_types.QueryFault" xmlns:ns14="http://www.w3.org/2001/sw/DataAccess/sparql-protocol-types"/>
+  <typeMapping deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle="" qname="ns11:&gt;results" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" type="java:org.w3.www._2005.sparql_results.Results" xmlns:ns11="http://www.w3.org/2005/sparql-results#"/>
+  <typeMapping deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle="" qname="ns12:&gt;literal" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" type="java:org.w3.www._2005.sparql_results.Literal" xmlns:ns12="http://www.w3.org/2005/sparql-results#"/>
+  <typeMapping deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle="" qname="ns13:&gt;query-fault" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" type="java:org.w3.www._2001.sw.DataAccess.sparql_protocol_types.QueryFault" xmlns:ns13="http://www.w3.org/2001/sw/DataAccess/sparql-protocol-types"/>
+  <typeMapping deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle="" qname="ns14:&gt;query-request" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" type="java:org.w3.www._2001.sw.DataAccess.sparql_protocol_types.QueryRequest" xmlns:ns14="http://www.w3.org/2001/sw/DataAccess/sparql-protocol-types"/>
   <typeMapping deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" encodingStyle="" qname="ns15:&gt;query-result" serializer="org.apache.axis.encoding.ser.BeanSerializerFactory" type="java:org.w3.www._2001.sw.DataAccess.sparql_protocol_types.QueryResult" xmlns:ns15="http://www.w3.org/2001/sw/DataAccess/sparql-protocol-types"/>
  </service>
  <transport name="http">
