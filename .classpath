@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="lib/antlr.jar"/>
 	<classpathentry kind="lib" path="lib/commons-logging.jar"/>
 	<classpathentry kind="lib" path="lib/concurrent.jar"/>
 	<classpathentry kind="lib" path="lib/icu4j.jar"/>
-	<classpathentry kind="lib" path="lib/jakarta-oro-2.0.5.jar"/>
 	<classpathentry kind="lib" path="lib/javax.servlet.jar"/>
 	<classpathentry sourcepath="jena-src.zip" kind="lib" path="lib/jena.jar"/>
 	<classpathentry kind="lib" path="lib/junit.jar"/>
@@ -13,7 +11,6 @@
 	<classpathentry kind="lib" path="lib/org.mortbay.jmx.jar"/>
 	<classpathentry kind="lib" path="lib/xercesImpl.jar"/>
 	<classpathentry kind="lib" path="lib/xml-apis.jar"/>
-	<classpathentry kind="lib" path="lib/log4j-1.2.9.jar"/>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="src-soap"/>
 	<classpathentry kind="src" path="src-dev"/>
@@ -29,5 +26,8 @@
 	<classpathentry kind="lib" path="lib/stax-api-1.0.jar"/>
 	<classpathentry kind="lib" path="lib/arq.jar"/>
 	<classpathentry kind="lib" path="lib-jdbc/mysql-connector-java-3.2.0-alpha-bin.jar"/>
+	<classpathentry kind="lib" path="lib/antlr-2.7.5.jar"/>
+	<classpathentry kind="lib" path="lib/jakarta-oro-2.0.8.jar"/>
+	<classpathentry kind="lib" path="lib/log4j-1.2.12.jar"/>
 	<classpathentry kind="output" path="classes"/>
 </classpath>

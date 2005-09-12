@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.hp.hpl.jena.query.QueryException;
 import com.hp.hpl.jena.query.ResultSet;
 import com.hp.hpl.jena.query.ResultSetFormatter;
+import com.hp.hpl.jena.query.resultset.XMLOutput;
 import com.hp.hpl.jena.query.resultset.XMLOutputASK;
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.shared.JenaException;
@@ -136,8 +137,7 @@ public class ResponseHttp extends Response
         if ( ! wantsAppXML )
         {
             // As model
-            ResultSetFormatter rsFmt = new  ResultSetFormatter(resultSet) ;
-            Model m = rsFmt.toModel() ;
+            Model m = ResultSetFormatter.toModel(resultSet) ;
             doResponseModel(m) ;
             return ;
         }
@@ -155,12 +155,14 @@ public class ResponseHttp extends Response
         }
         
         try {
-            ResultSetFormatter fmt = new ResultSetFormatter(resultSet) ;
             ser.setHttpResponse(httpRequest, httpResponse, Joseki.contentTypeXML, null);  
             httpResponse.setStatus(HttpServletResponse.SC_OK) ;
             httpResponse.setHeader(Joseki.httpHeaderField, Joseki.httpHeaderValue);
             ServletOutputStream out = httpResponse.getOutputStream() ;
-            fmt.outputAsXML(out, stylesheetURL) ;
+            XMLOutput xOut = new XMLOutput() ;
+            xOut.setStylesheetURL(stylesheetURL) ;
+            xOut.setIncludeXMLinst(true) ;
+            xOut.format(out, resultSet) ;
             out.flush() ;
             httpResponse.flushBuffer();
         }
