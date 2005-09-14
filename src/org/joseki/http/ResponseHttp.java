@@ -132,9 +132,11 @@ public class ResponseHttp extends Response
     protected void doResponseResultSet(ResultSet resultSet) throws QueryExecutionException
     {
         String f = httpRequest.getHeader("Accept") ;
-        boolean wantsAppXML = HttpUtils.accept(f, "application/xml") ; 
+        boolean wantsAppXML1 = HttpUtils.accept(f, Joseki.contentTypeXML) ; 
+        boolean wantsAppXML2 = HttpUtils.accept(f, Joseki.contentTypeResultsXML) ;
         
-        if ( ! wantsAppXML )
+        
+        if ( ! ( wantsAppXML1 || wantsAppXML2 ) )
         {
             // As model
             Model m = ResultSetFormatter.toModel(resultSet) ;
@@ -155,7 +157,7 @@ public class ResponseHttp extends Response
         }
         
         try {
-            ser.setHttpResponse(httpRequest, httpResponse, Joseki.contentTypeXML, null);  
+            ser.setHttpResponse(httpRequest, httpResponse, Joseki.contentTypeResultsXML, null);  
             httpResponse.setStatus(HttpServletResponse.SC_OK) ;
             httpResponse.setHeader(Joseki.httpHeaderField, Joseki.httpHeaderValue);
             ServletOutputStream out = httpResponse.getOutputStream() ;
@@ -186,7 +188,7 @@ public class ResponseHttp extends Response
     protected void doResponseBoolean(Boolean result) throws QueryExecutionException
     {
         try {
-            ser.setHttpResponse(httpRequest, httpResponse, Joseki.contentTypeXML, null) ;
+            ser.setHttpResponse(httpRequest, httpResponse, Joseki.contentTypeResultsXML, null) ;
             httpResponse.setStatus(HttpServletResponse.SC_OK) ;
             httpResponse.setHeader(Joseki.httpHeaderField, Joseki.httpHeaderValue);
             

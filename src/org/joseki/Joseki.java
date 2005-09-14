@@ -9,7 +9,7 @@ import java.util.* ;
 
 /** Constants and other definitions.
  * @author      Andy Seaborne
- * @version     $Id: Joseki.java,v 1.15 2005-06-24 19:48:36 andy_seaborne Exp $
+ * @version     $Id: Joseki.java,v 1.16 2005-09-14 10:26:12 andy_seaborne Exp $
  */
 public class Joseki
 {
@@ -28,6 +28,7 @@ public class Joseki
     public static final String contentTypeRDFXML       = "application/rdf+xml" ;
     public static final String contentTypeNTriples     = "application/n-triples" ;
     public static final String contentTypeXML          = "application/xml" ;
+    public static final String contentTypeResultsXML   = "application/sparql-results+xml" ;
 
     public static final String contentTypeTextPlain    = "text/plain" ;
     public static final String contentTypeTextN3       = "text/n3" ;

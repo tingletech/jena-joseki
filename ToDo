@@ -5,6 +5,8 @@ Joseki3
 
 + Need "application/sparql-query"
 
++ Teach HttpUtils about "+" as in "application/sparql-results+xml"
+
 = Check .srx file extension
 
 + Release time?
