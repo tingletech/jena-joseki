@@ -25,17 +25,23 @@ public class QuerySoapBindingStub extends org.apache.axis.client.Stub implements
         org.apache.axis.description.ParameterDesc param;
         oper = new org.apache.axis.description.OperationDesc();
         oper.setName("query");
-        param = new org.apache.axis.description.ParameterDesc(new javax.xml.namespace.QName("http://www.w3.org/2001/sw/DataAccess/sparql-protocol-types", "query-request"), org.apache.axis.description.ParameterDesc.IN, new javax.xml.namespace.QName("http://www.w3.org/2001/sw/DataAccess/sparql-protocol-types", ">query-request"), org.w3.www._2001.sw.DataAccess.sparql_protocol_types.QueryRequest.class, false, false);
+        param = new org.apache.axis.description.ParameterDesc(new javax.xml.namespace.QName("http://www.w3.org/2005/09/sparql-protocol-types/#", "query-request"), org.apache.axis.description.ParameterDesc.IN, new javax.xml.namespace.QName("http://www.w3.org/2005/09/sparql-protocol-types/#", ">query-request"), org.w3.www._2005._09.sparql_protocol_types.QueryRequest.class, false, false);
         oper.addParameter(param);
-        oper.setReturnType(new javax.xml.namespace.QName("http://www.w3.org/2001/sw/DataAccess/sparql-protocol-types", ">query-result"));
-        oper.setReturnClass(org.w3.www._2001.sw.DataAccess.sparql_protocol_types.QueryResult.class);
-        oper.setReturnQName(new javax.xml.namespace.QName("http://www.w3.org/2001/sw/DataAccess/sparql-protocol-types", "query-result"));
+        oper.setReturnType(new javax.xml.namespace.QName("http://www.w3.org/2005/09/sparql-protocol-types/#", ">query-result"));
+        oper.setReturnClass(org.w3.www._2005._09.sparql_protocol_types.QueryResult.class);
+        oper.setReturnQName(new javax.xml.namespace.QName("http://www.w3.org/2005/09/sparql-protocol-types/#", "query-result"));
         oper.setStyle(org.apache.axis.constants.Style.DOCUMENT);
         oper.setUse(org.apache.axis.constants.Use.LITERAL);
         oper.addFault(new org.apache.axis.description.FaultDesc(
-                      new javax.xml.namespace.QName("http://www.w3.org/2001/sw/DataAccess/sparql-protocol-types", "query-fault"),
-                      "org.w3.www._2001.sw.DataAccess.sparql_protocol_types.QueryFault",
-                      new javax.xml.namespace.QName("http://www.w3.org/2001/sw/DataAccess/sparql-protocol-types", ">query-fault"), 
+                      new javax.xml.namespace.QName("http://www.w3.org/2005/09/sparql-protocol-types/#", "malformed-query"),
+                      "org.w3.www._2005._09.sparql_protocol_types.MalformedQuery",
+                      new javax.xml.namespace.QName("http://www.w3.org/2005/09/sparql-protocol-types/#", ">malformed-query"), 
+                      true
+                     ));
+        oper.addFault(new org.apache.axis.description.FaultDesc(
+                      new javax.xml.namespace.QName("http://www.w3.org/2005/09/sparql-protocol-types/#", "query-request-refused"),
+                      "org.w3.www._2005._09.sparql_protocol_types.QueryRequestRefused",
+                      new javax.xml.namespace.QName("http://www.w3.org/2005/09/sparql-protocol-types/#", ">query-request-refused"), 
                       true
                      ));
         _operations[0] = oper;
@@ -71,23 +77,30 @@ public class QuerySoapBindingStub extends org.apache.axis.client.Stub implements
             java.lang.Class simpledf = org.apache.axis.encoding.ser.SimpleDeserializerFactory.class;
             java.lang.Class simplelistsf = org.apache.axis.encoding.ser.SimpleListSerializerFactory.class;
             java.lang.Class simplelistdf = org.apache.axis.encoding.ser.SimpleListDeserializerFactory.class;
-            qName = new javax.xml.namespace.QName("http://www.w3.org/2001/sw/DataAccess/sparql-protocol-types", ">query-fault");
+            qName = new javax.xml.namespace.QName("http://www.w3.org/2005/09/sparql-protocol-types/#", ">malformed-query");
             cachedSerQNames.add(qName);
-            cls = org.w3.www._2001.sw.DataAccess.sparql_protocol_types.QueryFault.class;
+            cls = org.w3.www._2005._09.sparql_protocol_types.MalformedQuery.class;
             cachedSerClasses.add(cls);
             cachedSerFactories.add(beansf);
             cachedDeserFactories.add(beandf);
 
-            qName = new javax.xml.namespace.QName("http://www.w3.org/2001/sw/DataAccess/sparql-protocol-types", ">query-request");
+            qName = new javax.xml.namespace.QName("http://www.w3.org/2005/09/sparql-protocol-types/#", ">query-request");
             cachedSerQNames.add(qName);
-            cls = org.w3.www._2001.sw.DataAccess.sparql_protocol_types.QueryRequest.class;
+            cls = org.w3.www._2005._09.sparql_protocol_types.QueryRequest.class;
             cachedSerClasses.add(cls);
             cachedSerFactories.add(beansf);
             cachedDeserFactories.add(beandf);
 
-            qName = new javax.xml.namespace.QName("http://www.w3.org/2001/sw/DataAccess/sparql-protocol-types", ">query-result");
+            qName = new javax.xml.namespace.QName("http://www.w3.org/2005/09/sparql-protocol-types/#", ">query-request-refused");
             cachedSerQNames.add(qName);
-            cls = org.w3.www._2001.sw.DataAccess.sparql_protocol_types.QueryResult.class;
+            cls = org.w3.www._2005._09.sparql_protocol_types.QueryRequestRefused.class;
+            cachedSerClasses.add(cls);
+            cachedSerFactories.add(beansf);
+            cachedDeserFactories.add(beandf);
+
+            qName = new javax.xml.namespace.QName("http://www.w3.org/2005/09/sparql-protocol-types/#", ">query-result");
+            cachedSerQNames.add(qName);
+            cls = org.w3.www._2005._09.sparql_protocol_types.QueryResult.class;
             cachedSerClasses.add(cls);
             cachedSerFactories.add(beansf);
             cachedDeserFactories.add(beandf);
@@ -228,7 +241,7 @@ public class QuerySoapBindingStub extends org.apache.axis.client.Stub implements
         }
     }
 
-    public org.w3.www._2001.sw.DataAccess.sparql_protocol_types.QueryResult query(org.w3.www._2001.sw.DataAccess.sparql_protocol_types.QueryRequest query) throws java.rmi.RemoteException, org.w3.www._2001.sw.DataAccess.sparql_protocol_types.QueryFault {
+    public org.w3.www._2005._09.sparql_protocol_types.QueryResult query(org.w3.www._2005._09.sparql_protocol_types.QueryRequest query) throws java.rmi.RemoteException, org.w3.www._2005._09.sparql_protocol_types.MalformedQuery, org.w3.www._2005._09.sparql_protocol_types.QueryRequestRefused {
         if (super.cachedEndpoint == null) {
             throw new org.apache.axis.NoEndPointException();
         }
@@ -252,9 +265,9 @@ public class QuerySoapBindingStub extends org.apache.axis.client.Stub implements
         else {
             extractAttachments(_call);
             try {
-                return (org.w3.www._2001.sw.DataAccess.sparql_protocol_types.QueryResult) _resp;
+                return (org.w3.www._2005._09.sparql_protocol_types.QueryResult) _resp;
             } catch (java.lang.Exception _exception) {
-                return (org.w3.www._2001.sw.DataAccess.sparql_protocol_types.QueryResult) org.apache.axis.utils.JavaUtils.convert(_resp, org.w3.www._2001.sw.DataAccess.sparql_protocol_types.QueryResult.class);
+                return (org.w3.www._2005._09.sparql_protocol_types.QueryResult) org.apache.axis.utils.JavaUtils.convert(_resp, org.w3.www._2005._09.sparql_protocol_types.QueryResult.class);
             }
         }
   } catch (org.apache.axis.AxisFault axisFaultException) {
@@ -262,8 +275,11 @@ public class QuerySoapBindingStub extends org.apache.axis.client.Stub implements
         if (axisFaultException.detail instanceof java.rmi.RemoteException) {
               throw (java.rmi.RemoteException) axisFaultException.detail;
          }
-        if (axisFaultException.detail instanceof org.w3.www._2001.sw.DataAccess.sparql_protocol_types.QueryFault) {
-              throw (org.w3.www._2001.sw.DataAccess.sparql_protocol_types.QueryFault) axisFaultException.detail;
+        if (axisFaultException.detail instanceof org.w3.www._2005._09.sparql_protocol_types.MalformedQuery) {
+              throw (org.w3.www._2005._09.sparql_protocol_types.MalformedQuery) axisFaultException.detail;
+         }
+        if (axisFaultException.detail instanceof org.w3.www._2005._09.sparql_protocol_types.QueryRequestRefused) {
+              throw (org.w3.www._2005._09.sparql_protocol_types.QueryRequestRefused) axisFaultException.detail;
          }
    }
   throw axisFaultException;

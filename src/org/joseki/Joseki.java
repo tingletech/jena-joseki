@@ -9,10 +9,34 @@ import java.util.* ;
 
 /** Constants and other definitions.
  * @author      Andy Seaborne
- * @version     $Id: Joseki.java,v 1.16 2005-09-14 10:26:12 andy_seaborne Exp $
+ * @version     $Id: Joseki.java,v 1.17 2005-09-15 09:35:45 andy_seaborne Exp $
  */
 public class Joseki
 {
+    /** The root package name for ARQ */   
+    public static final String PATH = "org.joseki";
+   
+    /** The product name */   
+    public static final String NAME = "@name@";
+   
+    /** The Joseki website */   
+    public static final String WEBSITE = "@website@";
+   
+    /** The full name of the current Joseki version */   
+    public static final String VERSION = "@version@";
+   
+    /** The major version number for this release of Joseki */
+    public static final String MAJOR_VERSION = "@version-major@";
+   
+    /** The minor version number for this release of Joseki */
+    public static final String MINOR_VERSION = "@version-minor@";
+   
+    /** The version status for this release of Joseki */
+    public static final String VERSION_STATUS = "@version-status@";
+   
+    /** The date and time at which this release was built */   
+    public static final String BUILD_DATE = "@build-time@";
+    
     public static final int defaultPort = 2020 ; 
     // TODO automate version number (read from file?) 
     public static String version = "3.0-dev" ;
@@ -80,6 +104,7 @@ public class Joseki
     static {
         setWriterType(contentTypeXML, "RDF/XML-ABBREV") ;
         setWriterType(contentTypeAppN3, "N3") ;
+        setWriterType(contentTypeTextN3, "N3") ;
         setWriterType(contentTypeRDFXML, "RDF/XML-ABBREV") ;
         setWriterType(contentTypeNTriples, "N-TRIPLE") ;
         setWriterType(contentTypeTurtle, "TURTLE") ;

@@ -5,7 +5,7 @@
  * by the Apache Axis 1.2.1 Jun 14, 2005 (09:15:57 EDT) WSDL2Java emitter.
  */
 
-package org.w3.www._2001.sw.DataAccess.sparql_protocol_types;
+package org.w3.www._2005._09.sparql_protocol_types;
 
 public class QueryResult  implements java.io.Serializable {
     private org.w3.www._2005.sparql_results.Sparql sparql;
@@ -105,7 +105,7 @@ public class QueryResult  implements java.io.Serializable {
         new org.apache.axis.description.TypeDesc(QueryResult.class, true);
 
     static {
-        typeDesc.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2001/sw/DataAccess/sparql-protocol-types", ">query-result"));
+        typeDesc.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2005/09/sparql-protocol-types/#", ">query-result"));
         org.apache.axis.description.ElementDesc elemField = new org.apache.axis.description.ElementDesc();
         elemField.setFieldName("sparql");
         elemField.setXmlName(new javax.xml.namespace.QName("http://www.w3.org/2005/sparql-results#", "sparql"));

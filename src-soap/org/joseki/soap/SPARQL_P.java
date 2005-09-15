@@ -21,10 +21,9 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.joseki.Dispatcher;
 import org.joseki.Request;
-import org.joseki.ReturnCodes;
 import org.joseki.processors.SPARQL;
 
-import org.w3.www._2001.sw.DataAccess.sparql_protocol_types.* ;
+import org.w3.www._2005._09.sparql_protocol_types.* ;
 
 
 /** The implementation of SPARQL protocol over SOAP */
@@ -144,14 +143,15 @@ public class SPARQL_P
             try {
                 Dispatcher.dispatch(serviceURI, serviceRequest, serviceResponse) ;
                 serviceResponse.execException() ;
-                QueryResult r = serviceResponse.get() ; 
+                QueryResult r = serviceResponse.get() ;
                 return r ;
             }
-            catch (QueryFault f) { throw f ; }  
+            catch (MalformedQuery f) { throw f ; }  
+            catch (QueryRequestRefused f) { throw f ; }  
             catch (Exception ex)
             {
                 log.warn("Internal server error", ex) ;
-                throw new QueryFault(ReturnCodes.rcInternalError, "Internal server error") ;
+                throw new org.apache.axis.AxisFault("Internal server error") ;
 //                    String faultString = null ;
 //                    String faultActor = null ;
 //                    Detail detail = null ;
@@ -163,13 +163,19 @@ public class SPARQL_P
         }
         
         // Pass out exceptions that are supposed to be generated 
-        catch (QueryFault ex) { throw ex ; }
+        catch (MalformedQuery f) { throw f ; }
+        catch (QueryRequestRefused f) { throw f ; }  
+        catch (org.apache.axis.AxisFault ex) { throw ex ; }
+        
+        // Unexpected Axis exception
         catch (SOAPException ex)
         {
             System.err.println("SOAP: "+ex.getMessage()) ;
             ex.printStackTrace(System.err) ;
             throw new RuntimeException("SOAP", ex) ;
         }
+        
+        // Some unexpected problem
         catch (Exception ex)
         {
             System.err.println(ex.getMessage()) ;
@@ -185,191 +191,6 @@ public class SPARQL_P
             return "<<null>>" ;
         return s.toString() ;
     }
-
-//      // To go.
-//      public QueryResult query2(Query request) throws java.rmi.RemoteException
-//      {
-//          if ( log.isDebugEnabled() )
-//              log.debug("SOAP request received") ;
-//          try {
-//              
-//              // Axis has already parsed the message into nice Java datastructures.  
-//              MessageContext cxt = MessageContext.getCurrentContext() ;
-//              cxt.setProperty("disablePrettyXML", new Boolean(false)) ;
-//              
-//              if ( true )
-//              {
-//                  // Print incoming.
-//                  SOAPMessage msg = cxt.getMessage() ;
-//                  
-//                  SOAPBody b = (SOAPBody)msg.getSOAPBody() ;
-//                  String s = SOAPUtils.elementAsString(cxt, b) ;
-//                  log.info("\n"+s) ;
-//              }
-  //
-//              SOAPService srv = cxt.getService() ;
-//              
-////              System.out.println("ALL") ;
-////              for ( Iterator iter = cxt.getAllPropertyNames() ; iter.hasNext() ; )
-////              {
-////                  String p = (String)iter.next() ; 
-////                  Object v = cxt.getProperty(p) ;
-////                  System.out.println(p+" = "+v) ; 
-////              }
-////              System.out.println("NAMES") ;
-////              for ( Iterator iter = cxt.getPropertyNames() ; iter.hasNext() ; )
-////              {
-////                  String p = (String)iter.next() ; 
-////                  Object v = cxt.getProperty(p) ;
-////                  System.out.println(p+" = "+v) ; 
-////              }
-//              
-  //
-//              String target = cxt.getTargetService() ;
-//              
-//              String url = (String)cxt.getProperty("transport.url") ;
-//              String path = (String)cxt.getProperty("path") ;
-//              String realpath = (String)cxt.getProperty("realpath") ;
-//              
-//              int ind = path.lastIndexOf('/') ;
-//              // Works if i = -1.
-//              String serviceURI = path.substring(ind+1) ;
-//              Request serviceRequest = new Request(serviceURI) ;
-  //
-//              // ---- Query
-//              
-//              String queryString = request.getSparqlQuery() ;
-//              
-//              if ( log.isDebugEnabled() )
-//                  log.debug("Query string: "+stringOrNull(queryString)) ;
-//             
-//              serviceRequest.setParam(SPARQL.P_QUERY, queryString) ;
-//              
-//              // ---- Default graph
-//              
-//              URI uri = request.getDefaultGraphUri() ;
-//              
-//              if ( log.isDebugEnabled() )
-//                  log.debug("Default Graph: "+stringOrNull(uri)) ;
-//              
-//              serviceRequest.setParam(SPARQL.P_DEFAULT_GRAPH, queryString) ;
-//              
-//              // ---- Named graphs
-//              URI[] names = request.getNamedGraphUri() ;
-//              if ( names == null )
-//              {
-//                  if ( log.isDebugEnabled() )
-//                      log.debug("No named graphs") ;
-//              }
-//              else
-//              {
-//                  for ( int i = 0 ; i < names.length ; i++ )
-//                  {
-//                      URI u = names[i] ;
-//                      if ( log.isDebugEnabled() )
-//                          log.debug("Named graph: "+stringOrNull(u)) ;
-//                      serviceRequest.setParam(SPARQL.P_NAMED_GRAPH, queryString) ;
-//                  }
-//              }
-  //
-//              // ---- Response
-//              
-//              ResponseSOAP serviceResponse = new ResponseSOAP(serviceRequest) ;
-//              if ( false  )
-//              {
-//                  log.info("Sending exception") ;
-//                  throw new QueryFault(ReturnCodes.rcInternalError, "Internal server error") ;
-//              }
-//              if ( false )
-//              {
-//                  try {
-//                      Dispatcher.dispatch(serviceURI, serviceRequest, serviceResponse) ;
-//                  }
-//                  catch (Exception ex)
-//                  {
-//                      log.warn("Internal server error", ex) ;
-//                      QName faultCode = null ;
-//                      throw new QueryFault(ReturnCodes.rcInternalError, "Internal server error") ;
-////                      String faultString = null ;
-////                      String faultActor = null ;
-////                      Detail detail = null ;
-////                      throw new SOAPFaultException(faultCode,
-////                                                   faultString,
-////                                                   faultActor,
-////                                                   detail) ;
-//                  }     
-//              }
-//              
-//              
-//              // A result
-//              QueryResult result = new QueryResult() ;
-  //
-//              if ( false )
-//              {
-//                  // Custom type
-//                  Model model = ModelFactory.createDefaultModel() ;
-//                  Resource r = model.createResource("http://example.org/r1") ;
-//                  Property p = model.createProperty("http://example.org/r1") ;
-//                  model.add(r, p, "value") ;
-//                  result.setRDF(model) ;
-//                  return result ;
-//              }
-//              
-//              Sparql r = new Sparql();
-//              Results xmlResults = new Results() ;
-//              Result soln = new Result() ;
-  //
-//              Binding b1 = new Binding() ;
-//              b1.setName(new NMToken("x")) ;
-//              b1.setUri("http://example.org/#") ;
-  //
-//              Binding b2 = new Binding() ;
-//              b2.setName(new NMToken("y")) ;
-////              b2.setBnode("BNODE") ;
-//              
-//              // May need custom serializer :-(
-//              Literal lit = new Literal() ;
-//              Text txt = new Text("I'm a literal") ;
-//              MessageElement mElt = new MessageElement(txt) ;
-////              AttributesImpl a = new AttributesImpl() ;
-////              a.addAttribute("", "", "xml:lang", "CDATA", "en") ;
-////              mElt.setAllAttributes(a) ;
-//              lit.set_any(new MessageElement[]{mElt}) ;
-//              b2.setLiteral(lit) ;
-//              
-//              
-//              soln.setBinding(new Binding[]{b1, b2}) ;
-//              xmlResults.setResult(new Result[]{soln}) ;
-//              r.setResults(xmlResults) ;
-//              result.setSparql(r) ;
-//              
-//              Head h = new Head() ;
-//              Variable v1 = new Variable() ; 
-//              v1.setName(new NMToken("x")) ;
-//              Variable v2 = new Variable() ;
-//              v2.setName(new NMToken("y")) ;
-//              h.setVariable(new Variable[]{v1, v2}) ;
-//              r.setHead(h) ;
-//              return result ;
-//          }
-//          
-//          // Pass out exceptions that are supposed to be generated 
-//          catch (QueryFault ex) { throw ex ; }
-//          catch (SOAPException ex)
-//          {
-//              System.err.println("SOAP: "+ex.getMessage()) ;
-//              ex.printStackTrace(System.err) ;
-//              throw new RuntimeException("SOAP", ex) ;
-//          }
-//          catch (Exception ex)
-//          {
-//              System.err.println(ex.getMessage()) ;
-//              ex.printStackTrace(System.err) ;
-//              return null ;
-//          }
-//      }
-
-
 }
 
 /*

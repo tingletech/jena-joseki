@@ -3,7 +3,13 @@
     <property name="Name"            value="Joseki"/>
     <property name="name"            value="joseki"/>
 
-    <property name="version"         value="3.0-dev-1"/>
+    <!-- The major and minor version numbers  -->
+    <property name="version-major"   value="3"/>
+    <property name="version-minor"   value="0"/>
+    <property name="version-status"  value="-dev1"/>
+    <property name="version"
+         value="${version-major}.${version-minor}${version-status}"/>
+
     <property name="dist.name"       value="${name}-${version}"/>
     <property name="dist.path"       value="${Name}-${version}"/>
     <property name="dist.root"       value="dist"/>
@@ -15,6 +21,9 @@
     <property name="java.optimize"   value="true"/>
     <property name="java.source"     value="1.4"/>
     <property name="java.target"     value="1.4"/>
+
+    <property name="src.build.dir"         value="bldsrc"/>
+    <property name="classes.build.dir"     value="bldbin"/>
 
     <property name="src.dir"         value="src"/>
     <property name="build.dir"       value="classes.build"/>
@@ -43,6 +52,15 @@
         <fileset dir="lib/" includes="*.jar" excludes="joseki.jar"/>
     </path>
 
+    <filterset id="filters.general">
+        <filter token="name"           value="${Name}"/>
+        <filter token="website"        value="http://www.joseki.org/"/>
+        <filter token="version"        value="${version}"/>
+        <filter token="version-major"  value="${version-major}"/>
+        <filter token="version-minor"  value="${version-minor}"/>
+        <filter token="version-status" value="${version-status}"/>   
+    </filterset>
+
     <!-- ============================================== -->
 
     <target name="main" depends="make-jar,javadoc"
@@ -60,13 +78,28 @@
 
     <target name="pre-compile">
         <!-- Ensure a clean compile -->
-        <delete dir="${build.dir}"/>
-        <mkdir dir="${build.dir}"/>
+        <delete dir="${classes.build.dir}"/>
+        <mkdir dir="${classes.build.dir}"/>
+
+	<tstamp>
+          <format property="BUILD_TIME"      pattern="yyyy-MM-dd HH:mm Z"/>
+          <format property="BUILD_TIME_XSD"  pattern="yyyy-MM-dd'T'HH:mm:ssZ"/>
+        </tstamp>
+     
+	<copy todir="${src.build.dir}">
+	  <fileset dir="${src.dir}" includes="**"/>
+	  <filterset>
+	    <filterset refid="filters.general"/>
+	    <filter token="build-time" value="${BUILD_TIME}" />
+	    <filter token="build-time-xsd" value="${BUILD_TIME_XSD}" />
+	  </filterset> 
+        </copy>
+
     </target>
 
     <target name="compile-java">
-      <javac srcdir="${src.dir}"
-	     destdir="${build.dir}"
+      <javac srcdir="${src.build.dir}"
+	     destdir="${classes.build.dir}"
 	     debug="${java.debug}"
 	     debuglevel="${java.debuglevel}"
 	     deprecation="${java.deprecation}"
@@ -87,7 +120,7 @@
     <target name="make-jar" depends="compile">
         <mkdir dir="${jar.dir}"/>
         <jar jarfile="${jar.dir}/${jar.name}"
-             basedir="${build.dir}">
+             basedir="${classes.build.dir}">
         </jar>
 	<antcall target="clean-build-dirs"/>
     </target>
@@ -220,7 +253,7 @@
 
         <!-- Source code -->
         <copy todir="${dist.dir}/${src.dir}">
-            <fileset dir="${src.dir}">
+            <fileset dir="${src.build.dir}">
               <include name="**"/>
               <exclude name="*.~"/>
             </fileset>
@@ -315,7 +348,7 @@
         <delete dir="${javadoc.dir}"/>
         <mkdir dir="${javadoc.dir}"/>
         <javadoc packagenames="org.joseki.*"
-                 sourcepath="${src.dir}"
+                 sourcepath="${src.build.dir}"
                  destdir="${javadoc.dir}"
                  author="true"
                  version="true"
@@ -369,7 +402,9 @@
     <!-- Misc -->
 
     <target name="clean-build-dirs">
-        <delete dir="${build.dir}"/>
-        <mkdir dir="${build.dir}"/>
+        <delete dir="${src.build.dir}"/>
+        <mkdir dir="${src.build.dir}"/>
+        <delete dir="${classes.build.dir}"/>
+        <mkdir dir="${classes.build.dir}"/>
     </target>
 </project>

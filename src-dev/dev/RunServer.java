@@ -16,9 +16,9 @@ public class RunServer
     {
         RunUtils.setLog4j() ;
         
-        //AxisServer.main(args) ; System.exit(0) ;
+        AxisServer.main(args) ; System.exit(0) ;
         
-        runJosekiServer(args) ; System.exit(0) ;
+        //runJosekiServer(args) ; System.exit(0) ;
     }
     
     public static void runJosekiServer(String[] args) 

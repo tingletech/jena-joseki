@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <wsdl:definitions
-     targetNamespace="http://www.w3.org/2005/01/sparql-protocol-query"
-     xmlns:tns="http://www.w3.org/2005/01/sparql-protocol-query"
+     targetNamespace="http://www.w3.org/2005/08/sparql-protocol-query/#"
+     xmlns:tns="http://www.w3.org/2005/08/sparql-protocol-query/#"
 
      xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
      xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
 
-     xmlns:st="http://www.w3.org/2001/sw/DataAccess/sparql-protocol-types"
+     xmlns:st="http://www.w3.org/2005/09/sparql-protocol-types/#"
      xmlns:xres="http://www.w3.org/2005/sparql-results#"
 
      xmlns:wsd2="http://www.w3.org/2004/08/wsdl" 
@@ -17,7 +17,6 @@
 
      xmlns:xs="http://www.w3.org/2001/XMLSchema"
 
-     xmlns:xrf="http://www.w3.org/2001/sw/DataAccess/rf1/result"
      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
      schemaLocation="http://www.w3.org/2004/08/wsdl" 
      >
@@ -25,7 +24,7 @@
   <!--
   <wsdl:types>
     <xs:import namespace="http://www.w3.org/2001/sw/DataAccess/rf1/result"/>
-    <xs:import namespace="http://www.w3.org/2001/sw/DataAccess/sparql-protocol-types"/>
+    <xs:import namespace="http://www.w3.org/2001/sw/DataAccess/sparql-protocol-types/#"/>
     <xs:import namespace="http://www.w3.org/1999/02/22-rdf-syntax-ns#"/>
   </wsdl:types>
   -->
@@ -39,8 +38,9 @@
   <wsdl:import namespace="http://www.w3.org/2005/sparql-results#"
                location="result2.xsd"/>
 
-  <wsdl:import namespace="http://www.w3.org/2001/sw/DataAccess/sparql-protocol-types"
-               location="sparql-types.xsd"/>
+  <wsdl:import namespace="http://www.w3.org/2005/09/sparql-protocol-types/#"
+	       location="sparql-protocol-types.xsd"/>
+               <!-- location="sparql-types.xsd" -->
   
   <wsdl:message name="queryRequest">
     <wsdl:part name="query" element="st:query-request"/>
@@ -50,21 +50,22 @@
     <wsdl:part name="response" element="st:query-result"/>
   </wsdl:message>
 
-   <wsdl:message name="queryFault">
-    <wsdl:part name="fault" element="st:query-fault"/>
+   <wsdl:message name="queryMalformed">
+    <wsdl:part name="faultMalformedQuery"      
+	       element="st:malformed-query"/>
+  </wsdl:message>
+  <wsdl:message name="queryRefused">
+    <wsdl:part name="faultQueryRequestRefused" 
+	       element="st:query-request-refused"/>
   </wsdl:message>
 
 
-  <!--
-  <wsdl:fault name="MalformedQuery" element="st:faultDetails"/>
-  <wsdl:fault name="QueryRequestRefused" element="st:faultDetails"/>
-  -->
-  
   <wsdl:portType name="SparqlQuery">
     <wsdl:operation name="query">
       <wsdl:input  message="tns:queryRequest"/>
       <wsdl:output message="tns:queryResponse"/>
-      <wsdl:fault  message="tns:queryFault"  name="queryFault" />
+      <wsdl:fault  message="tns:queryRefused"   name="queryRefused" />
+      <wsdl:fault  message="tns:queryMalformed"  name="queryMalformed" />
     </wsdl:operation>
   </wsdl:portType>
 
@@ -77,7 +78,10 @@
       <wsdl:output>
         <soap:body use="literal"/>
       </wsdl:output>
-      <wsdl:fault name="queryFault">
+      <wsdl:fault name="queryRefused">
+        <soap:fault use="literal"/>
+      </wsdl:fault>
+      <wsdl:fault name="queryMalformed">
         <soap:fault use="literal"/>
       </wsdl:fault>
     </wsdl:operation>

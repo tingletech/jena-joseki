@@ -5,9 +5,15 @@
  * by the Apache Axis 1.2.1 Jun 14, 2005 (09:15:57 EDT) WSDL2Java emitter.
  */
 
-package org.w3.www._2001.sw.DataAccess.sparql_protocol_types;
+package org.w3.www._2005._09.sparql_protocol_types;
 
 public class QueryRequest  implements java.io.Serializable {
+    /** query is an xs:string constrained by the
+ * 		      language definition,
+ * 		      http://www.w3.org/TR/rdf-sparql-query/#grammar, as "a
+ * 		      sequence of characters in the language defined by the
+ * 		      [SPARQL] grammar, starting with the Query
+ * 		      production" */
     private java.lang.String query;
     private org.apache.axis.types.URI[] defaultGraphUri;
     private org.apache.axis.types.URI[] namedGraphUri;
@@ -28,7 +34,12 @@ public class QueryRequest  implements java.io.Serializable {
     /**
      * Gets the query value for this QueryRequest.
      * 
-     * @return query
+     * @return query query is an xs:string constrained by the
+ * 		      language definition,
+ * 		      http://www.w3.org/TR/rdf-sparql-query/#grammar, as "a
+ * 		      sequence of characters in the language defined by the
+ * 		      [SPARQL] grammar, starting with the Query
+ * 		      production"
      */
     public java.lang.String getQuery() {
         return query;
@@ -38,7 +49,12 @@ public class QueryRequest  implements java.io.Serializable {
     /**
      * Sets the query value for this QueryRequest.
      * 
-     * @param query
+     * @param query query is an xs:string constrained by the
+ * 		      language definition,
+ * 		      http://www.w3.org/TR/rdf-sparql-query/#grammar, as "a
+ * 		      sequence of characters in the language defined by the
+ * 		      [SPARQL] grammar, starting with the Query
+ * 		      production"
      */
     public void setQuery(java.lang.String query) {
         this.query = query;
@@ -166,7 +182,7 @@ public class QueryRequest  implements java.io.Serializable {
         new org.apache.axis.description.TypeDesc(QueryRequest.class, true);
 
     static {
-        typeDesc.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2001/sw/DataAccess/sparql-protocol-types", ">query-request"));
+        typeDesc.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2005/09/sparql-protocol-types/#", ">query-request"));
         org.apache.axis.description.ElementDesc elemField = new org.apache.axis.description.ElementDesc();
         elemField.setFieldName("query");
         elemField.setXmlName(new javax.xml.namespace.QName("", "query"));

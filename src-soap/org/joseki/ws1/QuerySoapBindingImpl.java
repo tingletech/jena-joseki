@@ -7,11 +7,12 @@
 
 package org.joseki.ws1;
 import org.joseki.soap.SPARQL_P;
-import org.w3.www._2001.sw.DataAccess.sparql_protocol_types.* ;
+import org.w3.www._2005._09.sparql_protocol_types.* ;
 
 public class QuerySoapBindingImpl extends SPARQL_P implements SparqlQuery
 {
-    public QueryResult query(QueryRequest request) throws java.rmi.RemoteException, QueryFault
+    public QueryResult query(QueryRequest request)
+    throws java.rmi.RemoteException, MalformedQuery, QueryRequestRefused 
     {
         return super.query(request) ;
     }

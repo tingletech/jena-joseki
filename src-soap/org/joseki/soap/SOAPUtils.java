@@ -15,7 +15,8 @@ import org.apache.axis.message.MessageElement;
 
 public class SOAPUtils
 {
-    public static String elementAsString(MessageContext msgContext, MessageElement elt) throws Exception
+    public static String elementAsString(MessageContext msgContext, MessageElement elt)
+    throws Exception
     {
         StringWriter writer = new StringWriter();
         SerializationContext serializeContext = new SerializationContext(writer, msgContext);

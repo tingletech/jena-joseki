@@ -57,7 +57,7 @@ and use &file;
 
   <!-- WSDL processing -->
 
-  <target name="init.wsdl" depends="socks">
+  <target name="init.wsdl" depends="socks,clean">
     <echo>Source ==> ${src}</echo>
   </target>
   <!--   
@@ -77,10 +77,13 @@ and use &file;
   <!-- Need both client and server targets?
        serverSide="yes" seems to still generate client
   -->
-  <target name="wsdl" depends="init.wsdl" description="Produce Java (server, client, type code) from WSDL">
+  <target name="wsdl" depends="init.wsdl" 
+	  description="Produce Java (server, client, type code) from WSDL">
     <!-- Use <get> or <uptodate>to make this conditional -->
-    <wsdl2java url="${wsdl.file}" output="${src}" deployscope="session" serverSide="yes">
-      <mapping namespace="http://www.w3.org/2005/01/sparql-protocol-query" package="${wsdl.code.pkg}" />
+    <wsdl2java url="${wsdl.file}" output="${src}" 
+	       deployscope="session" serverSide="yes">
+      <mapping namespace="http://www.w3.org/2005/08/sparql-protocol-query/#" 
+	       package="${wsdl.code.pkg}" />
     </wsdl2java>
   </target>
 
@@ -135,7 +138,8 @@ and use &file;
   
   <target name="clean">
     <delete>
-      <fileset dir="${src}" excludes="org/joseki/ws1/QuerySoapBindingImpl.java"/>
+      <fileset dir="${src}" 
+	       excludes="org/joseki/ws1/QuerySoapBindingImpl.java"/>
     </delete>   
   </target>
 

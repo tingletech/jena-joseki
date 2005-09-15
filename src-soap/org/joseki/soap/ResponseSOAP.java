@@ -10,25 +10,27 @@ import com.hp.hpl.jena.query.ResultSet;
 import com.hp.hpl.jena.rdf.model.Model;
 
 import org.joseki.*;
-import org.w3.www._2001.sw.DataAccess.sparql_protocol_types.QueryFault;
-import org.w3.www._2001.sw.DataAccess.sparql_protocol_types.QueryResult;
+import org.w3.www._2005._09.sparql_protocol_types.* ;
 import org.w3.www._2005.sparql_results.Sparql;
 
 
 public class ResponseSOAP extends Response
 {
     QueryResult result = new QueryResult() ;
-    private QueryFault fault = null ;
+    private MalformedQuery malformedQuery = null ;
+    private QueryRequestRefused queryRequestRefused = null ;
     
     public ResponseSOAP(Request request)
     {
         super(request) ;
     }
     
-    public void execException() throws QueryFault
+    public void execException() throws MalformedQuery, QueryRequestRefused
     {
-        if ( fault != null )
-            throw fault ;
+        if ( malformedQuery != null )
+            throw malformedQuery ;
+        if ( queryRequestRefused != null )
+            throw queryRequestRefused ;
     }
     public QueryResult get() { return result ; }
     
@@ -52,9 +54,18 @@ public class ResponseSOAP extends Response
 
     protected void doException(ExecutionException execEx)
     {
-        fault = new QueryFault(execEx.returnCode, execEx.shortMessage) ;
+        
+        if ( execEx.returnCode == ReturnCodes.rcQueryParseFailure )
+        {
+            malformedQuery = new MalformedQuery() ;
+            malformedQuery.setFaultDetails1(execEx.shortMessage) ; 
+        }
+        else
+        {
+            queryRequestRefused = new QueryRequestRefused() ;
+            queryRequestRefused.setFaultDetails1(execEx.shortMessage) ;
+        }
     }
-
 }
 
 /*

@@ -105,7 +105,7 @@ public class JosekiQueryServiceLocator extends org.apache.axis.client.Service im
     }
 
     public javax.xml.namespace.QName getServiceName() {
-        return new javax.xml.namespace.QName("http://www.w3.org/2005/01/sparql-protocol-query", "JosekiQueryService");
+        return new javax.xml.namespace.QName("http://www.w3.org/2005/08/sparql-protocol-query/#", "JosekiQueryService");
     }
 
     private java.util.HashSet ports = null;
@@ -113,7 +113,7 @@ public class JosekiQueryServiceLocator extends org.apache.axis.client.Service im
     public java.util.Iterator getPorts() {
         if (ports == null) {
             ports = new java.util.HashSet();
-            ports.add(new javax.xml.namespace.QName("http://www.w3.org/2005/01/sparql-protocol-query", "sparql-query"));
+            ports.add(new javax.xml.namespace.QName("http://www.w3.org/2005/08/sparql-protocol-query/#", "sparql-query"));
         }
         return ports.iterator();
     }

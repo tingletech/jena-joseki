@@ -7,6 +7,8 @@
 
 package dev;
 
+
+import com.hp.hpl.jena.query.QueryException;
 import com.hp.hpl.jena.query.QueryExecution;
 import com.hp.hpl.jena.query.ResultSetFormatter;
 import com.hp.hpl.jena.query.engineSOAP.QueryEngineSOAP;
@@ -34,10 +36,18 @@ public class RunClient
     
     public static void doOneSelectQuery()
     {
-        String queryStr = "\nSELECT ?z {?x ?y ?z . FILTER regex(?z, 'Harry')}\n" ;
-        QueryExecution qexec = new QueryEngineSOAP(queryStr, endpoint) ;
-        ResultSetFormatter.out(System.out, qexec.execSelect()) ;
-        qexec.close() ;
+        String queryStr = "SELECT ?z {?x ?y ?z . FILTER regex(?z, 'Harry')}\n" ;
+        //queryStr = "XXX" ;
+        
+        try {
+            QueryExecution qexec = new QueryEngineSOAP(queryStr, endpoint) ;
+            ResultSetFormatter.out(System.out, qexec.execSelect()) ;
+            qexec.close() ;
+        } 
+        catch (QueryException ex)
+        {
+            System.out.println("Query error: "+ex.getMessage()) ;
+        }
     }
 
     public static void doOneConstructQuery()

@@ -26,7 +26,8 @@ import org.joseki.soap.SOAPUtils;
 
 import org.w3.www._2005.sparql_results.*;
 
-import org.w3.www._2001.sw.DataAccess.sparql_protocol_types.QueryFault;
+import org.w3.www._2005._09.sparql_protocol_types.MalformedQuery;
+import org.w3.www._2005._09.sparql_protocol_types.QueryRequestRefused;
 
 public class WSClient
 {
@@ -89,9 +90,14 @@ public class WSClient
                 // Not sure where the deserialized version goes to
                 
             }
-            catch (QueryFault ex)
+            catch (MalformedQuery ex)
             {
-                System.err.println("RC = "+ex.getQueryFaultCode()+" "+ex.getQueryFaultMessage()) ;
+                System.err.println("MalformedQuery : "+ex.getFaultDetails1()) ;
+    
+            }
+            catch (QueryRequestRefused ex)
+            {
+                System.err.println("QueryRequestRefused : "+ex.getFaultDetails1()) ;
     
             }
              catch (Exception ex)

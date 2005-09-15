@@ -19,7 +19,7 @@ import org.joseki.soap.GraphDeserializerFactory;
 import org.joseki.soap.ResultSetAxis;
 import org.joseki.ws1.JosekiQueryServiceLocator;
 import org.joseki.ws1.SparqlQuery;
-import org.w3.www._2001.sw.DataAccess.sparql_protocol_types.*;
+import org.w3.www._2005._09.sparql_protocol_types.* ;
 
 // Clash with the types class of the same name -- import com.hp.hpl.jena.query.Query;
 import com.hp.hpl.jena.query.QueryExecution;
@@ -96,10 +96,14 @@ public class QueryEngineSOAP implements QueryExecution
         
         try {
             return soapQuery.query(q) ;
-        } catch (QueryFault ex)
+        } catch (MalformedQuery ex)
         {
-            log.debug("QueryFault: "+ex.getQueryFaultCode()+" "+ex.getQueryFaultMessage()) ;
-            throw new QueryExceptionSOAP(ex.getQueryFaultMessage(), ex) ;
+            log.debug("MalformedQuery: "+ex.getFaultDetails1()) ;
+            throw new QueryExceptionSOAP(ex.getFaultDetails1(), ex) ;
+        } catch (QueryRequestRefused ex)
+        {
+            log.debug("QueryRequestRefused: "+ex.getFaultDetails1()) ;
+            throw new QueryExceptionSOAP(ex.getFaultDetails1(), ex) ;
         } catch (AxisFault axisFault)
         {
             log.debug("Axis Fault: "+axisFault.getFaultCode()+ ""+ axisFault.getFaultString()) ;
