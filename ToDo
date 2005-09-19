@@ -7,7 +7,7 @@ Joseki3
 
 + Teach HttpUtils about "+" as in "application/sparql-results+xml"
 
-= Check .srx file extension
++ Get baseURI from Document to set parsing one.
 
 + Release time?
 
@@ -16,8 +16,8 @@ Joseki3
 
 + Add version id (build, ARQ) to HTTP headers
 
-+ Add strict mode (i.e it's SPARQL and SPARQL only) pe service
-  Or separate processors.
++ Add strict mode (i.e it's SPARQL and SPARQL only) q service
+  As separate processors.
 
 + Test harness
 
