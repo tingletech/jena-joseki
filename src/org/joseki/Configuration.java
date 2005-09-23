@@ -10,7 +10,6 @@ import java.util.*;
 
 
 import com.hp.hpl.jena.query.*;
-import com.hp.hpl.jena.query.core.ResultBinding;
 import com.hp.hpl.jena.query.resultset.ResultSetRewindable;
 import com.hp.hpl.jena.query.util.RelURI;
 import com.hp.hpl.jena.rdf.model.*;
@@ -52,8 +51,7 @@ public class Configuration
     {
         this(FileManager.get(), filename, registry) ;
     }
-    
-    public Configuration(FileManager fileManager, String filename, ServiceRegistry registry)
+        public Configuration(FileManager fileManager, String filename, ServiceRegistry registry)
     {
         this.registry = registry ;
         filename = RelURI.resolveFileURL(filename) ;
@@ -352,7 +350,11 @@ public class Configuration
                 
                 try {
                     dataset = getDatasetForService(ref) ;
-                } catch(Exception ex) { continue ; }
+                } catch(Exception ex)
+                { 
+                    log.warn("Problems with dataset: "+ex.getMessage(), ex) ;
+                    continue ;
+                 }
                 
                 Service service = new Service(proc, ref, dataset) ;
                 services.put(ref, service) ;
@@ -380,18 +382,30 @@ public class Configuration
 
     private DatasetDesc getDatasetForService(String ref)
     {
-        ResultBinding rb = new ResultBinding(confModel) ; 
-        rb.add("ref", confModel.createLiteral(ref)) ;
+//        ResultBinding rb = new ResultBinding(confModel) ; 
+//        rb.add("ref", confModel.createLiteral(ref)) ;
+//        String s[] = new String[]{
+//            "SELECT *",
+//            "{",
+//            "  ?service  joseki:serviceRef  ?ref ;",
+//            "            joseki:dataset     ?dataset ." ,
+//            "    }",
+//            "ORDER BY ?serviceRef ?className" } ;
+//
+//        Query query = makeQuery(s) ;
+//        QueryExecution qexec = QueryExecutionFactory.create(query, confModel, rb) ;
         String s[] = new String[]{
             "SELECT *",
             "{",
-            "  ?service  joseki:serviceRef  ?ref ;",
+            "  ?service  joseki:serviceRef  '"+ref+"' ;",
             "            joseki:dataset     ?dataset ." ,
             "    }",
-            "ORDER BY ?serviceRef ?className" } ;
-
+        "ORDER BY ?serviceRef ?className" } ;
+        
         Query query = makeQuery(s) ;
-        QueryExecution qexec = QueryExecutionFactory.create(query, confModel, rb) ;
+        QueryExecution qexec = QueryExecutionFactory.create(query, confModel) ;
+        
+        
         List x = new ArrayList() ;
         try {
             for ( ResultSet rs = qexec.execSelect() ; rs.hasNext() ; )

@@ -7,6 +7,7 @@
 package com.hp.hpl.jena.query.engineSOAP;
 
 import java.rmi.RemoteException;
+import java.util.Properties;
 
 import javax.xml.namespace.QName;
 
@@ -159,6 +160,8 @@ public class QueryEngineSOAP implements QueryExecution
             throw new QueryExceptionSOAP("Not an ASK query: "+queryString) ;
         return result.getSparql().get_boolean().booleanValue() ;
     }
+
+    public Properties getProperties() { return null ; }
 
     public void abort()
     { }

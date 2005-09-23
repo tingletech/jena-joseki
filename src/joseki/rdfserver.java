@@ -12,7 +12,7 @@ import org.joseki.* ;
 /** Command line application to run an RDF Server
  *
  * @author  Andy Seaborne
- * @version $Id: rdfserver.java,v 1.5 2005-06-23 09:56:00 andy_seaborne Exp $
+ * @version $Id: rdfserver.java,v 1.6 2005-09-23 14:31:15 andy_seaborne Exp $
  */
 
 
@@ -67,7 +67,7 @@ public class rdfserver
         if ( cmd.contains(verboseDecl) )
             VERBOSE = true ;
         
-        if ( cmd.items().size() > 1 )
+        if ( cmd.numItems() > 1 )
         {
             System.err.println("Must specify exactly one configuration file (or use default : "+defaultConfigFile+")") ;
             System.err.println(usageMessage) ;
@@ -76,8 +76,8 @@ public class rdfserver
         
         String configFile = null ;
 
-        if ( cmd.items().size() > 0 )
-            configFile = (String)cmd.items().get(0) ;
+        if ( cmd.numItems() > 0 )
+            configFile = cmd.getItem(0) ;
         else
             configFile = defaultConfigFile ;
 

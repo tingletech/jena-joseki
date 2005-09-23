@@ -131,10 +131,13 @@ public class ResponseHttp extends Response
     
     protected void doResponseResultSet(ResultSet resultSet) throws QueryExecutionException
     {
+        boolean wantsStyle = request.containsParam(paramStyleSheet) ;
+        String contentType = Joseki.contentTypeResultsXML ;
+        
+        
         String f = httpRequest.getHeader("Accept") ;
         boolean wantsAppXML1 = HttpUtils.accept(f, Joseki.contentTypeXML) ; 
         boolean wantsAppXML2 = HttpUtils.accept(f, Joseki.contentTypeResultsXML) ;
-        
         
         if ( ! ( wantsAppXML1 || wantsAppXML2 ) )
         {
@@ -155,9 +158,13 @@ public class ResponseHttp extends Response
                     stylesheetURL = null ;
             }
         }
+
+        // Firefox will prompt if application/sparlq-result+xml 
+        if ( stylesheetURL != null )
+            contentType = Joseki.contentTypeXML ;
         
         try {
-            ser.setHttpResponse(httpRequest, httpResponse, Joseki.contentTypeResultsXML, null);  
+            ser.setHttpResponse(httpRequest, httpResponse, contentType, null);  
             httpResponse.setStatus(HttpServletResponse.SC_OK) ;
             httpResponse.setHeader(Joseki.httpHeaderField, Joseki.httpHeaderValue);
             ServletOutputStream out = httpResponse.getOutputStream() ;
