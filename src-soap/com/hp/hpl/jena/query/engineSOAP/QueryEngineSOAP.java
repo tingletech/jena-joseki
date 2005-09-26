@@ -23,6 +23,7 @@ import org.joseki.ws1.SparqlQuery;
 import org.w3.www._2005._09.sparql_protocol_types.* ;
 
 // Clash with the types class of the same name -- import com.hp.hpl.jena.query.Query;
+import com.hp.hpl.jena.query.Query;
 import com.hp.hpl.jena.query.QueryExecution;
 import com.hp.hpl.jena.query.QuerySolution;
 import com.hp.hpl.jena.query.ResultSet;
@@ -34,7 +35,7 @@ public class QueryEngineSOAP implements QueryExecution
 {
     private static Log log = LogFactory.getLog(QueryEngineSOAP.class) ; 
     String endpoint = null ;
-    com.hp.hpl.jena.query.Query query = null ;
+    Query query = null ;
     String queryString = null ;
     SparqlQuery soapQuery = null ;
     
@@ -43,12 +44,9 @@ public class QueryEngineSOAP implements QueryExecution
      * @param endpoint
      */
     
-    public QueryEngineSOAP(com.hp.hpl.jena.query.Query query, String endpoint)
+    public QueryEngineSOAP(Query query, String endpoint)
     {
-        this.endpoint = endpoint ;
-        this.query = query ;
-        this.queryString = query.serialize() ;
-        init() ;
+        this(query.serialize(), endpoint) ;
     }
     
     /** Create a execution of a query string at a given endpoint.
@@ -71,7 +69,6 @@ public class QueryEngineSOAP implements QueryExecution
     {
         JosekiQueryServiceLocator  service = new JosekiQueryServiceLocator();
         service.setSparqlQueryEndpointAddress(endpoint) ;
-        
         
         TypeMappingRegistry reg = service.getEngine().getTypeMappingRegistry() ;
         TypeMapping tm = (TypeMapping)reg.getTypeMapping("") ;
