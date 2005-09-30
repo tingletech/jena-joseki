@@ -22,7 +22,7 @@
 ## --------------------------------------------------------------
 ## About this configuration
 
-<> joseki:include <file:joseki-defs.ttl> .
+<> joseki:include <joseki-defs.ttl> .
     # Include other configuration information
  
 ## --------------------------------------------------------------

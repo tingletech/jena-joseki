@@ -7,7 +7,6 @@
 package com.hp.hpl.jena.query.engineSOAP;
 
 import java.rmi.RemoteException;
-import java.util.Properties;
 
 import javax.xml.namespace.QName;
 
@@ -27,6 +26,7 @@ import com.hp.hpl.jena.query.Query;
 import com.hp.hpl.jena.query.QueryExecution;
 import com.hp.hpl.jena.query.QuerySolution;
 import com.hp.hpl.jena.query.ResultSet;
+import com.hp.hpl.jena.query.util.Context;
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.util.FileManager;
 import com.hp.hpl.jena.vocabulary.RDF;
@@ -158,7 +158,8 @@ public class QueryEngineSOAP implements QueryExecution
         return result.getSparql().get_boolean().booleanValue() ;
     }
 
-    public Properties getProperties() { return null ; }
+    //@Override
+    public Context getContext() { return null ; }
 
     public void abort()
     { }

@@ -89,6 +89,11 @@ public class Dispatcher
         initServiceRegistry(fileManager, null) ;
     }
     
+    public static void initServiceRegistry(String configURI)
+    {
+        initServiceRegistry(FileManager.get(), configURI) ;
+    }
+    
     public static void initServiceRegistry(FileManager fileManager, String configURI)
     {    
         if ( configURI == null )

@@ -7,8 +7,8 @@
 package org.joseki.processors;
 
 
-import com.hp.hpl.jena.query.Lock;
-import com.hp.hpl.jena.query.util.LockMRSW;
+import com.hp.hpl.jena.shared.Lock;
+import com.hp.hpl.jena.shared.LockMRSW;
 
 import org.joseki.*;
 

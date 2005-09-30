@@ -17,7 +17,7 @@ import org.apache.commons.logging.* ;
 
 /** Standalone server.
  * 
- * @version $Id: RDFServer.java,v 1.8 2005-08-30 16:49:48 andy_seaborne Exp $
+ * @version $Id: RDFServer.java,v 1.9 2005-09-30 17:01:56 andy_seaborne Exp $
  * @author  Andy Seaborne
  */
 
@@ -80,7 +80,7 @@ public class RDFServer
     private void init(String configFile, int port, String serverBaseURI) 
     {
         if (earlyInitialize)
-            Dispatcher.initServiceRegistry() ;
+            Dispatcher.initServiceRegistry(configFile) ;
         else
             // Set system property so the dispatcher finds it later,
             // probably during servlet creation on first request,

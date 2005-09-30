@@ -51,10 +51,11 @@ public class Configuration
     {
         this(FileManager.get(), filename, registry) ;
     }
-        public Configuration(FileManager fileManager, String filename, ServiceRegistry registry)
+    
+    public Configuration(FileManager fileManager, String filename, ServiceRegistry registry)
     {
         this.registry = registry ;
-        filename = RelURI.resolveFileURL(filename) ;
+        filename = RelURI.resolve(filename) ;
         confModel = ModelFactory.createDefaultModel() ;
 
         Set filesDone = new HashSet() ;
