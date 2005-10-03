@@ -22,9 +22,6 @@
 ## --------------------------------------------------------------
 ## About this configuration
 
-<> joseki:include <joseki-defs.ttl> .
-    # Include other configuration information
- 
 ## --------------------------------------------------------------
 ## About this server
 
@@ -173,9 +170,34 @@ _:model2 rdf:type jms:DefaultModelSpec ;
 
 
 
-## --------------------------------------------------------------
+## ----- definitions --------------------------------------------------
 
-# Local Variables:
+joseki:ProcessorSPARQL
+    rdfs:label "General SPARQL processor" ;
+    rdf:type joseki:Processor ;
+    module:implementation joseki:ImplSPARQL ;
+
+    # Parameters - this processor processes FROM/FROM NAMED
+    joseki:allowExplicitDataset       "true"^^xsd:boolean ;
+    joseki:allowWebLoading            "true"^^xsd:boolean ;
+    .
+
+joseki:ProcessorSPARQL_FixedDS
+    rdfs:label "SPARQL processor for fixed datasets" ;
+    rdf:type joseki:Processor ;
+    module:implementation joseki:ImplSPARQL ;
+
+    # This processor does not accept queries with FROM/FROM NAMED
+    joseki:allowExplicitDataset       "false"^^xsd:boolean ;
+    joseki:allowWebLoading            "false"^^xsd:boolean ;
+    .
+
+joseki:ImplSPARQL
+    rdf:type   joseki:ServiceImpl ;
+    module:className
+        <java:org.joseki.processors.SPARQL> .
+
+    
 # tab-width: 4
 # indent-tabs-mode: nil
 # End:

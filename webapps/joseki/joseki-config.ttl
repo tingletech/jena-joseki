@@ -22,9 +22,6 @@
 ## --------------------------------------------------------------
 ## About this configuration
 
-<> joseki:include <file:joseki-defs.ttl> .
-    # Include other configuration information
- 
 ## --------------------------------------------------------------
 ## About this server
 
@@ -39,6 +36,9 @@
 ## serviceRef that will be used to match requests to services,
 ## not some resource URI for the description.
 
+## Note that the service reference and the routing of incoming
+## requests by URI as defined by web.xml have to align.
+
 # Service 1
 # General purpose SPARQL processor, no dataset, expects the
 # request to specify the dataset (either by parameters in the
@@ -47,7 +47,7 @@
 []
     rdf:type            joseki:Service ;
     rdfs:label          "service point" ;
-    joseki:serviceRef   "///sparql" ;
+    joseki:serviceRef   "sparql" ;
     joseki:processor    joseki:ProcessorSPARQL ;
     .
 
@@ -64,6 +64,18 @@
     joseki:processor    joseki:ProcessorSPARQL_FixedDS ;
     .
 
+## Axis/SAOP testing
+[]
+    rdf:type            joseki:Service ;
+    rdfs:label          "SPARQL/SOAP testing" ;
+    joseki:serviceRef   "sparql-query" ;
+    # dataset part
+    joseki:dataset      _:books ;
+    # Service part.
+    # This processor will not allow either the protocol,
+    # nor the query, to specify the datset.
+    joseki:processor    joseki:ProcessorSPARQL_FixedDS ;
+    .
 
 ## Add a FOAF named graph example.
 
@@ -105,13 +117,32 @@ _:ds1   rdf:type joseki:RDFDataSet ;
     .
 
 # A dataset of one model as the default graph
-
 _:books   rdf:type joseki:RDFDataSet ;
     rdfs:label "Books" ;
-    joseki:defaultGraph
+   joseki:defaultGraph
       [ rdfs:label "books.n3" ;
         jms:loadWith  <file:Data/books.n3> ] ;
     .
+
+## _:books   rdf:type joseki:RDFDataSet ;
+##     rdfs:label "Books" ;
+##     joseki:defaultGraph
+##         [ rdfs:label        "books-db" ;
+##           jms:modelName     "books" ;
+##           jms:maker 
+##             [ jms:reificationMode jms:rsMinimal ;
+##               jms:hasConnection [
+##                   jms:dbURL        <jdbc:mysql://localhost/data?autoReconnect=true> ;
+##                   jms:dbUser       "user" ;
+##                   jms:dbPassword   "password" ;
+##                   jms:dbType       "MySQL" ;
+##                   jms:dbClass      "com.mysql.jdbc.Driver" ;
+##                 ] ;
+##             ];
+##         ] ;
+##     .
+
+
 
 ## --------------------------------------------------------------
 ## Individual graphs  (Jena calls them Models)
@@ -139,9 +170,34 @@ _:model2 rdf:type jms:DefaultModelSpec ;
 
 
 
-## --------------------------------------------------------------
+## ----- definitions --------------------------------------------------
 
-# Local Variables:
+joseki:ProcessorSPARQL
+    rdfs:label "General SPARQL processor" ;
+    rdf:type joseki:Processor ;
+    module:implementation joseki:ImplSPARQL ;
+
+    # Parameters - this processor processes FROM/FROM NAMED
+    joseki:allowExplicitDataset       "true"^^xsd:boolean ;
+    joseki:allowWebLoading            "true"^^xsd:boolean ;
+    .
+
+joseki:ProcessorSPARQL_FixedDS
+    rdfs:label "SPARQL processor for fixed datasets" ;
+    rdf:type joseki:Processor ;
+    module:implementation joseki:ImplSPARQL ;
+
+    # This processor does not accept queries with FROM/FROM NAMED
+    joseki:allowExplicitDataset       "false"^^xsd:boolean ;
+    joseki:allowWebLoading            "false"^^xsd:boolean ;
+    .
+
+joseki:ImplSPARQL
+    rdf:type   joseki:ServiceImpl ;
+    module:className
+        <java:org.joseki.processors.SPARQL> .
+
+    
 # tab-width: 4
 # indent-tabs-mode: nil
 # End:

@@ -11,7 +11,6 @@ import java.util.*;
 
 import com.hp.hpl.jena.query.*;
 import com.hp.hpl.jena.query.resultset.ResultSetRewindable;
-import com.hp.hpl.jena.query.util.RelURI;
 import com.hp.hpl.jena.rdf.model.*;
 import com.hp.hpl.jena.shared.JenaException;
 import com.hp.hpl.jena.shared.NotFoundException;
@@ -55,7 +54,6 @@ public class Configuration
     public Configuration(FileManager fileManager, String filename, ServiceRegistry registry)
     {
         this.registry = registry ;
-        filename = RelURI.resolve(filename) ;
         confModel = ModelFactory.createDefaultModel() ;
 
         Set filesDone = new HashSet() ;

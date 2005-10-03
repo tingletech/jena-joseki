@@ -19,8 +19,8 @@ public class RunServer
         //AxisServer.main(args) ; System.exit(0) ;
         
         // Broken.
-        //String[] a = new String[]{"http://localhost/~afs/joseki-config.ttl"} ;
-        String[] a = args ;
+        String[] a = new String[]{"config.ttl"} ;
+        //String[] a = args ;
         runJosekiServer(a) ; System.exit(0) ;
     }
     

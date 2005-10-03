@@ -13,9 +13,6 @@
 ## --------------------------------------------------------------
 ## About this configuration
 
-<> joseki:include <file:joseki-defs.ttl> .
-    # Include other configuration information
- 
 ## --------------------------------------------------------------
 ## About this server
 
@@ -48,8 +45,35 @@ _:books   rdf:type joseki:RDFDataSet ;
       [ rdfs:label "books.n3" ;
         jms:loadWith  <file:../Data/books.n3> ] ;
     .
-## --------------------------------------------------------------
 
+## ----- definitions --------------------------------------------------
+
+
+joseki:ProcessorSPARQL
+    rdfs:label "General SPARQL processor" ;
+    rdf:type joseki:Processor ;
+    module:implementation joseki:ImplSPARQL ;
+
+    # Parameters - this processor processes FROM/FROM NAMED
+    joseki:allowExplicitDataset       "true"^^xsd:boolean ;
+    joseki:allowWebLoading            "true"^^xsd:boolean ;
+    .
+
+joseki:ProcessorSPARQL_FixedDS
+    rdfs:label "SPARQL processor for fixed datasets" ;
+    rdf:type joseki:Processor ;
+    module:implementation joseki:ImplSPARQL ;
+
+    # This processor does not accept queries with FROM/FROM NAMED
+    joseki:allowExplicitDataset       "false"^^xsd:boolean ;
+    joseki:allowWebLoading            "false"^^xsd:boolean ;
+    .
+
+joseki:ImplSPARQL
+    rdf:type   joseki:ServiceImpl ;
+    module:className
+        <java:org.joseki.processors.SPARQL> .
+    
 # Local Variables:
 # tab-width: 4
 # indent-tabs-mode: nil
