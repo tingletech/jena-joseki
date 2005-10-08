@@ -1,3 +1,25 @@
+> ------------------------------------------------------------------------
+> 
+> Index: build.xml
+> ===================================================================
+> RCS file: /cvsroot/joseki/Joseki3/build.xml,v
+> retrieving revision 1.9
+> diff -u -r1.9 build.xml
+> --- build.xml	15 Sep 2005 09:35:45 -0000	1.9
+> +++ build.xml	4 Oct 2005 15:39:23 -0000
+> @@ -171,9 +171,9 @@
+>          </copy>
+>      </target>
+>  
+> -    <target name="war-file" depends="check-jar,webapp-build"
+> +    <target name="war-file" depends="check-jar,webapp-build-format,webapp-build"
+>        description="Create a web application archive (WAR) fie" >
+> -        <war warfile="${webapps.name}.war"
+> +        <war warfile="${webapp.name}.war"
+>               webxml="${webapps.build.dir}/WEB-INF/web.xml">
+>              <fileset dir="${webapps.build.dir}" excludes="**/web.xml"/>
+>          </war>
+
 Joseki3
 =======
 
