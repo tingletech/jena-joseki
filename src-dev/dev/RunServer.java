@@ -19,7 +19,7 @@ public class RunServer
         //AxisServer.main(args) ; System.exit(0) ;
         
         // Broken.
-        String[] a = new String[]{"config.ttl"} ;
+        String[] a = new String[]{"joseki-config.ttl"} ;
         //String[] a = args ;
         runJosekiServer(a) ; System.exit(0) ;
     }
