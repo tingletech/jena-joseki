@@ -4,26 +4,24 @@
  * [See end of file]
  */
 
-package org.joseki.test;
+package org.joseki.junit;
 
-import junit.framework.Test;
-import junit.framework.TestSuite;
 
-/** 
+/** Test utilities.
+ * 
  * @author Andy Seaborne
- * @version $Id: JosekiTests.java,v 1.4 2005-10-20 13:47:24 andy_seaborne Exp $
+ * @version $Id: TestUtils.java,v 1.1 2005-10-20 13:47:24 andy_seaborne Exp $
  */
 
-public class JosekiTests extends TestSuite
+public class TestUtils
 {
-    static final String testDir = "testing" ;
-    
-    public static Test suite() { return new JosekiTests() ; }
-    
-    private JosekiTests()
+    static String safeName(String s)
     {
-        super("Joseki") ;
-        addTestSuite(TestContentNegotiation.class);
+        // Safe from Eclipse
+        s = s.replace('(','[') ;
+        s = s.replace(')',']') ;
+        return s ;
+
     }
 }
 

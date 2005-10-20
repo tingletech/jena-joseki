@@ -1,34 +1,31 @@
 /*
- * (c) Copyright 2004, 2005 Hewlett-Packard Development Company, LP
+ * (c) Copyright 2005 Hewlett-Packard Development Company, LP
  * All rights reserved.
  * [See end of file]
  */
 
-package org.joseki.test;
+package org.joseki.junit;
 
-import junit.framework.Test;
-import junit.framework.TestSuite;
+import com.hp.hpl.jena.query.junit.ManifestItemHandler;
+import com.hp.hpl.jena.rdf.model.Resource;
 
-/** 
- * @author Andy Seaborne
- * @version $Id: JosekiTests.java,v 1.4 2005-10-20 13:47:24 andy_seaborne Exp $
- */
 
-public class JosekiTests extends TestSuite
+public class ProtocolTestGenerator implements ManifestItemHandler
 {
-    static final String testDir = "testing" ;
-    
-    public static Test suite() { return new JosekiTests() ; }
-    
-    private JosekiTests()
+
+    public boolean processManifestItem(Resource manifest,
+                                       Resource entry, 
+                                       String testName,
+                                       Resource action,
+                                       Resource result)
     {
-        super("Joseki") ;
-        addTestSuite(TestContentNegotiation.class);
+        return true ;
     }
+
 }
 
 /*
- * (c) Copyright 2004, 2005 Hewlett-Packard Development Company, LP
+ * (c) Copyright 2005 Hewlett-Packard Development Company, LP
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without

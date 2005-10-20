@@ -1,34 +1,42 @@
 /*
- * (c) Copyright 2004, 2005 Hewlett-Packard Development Company, LP
+ * (c) Copyright 2005 Hewlett-Packard Development Company, LP
  * All rights reserved.
  * [See end of file]
  */
 
-package org.joseki.test;
+package org.joseki.junit;
 
-import junit.framework.Test;
+import java.util.Iterator;
+
 import junit.framework.TestSuite;
 
-/** 
- * @author Andy Seaborne
- * @version $Id: JosekiTests.java,v 1.4 2005-10-20 13:47:24 andy_seaborne Exp $
- */
+import com.hp.hpl.jena.query.junit.Manifest;
 
-public class JosekiTests extends TestSuite
+public class ProtocolTestSuiteFactory
 {
-    static final String testDir = "testing" ;
-    
-    public static Test suite() { return new JosekiTests() ; }
-    
-    private JosekiTests()
+    static public TestSuite make(String filename) 
     {
-        super("Joseki") ;
-        addTestSuite(TestContentNegotiation.class);
+        Manifest m = new Manifest(filename) ;
+        TestSuite ts = new TestSuite() ;
+        ts.setName(TestUtils.safeName(m.getName())) ;
+        
+        // Make sub-suites
+        for (Iterator iter = m.includedManifests() ; iter.hasNext() ; )
+        {
+            String n = (String)iter.next() ;
+            TestSuite ts2 = make(n) ;       // recurse
+            ts.addTest(ts2) ;
+        }
+
+        // Make tests.
+        ProtocolTestGenerator tg = new ProtocolTestGenerator() ;
+        m.apply(tg) ;
+        return ts ;
     }
 }
 
 /*
- * (c) Copyright 2004, 2005 Hewlett-Packard Development Company, LP
+ * (c) Copyright 2005 Hewlett-Packard Development Company, LP
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
