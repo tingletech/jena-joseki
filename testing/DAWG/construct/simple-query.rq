@@ -1,0 +1,13 @@
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX foaf: <http://xmlns.com/foaf/0.1/>
+PREFIX myfoaf: <http://my.example/jose/foaf.rdf#>
+
+CONSTRUCT { myfoaf:jose foaf:depiction <http://my.example/jose/jose.jpg>.
+            myfoaf:jose foaf:schoolHomepage <http://www.edu.example/>.
+            ?s ?p ?o.}
+WHERE { ?s ?p ?o. myfoaf:jose foaf:nick "Little Jo".
+       FILTER ( ! (?s = myfoaf:kendall && ?p = foaf:knows && ?o = myfoaf:edd ) 
+              && ! ( ?s = myfoaf:julia && ?p = foaf:mbox && ?o = <mailto:julia@mail.example> )
+	      && ! ( ?s = myfoaf:julia && ?p = rdf:type && ?o = foaf:Person))
+}
+

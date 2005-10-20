@@ -1,0 +1,26 @@
+<rdf:RDF xmlns="http://my.example/jose/foaf.rdf#"
+    xmlns:foaf="http://xmlns.com/foaf/0.1/"
+    xmlns:log="http://www.w3.org/2000/10/swap/log#"
+    xmlns:myfoaf="http://my.example/jose/foaf.rdf#"
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+
+    <foaf:Person rdf:about="http://my.example/jose/foaf.rdf#jose">
+        <foaf:homepage rdf:resource="http://my.example/jose/"/>
+        <foaf:knows rdf:resource="http://my.example/jose/foaf.rdf#juan"/>
+        <foaf:name>Jose Jimeñez</foaf:name>
+        <foaf:nick>Little Jo</foaf:nick>
+        <foaf:workplaceHomepage rdf:resource="http://www.corp.example/"/>
+    </foaf:Person>
+
+    <foaf:Person rdf:about="http://my.example/jose/foaf.rdf#juan">
+        <foaf:mbox rdf:resource="mailto:juan@mail.example"/>
+    </foaf:Person>
+
+    <foaf:Person rdf:about="http://my.example/jose/foaf.rdf#julia">
+        <foaf:mbox rdf:resource="mailto:julia@mail.example"/>
+    </foaf:Person>
+
+    <rdf:Description rdf:about="http://my.example/jose/foaf.rdf#kendall">
+        <foaf:knows rdf:resource="http://my.example/jose/foaf.rdf#edd"/>
+    </rdf:Description>
+</rdf:RDF>

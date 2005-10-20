@@ -1,0 +1,5 @@
+PREFIX bio: <http://bio.example/schema/#>
+SELECT ?valence
+FROM <http://another.example/protein-db.rdf>
+WHERE { ?x bio:protein ?valence }
+ORDER BY ?valence

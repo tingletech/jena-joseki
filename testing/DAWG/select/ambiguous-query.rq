@@ -1,0 +1,11 @@
+PREFIX foaf: <http://xmlns.com/foaf/0.1/>
+PREFIX dc: <http://purl.org/dc/elements/1.1/>
+
+SELECT ?who ?g ?mbox
+FROM <http://my.example/publishers>
+FROM NAMED <http://my.example/john>
+FROM NAMED <http://my.example/susan>
+WHERE { ?g dc:publisher ?who .
+        GRAPH ?g { ?x foaf:mbox ?mbox }
+}
+

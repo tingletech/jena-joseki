@@ -1,0 +1,30 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix ptest: <http://www.w3.org/2001/sw/DataAccess/proto-tests/test-manifest#> .
+@prefix describe: <http://www.w3.org/2001/sw/DataAccess/proto-tests/data/describe/> .
+@prefix example: <http://my.other.example/> .
+
+<>  rdf:type ptest:Manifest ;
+    rdfs:comment "SPARQL Protocol Examples" ;
+    ptest:entries ( 
+
+        [
+            ptest:name "describe-simple" ;
+            ptest:comment "DESCRIBE with simple RDF dataset" ;
+            ptest:dataSet [
+                ptest:defaultGraph [
+                   	ptest:graphName example:books;
+                	ptest:graphData <http://www.w3.org/2001/sw/DataAccess/proto-tests/data/describe/simple-data.rdf>
+                ]
+            ] ;
+            ptest:query <simple-query.rq> ;
+            ptest:acceptType "application/rdf+xml" ;
+            ptest:preferredResult [
+                ptest:result <simple-results.rdf> ;
+                ptest:resultCode "200" ;
+                ptest:resultContentType "application/rdf+xml"
+            ]
+        ]
+    )
+.
+

@@ -1,0 +1,3 @@
+PREFIX books: <http://my.example/book/>
+DESCRIBE books:book6
+

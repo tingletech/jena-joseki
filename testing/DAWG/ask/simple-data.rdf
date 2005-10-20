@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<rdf:RDF
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    xmlns:vcard="http://www.w3.org/2001/vcard-rdf/3.0#"
+    xmlns="http://example.org/book/"
+    xmlns:dc="http://purl.org/dc/elements/1.1/"
+    xmlns:ns="http://example.org/ns#">
+  <rdf:Description rdf:about="http://my.example/book/book1">
+     <dc:creator>J.K. Rowling</dc:creator>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://my.example/book/book2">
+      <dc:creator>
+      <rdf:Description rdf:nodeID="r1115396427r1133">
+        <vcard:N rdf:parseType="Resource">
+          <vcard:Given>Joanna</vcard:Given>
+          <vcard:Family>Rowling</vcard:Family>
+        </vcard:N>
+        <vcard:FN>J.K. Rowling</vcard:FN>
+      </rdf:Description>
+    </dc:creator>
+   <dc:title>Harry Potter and the Order of the Phoenix</dc:title>
+  </rdf:Description>
+  <rdf:Description rdf:about="http://my.example/book/book3">
+      <dc:creator>
+        <rdf:Description rdf:nodeID="r1115396427r1133" />
+      </dc:creator>
+   <dc:title>Harry Potter and the Order of the Phoenix</dc:title>
+  </rdf:Description>
+</rdf:RDF>
