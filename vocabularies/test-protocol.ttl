@@ -1,0 +1,55 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix ptest: 
+    <http://www.w3.org/2001/sw/DataAccess/proto-tests/test-manifest#> .
+
+## ---- Classes
+
+ptest:Manifest rdf:type rdfs:Class .
+
+## ---- Properties
+
+ptest:result
+      rdf:type      rdf:Property .
+
+ptest:preferredResult
+      rdf:type      rdf:Property .
+
+ptest:resultContentType
+      rdf:type      rdf:Property .
+
+ptest:resultCode
+      rdf:type      rdf:Property .
+
+ptest:comment
+      rdf:type      rdf:Property .
+
+ptest:name
+      rdf:type      rdf:Property .
+
+ptest:query
+      rdf:type      rdf:Property .
+
+ptest:graphName
+      rdf:type      rdf:Property .
+
+ptest:graphData
+      rdf:type      rdf:Property .
+
+ptest:dataSet
+      rdf:type      rdf:Property .
+
+ptest:namedGraph
+      rdf:type      rdf:Property .
+
+ptest:defaultGraph
+      rdf:type      rdf:Property .
+
+ptest:entries
+      rdf:type      rdf:Property .
+
+ptest:serviceDataSet
+      rdf:type      rdf:Property .
+
+ptest:acceptType
+      rdf:type      rdf:Property .

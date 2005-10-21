@@ -6,15 +6,80 @@
 
 package org.joseki.junit;
 
+import com.hp.hpl.jena.query.junit.QueryTestException;
+import com.hp.hpl.jena.query.util.FmtUtils;
+import com.hp.hpl.jena.rdf.model.Literal;
+import com.hp.hpl.jena.rdf.model.Property;
+import com.hp.hpl.jena.rdf.model.RDFNode;
+import com.hp.hpl.jena.rdf.model.Resource;
+
 
 /** Test utilities.
  * 
  * @author Andy Seaborne
- * @version $Id: TestUtils.java,v 1.1 2005-10-20 13:47:24 andy_seaborne Exp $
+ * @version $Id: TestUtils.java,v 1.2 2005-10-21 15:39:12 andy_seaborne Exp $
  */
 
 public class TestUtils
 {
+    static Resource getResource(Resource r, Property p)
+    {
+        if ( r == null )
+            return null ;
+        if ( ! r.hasProperty(p) )
+            return null ;
+        
+        RDFNode n = r.getProperty(p).getObject() ;
+        if ( n instanceof Resource )
+            return (Resource)n ;
+        
+        throw new QueryTestException("Manifest problem (not a Resource): "+
+                                     FmtUtils.stringForRDFNode(n)+" => "+
+                                     FmtUtils.stringForRDFNode(p)
+                                     ) ;
+    }
+    
+    static String getLiteral(Resource r, Property p)
+    {
+        if ( r == null )
+            return null ;
+        if ( ! r.hasProperty(p) )
+            return null ;
+        
+        RDFNode n = r.getProperty(p).getObject() ;
+        if ( n instanceof Literal )
+            return ((Literal)n).getLexicalForm() ;
+        
+        throw new QueryTestException("Manifest problem (not a Literal): "+
+                                     FmtUtils.stringForRDFNode(n)+" => "+
+                                     FmtUtils.stringForRDFNode(p)
+                                     ) ;
+    }
+    static String getLiteralOrURI(Resource r, Property p)
+    {
+        if ( r == null )
+            return null ;
+        
+        if ( ! r.hasProperty(p) )
+            return null ;
+        
+        RDFNode n = r.getProperty(p).getObject() ;
+        if ( n instanceof Literal )
+            return ((Literal)n).getLexicalForm() ;
+        
+        if ( n instanceof Resource )
+        {
+            Resource r2 = (Resource)n ; 
+            if ( ! r2.isAnon() )
+                return r2.getURI() ;
+        }
+        
+        throw new QueryTestException("Manifest problem: "+
+                                     FmtUtils.stringForRDFNode(n)+" => "+
+                                     FmtUtils.stringForRDFNode(p)
+                                     ) ;
+    }
+    
     static String safeName(String s)
     {
         // Safe from Eclipse

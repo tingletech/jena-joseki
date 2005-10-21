@@ -6,29 +6,17 @@
 
 package org.joseki.junit;
 
-import junit.framework.TestSuite;
+import com.hp.hpl.jena.rdf.model.Resource;
 
-public class ProtocolTestSuiteFactory
+
+public interface ManifestItemHandler
 {
-    static public TestSuite make(String filename) 
-    {
-        Manifest m = new Manifest(filename) ;
-        TestSuite ts = new TestSuite() ;
-        ts.setName(TestUtils.safeName(m.getName())) ;
-        
-//        // Make sub-suites
-//        for (Iterator iter = m.includedManifests() ; iter.hasNext() ; )
-//        {
-//            String n = (String)iter.next() ;
-//            TestSuite ts2 = make(n) ;       // recurse
-//            ts.addTest(ts2) ;
-//        }
-
-        // Make tests.
-        ProtocolTestGenerator tg = new ProtocolTestGenerator() ;
-        m.apply(tg) ;
-        return ts ;
-    }
+    /** Handle an item in a manifest */
+    public boolean processManifestItem(Resource manifest ,
+                                       Resource item ,
+                                       String testName ) ;
+//                                       Resource action ,
+//                                       Resource result) ;
 }
 
 /*

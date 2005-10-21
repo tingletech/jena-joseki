@@ -4,30 +4,16 @@
  * [See end of file]
  */
 
-package org.joseki.junit;
+package dev;
 
-import junit.framework.TestSuite;
+import org.joseki.junit.ProtocolTestSuiteFactory;
 
-public class ProtocolTestSuiteFactory
+
+public class RunTest
 {
-    static public TestSuite make(String filename) 
+    public static void main(String[] argv)
     {
-        Manifest m = new Manifest(filename) ;
-        TestSuite ts = new TestSuite() ;
-        ts.setName(TestUtils.safeName(m.getName())) ;
-        
-//        // Make sub-suites
-//        for (Iterator iter = m.includedManifests() ; iter.hasNext() ; )
-//        {
-//            String n = (String)iter.next() ;
-//            TestSuite ts2 = make(n) ;       // recurse
-//            ts.addTest(ts2) ;
-//        }
-
-        // Make tests.
-        ProtocolTestGenerator tg = new ProtocolTestGenerator() ;
-        m.apply(tg) ;
-        return ts ;
+        ProtocolTestSuiteFactory.make("testing/DAWG/select/manifest.ttl") ;
     }
 }
 

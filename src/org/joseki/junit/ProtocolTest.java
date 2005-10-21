@@ -6,29 +6,10 @@
 
 package org.joseki.junit;
 
-import junit.framework.TestSuite;
 
-public class ProtocolTestSuiteFactory
+public class ProtocolTest
 {
-    static public TestSuite make(String filename) 
-    {
-        Manifest m = new Manifest(filename) ;
-        TestSuite ts = new TestSuite() ;
-        ts.setName(TestUtils.safeName(m.getName())) ;
-        
-//        // Make sub-suites
-//        for (Iterator iter = m.includedManifests() ; iter.hasNext() ; )
-//        {
-//            String n = (String)iter.next() ;
-//            TestSuite ts2 = make(n) ;       // recurse
-//            ts.addTest(ts2) ;
-//        }
-
-        // Make tests.
-        ProtocolTestGenerator tg = new ProtocolTestGenerator() ;
-        m.apply(tg) ;
-        return ts ;
-    }
+    public ProtocolTest() {} 
 }
 
 /*

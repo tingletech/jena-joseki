@@ -6,20 +6,47 @@
 
 package org.joseki.junit;
 
-import com.hp.hpl.jena.query.junit.ManifestItemHandler;
+import org.joseki.vocabulary.TestProtocolVocab; 
 import com.hp.hpl.jena.rdf.model.Resource;
 
 
 public class ProtocolTestGenerator implements ManifestItemHandler
 {
+    /*
+     *         [
+            ptest:name "select-svcsupplied" ;
+            ptest:comment "SELECT with service-supplied RDF dataset" ;
+            ptest:serviceDataSet [
+                ptest:defaultGraph [
+                    ptest:graphName example:books;
+                    ptest:graphData <http://www.w3.org/2001/sw/DataAccess/proto-tests/data/select/svcsupplied-data.ttl>
+                ]
+            ] ;
+            ptest:query <svcsupplied-query.rq> ;
+            ptest:acceptType "application/sparql-results+xml" ;
+            ptest:preferredResult [
+                ptest:result <svcsupplied-results.xml> ;
+                ptest:resultCode "200" ;
+                ptest:resultContentType "application/sparql-results+xml"
+            ]
+        ]
+
+     */
 
     public boolean processManifestItem(Resource manifest,
                                        Resource entry, 
-                                       String testName,
-                                       Resource action,
-                                       Resource result)
+                                       String testName) 
+//                                       Resource action,
+//                                       Resource result)
     {
-        return true ;
+        String name = TestUtils.getLiteral(entry, TestProtocolVocab.name) ;
+        String comment = TestUtils.getLiteral(entry, TestProtocolVocab.comment) ;
+        Resource dataset = TestUtils.getResource(entry, TestProtocolVocab.serviceDataSet) ;
+        String query = TestUtils.getLiteralOrURI(entry, TestProtocolVocab.query) ;
+        String acceptType = TestUtils.getLiteral(entry, TestProtocolVocab.acceptType) ;
+        Resource result = TestUtils.getResource(entry, TestProtocolVocab.preferredResult) ;
+        System.out.println("Test: "+name) ;
+        return true; 
     }
 
 }
