@@ -6,10 +6,46 @@
 
 package org.joseki.junit;
 
+import java.io.InputStream;
 
-public class ProtocolTest
+import junit.framework.TestCase;
+
+import com.hp.hpl.jena.query.engineHTTP.HttpQuery;
+import com.hp.hpl.jena.query.engineHTTP.Params;
+import com.hp.hpl.jena.query.engineHTTP.QueryExceptionHTTP;
+
+public class ProtocolTest extends TestCase
 {
-    public ProtocolTest() {} 
+    HttpQuery httpQuery = null ;
+    int responseCode ;
+    String acceptType ;
+    String responseType ;
+    
+    public ProtocolTest(String target, String acceptType, int response,  String responseType)
+    { 
+        httpQuery = new HttpQuery(target) ;
+        responseCode = response ;
+        this.acceptType = acceptType ;
+        this.responseType = responseType ;
+    }
+        
+    public Params getParams() { return httpQuery ; }
+    public HttpQuery getHttpQuery() { return httpQuery ; }
+
+    
+    
+    protected void runTest()
+    {
+        try {
+            InputStream in = httpQuery.exec() ;
+            
+            
+        } catch (QueryExceptionHTTP ex)
+        {
+            int rc = ex.getResponseCode() ;
+            
+        }
+    }
 }
 
 /*

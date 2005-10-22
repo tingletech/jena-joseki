@@ -6,6 +6,8 @@
 
 package dev;
 
+import junit.framework.TestSuite;
+import org.joseki.junit.ProtocolTest;
 import org.joseki.junit.ProtocolTestSuiteFactory;
 
 
@@ -13,7 +15,17 @@ public class RunTest
 {
     public static void main(String[] argv)
     {
-        ProtocolTestSuiteFactory.make("testing/DAWG/select/manifest.ttl") ;
+        TestSuite ts = ProtocolTestSuiteFactory.make("testing/DAWG/select/manifest.ttl",
+                                      "http://localhost:2020/query") ;
+
+        if ( true )
+        {
+            for ( int i = 0 ; i < ts.testCount() ; i++ )
+            {
+                ProtocolTest t = (ProtocolTest)ts.testAt(i) ;
+                System.out.println(t.getHttpQuery().toString()) ;
+            }
+        }
     }
 }
 

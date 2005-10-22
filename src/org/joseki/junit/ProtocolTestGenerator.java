@@ -6,12 +6,28 @@
 
 package org.joseki.junit;
 
+
+import junit.framework.TestSuite;
 import org.joseki.vocabulary.TestProtocolVocab; 
+
+import com.hp.hpl.jena.query.engineHTTP.HttpParams;
 import com.hp.hpl.jena.rdf.model.Resource;
+import com.hp.hpl.jena.rdf.model.Statement;
+import com.hp.hpl.jena.rdf.model.StmtIterator;
+import com.hp.hpl.jena.util.FileManager;
 
 
 public class ProtocolTestGenerator implements ManifestItemHandler
 {
+    String target ;
+    TestSuite testSuite ;
+    
+    public ProtocolTestGenerator(TestSuite ts, String target)
+    {
+        this.target = target ;
+        this.testSuite = ts ;
+    }
+    
     /*
      *         [
             ptest:name "select-svcsupplied" ;
@@ -41,14 +57,79 @@ public class ProtocolTestGenerator implements ManifestItemHandler
     {
         String name = TestUtils.getLiteral(entry, TestProtocolVocab.name) ;
         String comment = TestUtils.getLiteral(entry, TestProtocolVocab.comment) ;
-        Resource dataset = TestUtils.getResource(entry, TestProtocolVocab.serviceDataSet) ;
-        String query = TestUtils.getLiteralOrURI(entry, TestProtocolVocab.query) ;
+        
+        Resource dataset = TestUtils.getResource(entry, TestProtocolVocab.dataSet) ;
+        Resource svcDataset = TestUtils.getResource(entry, TestProtocolVocab.serviceDataSet) ;
+        
+        // In fact, this is a file 
+        String queryLoc = TestUtils.getLiteralOrURI(entry, TestProtocolVocab.query) ;
+        
         String acceptType = TestUtils.getLiteral(entry, TestProtocolVocab.acceptType) ;
         Resource result = TestUtils.getResource(entry, TestProtocolVocab.preferredResult) ;
+        if ( result == null )
+        {
+            System.err.println("Warning: no results to test : "+name) ;
+            return false ;
+        }
+        
+        int rc = Integer.parseInt(TestUtils.getLiteral(result, TestProtocolVocab.resultCode)) ;
+        String resultContentType = TestUtils.getLiteral(result, TestProtocolVocab.resultContentType) ;
+        
+        
         System.out.println("Test: "+name) ;
+
+        ProtocolTest test = new ProtocolTest(target, acceptType, rc, resultContentType) ;
+        // ---- query
+        String qStr = FileManager.get().readWholeFileAsUTF8(queryLoc) ;
+        test.getParams().addParam("query", qStr) ;
+        
+        // ---- default graph / protocol
+        if ( dataset == null )
+        {
+            if ( svcDataset != null )
+                System.out.println("Service dataset provided") ;
+            else
+                System.out.println("No dataset") ;
+        }
+
+        parseDataset(test, dataset) ;
+        testSuite.addTest(test) ;
+        
+        // Other args.
+        
         return true; 
     }
 
+    public void parseDataset(ProtocolTest test, Resource ds)
+    {
+        if ( ds == null )
+            return ;
+        
+        Resource g = TestUtils.getResource(ds, TestProtocolVocab.defaultGraph) ; 
+        parseGraph(test, g, true) ;
+        
+        StmtIterator sIter = ds.listProperties(TestProtocolVocab.namedGraph) ;
+        while(sIter.hasNext())
+        {
+            Statement stmt = sIter.nextStatement() ;
+            Resource gn = stmt.getResource() ;
+            parseGraph(test, gn, true) ;
+        }
+        sIter.close() ;
+    }
+    
+    public void parseGraph(ProtocolTest test, Resource g, boolean isDefault)
+    {
+        Resource gn = TestUtils.getResource(g, TestProtocolVocab.graphName) ;
+        Resource gd = TestUtils.getResource(g, TestProtocolVocab.graphData) ;
+        if ( gd == null )
+            return ;
+        
+        if ( isDefault )
+            test.getParams().addParam(HttpParams.pDefaultGraph, gd.getURI()) ;
+        else
+            test.getParams().addParam(HttpParams.pNamedGraph, gd.getURI()) ;
+    }
 }
 
 /*

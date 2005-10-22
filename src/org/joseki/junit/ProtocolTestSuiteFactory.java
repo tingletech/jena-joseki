@@ -10,7 +10,7 @@ import junit.framework.TestSuite;
 
 public class ProtocolTestSuiteFactory
 {
-    static public TestSuite make(String filename) 
+    static public TestSuite make(String filename, String target) 
     {
         Manifest m = new Manifest(filename) ;
         TestSuite ts = new TestSuite() ;
@@ -25,7 +25,7 @@ public class ProtocolTestSuiteFactory
 //        }
 
         // Make tests.
-        ProtocolTestGenerator tg = new ProtocolTestGenerator() ;
+        ProtocolTestGenerator tg = new ProtocolTestGenerator(ts, target) ;
         m.apply(tg) ;
         return ts ;
     }
