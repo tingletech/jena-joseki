@@ -17,7 +17,7 @@ import com.hp.hpl.jena.query.engineHTTP.QueryExceptionHTTP;
 public class ProtocolTest extends TestCase
 {
     HttpQuery httpQuery = null ;
-    int responseCode ;
+    int responseCode = -1 ;
     String acceptType ;
     String responseType ;
     
@@ -34,16 +34,19 @@ public class ProtocolTest extends TestCase
 
     
     
-    protected void runTest()
+    protected void runTest() throws Exception
     {
+        if ( acceptType != null )
+            httpQuery.setAccept(acceptType) ;
         try {
             InputStream in = httpQuery.exec() ;
-            
-            
+            assertEquals(responseCode, httpQuery.getConnection().getResponseCode() ) ;
         } catch (QueryExceptionHTTP ex)
         {
             int rc = ex.getResponseCode() ;
-            
+            if ( responseCode == 200 )
+                fail("Got an error response ("+rc+") when expecting OK") ;
+            assertEquals(responseCode, rc) ;
         }
     }
 }
