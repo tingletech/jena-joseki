@@ -6,19 +6,30 @@
 
 package dev;
 
+import com.hp.hpl.jena.query.junit.SimpleTestRunner;
+
 import junit.framework.TestSuite;
+import org.joseki.RDFServer;
 import org.joseki.junit.ProtocolTest;
 import org.joseki.junit.ProtocolTestSuiteFactory;
 
+import org.apache.log4j.* ;
 
 public class RunTest
 {
     public static void main(String[] argv)
     {
-        TestSuite ts = ProtocolTestSuiteFactory.make("testing/DAWG/select/manifest.ttl",
-                                      "http://localhost:2020/query") ;
+        RunUtils.setLog4j() ;
+        LogManager.getLogger("org.joseki").setLevel(Level.WARN) ;
+        LogManager.getLogger("org.mortbay").setLevel(Level.WARN) ;
 
-        if ( true )
+        RDFServer s = new RDFServer() ; 
+        s.start() ;
+        
+        TestSuite ts = ProtocolTestSuiteFactory.make("testing/DAWG/select/manifest.ttl",
+                                      "http://localhost:2020/sparql") ;
+
+        if ( false )
         {
             for ( int i = 0 ; i < ts.testCount() ; i++ )
             {
@@ -26,6 +37,9 @@ public class RunTest
                 System.out.println(t.getHttpQuery().toString()) ;
             }
         }
+        
+        SimpleTestRunner.runAndReport(ts) ;
+        s.stop() ;
     }
 }
 

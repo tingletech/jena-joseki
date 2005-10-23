@@ -21,8 +21,9 @@ public class ProtocolTest extends TestCase
     String acceptType ;
     String responseType ;
     
-    public ProtocolTest(String target, String acceptType, int response,  String responseType)
+    public ProtocolTest(String name, String target, String acceptType, int response,  String responseType)
     { 
+        super(name) ;
         httpQuery = new HttpQuery(target) ;
         responseCode = response ;
         this.acceptType = acceptType ;

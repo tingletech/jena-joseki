@@ -76,9 +76,9 @@ public class ProtocolTestGenerator implements ManifestItemHandler
         String resultContentType = TestUtils.getLiteral(result, TestProtocolVocab.resultContentType) ;
         
         
-        System.out.println("Test: "+name) ;
+        //System.out.println("Test: "+name) ;
 
-        ProtocolTest test = new ProtocolTest(target, acceptType, rc, resultContentType) ;
+        ProtocolTest test = new ProtocolTest(name, target, acceptType, rc, resultContentType) ;
         // ---- query
         String qStr = FileManager.get().readWholeFileAsUTF8(queryLoc) ;
         test.getParams().addParam("query", qStr) ;
