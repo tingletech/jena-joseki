@@ -8,24 +8,24 @@
     rdfs:comment "SPARQL Protocol Examples" ;
     ptest:entries (
 
-        [
-            ptest:name "select-svcsupplied" ;
-            ptest:comment "SELECT with service-supplied RDF dataset" ;
-            ptest:serviceDataSet [
-                ptest:defaultGraph [
-               		ptest:graphName example:books;
-                	ptest:graphData <http://www.w3.org/2001/sw/DataAccess/proto-tests/data/select/svcsupplied-data.ttl>
-                ]
-            ] ;
-            ptest:query <svcsupplied-query.rq> ;
-            ptest:acceptType "application/sparql-results+xml" ;
-            ptest:preferredResult [
-                ptest:result <svcsupplied-results.xml> ;
-                ptest:resultCode "200" ;
-                ptest:resultContentType "application/sparql-results+xml"
-            ]
-        ]
-
+##         [
+##             ptest:name "select-svcsupplied" ;
+##             ptest:comment "SELECT with service-supplied RDF dataset" ;
+##             ptest:serviceDataSet [
+##                 ptest:defaultGraph [
+##                		ptest:graphName example:books;
+##                 	ptest:graphData <http://www.w3.org/2001/sw/DataAccess/proto-tests/data/select/svcsupplied-data.ttl>
+##                 ]
+##             ] ;
+##             ptest:query <svcsupplied-query.rq> ;
+##             ptest:acceptType "application/sparql-results+xml" ;
+##             ptest:preferredResult [
+##                 ptest:result <svcsupplied-results.xml> ;
+##                 ptest:resultCode "200" ;
+##                 ptest:resultContentType "application/sparql-results+xml"
+##             ]
+##         ]
+## 
         [
             ptest:name "select-simple" ;
             ptest:comment "SELECT with simple RDF dataset" ;
@@ -44,125 +44,125 @@
             ]
         ]
 
-        [
-            ptest:name "select-complex" ;
-            ptest:comment "SELECT with complex RDF dataset" ;
-            ptest:dataSet [
-                ptest:defaultGraph [
-                    ptest:graphName select:publishers;
-                    ptest:graphData <complex-publishers.ttl>
-                ];
-                ptest:namedGraph [
-                    ptest:graphName select:foaf-alice;
-                    ptest:graphName <complex-foaf-alice.n3>;
-                ];
-                ptest:namedGraph [
-                    ptest:graphName select:foaf-bob;
-                    ptest:graphName <complex-foaf-bob.n3>;
-                ];
-                ptest:namedGraph [
-                    ptest:graphName select:foaf-susan;
-                    ptest:graphName <complex-foaf-susan.n3>;
-                ];
-                ptest:namedGraph [
-                    ptest:graphName select:foaf-john;
-                    ptest:graphName <complex-foaf-john.n3>;
-                ]
-            ] ;
-            ptest:query <complex-query.rq> ;
-            ptest:acceptType "application/sparql-results+xml" ;
-            ptest:preferredResult [
-                ptest:result <complex-results.xml> ;
-                ptest:resultCode "200" ;
-                ptest:resultContentType "application/sparql-results+xml"
-            ]
-        ]
-
-        [
-            ptest:name "select-queryonly" ;
-            ptest:comment "SELECT with query-only RDF dataset" ;
-            ptest:query <queryonly-query.rq> ;
-            ptest:acceptType "application/sparql-results+xml" ;
-            ptest:preferredResult [
-                ptest:result <queryonly-results.xml> ;
-                ptest:resultCode "200" ;
-                ptest:resultContentType "application/sparql-results+xml"
-            ]
-        ]
-        
-        [
-            ptest:name "select-ambiguous" ;
-            ptest:comment "SELECT with ambiguous RDF dataset" ;
-            ptest:dataSet [
-                ptest:defaultGraph [
-                    ptest:graphName select:morepublishers;
-                ptest:graphData <ambiguous-morepublishers.n3>
-                ];
-                ptest:namedGraph [
-                    ptest:graphName select:foaf-alice;
-                ptest:graphName <ambiguous-foaf-alice.n3>;
-                ];
-                ptest:namedGraph [
-                    ptest:graphName select:foaf-bob;
-                ptest:graphName <ambiguous-foaf-bob.n3>;
-                ];
-            ] ;
-            ptest:query <ambiguous-query.rq> ;
-            ptest:acceptType "application/sparql-results+xml" ;
-            ptest:preferredResult [
-                ptest:result <ambiguous-results.xml> ;
-                ptest:resultCode "200" ;
-                ptest:resultContentType "application/sparql-results+xml"
-            ]
-        ]
-        
-        [
-            ptest:name "select-malformed" ;
-            ptest:comment "SELECT with malformed query fault" ;
-            ptest:dataSet [
-                ptest:defaultGraph [
-                    ptest:graphName select:morepublishers;
-                	ptest:graphData <http://www.w3.org/2001/sw/DataAccess/proto-tests/data/select/malformed-morepublishers.n3>
-                ]
-            ] ;
-            ptest:query <malformed-query.rq> ;
-            ptest:acceptType "application/sparql-results+xml" ;
-            ptest:preferredResult [
-                ptest:result <malformed-results.txt> ;
-                ptest:resultCode "400" ;
-                ptest:resultContentType "text/html"
-            ]
-        ]
-        
-        [
-            ptest:name "select-refused" ;
-            ptest:comment "SELECT with query request refused fault" ;
-            ptest:dataSet [
-                ptest:defaultGraph [
-                    ptest:graphName select:protein-db;
-                ptest:graphData <refused-protein-db.n3>
-                ]
-            ] ;
-            ptest:query <refused-query.rq> ;
-            ptest:acceptType "text/html" ;
-            ptest:preferredResult [
-                ptest:result <refused-results.htm> ;
-                ptest:resultCode "500" ;
-                ptest:resultContentType "text/html"
-            ]
-        ]
-            
-        [
-            ptest:name "select-longpost" ;
-            ptest:comment "Very long SELECT query using POST binding" ;
-            ptest:query <longpost-query.rq> ;
-            ptest:acceptType "application/sparql-results+xml" ;
-            ptest:preferredResult [
-                ptest:result <longpost-results.xml> ;
-                ptest:resultCode "200" ;
-                ptest:resultContentType "application/sparql-results+xml"
-            ]
-        ]
+##         [
+##             ptest:name "select-complex" ;
+##             ptest:comment "SELECT with complex RDF dataset" ;
+##             ptest:dataSet [
+##                 ptest:defaultGraph [
+##                     ptest:graphName select:publishers;
+##                     ptest:graphData <complex-publishers.ttl>
+##                 ];
+##                 ptest:namedGraph [
+##                     ptest:graphName select:foaf-alice;
+##                     ptest:graphName <complex-foaf-alice.n3>;
+##                 ];
+##                 ptest:namedGraph [
+##                     ptest:graphName select:foaf-bob;
+##                     ptest:graphName <complex-foaf-bob.n3>;
+##                 ];
+##                 ptest:namedGraph [
+##                     ptest:graphName select:foaf-susan;
+##                     ptest:graphName <complex-foaf-susan.n3>;
+##                 ];
+##                 ptest:namedGraph [
+##                     ptest:graphName select:foaf-john;
+##                     ptest:graphName <complex-foaf-john.n3>;
+##                 ]
+##             ] ;
+##             ptest:query <complex-query.rq> ;
+##             ptest:acceptType "application/sparql-results+xml" ;
+##             ptest:preferredResult [
+##                 ptest:result <complex-results.xml> ;
+##                 ptest:resultCode "200" ;
+##                 ptest:resultContentType "application/sparql-results+xml"
+##             ]
+##         ]
+## 
+##         [
+##             ptest:name "select-queryonly" ;
+##             ptest:comment "SELECT with query-only RDF dataset" ;
+##             ptest:query <queryonly-query.rq> ;
+##             ptest:acceptType "application/sparql-results+xml" ;
+##             ptest:preferredResult [
+##                 ptest:result <queryonly-results.xml> ;
+##                 ptest:resultCode "200" ;
+##                 ptest:resultContentType "application/sparql-results+xml"
+##             ]
+##         ]
+##         
+##         [
+##             ptest:name "select-ambiguous" ;
+##             ptest:comment "SELECT with ambiguous RDF dataset" ;
+##             ptest:dataSet [
+##                 ptest:defaultGraph [
+##                     ptest:graphName select:morepublishers;
+##                 ptest:graphData <ambiguous-morepublishers.n3>
+##                 ];
+##                 ptest:namedGraph [
+##                     ptest:graphName select:foaf-alice;
+##                 ptest:graphName <ambiguous-foaf-alice.n3>;
+##                 ];
+##                 ptest:namedGraph [
+##                     ptest:graphName select:foaf-bob;
+##                 ptest:graphName <ambiguous-foaf-bob.n3>;
+##                 ];
+##             ] ;
+##             ptest:query <ambiguous-query.rq> ;
+##             ptest:acceptType "application/sparql-results+xml" ;
+##             ptest:preferredResult [
+##                 ptest:result <ambiguous-results.xml> ;
+##                 ptest:resultCode "200" ;
+##                 ptest:resultContentType "application/sparql-results+xml"
+##             ]
+##         ]
+##         
+##         [
+##             ptest:name "select-malformed" ;
+##             ptest:comment "SELECT with malformed query fault" ;
+##             ptest:dataSet [
+##                 ptest:defaultGraph [
+##                     ptest:graphName select:morepublishers;
+##                 	ptest:graphData <http://www.w3.org/2001/sw/DataAccess/proto-tests/data/select/malformed-morepublishers.n3>
+##                 ]
+##             ] ;
+##             ptest:query <malformed-query.rq> ;
+##             ptest:acceptType "application/sparql-results+xml" ;
+##             ptest:preferredResult [
+##                 ptest:result <malformed-results.txt> ;
+##                 ptest:resultCode "400" ;
+##                 ptest:resultContentType "text/html"
+##             ]
+##         ]
+##         
+##         [
+##             ptest:name "select-refused" ;
+##             ptest:comment "SELECT with query request refused fault" ;
+##             ptest:dataSet [
+##                 ptest:defaultGraph [
+##                     ptest:graphName select:protein-db;
+##                 ptest:graphData <refused-protein-db.n3>
+##                 ]
+##             ] ;
+##             ptest:query <refused-query.rq> ;
+##             ptest:acceptType "text/html" ;
+##             ptest:preferredResult [
+##                 ptest:result <refused-results.htm> ;
+##                 ptest:resultCode "500" ;
+##                 ptest:resultContentType "text/html"
+##             ]
+##         ]
+##             
+##         [
+##             ptest:name "select-longpost" ;
+##             ptest:comment "Very long SELECT query using POST binding" ;
+##             ptest:query <longpost-query.rq> ;
+##             ptest:acceptType "application/sparql-results+xml" ;
+##             ptest:preferredResult [
+##                 ptest:result <longpost-results.xml> ;
+##                 ptest:resultCode "200" ;
+##                 ptest:resultContentType "application/sparql-results+xml"
+##             ]
+##         ]
 
     )
 .

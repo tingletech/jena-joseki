@@ -27,7 +27,7 @@ public class RunTest
         s.start() ;
         
         TestSuite ts = ProtocolTestSuiteFactory.make("testing/DAWG/select/manifest.ttl",
-                                      "http://localhost:2020/sparql") ;
+                                                     "http://localhost:2020/sparql") ;
 
         if ( false )
         {
