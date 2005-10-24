@@ -75,6 +75,12 @@ public class GraphUtils
     
     private static Model readUtil(Graph graph, String uri, int limit, String syntax) 
     {
+        // Use the mapped uri as the syntax hint.
+        {
+            String altURI = FileManager.get().mapURI(uri) ;
+            if ( altURI != null )
+                syntax = FileUtils.guessLang(uri) ;
+        }
         // Temporary model wrapper 
         Graph g = new LimitingGraph(graph, limit) ;
         Model m = ModelFactory.createModelForGraph(g) ;

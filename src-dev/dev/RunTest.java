@@ -7,6 +7,7 @@
 package dev;
 
 import com.hp.hpl.jena.query.junit.SimpleTestRunner;
+import com.hp.hpl.jena.util.LocationMapper;
 
 import junit.framework.TestSuite;
 import org.joseki.RDFServer;
@@ -19,15 +20,17 @@ public class RunTest
 {
     public static void main(String[] argv)
     {
+        System.setProperty(LocationMapper.GlobalMapperSystemProperty1, "testing/location-mapping.ttl") ;
         RunUtils.setLog4j() ;
-        LogManager.getLogger("org.joseki").setLevel(Level.WARN) ;
+        LogManager.getLogger("org.joseki.Configuration").setLevel(Level.WARN) ;
         LogManager.getLogger("org.mortbay").setLevel(Level.WARN) ;
-
+        //LogManager.getLogger("com.hp.hpl.jena.util").setLevel(Level.ALL) ;
+        
         RDFServer s = new RDFServer() ; 
         s.start() ;
+        s.waitUntilStarted() ;
         
-        TestSuite ts = ProtocolTestSuiteFactory.make("testing/DAWG/select/manifest.ttl",
-                                                     "http://localhost:2020/sparql") ;
+        TestSuite ts = ProtocolTestSuiteFactory.make("testing/DAWG/select/manifest.ttl") ;
 
         if ( false )
         {

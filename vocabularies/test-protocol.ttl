@@ -53,3 +53,6 @@ ptest:serviceDataSet
 
 ptest:acceptType
       rdf:type      rdf:Property .
+
+ptest:service
+      rdf:type      rdf:Property .

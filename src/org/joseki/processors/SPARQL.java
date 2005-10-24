@@ -257,7 +257,7 @@ public class SPARQL extends QueryCom implements Loadable
                         log.info("Load (default) "+uri) ;
                     } catch (Exception ex)
                     {
-                        log.info("Failer to load (default) "+uri+" : "+ex.getMessage()) ;
+                        log.info("Failed to load (default) "+uri+" : "+ex.getMessage()) ;
                         throw new QueryExecutionException(
                                                           ReturnCodes.rcArgumentUnreadable,
                                                           "Failed to load URL "+uri) ;

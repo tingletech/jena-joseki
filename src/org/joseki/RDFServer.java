@@ -17,7 +17,7 @@ import org.apache.commons.logging.* ;
 
 /** Standalone server.
  * 
- * @version $Id: RDFServer.java,v 1.11 2005-10-12 21:14:16 andy_seaborne Exp $
+ * @version $Id: RDFServer.java,v 1.12 2005-10-24 12:28:38 andy_seaborne Exp $
  * @author  Andy Seaborne
  */
 
@@ -213,6 +213,12 @@ public class RDFServer
         }
     }
 
+    public void waitUntilStarted()
+    {
+        server.isStarted() ;
+        //try { Thread.sleep(1000) ; } catch (Exception ex) {} 
+    }
+    
     /** Stop the server.  On exit from this method, it is <strong>not</strong>
      *  guaranteed that all server threads have ended. 
      */

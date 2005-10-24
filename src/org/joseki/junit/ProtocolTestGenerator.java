@@ -19,12 +19,12 @@ import com.hp.hpl.jena.util.FileManager;
 
 public class ProtocolTestGenerator implements ManifestItemHandler
 {
-    String target ;
+    //String target ;
     TestSuite testSuite ;
     
-    public ProtocolTestGenerator(TestSuite ts, String target)
+    public ProtocolTestGenerator(TestSuite ts)
     {
-        this.target = target ;
+        //this.target = target ;
         this.testSuite = ts ;
     }
     
@@ -61,6 +61,8 @@ public class ProtocolTestGenerator implements ManifestItemHandler
         Resource dataset = TestUtils.getResource(entry, TestProtocolVocab.dataSet) ;
         Resource svcDataset = TestUtils.getResource(entry, TestProtocolVocab.serviceDataSet) ;
         
+        Resource target = TestUtils.getResource(entry, TestProtocolVocab.service) ;
+        
         // In fact, this is a file 
         String queryLoc = TestUtils.getLiteralOrURI(entry, TestProtocolVocab.query) ;
         
@@ -77,20 +79,21 @@ public class ProtocolTestGenerator implements ManifestItemHandler
         
         
         //System.out.println("Test: "+name) ;
+        if ( target == null )
+        {
+            System.err.println(name+" : No service - skipped") ;
+            return false;
+        }
+        
 
-        ProtocolTest test = new ProtocolTest(name, target, acceptType, rc, resultContentType) ;
+        ProtocolTest test = new ProtocolTest(name, target.getURI(), acceptType, rc, resultContentType) ;
         // ---- query
         String qStr = FileManager.get().readWholeFileAsUTF8(queryLoc) ;
         test.getParams().addParam("query", qStr) ;
         
         // ---- default graph / protocol
-        if ( dataset == null )
-        {
-            if ( svcDataset != null )
-                System.out.println("Service dataset provided") ;
-            else
-                System.out.println("No dataset") ;
-        }
+        if ( dataset == null && svcDataset == null )
+            System.out.println("No dataset and no service dataset") ;
 
         parseDataset(test, dataset) ;
         testSuite.addTest(test) ;
