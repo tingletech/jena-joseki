@@ -11,7 +11,6 @@ import com.hp.hpl.jena.util.LocationMapper;
 
 import junit.framework.TestSuite;
 import org.joseki.RDFServer;
-import org.joseki.junit.ProtocolTest;
 import org.joseki.junit.ProtocolTestSuiteFactory;
 
 import org.apache.log4j.* ;
@@ -29,21 +28,16 @@ public class RunTest
         RDFServer s = new RDFServer() ; 
         s.start() ;
         s.waitUntilStarted() ;
+        TestSuite ts = new TestSuite("DAWG Protocol") ;
         
-        TestSuite ts = ProtocolTestSuiteFactory.make("testing/DAWG/select/manifest.ttl") ;
-
-        if ( false )
-        {
-            for ( int i = 0 ; i < ts.testCount() ; i++ )
-            {
-                ProtocolTest t = (ProtocolTest)ts.testAt(i) ;
-                System.out.println(t.getHttpQuery().toString()) ;
-            }
-        }
-        
+        ts.addTest(ProtocolTestSuiteFactory.make("testing/DAWG/select/manifest.ttl")) ;
+        ts.addTest(ProtocolTestSuiteFactory.make("testing/DAWG/construct/manifest.ttl")) ;
+        ts.addTest(ProtocolTestSuiteFactory.make("testing/DAWG/ask/manifest.ttl")) ;
+        ts.addTest(ProtocolTestSuiteFactory.make("testing/DAWG/describe/manifest.ttl")) ;
         SimpleTestRunner.runAndReport(ts) ;
         s.stop() ;
     }
+    
 }
 
 /*
