@@ -24,6 +24,9 @@ public class ProtocolTestGenerator implements ManifestItemHandler
     
     public ProtocolTestGenerator(TestSuite ts)
     {
+        //TODO "rule" that svcdataset => use "books" else use "sparql"
+        // svcDataset => service ref mapping
+        
         //this.target = target ;
         this.testSuite = ts ;
     }
