@@ -6,10 +6,57 @@
 
 package org.joseki.test;
 
+import com.hp.hpl.jena.rdf.model.Model;
+import com.hp.hpl.jena.util.FileManager;
+import com.hp.hpl.jena.util.LocationMapper;
 
-public class TestProtocol
+import junit.extensions.TestSetup;
+import junit.framework.*;
+
+import org.apache.log4j.Level;
+import org.apache.log4j.LogManager;
+import org.joseki.RDFServer;
+import org.joseki.junit.ProtocolTestSuiteFactory;
+
+
+public class ProtocolTests extends TestCase
 {
+    public static TestSuite suite()
+    {
+        TestSuite ts = new TestSuite("DAWG Protocol") ;
+        ts.addTest(ProtocolTestSuiteFactory.make("testing/DAWG/select/manifest.ttl")) ;
+        ts.addTest(ProtocolTestSuiteFactory.make("testing/DAWG/construct/manifest.ttl")) ;
+        ts.addTest(ProtocolTestSuiteFactory.make("testing/DAWG/ask/manifest.ttl")) ;
+        ts.addTest(ProtocolTestSuiteFactory.make("testing/DAWG/describe/manifest.ttl")) ;
+        TestSuite tsWrapped = new TestSuite() ;
+        tsWrapped.addTest(new ServerSetup(ts)) ;
+        return tsWrapped ;
+    }
+}
 
+class ServerSetup extends TestSetup
+{
+    RDFServer server = null ;
+    
+    public ServerSetup(Test test)
+    {
+        super(test) ;
+    }
+    
+    protected void setUp()
+    {
+        Model m = FileManager.get().loadModel("testing/location-mapping.ttl") ;
+        LocationMapper.get().processConfig(m);
+        //dev.RunUtils.setLog4j() ;
+        //LogManager.getLogger("org.joseki.Configuration").setLevel(Level.INFO) ;
+        LogManager.getLogger("org.mortbay").setLevel(Level.WARN) ;
+        server = new RDFServer() ; 
+        server.start() ;
+        server.waitUntilStarted() ;
+    }
+    
+    protected void tearDown()
+    { server.stop() ; }
 }
 
 /*

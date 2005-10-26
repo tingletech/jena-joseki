@@ -42,6 +42,11 @@ public class ProtocolTest extends TestCase
         try {
             InputStream in = httpQuery.exec() ;
             assertEquals(responseCode, httpQuery.getConnection().getResponseCode() ) ;
+            String cType = httpQuery.getConnection().getContentType() ;
+            // String charset
+            if ( cType.indexOf(';') > -1 )
+                cType = cType.substring(0,cType.indexOf(';')) ;
+            assertEquals("Different content types", responseType, cType) ;
         } catch (QueryExceptionHTTP ex)
         {
             int rc = ex.getResponseCode() ;

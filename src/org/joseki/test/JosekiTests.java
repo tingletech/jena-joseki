@@ -11,7 +11,7 @@ import junit.framework.TestSuite;
 
 /** 
  * @author Andy Seaborne
- * @version $Id: JosekiTests.java,v 1.4 2005-10-20 13:47:24 andy_seaborne Exp $
+ * @version $Id: JosekiTests.java,v 1.5 2005-10-26 11:46:16 andy_seaborne Exp $
  */
 
 public class JosekiTests extends TestSuite
@@ -24,6 +24,7 @@ public class JosekiTests extends TestSuite
     {
         super("Joseki") ;
         addTestSuite(TestContentNegotiation.class);
+        
     }
 }
 
