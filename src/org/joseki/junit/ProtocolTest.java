@@ -10,6 +10,7 @@ import java.io.InputStream;
 
 import junit.framework.TestCase;
 
+import com.hp.hpl.jena.query.engineHTTP.HttpContentType;
 import com.hp.hpl.jena.query.engineHTTP.HttpQuery;
 import com.hp.hpl.jena.query.engineHTTP.Params;
 import com.hp.hpl.jena.query.engineHTTP.QueryExceptionHTTP;
@@ -32,8 +33,6 @@ public class ProtocolTest extends TestCase
         
     public Params getParams() { return httpQuery ; }
     public HttpQuery getHttpQuery() { return httpQuery ; }
-
-    
     
     protected void runTest() throws Exception
     {
@@ -43,9 +42,7 @@ public class ProtocolTest extends TestCase
             InputStream in = httpQuery.exec() ;
             assertEquals(responseCode, httpQuery.getConnection().getResponseCode() ) ;
             String cType = httpQuery.getConnection().getContentType() ;
-            // String charset
-            if ( cType.indexOf(';') > -1 )
-                cType = cType.substring(0,cType.indexOf(';')) ;
+            cType = new HttpContentType(cType).getMediaType() ;
             assertEquals("Different content types", responseType, cType) ;
         } catch (QueryExceptionHTTP ex)
         {

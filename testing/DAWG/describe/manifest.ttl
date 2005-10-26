@@ -3,6 +3,7 @@
 @prefix ptest: <http://www.w3.org/2001/sw/DataAccess/proto-tests/test-manifest#> .
 @prefix describe: <http://www.w3.org/2001/sw/DataAccess/proto-tests/data/describe/> .
 @prefix example: <http://my.other.example/> .
+@prefix service: <http://localhost:2020/> .
 
 <>  rdf:type ptest:Manifest ;
     rdfs:comment "SPARQL Protocol Examples" ;
@@ -17,6 +18,7 @@
                 	ptest:graphData <http://www.w3.org/2001/sw/DataAccess/proto-tests/data/describe/simple-data.rdf>
                 ]
             ] ;
+            ptest:service service:sparql ;
             ptest:query <simple-query.rq> ;
             ptest:acceptType "application/rdf+xml" ;
             ptest:preferredResult [

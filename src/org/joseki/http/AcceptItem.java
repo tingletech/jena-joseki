@@ -11,11 +11,15 @@ import org.joseki.util.StringUtils ;
 /** A class to handle HTTP Accept types
  * 
  * @author Andy Seaborne
- * @version $Id: AcceptItem.java,v 1.1 2005-06-23 09:55:58 andy_seaborne Exp $
+ * @version $Id: AcceptItem.java,v 1.2 2005-10-26 16:14:28 andy_seaborne Exp $
  */
 
 public class AcceptItem
 {
+    // Names are all wrong.
+    // "MediaItem"?
+    // Use with Accept: and Content-Type:
+    
     private String acceptType  = null;
     
     private String type = null ;
