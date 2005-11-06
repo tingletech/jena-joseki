@@ -32,40 +32,40 @@
 # Expects the request to specify the dataset (either by parameters 
 # in the protocol request or in the query itself).
 
-[]
-    rdf:type            joseki:Service ;
-    rdfs:label          "service point" ;
-    joseki:serviceRef   "sparql" ;
-    joseki:processor    joseki:ProcessorSPARQL ;
-    .
-
-## ---- Service - SPARQL processor only handling a given dataset
-[]
-    rdf:type            joseki:Service ;
-    rdfs:label          "SPARQL on the books model" ;
-    joseki:serviceRef   "books" ;
-    joseki:dataset      _:books ;
-    joseki:processor    joseki:ProcessorSPARQL_FixedDS ;
-    .
-
-## ---- Axis/SAOP testing
-[]
-    rdf:type            joseki:Service ;
-    rdfs:label          "SPARQL/SOAP testing" ;
-    joseki:serviceRef   "sparql-query" ;
-    joseki:dataset      _:books ;
-    joseki:processor    joseki:ProcessorSPARQL_FixedDS ;
-    .
-
-## ---- Database-backed
-
-[]
-    rdf:type            joseki:Service ;
-    rdfs:label          "SPARQL on the books model in a database" ;
-    joseki:serviceRef   "books-db" ;
-    joseki:dataset      _:books-db ;
-    joseki:processor    joseki:ProcessorSPARQL_FixedDS ;
-    .
+## []
+##     rdf:type            joseki:Service ;
+##     rdfs:label          "service point" ;
+##     joseki:serviceRef   "sparql" ;
+##     joseki:processor    joseki:ProcessorSPARQL ;
+##     .
+## 
+## ## ---- Service - SPARQL processor only handling a given dataset
+## []
+##     rdf:type            joseki:Service ;
+##     rdfs:label          "SPARQL on the books model" ;
+##     joseki:serviceRef   "books" ;
+##     joseki:dataset      _:books ;
+##     joseki:processor    joseki:ProcessorSPARQL_FixedDS ;
+##     .
+## 
+## ## ---- Axis/SAOP testing
+## []
+##     rdf:type            joseki:Service ;
+##     rdfs:label          "SPARQL/SOAP testing" ;
+##     joseki:serviceRef   "sparql-query" ;
+##     joseki:dataset      _:books ;
+##     joseki:processor    joseki:ProcessorSPARQL_FixedDS ;
+##     .
+## 
+## ## ---- Database-backed
+## 
+## []
+##     rdf:type            joseki:Service ;
+##     rdfs:label          "SPARQL on the books model in a database" ;
+##     joseki:serviceRef   "books-db" ;
+##     joseki:dataset      _:books-db ;
+##     joseki:processor    joseki:ProcessorSPARQL_FixedDS ;
+##     .
 
 ## ---- With a reasoner
 
@@ -73,7 +73,8 @@
     rdf:type            joseki:Service ;
     rdfs:label          "SPARQL/RDFS testing" ;
     joseki:serviceRef   "rdfs" ;
-    joseki:dataset      joseki:ProcessorSPARQL_FixedDS ;
+    joseki:dataset      _:dsRDFS ;
+    joseki:processor    joseki:ProcessorSPARQL_FixedDS ;
     .
         
 ## --------------------------------------------------------------
@@ -120,6 +121,10 @@ _:books-db   rdf:type joseki:RDFDataSet ;
         ] ;
     .
 
+_:dsRDFS rdf:type joseki:RDFDataSet ;
+    rdfs:label "RDFS test dataset" ;
+    joseki:defaultGraph _:modelRDFS .
+
 
 ## --------------------------------------------------------------
 
@@ -135,12 +140,12 @@ _:model2 rdf:type jms:DefaultModelSpec ;
     rdfs:label "Model-2" ;
     jms:loadWith  <file:D2.ttl> .
 
-
 _:modelRDFS rdf:type jms:InfModelSpec ;
-     jms:loadWith  <file:D.ttl> ;
+     rdfs:label "RDFS test model" ;
+     jms:loadWith  <file:Data/Test/rdfsTestData1.ttl>
      jms:reasonsWith
-        [ jms:reasoner r:RDFSExptRuleReasoner ;
-          jms:schemaURL <file:C.ttl>  
+        [ jms:reasoner <http://jena.hpl.hp.com/2003/RDFSExptRuleReasoner> ;
+          jms:schemaURL <file:Data/Test/rdfsSchema1.ttl>
         ] .
 
 
@@ -154,6 +159,38 @@ _:modelRDFS rdf:type jms:InfModelSpec ;
 
 
 ## --------------------------------------------------------------
+
+joseki:ProcessorSPARQL
+    rdfs:label "General SPARQL processor" ;
+    rdf:type joseki:Processor ;
+    module:implementation joseki:ImplSPARQL ;
+
+    # Parameters - this processor processes FROM/FROM NAMED
+    joseki:allowExplicitDataset       "true"^^xsd:boolean ;
+    joseki:allowWebLoading            "true"^^xsd:boolean ;
+
+    # Names we answer to (optional request parameters)
+##     joseki:queryOperationName "SPARQL" ;
+##     joseki:queryOperationName "sparql" ;
+##     joseki:queryOperationName ql:SPARQL ;
+    .
+
+joseki:ProcessorSPARQL_FixedDS
+    rdfs:label "SPARQL processor for fixed datasets" ;
+    rdf:type joseki:Processor ;
+    module:implementation joseki:ImplSPARQL ;
+
+    # This processor does not accept queries with FROM/FROM NAMED
+    joseki:allowExplicitDataset       "false"^^xsd:boolean ;
+    joseki:allowWebLoading            "false"^^xsd:boolean ;
+    .
+
+joseki:ImplSPARQL
+    rdf:type   joseki:ServiceImpl ;
+    module:className
+        <java:org.joseki.processors.SPARQL> .
+    
+
 
 # Local Variables:
 # tab-width: 4

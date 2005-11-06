@@ -14,10 +14,7 @@ import org.apache.commons.logging.LogFactory;
 import com.hp.hpl.jena.query.DataSource;
 import com.hp.hpl.jena.query.Dataset;
 import com.hp.hpl.jena.query.DatasetFactory;
-import com.hp.hpl.jena.rdf.model.Model;
-import com.hp.hpl.jena.rdf.model.ModelFactory;
-import com.hp.hpl.jena.rdf.model.ModelSpec;
-import com.hp.hpl.jena.rdf.model.Resource;
+import com.hp.hpl.jena.rdf.model.*;
 import com.hp.hpl.jena.util.FileManager;
 import com.hp.hpl.jena.vocabulary.JenaModelSpec;
 
@@ -79,6 +76,13 @@ public class DatasetDesc
     
     private Model buildModel(Resource r)
     {
+        log.info("Attempt to build dataset: "+Utils.nodeLabel(r)) ;
+//        {
+//            StmtIterator sIter = r.listProperties() ;
+//            while ( sIter.hasNext() )
+//                log.info("  "+sIter.nextStatement()) ;
+//        }
+        
         ModelSpec mSpec = ModelFactory.createSpec(r, confModel) ;
 
         if ( r.hasProperty(JenaModelSpec.modelName) )

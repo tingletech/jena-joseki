@@ -4,14 +4,14 @@ Joseki3
 Joseki3 is not compatible with Joseki2.
 
 
-== Joseki 3.0 dev 1
+== Joseki 3.0 preview 1
 
-
-Features:
-+ Query server - no update support
++ Supports the SPARQL protocol over HTTP (Last Call version)
++ Supports the SPARQL query language (Last Call version)
 
 + HTTP protocol - done
-+ SOAP protocol - done
++ SOAP protocol - done but highly experimental.
+
 
 
 

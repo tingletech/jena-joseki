@@ -424,6 +424,7 @@ public class Configuration
         }
 
         RDFNode n = (RDFNode)x.get(0) ;
+        log.info("Dataset: "+Utils.nodeLabel(n)) ;
         DatasetDesc desc = (DatasetDesc)datasets.get(n) ;
         return desc ;
     }

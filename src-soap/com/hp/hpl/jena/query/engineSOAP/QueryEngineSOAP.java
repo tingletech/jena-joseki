@@ -44,7 +44,7 @@ public class QueryEngineSOAP implements QueryExecution
      * @param endpoint
      */
     
-    public QueryEngineSOAP(Query query, String endpoint)
+    public QueryEngineSOAP(String endpoint, Query query)
     {
         this(query.serialize(), endpoint) ;
     }
@@ -57,7 +57,7 @@ public class QueryEngineSOAP implements QueryExecution
      * @param endpoint
      */
     
-    public QueryEngineSOAP(String queryString, String endpoint)
+    public QueryEngineSOAP(String endpoint, String queryString)
     {
         this.endpoint = endpoint ;
         this.query = null ;

@@ -11,15 +11,19 @@ package dev;
 import com.hp.hpl.jena.query.QueryException;
 import com.hp.hpl.jena.query.QueryExecution;
 import com.hp.hpl.jena.query.ResultSetFormatter;
+import com.hp.hpl.jena.query.engineHTTP.QueryEngineHTTP;
 import com.hp.hpl.jena.query.engineSOAP.QueryEngineSOAP;
 import com.hp.hpl.jena.query.util.StringUtils;
 import com.hp.hpl.jena.rdf.model.Model;
 
 public class RunClient
 {
-    static String endpoint = "http://localhost:2525/axis/services/sparql-query" ;
+    static String endpointSOAP = "http://localhost:2525/axis/services/sparql-query" ;
+    static String endpointHttp = "http://localhost:2020/rdfs" ;
     public static void main(String[] args)
     {
+        doHttpSelect() ; System.exit(0) ;
+        
         doOneSelectQuery() ; System.exit(0) ;
         //doOneConstructQuery() ; System.exit(0) ;
         
@@ -33,14 +37,31 @@ public class RunClient
         //runLimitedGraph() ;  System.exit(0) ;
     }
     
+    public static void doHttpSelect()
+    {
+        String queryStr = "SELECT ?z {?x ?y ?z }" ;
+        
+        try {
+            QueryExecution qexec = new QueryEngineHTTP(endpointHttp, queryStr) ;
+            ResultSetFormatter.out(System.out, qexec.execSelect()) ;
+            qexec.close() ;
+        } 
+        catch (QueryException ex)
+        {
+            System.err.println("Query error: "+ex.getMessage()) ;
+            ex.printStackTrace() ;
+        }
+    }
+    
+    
+    // -------- SOAP
     
     public static void doOneSelectQuery()
     {
         String queryStr = "SELECT ?z {?x ?y ?z . FILTER regex(?z, 'Harry')}\n" ;
-        //queryStr = "XXX" ;
         
         try {
-            QueryExecution qexec = new QueryEngineSOAP(queryStr, endpoint) ;
+            QueryExecution qexec = new QueryEngineSOAP(queryStr, endpointSOAP) ;
             ResultSetFormatter.out(System.out, qexec.execSelect()) ;
             qexec.close() ;
         } 
