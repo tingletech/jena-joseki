@@ -1,3 +1,6 @@
+## NOW - put defintions in the comnfig file itself as they have become quite short.
+
+
 # This file is written in N3 / Turtle
 
 @prefix rdfs:   <http://www.w3.org/2000/01/rdf-schema#> .

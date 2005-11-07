@@ -6,6 +6,12 @@ Joseki3 is not compatible with Joseki2.
 
 == Joseki 3.0 preview 1
 
++ Earlier CVS versions had a config file and a definitions file.  But the
+  definitions are much shorter than for Joseki2 so the value of separating
+  them out is lost.
+    joseki-defs.ttl is deprecated.
+    Example config files have defintions inline.
+
 + Supports the SPARQL protocol over HTTP (Last Call version)
 + Supports the SPARQL query language (Last Call version)
 
