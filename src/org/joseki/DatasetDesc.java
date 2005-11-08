@@ -95,29 +95,32 @@ public class DatasetDesc
         
         // TODO Use this code when Jena ModelSpecs are fixed 
 //        Model m = mSpec.openModel() ;
-//        return m ;   
+//        return m ;  
         
-        if ( r.hasProperty(JenaModelSpec.loadWith) )
-        {
-            // Assume it is a in-memory model
-            log.info("Creating a memory model") ;
-            Model m = ModelFactory.createDefaultModel() ;
-            String data = r.getProperty(JenaModelSpec.loadWith).getResource().getURI() ;
-            FileManager.get().readModel(m, data) ;
-            return m ;
-        }
+        //return mSpec.createDefaultModel() ;
+        return mSpec.createModel() ;
         
-        if ( r.hasProperty(JenaModelSpec.maker) )
-        {
-            Resource r2 = r.getProperty(JenaModelSpec.maker).getResource() ;
-            if ( r2.hasProperty(JenaModelSpec.hasConnection) )
-            {
-                // Database
-                Model m = mSpec.openModel() ;
-                return m ;        
-            }
-        }
-        throw new JosekiServerException("Unrecognized model description: "+Utils.nodeLabel(r)) ;
+//        if ( r.hasProperty(JenaModelSpec.loadWith) )
+//        {
+//            // Assume it is a in-memory model
+//            log.info("Creating a memory model") ;
+//            Model m = ModelFactory.createDefaultModel() ;
+//            String data = r.getProperty(JenaModelSpec.loadWith).getResource().getURI() ;
+//            FileManager.get().readModel(m, data) ;
+//            return m ;
+//        }
+//        
+//        if ( r.hasProperty(JenaModelSpec.maker) )
+//        {
+//            Resource r2 = r.getProperty(JenaModelSpec.maker).getResource() ;
+//            if ( r2.hasProperty(JenaModelSpec.hasConnection) )
+//            {
+//                // Database
+//                Model m = mSpec.openModel() ;
+//                return m ;        
+//            }
+//        }
+//        throw new JosekiServerException("Unrecognized model description: "+Utils.nodeLabel(r)) ;
     }
     
     public String toString()
