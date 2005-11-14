@@ -8,6 +8,9 @@
 
 <h1>Joseki - Frequently Asked Questions</h1>
 
+<p>See also the <a href="http://jena.sourceforge.net/ARQ/">ARQ Web site</a> and
+<a href="http://jena.sourceforge.net/ARQ/FAQ.html">ARQ FAQ</a>.</p>
+
 <dl>
   <dt>java.lang.NoClassDefFoundError</dt>
   <dd><p>The classpath is wrong.  Include all the jar files in <tt>lib/</tt>.  
@@ -37,19 +40,20 @@
   </dd>
 
   <dt>Query Debugging</dt>
-  <dd><p>Look at the data in N3 or Turtle or N-triples.  This can give
-  you a better sense of the graph than RDF/XML.</p>
+  <dd><p>Get queries working outside Joseki if they are problematic.&nbsp; When 
+  running inside a web application, there are many different parts all 
+  interacting so it can be hard to see which part is causing problems. Reduce 
+  the complexity by testing queries outside Joseki with the
+  <a href="http://jena.sourceforge.net/ARQ/cmds.html">ARQ command line tools</a>.</p>
 
-  <p>Use the <a href="cmds.html">command line tools</a> and a sample
-  of your data to develop a query, especially a complex one.</p>
+  <p>Then run with the standalone server (it's Jetty running with a single web 
+  application).</p>
 
-  <p>Break your query up into smaller sections.</p>
+  <p>Then move into your web application environment once you know the various 
+  parts are working.</p>
 
   </dd>
-
-
 </dl>
-
 
 
 <p class="footnote"><a href="documentation.html">Joseki Documentation Page</a></p>

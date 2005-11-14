@@ -1,4 +1,4 @@
-/* CVS $Id: doc.css,v 1.2 2005-07-22 15:42:33 andy_seaborne Exp $ */
+/* CVS $Id: doc.css,v 1.3 2005-11-14 09:26:10 andy_seaborne Exp $ */
 
 /* Non media-specific rules */
 
@@ -17,9 +17,13 @@ li { font-size:10pt ; line-height:175% ; margin-left: 2ex ; margin-right: 2ex; }
 code { font-size: 105%; }
 tt   { font-size: 105%; }
 
+dt   { font-size: 10pt ; font-weight: 400 ; }
+dd   { font-size: 10pt ; font-weight: normal ; }
+
 h1 { font-size: 14pt ; }
 h2 { font-size: 12pt; }
-h3 { font-size: 11pt; }
+h3 { font-size: 10pt; }
+h4 { font-size: 10pt; }
 .todo { font-size: 9pt ; color: #777 ; }
 
 
@@ -35,6 +39,7 @@ table {
 }
 
 td {
+  font-size:10pt ;
   border-width: 1px ;
   border-collapse: collapse;
   border-color : #808080 ;
@@ -46,6 +51,7 @@ td {
 
 
 th {
+  font-size:10pt ;
   border-collapse: collapse;
   border-width: 1px ;
   border-color: #808080 ;
@@ -81,14 +87,13 @@ h2 {
 
 h3 { 
      font-weight: bold;
-     margin-bottom:0.2ex;
+     margin-bottom:0.25ex;
      padding-left: 2ex;
     }
 
 h4, h5 {
-    font-size: 100%;
-    font-weight: bold;
-    margin-bottom:0.2ex;
+    font-weight: italic;
+    margin-bottom:0.25ex;
     padding-left: 2ex;
 }
 

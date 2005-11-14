@@ -142,7 +142,7 @@ _:model2 rdf:type jms:DefaultModelSpec ;
 
 _:modelRDFS rdf:type jms:InfModelSpec ;
      rdfs:label "RDFS test model" ;
-     jms:loadWith  <file:Data/Test/rdfsTestData1.ttl>
+     jms:loadWith  <file:Data/Test/rdfsTestData1.ttl> ;
      jms:reasonsWith
         [ jms:reasoner <http://jena.hpl.hp.com/2003/RDFSExptRuleReasoner> ;
           jms:schemaURL <file:Data/Test/rdfsSchema1.ttl>
