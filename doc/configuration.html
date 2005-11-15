@@ -1,14 +1,38 @@
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-<title>Joseki</title>
-<link rel="stylesheet" type="text/css" href="styles/doc.css" />
-</head>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><title>Joseki</title>
+<link rel="stylesheet" type="text/css" href="styles/doc.css"></head>
 <body>
+  <h1>Joseki - Configuration</h1>
 
-<h1>Joseki</h1>
-<p>Configuration</p>
+<p>A Joseki server is configured with services. A
+service is implemented by a processor and that processor can either
+execute queries on a fixed, predefined dataset, or it can dynamically
+assemble the dataset from the query, or a do either, depending on the
+query. &nbsp;If the processor has a fixed dataset, then a query
+involving <code>FROM</code> or <code>FROM NAMED</code>,
+or a protocol request that describes the dataset will be rejected.</p><p>When
+publishing some existing data, it will be most common to use a
+processor that does not allow the dataset to be specified in the query
+or the query protocol request.
+</p>
+
+<p>The same configuration
+is used for both HTTP and SOAP.</p><p>The
+configuration file is an RDF graph. The default name is
+"joseki-config.ttl" and is often written in Turtle or N3, rather than
+RDF/XML. &nbsp;The server can read the full range of RDF serializations.</p><p>Example file</p><p>Service
+References</p>
+
+<p>And how they affect the URL.</p>
+
+<p>Interactions with web.xml</p>
 
 
 
-</body>
-</html>
+<h2>Example</h2>
+
+<p></p>
+<pre class="box">@prefix rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt; .<br>@prefix rdf: &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&gt; .<br>@prefix xsd: &lt;http://www.w3.org/2001/XMLSchema#&gt; .<br><br>@prefix module: &lt;http://joseki.org/2003/06/module#&gt; .<br>@prefix joseki: &lt;http://joseki.org/2005/06/configuration#&gt; .<br>@prefix ql: &lt;http://jena.hpl.hp.com/2003/07/query/&gt; .<br><br>@prefix jms: &lt;http://jena.hpl.hp.com/2003/08/jms#&gt; .<br><br>## --------------------------------------------------------------<br>## This file is written in N3 / Turtle<br>## It is an RDF graph - order of RDF triples does not matter<br>## to the machine but it does help people who need to edit this file.<br><br>## Note: adding rdfs:label to blank nodes will cause Joseki <br>## to print that in log messages.<br><br><br>## --------------------------------------------------------------<br>## About this configuration<br><br>## --------------------------------------------------------------<br>## About this server<br><br>[] rdf:type joseki:Server ;<br> joseki:serverDebug "true" ;<br> .<br><br>## --------------------------------------------------------------<br>## Services<br><br>## Services are best described by a blank node - it's the<br>## serviceRef that will be used to match requests to services,<br>## not some resource URI for the description.<br><br>## Note that the service reference and the routing of incoming<br>## requests by URI as defined by web.xml have to align.<br><br># Service 1<br># General purpose SPARQL processor, no dataset, expects the<br># request to specify the dataset (either by parameters in the<br># protocol request or in the query itself).<br><br>[]<br> rdf:type joseki:Service ;<br> rdfs:label "service point" ;<br> joseki:serviceRef "sparql" ;<br> joseki:processor joseki:ProcessorSPARQL ;<br> .<br><br># Service 2 - SPARQL processor only handling a given dataset<br>[]<br> rdf:type joseki:Service ;<br> rdfs:label "SPARQL on the books model" ;<br> joseki:serviceRef "books" ;<br> # dataset part<br> joseki:dataset _:books ;<br> # Service part.<br> # This processor will not allow either the protocol,<br> # nor the query, to specify the datset.<br> joseki:processor joseki:ProcessorSPARQL_FixedDS ;<br> .<br><br>## Axis/SAOP testing<br>[]<br> rdf:type joseki:Service ;<br> rdfs:label "SPARQL/SOAP testing" ;<br> joseki:serviceRef "sparql-query" ;<br> # dataset part<br> joseki:dataset _:books ;<br> # Service part.<br> # This processor will not allow either the protocol,<br> # nor the query, to specify the datset.<br> joseki:processor joseki:ProcessorSPARQL_FixedDS ;<br> .<br><br>## Add a FOAF named graph example.<br><br><br>## Move to an example config file.<br><br>## # Service 3 - example - all inline.<br>## []<br>## rdf:type joseki:Service ;<br>## rdfs:label "Inline example" ;<br>## <br>## # Required - serviceRef<br>## joseki:serviceRef "example" ;<br>## joseki:dataset<br>## [ joseki:defaultGraph _:model1 ; ] ;<br>## joseki:processor<br>## # Does not exist - causes a config warning and this<br>## # service is not available for requests<br>## [ module:implementation [ module:className &lt;java:module&gt; ] ] ;<br>## .<br>## <br><br>## --------------------------------------------------------------<br>## Datasets<br><br>_:ds1 rdf:type joseki:RDFDataSet ;<br> joseki:defaultGraph _:model1 ;<br> rdfs:label "Dataset _:ds1" ;<br> joseki:namedGraph<br> [ joseki:graphName &lt;http://example.org/name1&gt; ;<br> joseki:graphData _:model1 ] ;<br> # Could use the location manager and have the named thing only<br> # Can't have two names for one graph?<br> joseki:namedGraph<br> [ joseki:graphName &lt;http://example.org/name2&gt; ;<br> joseki:graphData _:model2 <br> ] ;<br> ## Short versions?<br> .<br><br># A dataset of one model as the default graph<br>_:books rdf:type joseki:RDFDataSet ;<br> rdfs:label "Books" ;<br> joseki:defaultGraph<br> [ rdfs:label "books.n3" ;<br> jms:loadWith &lt;file:Data/books.n3&gt; ] ;<br> .<br><br>## _:books rdf:type joseki:RDFDataSet ;<br>## rdfs:label "Books" ;<br>## joseki:defaultGraph<br>## [ rdfs:label "books-db" ;<br>## jms:modelName "books" ;<br>## jms:maker <br>## [ jms:reificationMode jms:rsMinimal ;<br>## jms:hasConnection [<br>## jms:dbURL &lt;jdbc:mysql://localhost/data?autoReconnect=true&gt; ;<br>## jms:dbUser "user" ;<br>## jms:dbPassword "password" ;<br>## jms:dbType "MySQL" ;<br>## jms:dbClass "com.mysql.jdbc.Driver" ;<br>## ] ;<br>## ];<br>## ] ;<br>## .<br><br><br><br>## --------------------------------------------------------------<br>## Individual graphs (Jena calls them Models)<br>## ---- A model, with RDF read from a file <br>## (syntax determined by file extension - defaults to RDF/XML)<br><br>_:model rdf:type jms:DefaultModelSpec ;<br> rdfs:label "Model(plain)" ;<br> jms:loadWith &lt;file:D.ttl&gt; .<br><br>_:model1 rdf:type jms:DefaultModelSpec ;<br> rdfs:label "Model-1" ;<br> jms:loadWith &lt;file:D1.ttl&gt; .<br><br>_:model2 rdf:type jms:DefaultModelSpec ;<br> rdfs:label "Model-2" ;<br> jms:loadWith &lt;file:D2.ttl&gt; .<br><br>## Examples of RDFS and OWL inference models<br><br>## --------------------------------------------------------------<br>## Processors<br>## Usually, this section is empty because only standard<br>## processors are used via inclusion of common definitions.<br><br><br><br>## ----- definitions --------------------------------------------------<br><br>joseki:ProcessorSPARQL<br> rdfs:label "General SPARQL processor" ;<br> rdf:type joseki:Processor ;<br> module:implementation joseki:ImplSPARQL ;<br><br> # Parameters - this processor processes FROM/FROM NAMED<br> joseki:allowExplicitDataset "true"^^xsd:boolean ;<br> joseki:allowWebLoading "true"^^xsd:boolean ;<br> .<br><br>joseki:ProcessorSPARQL_FixedDS<br> rdfs:label "SPARQL processor for fixed datasets" ;<br> rdf:type joseki:Processor ;<br> module:implementation joseki:ImplSPARQL ;<br><br> # This processor does not accept queries with FROM/FROM NAMED<br> joseki:allowExplicitDataset "false"^^xsd:boolean ;<br> joseki:allowWebLoading "false"^^xsd:boolean ;<br> .<br><br>joseki:ImplSPARQL<br> rdf:type joseki:ServiceImpl ;<br> module:className<br> &lt;java:org.joseki.processors.SPARQL&gt; .<br><br> <br># tab-width: 4<br># indent-tabs-mode: nil<br># End:<br></pre>
+
+<p>&nbsp;</p>
+<pre><span class="box"></span> </pre></body></html>
