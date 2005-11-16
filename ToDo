@@ -23,6 +23,9 @@
 Joseki3
 =======
 
++ Add a configurable output processor - default XML results / 
+  Have SELECT only processor
+
 + Update all XSD and WSDL to latest and rebuild
 
 + Need "application/sparql-query"
