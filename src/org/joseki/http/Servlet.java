@@ -17,7 +17,7 @@ import org.joseki.*;
 
 /** The servlet class.
  * @author  Andy Seaborne
- * @version $Id: Servlet.java,v 1.13 2005-08-31 16:18:30 andy_seaborne Exp $
+ * @version $Id: Servlet.java,v 1.14 2005-12-02 13:43:53 andy_seaborne Exp $
  */
 
 public class Servlet extends HttpServlet implements Connector
@@ -209,6 +209,11 @@ public class Servlet extends HttpServlet implements Connector
         // explicitly named in web.xml, it strips that off
 //        if ( servletPath != null && servletPath.length() > 0 )
 //            dispatchURI = dispatchURI.substring(servletPath.length()) ;
+        
+        // Sugegsted by damien_coraboeuf
+        // TODO Test and verify
+//        if ( servletPath != null && servletPath.length() > 0 )
+//            serviceURI = serviceURI.substring(servletPath.length()) ;
 
         if ( log.isDebugEnabled() )
         {
