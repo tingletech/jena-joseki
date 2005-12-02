@@ -32,6 +32,8 @@ Joseki3
 
 + Teach HttpUtils about "+" as in "application/sparql-results+xml"
 
++ MIME type "text/rdf+n3"
+
 + Get baseURI from Document to set parsing one.
 
 + Release time?
