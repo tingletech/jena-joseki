@@ -17,7 +17,7 @@ import org.joseki.*;
 
 /** The servlet class.
  * @author  Andy Seaborne
- * @version $Id: Servlet.java,v 1.14 2005-12-02 13:43:53 andy_seaborne Exp $
+ * @version $Id: Servlet.java,v 1.15 2005-12-02 17:06:17 andy_seaborne Exp $
  */
 
 public class Servlet extends HttpServlet implements Connector
@@ -214,6 +214,13 @@ public class Servlet extends HttpServlet implements Connector
         // TODO Test and verify
 //        if ( servletPath != null && servletPath.length() > 0 )
 //            serviceURI = serviceURI.substring(servletPath.length()) ;
+  
+        // Example:
+//    <servlet-mapping>
+//        <servlet-name>JosekiServlet</servlet-name>
+//        <url-pattern>/ws/joseki/*</url-pattern>
+//    </servlet-mapping>
+        
 
         if ( log.isDebugEnabled() )
         {

@@ -34,6 +34,8 @@ Joseki3
 
 + MIME type "text/rdf+n3"
 
++ Enable arbitrary classes to implement a DaatsetDesc or be a factory for Models.
+
 + Get baseURI from Document to set parsing one.
 
 + Release time?
