@@ -11,10 +11,12 @@ import java.util.*;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import com.hp.hpl.jena.db.ModelRDB;
 import com.hp.hpl.jena.query.DataSource;
 import com.hp.hpl.jena.query.Dataset;
 import com.hp.hpl.jena.query.DatasetFactory;
 import com.hp.hpl.jena.rdf.model.*;
+import com.hp.hpl.jena.util.FileManager;
 import com.hp.hpl.jena.vocabulary.JenaModelSpec;
 
 
@@ -92,34 +94,39 @@ public class DatasetDesc
         else
             log.info("Building model: "+Utils.nodeLabel(r)) ;
         
-        // TODO Use this code when Jena ModelSpecs are fixed 
+        // TODO Use this code when Jena Assemblers available 
 //        Model m = mSpec.openModel() ;
 //        return m ;  
         
         //return mSpec.createDefaultModel() ;
-        return mSpec.createModel() ;
+        //BEST -- ?? -- return mSpec.createModel() ;
         
-//        if ( r.hasProperty(JenaModelSpec.loadWith) )
-//        {
-//            // Assume it is a in-memory model
-//            log.info("Creating a memory model") ;
-//            Model m = ModelFactory.createDefaultModel() ;
-//            String data = r.getProperty(JenaModelSpec.loadWith).getResource().getURI() ;
-//            FileManager.get().readModel(m, data) ;
-//            return m ;
-//        }
-//        
-//        if ( r.hasProperty(JenaModelSpec.maker) )
-//        {
-//            Resource r2 = r.getProperty(JenaModelSpec.maker).getResource() ;
-//            if ( r2.hasProperty(JenaModelSpec.hasConnection) )
-//            {
-//                // Database
-//                Model m = mSpec.openModel() ;
-//                return m ;        
-//            }
-//        }
-//        throw new JosekiServerException("Unrecognized model description: "+Utils.nodeLabel(r)) ;
+        if ( r.hasProperty(JenaModelSpec.loadWith) )
+        {
+            // Assume it is a in-memory model
+            log.info("Creating a memory model") ;
+            Model m = ModelFactory.createDefaultModel() ;
+            String data = r.getProperty(JenaModelSpec.loadWith).getResource().getURI() ;
+            FileManager.get().readModel(m, data) ;
+            return m ;
+        }
+        
+        if ( r.hasProperty(JenaModelSpec.maker) )
+        {
+            Resource r2 = r.getProperty(JenaModelSpec.maker).getResource() ;
+            if ( r2.hasProperty(JenaModelSpec.hasConnection) )
+            {
+                // Database
+                Model m = mSpec.openModel() ;
+//                log.warn("Only accessing asserted statements in database model") ;
+//                ModelRDB mdb = (ModelRDB)m ;
+//                mdb.setQueryOnlyAsserted(true) ;
+//                mdb.setDoFastpath(true) ;
+                
+                return m ;        
+            }
+        }
+        throw new JosekiServerException("Unrecognized model description: "+Utils.nodeLabel(r)) ;
     }
     
     public String toString()

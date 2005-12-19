@@ -6,6 +6,8 @@ Joseki3 is not compatible with Joseki2.
 
 == Joseki 3.0 preview 1
 
++ The client scripts are now part of ARQ. See "arq.sparql --service"
+
 + Earlier CVS versions had a config file and a definitions file.  But the
   definitions are much shorter than for Joseki2 so the value of separating
   them out is lost.

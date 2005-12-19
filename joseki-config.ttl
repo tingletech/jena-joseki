@@ -130,7 +130,7 @@ _:books   rdf:type joseki:RDFDataSet ;
 ##         [ rdfs:label        "books-db" ;
 ##           jms:modelName     "books" ;
 ##           jms:maker 
-##             [ jms:reificationMode jms:rsMinimal ;
+##             [ ##jms:reificationMode jms:rsMinimal ;
 ##               jms:hasConnection [
 ##                   jms:dbURL        <jdbc:mysql://localhost/data?autoReconnect=true> ;
 ##                   jms:dbUser       "user" ;
