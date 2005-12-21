@@ -18,7 +18,7 @@ public class RunServer
         
         //AxisServer.main(args) ; System.exit(0) ;
         
-        String[] a = new String[]{"joseki-config-vr.ttl"} ;
+        String[] a = new String[]{"joseki-config.ttl"} ;
         //String[] a = args ;
         runJosekiServer(a) ; System.exit(0) ;
     }
