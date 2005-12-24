@@ -1,62 +1,48 @@
 /*
- * (c) Copyright 2004, 2005 Hewlett-Packard Development Company, LP
- * All rights reserved.
- * [See end of file]
- */
+ 	(c) Copyright 2005 Hewlett-Packard Development Company, LP
+ 	All rights reserved - see end of file.
+ 	$Id: InfModelAssembler.java,v 1.1 2005-12-24 22:02:55 andy_seaborne Exp $
+*/
+
+package com.hp.hpl.jena.rdf.model.assemblers;
 
 
-package dev;
+import com.hp.hpl.jena.rdf.model.*;
+import com.hp.hpl.jena.reasoner.*;
+import com.hp.hpl.jena.reasoner.rulesys.GenericRuleReasonerFactory;
 
-import joseki.rdfserver;
-
-public class RunServer
-{
-
-    public static void main(String[] args)
+public class InfModelAssembler extends ModelAssembler
     {
-        RunUtils.setLog4j() ;
-        
-        System.setProperty("jena.assembler.vocab", "file:conf/vocab.n3") ;
-        try
+    protected Model createModel( Assembler a, Resource root )
         {
-            Class.forName("com.mysql.jdbc.Driver") ;
-        } catch (ClassNotFoundException e)
-        {
-            e.printStackTrace();
-            return ;
+        checkType( root, JA.InfModel );
+        Model base = getBase( a, root );
+        Reasoner reasoner = getReasoner( a, root );
+        InfModel result = ModelFactory.createInfModel( reasoner, base );
+        return result;
         }
-        
-        
-        String[] a = new String[]{"joseki-config.ttl"} ;
-        //String[] a = args ;
-        runJosekiServer(a) ; System.exit(0) ;
-        //AxisServer.main(args) ; System.exit(0) ;
-    }
+
+    protected Model getBase( Assembler a, Resource root )
+        {
+        Resource base = getUniqueResource( root, JA.baseModel );
+        return base == null ? ModelFactory.createDefaultModel() : a.createModel( base );
+        }
+
+    protected Reasoner getReasoner( Assembler a, Resource root )
+        { return getReasonerFactory( a, root ).create( root ); }
     
-    public static void runJosekiServer(String[] args) 
-    {
-        if ( args == null || args.length == 0 )
-            args = new String[]{"joseki-config-test.ttl"} ;
-
-        rdfserver.main(args) ;
-        
-        // Threads under Eclipse seem to be daemons and so the server exits 
-        for ( ; ; )
-        {
-            Object obj = new Object() ;
-            synchronized(obj)
-            {
-                // Remember to own the lock first.
-                try { obj.wait() ; } catch (Exception ex) {}
-            }
+    protected ReasonerFactory getReasonerFactory( Assembler a, Resource root )
+        { 
+        Resource factory = getUniqueResource( root, JA.reasoner );
+        return factory == null
+            ? GenericRuleReasonerFactory.theInstance()
+            : (ReasonerFactory) a.create( factory )
+            ;        
         }
-        
-        //System.exit(0) ;
     }
-}
 
 /*
- * (c) Copyright 2004, 2005 Hewlett-Packard Development Company, LP
+ * (c) Copyright 2005 Hewlett-Packard Development Company, LP
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -80,4 +66,4 @@ public class RunServer
  * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
+*/

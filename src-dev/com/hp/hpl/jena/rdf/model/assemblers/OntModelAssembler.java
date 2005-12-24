@@ -1,62 +1,35 @@
 /*
- * (c) Copyright 2004, 2005 Hewlett-Packard Development Company, LP
- * All rights reserved.
- * [See end of file]
- */
+ 	(c) Copyright 2005 Hewlett-Packard Development Company, LP
+ 	All rights reserved - see end of file.
+ 	$Id: OntModelAssembler.java,v 1.1 2005-12-24 22:02:55 andy_seaborne Exp $
+*/
 
+package com.hp.hpl.jena.rdf.model.assemblers;
 
-package dev;
+import com.hp.hpl.jena.ontology.*;
+import com.hp.hpl.jena.rdf.model.*;
 
-import joseki.rdfserver;
-
-public class RunServer
-{
-
-    public static void main(String[] args)
+public class OntModelAssembler extends InfModelAssembler implements Assembler
     {
-        RunUtils.setLog4j() ;
-        
-        System.setProperty("jena.assembler.vocab", "file:conf/vocab.n3") ;
-        try
+    public Model createModel( Assembler a, Resource root )
         {
-            Class.forName("com.mysql.jdbc.Driver") ;
-        } catch (ClassNotFoundException e)
-        {
-            e.printStackTrace();
-            return ;
+        Model baseModel = getBase( a, root );
+        OntModelSpec oms = getOntModelSpec( a, root );
+        return ModelFactory.createOntologyModel( oms, baseModel );
         }
-        
-        
-        String[] a = new String[]{"joseki-config.ttl"} ;
-        //String[] a = args ;
-        runJosekiServer(a) ; System.exit(0) ;
-        //AxisServer.main(args) ; System.exit(0) ;
-    }
-    
-    public static void runJosekiServer(String[] args) 
-    {
-        if ( args == null || args.length == 0 )
-            args = new String[]{"joseki-config-test.ttl"} ;
 
-        rdfserver.main(args) ;
-        
-        // Threads under Eclipse seem to be daemons and so the server exits 
-        for ( ; ; )
+    private static final OntModelSpec defaultSpec = OntModelSpec.OWL_MEM_RDFS_INF;
+
+    protected OntModelSpec getOntModelSpec( Assembler a, Resource root )
         {
-            Object obj = new Object() ;
-            synchronized(obj)
-            {
-                // Remember to own the lock first.
-                try { obj.wait() ; } catch (Exception ex) {}
-            }
+        Resource r = getUniqueResource( root, JA.ontModelSpec );
+        return r == null ?defaultSpec : (OntModelSpec) a.create( r );
         }
-        
-        //System.exit(0) ;
     }
-}
+
 
 /*
- * (c) Copyright 2004, 2005 Hewlett-Packard Development Company, LP
+ * (c) Copyright 2005 Hewlett-Packard Development Company, LP
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -80,4 +53,4 @@ public class RunServer
  * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
+*/

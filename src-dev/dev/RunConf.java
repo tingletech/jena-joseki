@@ -1,21 +1,18 @@
-/*
- * (c) Copyright 2004, 2005 Hewlett-Packard Development Company, LP
- * All rights reserved.
- * [See end of file]
- */
+package dev ;
 
 
-package dev;
+import com.hp.hpl.jena.query.*;
+import com.hp.hpl.jena.query.util.StringUtils;
+import com.hp.hpl.jena.rdf.model.Model;
+import com.hp.hpl.jena.rdf.model.Resource;
+import com.hp.hpl.jena.rdf.model.assemblers.Assembler;
+import com.hp.hpl.jena.util.FileManager;
 
-import joseki.rdfserver;
 
-public class RunServer
+public class RunConf
 {
-
-    public static void main(String[] args)
+    public static void main(String argv[])
     {
-        RunUtils.setLog4j() ;
-        
         System.setProperty("jena.assembler.vocab", "file:conf/vocab.n3") ;
         try
         {
@@ -25,38 +22,34 @@ public class RunServer
             e.printStackTrace();
             return ;
         }
-        
-        
-        String[] a = new String[]{"joseki-config.ttl"} ;
-        //String[] a = args ;
-        runJosekiServer(a) ; System.exit(0) ;
-        //AxisServer.main(args) ; System.exit(0) ;
-    }
-    
-    public static void runJosekiServer(String[] args) 
-    {
-        if ( args == null || args.length == 0 )
-            args = new String[]{"joseki-config-test.ttl"} ;
+        Model spec = FileManager.get().loadModel( "conf/assem1.ttl" );
 
-        rdfserver.main(args) ;
+        Resource root = spec.createResource( spec.expandPrefix( "ex:a2" ) );
         
-        // Threads under Eclipse seem to be daemons and so the server exits 
-        for ( ; ; )
+        boolean b = spec.containsResource(root) ;
+        if ( !b ) 
+            System.err.println("**** Not found: "+root) ;
+        
+        Model m = Assembler.general.createModel( root );
+        
+        if ( false )
         {
-            Object obj = new Object() ;
-            synchronized(obj)
-            {
-                // Remember to own the lock first.
-                try { obj.wait() ; } catch (Exception ex) {}
-            }
+            String[] qs = new String[]{
+                "PREFIX :  <http://example/ns#>",
+                "SELECT ?t { :x a ?t }" 
+            } ;
+            QueryExecution qExec = QueryExecutionFactory.create(StringUtils.join("\n", qs), m) ;
+            ResultSet rs = qExec.execSelect() ;
+            ResultSetFormatter.out(System.out, rs ) ;
+            qExec.close() ;
         }
-        
-        //System.exit(0) ;
+        else
+            m.write(System.out, "N3") ;
     }
 }
 
 /*
- * (c) Copyright 2004, 2005 Hewlett-Packard Development Company, LP
+ * (c) Copyright 2005 Hewlett-Packard Development Company, LP
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without

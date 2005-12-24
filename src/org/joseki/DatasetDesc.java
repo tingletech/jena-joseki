@@ -15,6 +15,7 @@ import com.hp.hpl.jena.query.DataSource;
 import com.hp.hpl.jena.query.Dataset;
 import com.hp.hpl.jena.query.DatasetFactory;
 import com.hp.hpl.jena.rdf.model.*;
+import com.hp.hpl.jena.rdf.model.assemblers.Assembler;
 import com.hp.hpl.jena.util.FileManager;
 import com.hp.hpl.jena.vocabulary.JenaModelSpec;
 
@@ -77,15 +78,29 @@ public class DatasetDesc
     private Model buildModel(Resource r)
     {
         log.info("Attempt to build dataset: "+Utils.nodeLabel(r)) ;
-//        {
-//            StmtIterator sIter = r.listProperties() ;
-//            while ( sIter.hasNext() )
-//                log.info("  "+sIter.nextStatement()) ;
-//        }
-        
-        ModelSpec mSpec = ModelFactory.createSpec(r, confModel) ;
+//      {
+//      StmtIterator sIter = r.listProperties() ;
+//      while ( sIter.hasNext() )
+//          log.info("  "+sIter.nextStatement()) ;
+//  }
 
-        if ( r.hasProperty(JenaModelSpec.modelName) )
+        if ( r.hasProperty(JenaModelSpec.loadWith) || r.hasProperty(JenaModelSpec.maker) )
+        {
+            log.warn("Build model using JenaModelSpec (deprecated)") ;
+            return buildModelOld(r) ;
+        }
+
+        try {
+            return Assembler.general.createModel( r );
+        } catch (Exception ex) 
+        { throw new JosekiServerException("Failed to assemble model", ex) ; }
+    }
+    
+    private Model buildModelOld(Resource r)
+    {
+        ModelSpec mSpec = ModelFactory.createSpec(r, confModel) ;
+        
+        if ( r.hasProperty(JenaModelSpec.maker) )
         {
             String modelName = r.getProperty(JenaModelSpec.modelName).getString() ;
             log.info("Building named model: "+Utils.nodeLabel(r)+" / "+modelName) ;
@@ -94,8 +109,8 @@ public class DatasetDesc
             log.info("Building model: "+Utils.nodeLabel(r)) ;
         
         // TODO Use this code when Jena Assemblers available 
-//        Model m = mSpec.openModel() ;
-//        return m ;  
+        //        Model m = mSpec.openModel() ;
+        //        return m ;  
         
         //return mSpec.createDefaultModel() ;
         //BEST -- ?? -- return mSpec.createModel() ;
@@ -117,10 +132,10 @@ public class DatasetDesc
             {
                 // Database
                 Model m = mSpec.openModel() ;
-//                log.warn("Only accessing asserted statements in database model") ;
-//                ModelRDB mdb = (ModelRDB)m ;
-//                mdb.setQueryOnlyAsserted(true) ;
-//                mdb.setDoFastpath(true) ;
+                //                log.warn("Only accessing asserted statements in database model") ;
+                //                ModelRDB mdb = (ModelRDB)m ;
+                //                mdb.setQueryOnlyAsserted(true) ;
+                //                mdb.setDoFastpath(true) ;
                 
                 return m ;        
             }

@@ -1,62 +1,35 @@
 /*
- * (c) Copyright 2004, 2005 Hewlett-Packard Development Company, LP
- * All rights reserved.
- * [See end of file]
- */
+ 	(c) Copyright 2005 Hewlett-Packard Development Company, LP
+ 	All rights reserved - see end of file.
+ 	$Id: Content.java,v 1.1 2005-12-24 22:02:55 andy_seaborne Exp $
+*/
 
+package com.hp.hpl.jena.rdf.model.assemblers;
 
-package dev;
+import java.util.*;
 
-import joseki.rdfserver;
+import com.hp.hpl.jena.rdf.model.Model;
 
-public class RunServer
-{
-
-    public static void main(String[] args)
+public class Content
     {
-        RunUtils.setLog4j() ;
-        
-        System.setProperty("jena.assembler.vocab", "file:conf/vocab.n3") ;
-        try
-        {
-            Class.forName("com.mysql.jdbc.Driver") ;
-        } catch (ClassNotFoundException e)
-        {
-            e.printStackTrace();
-            return ;
-        }
-        
-        
-        String[] a = new String[]{"joseki-config.ttl"} ;
-        //String[] a = args ;
-        runJosekiServer(a) ; System.exit(0) ;
-        //AxisServer.main(args) ; System.exit(0) ;
-    }
+    protected final List contents;
     
-    public static void runJosekiServer(String[] args) 
-    {
-        if ( args == null || args.length == 0 )
-            args = new String[]{"joseki-config-test.ttl"} ;
+    public Content( List contents )
+        { this.contents = contents; }
+    
+    public Content()
+        { this( new ArrayList() ); }
 
-        rdfserver.main(args) ;
-        
-        // Threads under Eclipse seem to be daemons and so the server exits 
-        for ( ; ; )
+    public Model fill( Model m )
         {
-            Object obj = new Object() ;
-            synchronized(obj)
-            {
-                // Remember to own the lock first.
-                try { obj.wait() ; } catch (Exception ex) {}
-            }
+        for (int i = 0; i < contents.size(); i += 1) ((Content) contents.get(i)).fill( m );
+        return m; 
         }
-        
-        //System.exit(0) ;
     }
-}
+
 
 /*
- * (c) Copyright 2004, 2005 Hewlett-Packard Development Company, LP
+ * (c) Copyright 2005 Hewlett-Packard Development Company, LP
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -80,4 +53,4 @@ public class RunServer
  * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
+*/

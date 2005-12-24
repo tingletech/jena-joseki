@@ -13,7 +13,7 @@
 @prefix joseki: <http://joseki.org/2005/06/configuration#> .
 @prefix ql:     <http://jena.hpl.hp.com/2003/07/query/> .
 
-@prefix jms:    <http://jena.hpl.hp.com/2003/08/jms#> .
+@prefix ja:         <http://jena.hpl.hp.com/2005/11/Assembler#> .
 
 ## --------------------------------------------------------------
 
@@ -39,14 +39,15 @@
 ##     joseki:processor    joseki:ProcessorSPARQL ;
 ##     .
 ## 
-## ## ---- Service - SPARQL processor only handling a given dataset
-## []
-##     rdf:type            joseki:Service ;
-##     rdfs:label          "SPARQL on the books model" ;
-##     joseki:serviceRef   "books" ;
-##     joseki:dataset      _:books ;
-##     joseki:processor    joseki:ProcessorSPARQL_FixedDS ;
-##     .
+
+## ---- Service - SPARQL processor only handling a given dataset
+[]
+    rdf:type            joseki:Service ;
+    rdfs:label          "SPARQL on the books model" ;
+    joseki:serviceRef   "books" ;
+    joseki:dataset      _:books ;
+    joseki:processor    joseki:ProcessorSPARQL_FixedDS ;
+    .
 ## 
 ## ## ---- Axis/SAOP testing
 ## []
@@ -59,23 +60,23 @@
 ## 
 ## ## ---- Database-backed
 ## 
-## []
-##     rdf:type            joseki:Service ;
-##     rdfs:label          "SPARQL on the books model in a database" ;
-##     joseki:serviceRef   "books-db" ;
-##     joseki:dataset      _:books-db ;
-##     joseki:processor    joseki:ProcessorSPARQL_FixedDS ;
-##     .
+[]
+    rdf:type            joseki:Service ;
+    rdfs:label          "SPARQL on the books model in a database" ;
+    joseki:serviceRef   "books-db" ;
+    joseki:dataset      _:books-db ;
+    joseki:processor    joseki:ProcessorSPARQL_FixedDS ;
+    .
 
 ## ---- With a reasoner
 
-[]
-    rdf:type            joseki:Service ;
-    rdfs:label          "SPARQL/RDFS testing" ;
-    joseki:serviceRef   "rdfs" ;
-    joseki:dataset      _:dsRDFS ;
-    joseki:processor    joseki:ProcessorSPARQL_FixedDS ;
-    .
+## []
+##     rdf:type            joseki:Service ;
+##     rdfs:label          "SPARQL/RDFS testing" ;
+##     joseki:serviceRef   "rdfs" ;
+##     joseki:dataset      _:dsRDFS ;
+##     joseki:processor    joseki:ProcessorSPARQL_FixedDS ;
+##     .
         
 ## --------------------------------------------------------------
 ## Datasets
@@ -98,27 +99,27 @@ _:ds1   rdf:type joseki:RDFDataSet ;
 # A dataset of one model as the default graph
 _:books   rdf:type joseki:RDFDataSet ;
     rdfs:label "Books" ;
-   joseki:defaultGraph
-      [ rdfs:label "books.n3" ;
-        jms:loadWith  <file:Data/books.n3> ] ;
+    joseki:defaultGraph
+      [ rdfs:label  "books.n3" ;
+        rdf:type    ja:MemoryModel ;
+        ja:content  [ ja:externalContent <file:Data/books.n3> ] ;
+      ] ;
     .
 
 _:books-db   rdf:type joseki:RDFDataSet ;
     rdfs:label "Books-DB" ;
     joseki:defaultGraph
-        [ rdfs:label        "books-db" ;
-          jms:modelName     "books" ;
-          jms:maker 
-            [ jms:reificationMode jms:rsMinimal ;
-              jms:hasConnection [
-                  jms:dbURL        <jdbc:mysql://localhost/data?autoReconnect=true> ;
-                  jms:dbUser       "user" ;
-                  jms:dbPassword   "password" ;
-                  jms:dbType       "MySQL" ;
-                  jms:dbClass      "com.mysql.jdbc.Driver" ;
-                ] ;
-            ];
-        ] ;
+       [ rdfs:label        "books-db" ;
+         rdf:type          ja:RDBModel ;
+         ja:modelName      "books" ;
+         ja:connection [
+            ja:dbURL        <jdbc:mysql://localhost/data?autoReconnect=true> ;
+            ja:dbUser       "user" ;
+            ja:dbPassword   "password" ;
+            ja:dbType       "MySQL" ;
+            ja:dbClass      "com.mysql.jdbc.Driver" ;
+          ] ;
+       ] ;
     .
 
 _:dsRDFS rdf:type joseki:RDFDataSet ;
@@ -128,25 +129,30 @@ _:dsRDFS rdf:type joseki:RDFDataSet ;
 
 ## --------------------------------------------------------------
 
-_:model  rdf:type jms:DefaultModelSpec ;
+_:model  rdf:type ja:MemoryModel ;
     rdfs:label "Model(plain)" ;
-    jms:loadWith  <file:D.ttl> .
+    ja:content [ ja:externalContent <file:D.ttl> ] .
 
-_:model1  rdf:type jms:DefaultModelSpec ;
+_:model1  rdf:type ja:MemoryModel ;
     rdfs:label "Model-1" ;
-    jms:loadWith  <file:D1.ttl> .
+    ja:content [ ja:externalContent <file:D1.ttl> ] .
 
-_:model2 rdf:type jms:DefaultModelSpec ;
+_:model2 rdf:type ja:MemoryModel ;
     rdfs:label "Model-2" ;
-    jms:loadWith  <file:D2.ttl> .
+    ja:content [ ja:externalContent <file:D2.ttl> ] .
 
-_:modelRDFS rdf:type jms:InfModelSpec ;
-     rdfs:label "RDFS test model" ;
-     jms:loadWith  <file:Data/Test/rdfsTestData1.ttl> ;
-     jms:reasonsWith
-        [ jms:reasoner <http://jena.hpl.hp.com/2003/RDFSExptRuleReasoner> ;
-          jms:schemaURL <file:Data/Test/rdfsSchema1.ttl>
-        ] .
+_:modelRDFS
+    rdfs:label "RDFS test model" ;
+    ja:baseModel 
+        [ a ja:MemoryModel ;
+          ja:content [
+              ja:externalContent <file:Data/Test/rdfsTestData1.ttl> ;
+              ja:externalContent <file:Data/Test/rdfsSchema1.ttl> ;
+           ] ;
+        ] ;
+    ja:reasoner
+         [ ja:reasonerURL <http://jena.hpl.hp.com/2003/RDFSExptRuleReasoner> ] 
+    .  
 
 
 ## Examples of RDFS and OWL inference models
