@@ -6,7 +6,7 @@
     <!-- The major and minor version numbers  -->
     <property name="version-major"   value="3"/>
     <property name="version-minor"   value="0"/>
-    <property name="version-status"  value="-dev1"/>
+    <property name="version-status"  value="-pre-pre-0"/>
     <property name="version"
          value="${version-major}.${version-minor}${version-status}"/>
 
@@ -344,11 +344,12 @@
     <!-- ============================================== -->
     <!-- Documentation -->
 
-    <target name="javadoc">
+    <target name="javadoc" depends="pre-compile">
         <delete dir="${javadoc.dir}"/>
         <mkdir dir="${javadoc.dir}"/>
         <javadoc packagenames="org.joseki.*"
                  sourcepath="${src.build.dir}"
+		 classpathref="buildClasspath"
                  destdir="${javadoc.dir}"
                  author="true"
                  version="true"
@@ -357,9 +358,7 @@
                  Public="true"
                  Use="true"
                  additionalparam="-breakiterator"
-                 bottom="Copyright &#169; 2003, 2004, 2005 Hewlett-Packard. All Rights Reserved.">
-            <classpath refid="buildClasspath" />
-        </javadoc>
+                 bottom="Copyright &#169; 2003, 2004, 2005, 2006 Hewlett-Packard. All Rights Reserved."/>
     </target>
 
     <!-- ============================================== -->

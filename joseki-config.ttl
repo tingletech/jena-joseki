@@ -197,7 +197,7 @@ joseki:ImplSPARQL
     module:className
         <java:org.joseki.processors.SPARQL> .
 
-    
+# Local Variables:        
 # tab-width: 4
 # indent-tabs-mode: nil
 # End:

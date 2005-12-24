@@ -17,8 +17,8 @@ import com.hp.hpl.jena.datatypes.RDFDatatype;
 import com.hp.hpl.jena.datatypes.TypeMapper;
 import com.hp.hpl.jena.graph.Node;
 import com.hp.hpl.jena.query.QuerySolution;
+import com.hp.hpl.jena.query.QuerySolutionMap;
 import com.hp.hpl.jena.query.ResultSet;
-import com.hp.hpl.jena.query.core.ResultBinding;
 import com.hp.hpl.jena.query.util.LabelToNodeMap;
 import com.hp.hpl.jena.query.util.NodeUtils;
 import com.hp.hpl.jena.rdf.model.Model;
@@ -68,8 +68,8 @@ public class ResultSetAxis implements ResultSet
     {
         Result xmlRow = results[index] ;
         index++ ;
-        ResultBinding rb = makeResultBinding(xmlRow) ;
-        return rb ;
+        QuerySolution oneRow = makeResultBinding(xmlRow) ;
+        return oneRow ;
     }
 
     public int getRowNumber()
@@ -104,9 +104,9 @@ public class ResultSetAxis implements ResultSet
     }
 
 
-    private ResultBinding makeResultBinding(Result xmlRow)
+    private QuerySolution makeResultBinding(Result xmlRow)
     {
-        ResultBinding rb = new ResultBinding(model) ;
+        QuerySolutionMap qs = new QuerySolutionMap() ;
         Binding[] bindings = xmlRow.getBinding() ;
         for ( int i = 0 ; i < bindings.length ; i++ )
         {
@@ -118,7 +118,7 @@ public class ResultSetAxis implements ResultSet
                 String label = b.getBnode() ;
                 Node n = bNodeLabels.asNode(label) ;
                 RDFNode rdfNode = NodeUtils.convertGraphNodeToRDFNode(n, model) ;
-                rb.add(varName, rdfNode) ;
+                qs.add(varName, rdfNode) ;
                 continue ;
             }
     
@@ -138,12 +138,12 @@ public class ResultSetAxis implements ResultSet
                 {
                     String dtURI = l.getDatatype().toString() ;
                     RDFDatatype dt = TypeMapper.getInstance().getSafeTypeByName(dtURI);
-                    rb.add(varName, model.createTypedLiteral(lex, dt)) ;
+                    qs.add(varName, model.createTypedLiteral(lex, dt)) ;
                     continue ;
                 }
                 
                 // XML lang?
-                rb.add(varName, model.createLiteral(lex)) ;
+                qs.add(varName, model.createLiteral(lex)) ;
                 continue ;
             }
             
@@ -152,11 +152,11 @@ public class ResultSetAxis implements ResultSet
             if ( b.getUri() != null )
             {
                 String uri = b.getUri() ;
-                rb.add(varName, model.createResource(uri)) ;
+                qs.add(varName, model.createResource(uri)) ;
                 continue ;
             }
         }
-        return rb ;
+        return qs ;
     }
 }
 

@@ -471,6 +471,7 @@ public class Configuration
     {
         if ( false )
         {
+            // Debug
             List x = findByType(JosekiVocab.RDFDataSet) ;
     
             for ( Iterator iter = x.iterator()  ; iter.hasNext() ; )
@@ -479,6 +480,9 @@ public class Configuration
                 log.info("Dataset: "+Utils.nodeLabel(r)) ;
             }
         }
+        
+        checkForJMS() ;
+        
         // Need to do validity checking on the configuration model.
         // Can also do like services - once with a fixed query then reduce elements
         // to see if we find the same things
@@ -512,11 +516,7 @@ public class Configuration
                 QuerySolution qs = rs.nextSolution() ;
                 Resource x = qs.getResource("x") ;
                 
-                // Impossible
-                // if ( x == null ) {}
-                
                 Resource dftGraph = qs.getResource("dft") ; 
-                //Resource namedGraph = qs.getResource("named") ;
                 Resource graphName = qs.getResource("graphName") ;
                 Resource graphData = qs.getResource("graphData") ;
                 
@@ -579,6 +579,28 @@ public class Configuration
         
         
         checkNamedGraphDescriptions() ;
+    }
+
+    private void checkForJMS()
+    {
+        String[] s = new String[] {
+            "SELECT ?modelDesc",
+            "{ ?modelDesc ?p ?o .",
+            "  FILTER regex(str(?p), '^http://jena.hpl.hp.com/2003/08/jms#')",
+            "}",  
+        } ;
+        Query query = makeQuery(s) ;
+        QueryExecution qexec = QueryExecutionFactory.create(query, confModel) ;
+        try {
+            ResultSet rs = qexec.execSelect() ;
+            for ( ; rs.hasNext() ; )
+            {
+                QuerySolution qs = rs.nextSolution() ;
+                Resource m = qs.getResource("modelDesc") ;
+                log.warn("**** Use of Jena Model Spec vocabulary is deprecated: "+Utils.nodeLabel(m)+" [use Assembler vocabulary instead]") ;
+            }
+        } finally { qexec.close() ; }
+        
     }
 
     private void checkNamedGraphDescriptions()
