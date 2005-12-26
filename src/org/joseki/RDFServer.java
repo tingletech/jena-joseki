@@ -1,5 +1,5 @@
 /*
- * (c) Copyright 2003, 2004, 2005 Hewlett-Packard Development Company, LP
+ * (c) Copyright 2003, 2004, 2005, 2006 Hewlett-Packard Development Company, LP
  * [See end of file]
  */
 
@@ -17,7 +17,7 @@ import org.apache.commons.logging.* ;
 
 /** Standalone server.
  * 
- * @version $Id: RDFServer.java,v 1.12 2005-10-24 12:28:38 andy_seaborne Exp $
+ * @version $Id: RDFServer.java,v 1.13 2005-12-26 19:19:54 andy_seaborne Exp $
  * @author  Andy Seaborne
  */
 
@@ -241,7 +241,7 @@ public class RDFServer
 }
 
 /*
- *  (c) Copyright 2003, 2004, 2005 Hewlett-Packard Development Company, LP
+ *  (c) Copyright 2003, 2004, 2005, 2006 Hewlett-Packard Development Company, LP
  *  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without

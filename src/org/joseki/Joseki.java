@@ -1,5 +1,5 @@
 /*
- * (c) Copyright 2003, 2004, 2005 Hewlett-Packard Development Company, LP
+ * (c) Copyright 2003, 2004, 2005, 2006 Hewlett-Packard Development Company, LP
  * [See end of file]
  */
 
@@ -9,7 +9,7 @@ import java.util.* ;
 
 /** Constants and other definitions.
  * @author      Andy Seaborne
- * @version     $Id: Joseki.java,v 1.17 2005-09-15 09:35:45 andy_seaborne Exp $
+ * @version     $Id: Joseki.java,v 1.18 2005-12-26 19:19:54 andy_seaborne Exp $
  */
 public class Joseki
 {
@@ -113,7 +113,7 @@ public class Joseki
 
 
 /*
- *  (c) Copyright 2003, 2004, 2005 Hewlett-Packard Development Company, LP
+ *  (c) Copyright 2003, 2004, 2005, 2006 Hewlett-Packard Development Company, LP
  *  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without

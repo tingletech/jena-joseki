@@ -1,5 +1,5 @@
 /*
- * (c) Copyright 2004, 2005 Hewlett-Packard Development Company, LP
+ * (c) Copyright 2004, 2005, 2006 Hewlett-Packard Development Company, LP
  * All rights reserved.
  * [See end of file]
  */
@@ -15,7 +15,7 @@ import org.joseki.util.Convert;
 /** org.joseki.server.http.HttpUtils
  * 
  * @author Andy Seaborne
- * @version $Id: HttpUtils.java,v 1.1 2005-06-23 09:55:58 andy_seaborne Exp $
+ * @version $Id: HttpUtils.java,v 1.2 2005-12-26 19:19:54 andy_seaborne Exp $
  */
 
 public class HttpUtils
@@ -165,7 +165,7 @@ public class HttpUtils
 }
 
 /*
- * (c) Copyright 2004, 2005 Hewlett-Packard Development Company, LP
+ * (c) Copyright 2004, 2005, 2006 Hewlett-Packard Development Company, LP
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without

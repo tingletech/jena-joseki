@@ -1,5 +1,5 @@
 /*
- * (c) Copyright 2003, 2004, 2005 Hewlett-Packard Development Company, LP
+ * (c) Copyright 2003, 2004, 2005, 2006 Hewlett-Packard Development Company, LP
  * [See end of file]
  */
 
@@ -12,7 +12,7 @@ import java.io.*;
 
 /**
  * @author      Andy Seaborne
- * @version     $Id: LogFilter.java,v 1.1 2005-06-23 09:56:01 andy_seaborne Exp $
+ * @version     $Id: LogFilter.java,v 1.2 2005-12-26 19:19:53 andy_seaborne Exp $
  */
 public class LogFilter implements Filter
 {
@@ -43,7 +43,7 @@ public class LogFilter implements Filter
 }
 
 /*
- *  (c) Copyright 2003, 2004, 2005 Hewlett-Packard Development Company, LP
+ *  (c) Copyright 2003, 2004, 2005, 2006 Hewlett-Packard Development Company, LP
  *  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without

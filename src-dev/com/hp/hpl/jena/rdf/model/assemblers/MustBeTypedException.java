@@ -1,7 +1,7 @@
 /*
- 	(c) Copyright 2005 Hewlett-Packard Development Company, LP
+ 	(c) Copyright 2005, 2006 Hewlett-Packard Development Company, LP
  	All rights reserved - see end of file.
- 	$Id: MustBeTypedException.java,v 1.1 2005-12-24 22:02:55 andy_seaborne Exp $
+ 	$Id: MustBeTypedException.java,v 1.2 2005-12-26 19:19:54 andy_seaborne Exp $
 */
 
 package com.hp.hpl.jena.rdf.model.assemblers;
@@ -26,7 +26,7 @@ public class MustBeTypedException extends JenaException
 
 
 /*
- * (c) Copyright 2005 Hewlett-Packard Development Company, LP
+ * (c) Copyright 2005, 2006 Hewlett-Packard Development Company, LP
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without

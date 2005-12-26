@@ -1,7 +1,7 @@
 /*
- 	(c) Copyright 2005 Hewlett-Packard Development Company, LP
+ 	(c) Copyright 2005, 2006 Hewlett-Packard Development Company, LP
  	All rights reserved - see end of file.
- 	$Id: AssemblerBase.java,v 1.1 2005-12-24 22:02:55 andy_seaborne Exp $
+ 	$Id: AssemblerBase.java,v 1.2 2005-12-26 19:19:54 andy_seaborne Exp $
 */
 
 package com.hp.hpl.jena.rdf.model.assemblers;
@@ -71,7 +71,7 @@ public abstract class AssemblerBase implements Assembler
 
 
 /*
- * (c) Copyright 2005 Hewlett-Packard Development Company, LP
+ * (c) Copyright 2005, 2006 Hewlett-Packard Development Company, LP
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without

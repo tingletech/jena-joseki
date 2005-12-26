@@ -1,5 +1,5 @@
 /*
- * (c) Copyright 2004, 2005 Hewlett-Packard Development Company, LP
+ * (c) Copyright 2004, 2005, 2006 Hewlett-Packard Development Company, LP
  * All rights reserved.
  * [See end of file]
  */
@@ -9,7 +9,7 @@ package org.joseki.http;
 /** org.joseki.server.http.MainAccept
  * 
  * @author Andy Seaborne
- * @version $Id: MainAccept.java,v 1.2 2005-07-21 13:40:59 andy_seaborne Exp $
+ * @version $Id: MainAccept.java,v 1.3 2005-12-26 19:19:54 andy_seaborne Exp $
  */
 
 public class MainAccept
@@ -84,7 +84,7 @@ public class MainAccept
 }
 
 /*
- * (c) Copyright 2004, 2005 Hewlett-Packard Development Company, LP
+ * (c) Copyright 2004, 2005, 2006 Hewlett-Packard Development Company, LP
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without

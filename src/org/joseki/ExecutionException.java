@@ -1,12 +1,12 @@
 /*
- * (c) Copyright 2003, 2004, 2005 Hewlett-Packard Development Company, LP
+ * (c) Copyright 2003, 2004, 2005, 2006 Hewlett-Packard Development Company, LP
  * [See end of file]
  */
 
 package org.joseki;
 
 /**
- * @version     $Id: ExecutionException.java,v 1.1 2005-06-23 09:55:59 andy_seaborne Exp $
+ * @version     $Id: ExecutionException.java,v 1.2 2005-12-26 19:19:54 andy_seaborne Exp $
  * @author      Andy Seaborne
  */
 public class ExecutionException extends java.lang.Exception
@@ -32,7 +32,7 @@ public class ExecutionException extends java.lang.Exception
 
 
 /*
- *  (c) Copyright 2003, 2004, 2005 Hewlett-Packard Development Company, LP
+ *  (c) Copyright 2003, 2004, 2005, 2006 Hewlett-Packard Development Company, LP
  *  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
