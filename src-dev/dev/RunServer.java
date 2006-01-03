@@ -16,7 +16,7 @@ public class RunServer
     {
         RunUtils.setLog4j() ;
         
-        System.setProperty("jena.assembler.vocab", "file:conf/vocab.n3") ;
+        System.setProperty("jena.assembler.vocab", "file:etc/vocab.n3") ;
         try
         {
             Class.forName("com.mysql.jdbc.Driver") ;

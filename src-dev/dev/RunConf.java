@@ -13,7 +13,7 @@ public class RunConf
 {
     public static void main(String argv[])
     {
-        System.setProperty("jena.assembler.vocab", "file:conf/vocab.n3") ;
+        System.setProperty("jena.assembler.vocab", "file:etc/vocab.n3") ;
         try
         {
             Class.forName("com.mysql.jdbc.Driver") ;
@@ -22,7 +22,7 @@ public class RunConf
             e.printStackTrace();
             return ;
         }
-        Model spec = FileManager.get().loadModel( "conf/assem1.ttl" );
+        Model spec = FileManager.get().loadModel( "assem1.ttl" );
 
         Resource root = spec.createResource( spec.expandPrefix( "ex:a2" ) );
         
