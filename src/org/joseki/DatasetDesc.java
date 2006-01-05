@@ -15,7 +15,7 @@ import com.hp.hpl.jena.query.DataSource;
 import com.hp.hpl.jena.query.Dataset;
 import com.hp.hpl.jena.query.DatasetFactory;
 import com.hp.hpl.jena.rdf.model.*;
-import com.hp.hpl.jena.rdf.model.assemblers.Assembler;
+import com.hp.hpl.jena.assembler.Assembler;
 import com.hp.hpl.jena.util.FileManager;
 import com.hp.hpl.jena.vocabulary.JenaModelSpec;
 

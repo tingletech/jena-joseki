@@ -5,7 +5,7 @@ import com.hp.hpl.jena.query.*;
 import com.hp.hpl.jena.query.util.StringUtils;
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.Resource;
-import com.hp.hpl.jena.rdf.model.assemblers.Assembler;
+import com.hp.hpl.jena.assembler.Assembler;
 import com.hp.hpl.jena.util.FileManager;
 
 
