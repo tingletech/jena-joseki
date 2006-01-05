@@ -1,8 +1,6 @@
 package dev ;
 
 
-import com.hp.hpl.jena.query.*;
-import com.hp.hpl.jena.query.util.StringUtils;
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.assembler.Assembler;
@@ -13,38 +11,34 @@ public class RunConf
 {
     public static void main(String argv[])
     {
-        System.setProperty("jena.assembler.vocab", "file:etc/vocab.n3") ;
-        try
-        {
-            Class.forName("com.mysql.jdbc.Driver") ;
-        } catch (ClassNotFoundException e)
-        {
-            e.printStackTrace();
-            return ;
-        }
         Model spec = FileManager.get().loadModel( "assem1.ttl" );
-
-        Resource root = spec.createResource( spec.expandPrefix( "ex:a2" ) );
-        
-        boolean b = spec.containsResource(root) ;
-        if ( !b ) 
-            System.err.println("**** Not found: "+root) ;
-        
-        Model m = Assembler.general.createModel( root );
-        
-        if ( false )
-        {
-            String[] qs = new String[]{
-                "PREFIX :  <http://example/ns#>",
-                "SELECT ?t { :x a ?t }" 
-            } ;
-            QueryExecution qExec = QueryExecutionFactory.create(StringUtils.join("\n", qs), m) ;
-            ResultSet rs = qExec.execSelect() ;
-            ResultSetFormatter.out(System.out, rs ) ;
-            qExec.close() ;
-        }
-        else
+        //one(spec, "ex:a1" ) ;
+        //one(spec, "ex:a2" ) ;
+        one(spec, "ex:a3" ) ;
+        //one(spec, "ex:a4" ) ;
+        //one(spec, "ex:a5" ) ;
+    }
+    
+    static void one(Model spec, String qname)
+    {
+        System.out.println("Test: "+qname) ;
+        System.out.flush() ;
+        try {
+            Resource root = spec.createResource( spec.expandPrefix( qname ) );
+            
+            boolean b = spec.containsResource(root) ;
+            if ( !b ) 
+                System.err.println("**** Not found: "+root) ;
+            
+            Model m = Assembler.general.createModel( root );
+            
             m.write(System.out, "N3") ;
+        } catch (Exception ex)
+        {
+            ex.printStackTrace() ;
+        }
+        System.out.println("---------------------------------------") ;
+        System.out.flush() ;
     }
 }
 

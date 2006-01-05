@@ -16,7 +16,7 @@ public class RunServer
     {
         RunUtils.setLog4j() ;
         
-        System.setProperty("jena.assembler.vocab", "file:etc/vocab.n3") ;
+        //System.setProperty("jena.assembler.vocab", "file:etc/vocab.n3") ;
         try
         {
             Class.forName("com.mysql.jdbc.Driver") ;
@@ -27,7 +27,7 @@ public class RunServer
         }
         
         
-        String[] a = new String[]{"joseki-config.ttl"} ;
+        String[] a = new String[]{"joseki-config-test.ttl"} ;
         //String[] a = args ;
         runJosekiServer(a) ; System.exit(0) ;
         //AxisServer.main(args) ; System.exit(0) ;
