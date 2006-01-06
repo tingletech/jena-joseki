@@ -50,7 +50,10 @@ public class SPARQL extends QueryCom implements Loadable
     {
         log.info("SPARQL processor") ;
         
+        fileManager = new FileManager() ;
+        
         //fileManager = FileManager.get() ; // Needed for DAWG tests - but why?
+
         // Only know how to handle http URLs 
         fileManager.addLocatorURL() ;
         
