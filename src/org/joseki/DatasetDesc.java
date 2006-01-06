@@ -91,7 +91,7 @@ public class DatasetDesc
         }
 
         try {
-            return Assembler.general.createModel( r );
+            return Assembler.general.openModel( r );
         } catch (Exception ex) 
         { throw new JosekiServerException("Failed to assemble model", ex) ; }
     }

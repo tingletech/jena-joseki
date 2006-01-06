@@ -30,7 +30,7 @@ public class RunConf
             if ( !b ) 
                 System.err.println("**** Not found: "+root) ;
             
-            Model m = Assembler.general.createModel( root );
+            Model m = Assembler.general.openModel( root );
             
             m.write(System.out, "N3") ;
         } catch (Exception ex)
