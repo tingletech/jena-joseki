@@ -9,7 +9,7 @@ import java.util.* ;
 
 /** Constants and other definitions.
  * @author      Andy Seaborne
- * @version     $Id: Joseki.java,v 1.18 2005-12-26 19:19:54 andy_seaborne Exp $
+ * @version     $Id: Joseki.java,v 1.19 2006-01-06 18:05:37 andy_seaborne Exp $
  */
 public class Joseki
 {
@@ -36,6 +36,9 @@ public class Joseki
    
     /** The date and time at which this release was built */   
     public static final String BUILD_DATE = "@build-time@";
+
+    /** The Java system property name of the default configuration file */
+    public static final String configurationFileProperty  = "org.joseki.rdfserver.config" ;
     
     public static final int defaultPort = 2020 ; 
     // TODO automate version number (read from file?) 

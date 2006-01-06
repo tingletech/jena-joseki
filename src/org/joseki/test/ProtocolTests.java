@@ -10,6 +10,7 @@ import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.util.FileManager;
 import com.hp.hpl.jena.util.LocationMapper;
 
+
 import junit.extensions.TestSetup;
 import junit.framework.*;
 
@@ -17,12 +18,15 @@ import org.apache.log4j.Level;
 import org.apache.log4j.LogManager;
 import org.joseki.RDFServer;
 import org.joseki.junit.ProtocolTestSuiteFactory;
+import org.joseki.util.RunUtils;
 
 
 public class ProtocolTests extends TestCase
 {
     public static TestSuite suite()
     {
+        RunUtils.setLog4j() ;
+        
         TestSuite ts = new TestSuite("DAWG Protocol") ;
         ts.addTest(ProtocolTestSuiteFactory.make("testing/DAWG/select/manifest.ttl")) ;
         ts.addTest(ProtocolTestSuiteFactory.make("testing/DAWG/construct/manifest.ttl")) ;
@@ -32,6 +36,7 @@ public class ProtocolTests extends TestCase
         tsWrapped.addTest(new ServerSetup(ts)) ;
         return tsWrapped ;
     }
+    
 }
 
 class ServerSetup extends TestSetup
@@ -50,7 +55,7 @@ class ServerSetup extends TestSetup
         //dev.RunUtils.setLog4j() ;
         //LogManager.getLogger("org.joseki.Configuration").setLevel(Level.INFO) ;
         LogManager.getLogger("org.mortbay").setLevel(Level.WARN) ;
-        server = new RDFServer() ; 
+        server = new RDFServer("testing/config-dawg-tests.ttl") ; 
         server.start() ;
         server.waitUntilStarted() ;
     }

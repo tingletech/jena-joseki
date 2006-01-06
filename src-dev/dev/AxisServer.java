@@ -6,8 +6,7 @@
 
 package dev;
 
-import org.joseki.Dispatcher;
-
+import org.joseki.Joseki;
 
 public class AxisServer
 {
@@ -17,7 +16,7 @@ public class AxisServer
      */
     public static void main(String[] args)
     {
-        System.setProperty(Dispatcher.configurationProperty, "joseki-config.ttl") ;
+        System.setProperty(Joseki.configurationFileProperty, "joseki-config.ttl") ;
         String[] a = { "-p" , "2525" } ;
         org.apache.axis.transport.http.SimpleAxisServer.main(a) ;
     }

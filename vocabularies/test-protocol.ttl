@@ -48,6 +48,9 @@ ptest:defaultGraph
 ptest:entries
       rdf:type      rdf:Property .
 
+ptest:queryDataSet
+      rdf:type      rdf:Property .
+
 ptest:serviceDataSet
       rdf:type      rdf:Property .
 

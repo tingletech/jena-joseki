@@ -8,6 +8,7 @@
 package dev;
 
 import joseki.rdfserver;
+import org.joseki.util.RunUtils;
 
 public class RunServer
 {

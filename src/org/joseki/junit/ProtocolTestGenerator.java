@@ -6,6 +6,10 @@
 
 package org.joseki.junit;
 
+/* Many thanks to Elias Torres [elias@torrez.us] for 
+ * making this work with the Data Access Working Group protocol
+ * tests.
+ */
 
 import junit.framework.TestSuite;
 import org.joseki.vocabulary.TestProtocolVocab; 
@@ -14,6 +18,7 @@ import com.hp.hpl.jena.query.engineHTTP.HttpParams;
 import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.rdf.model.Statement;
 import com.hp.hpl.jena.rdf.model.StmtIterator;
+import com.hp.hpl.jena.shared.NotFoundException;
 import com.hp.hpl.jena.util.FileManager;
 
 
@@ -24,10 +29,6 @@ public class ProtocolTestGenerator implements ManifestItemHandler
     
     public ProtocolTestGenerator(TestSuite ts)
     {
-        //TODO "rule" that svcdataset => use "books" else use "sparql"
-        // svcDataset => service ref mapping
-        
-        //this.target = target ;
         this.testSuite = ts ;
     }
     
@@ -64,6 +65,8 @@ public class ProtocolTestGenerator implements ManifestItemHandler
         Resource dataset = TestUtils.getResource(entry, TestProtocolVocab.dataSet) ;
         Resource svcDataset = TestUtils.getResource(entry, TestProtocolVocab.serviceDataSet) ;
         
+        Resource queryDataset = TestUtils.getResource(entry, TestProtocolVocab.queryDataSet) ;
+        
         Resource target = TestUtils.getResource(entry, TestProtocolVocab.service) ;
         
         // In fact, this is a file 
@@ -88,11 +91,28 @@ public class ProtocolTestGenerator implements ManifestItemHandler
             return false;
         }
         
+        // In fact, this is also a file         
+        String responseLoc = TestUtils.getLiteralOrURI(result, TestProtocolVocab.result) ;
+        
+        
+        String responseStr = null;
+        
+        if( responseLoc != null )
+        {        
+	        try {
+	        	responseStr = FileManager.get().readWholeFileAsUTF8(responseLoc) ;
+	        } catch(NotFoundException nfe) {
+	        	System.err.println(name+" : Response file does not exist - skipped");
+	        	return false;        	
+	        }
+        }
 
-        ProtocolTest test = new ProtocolTest(name, target.getURI(), acceptType, rc, resultContentType) ;
+        ProtocolTest test = new ProtocolTest(name, target.getURI(), acceptType, rc, resultContentType, responseStr) ;
         // ---- query
         String qStr = FileManager.get().readWholeFileAsUTF8(queryLoc) ;
-        test.getParams().addParam("query", qStr) ;
+        
+        // ---- graph URI substitution
+        parseQueryDataset(test, queryDataset, qStr);
         
         // ---- default graph / protocol
         if ( dataset == null && svcDataset == null )
@@ -119,7 +139,7 @@ public class ProtocolTestGenerator implements ManifestItemHandler
         {
             Statement stmt = sIter.nextStatement() ;
             Resource gn = stmt.getResource() ;
-            parseGraph(test, gn, true) ;
+            parseGraph(test, gn, false) ;
         }
         sIter.close() ;
     }
@@ -136,6 +156,45 @@ public class ProtocolTestGenerator implements ManifestItemHandler
         else
             test.getParams().addParam(HttpParams.pNamedGraph, gd.getURI()) ;
     }
+    
+    /**
+     * This method substitutes any graph URIs in the query string with those
+     * found in the ptest:queryDataset of the manifest item. 
+     * 
+     * @param test
+     * @param ds
+     * @param qStr
+     */
+    public void parseQueryDataset(ProtocolTest test, Resource ds, String qStr)
+    {
+    	if ( ds != null ) {
+     	
+	        Resource g = TestUtils.getResource(ds, TestProtocolVocab.defaultGraph) ; 
+	        if(g != null) {
+	            String gn = TestUtils.getLiteralOrURI(g, TestProtocolVocab.graphName) ;
+	            String gd = TestUtils.getLiteralOrURI(g, TestProtocolVocab.graphData) ;
+	            if(qStr.contains(gn)) {
+	            	qStr = qStr.replaceFirst(gn, gd);
+	            }
+	        }
+	        
+	        StmtIterator sIter = ds.listProperties(TestProtocolVocab.namedGraph) ;
+	        while(sIter.hasNext())
+	        {
+	            Statement stmt = sIter.nextStatement() ;
+	            Resource ng = stmt.getResource() ;
+	            String gn = TestUtils.getLiteralOrURI(ng, TestProtocolVocab.graphName) ;
+	            String gd = TestUtils.getLiteralOrURI(ng, TestProtocolVocab.graphData) ;
+	            if(qStr.contains(gn)) {
+	            	qStr = qStr.replaceFirst(gn, gd);
+	            }	            
+	        }
+	        sIter.close() ;
+	        
+        }
+        
+        test.getParams().addParam("query", qStr) ;
+    }    
 }
 
 /*

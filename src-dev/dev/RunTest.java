@@ -12,6 +12,7 @@ import com.hp.hpl.jena.util.LocationMapper;
 import junit.framework.TestSuite;
 import org.joseki.RDFServer;
 import org.joseki.junit.ProtocolTestSuiteFactory;
+import org.joseki.util.RunUtils;
 
 import org.apache.log4j.* ;
 

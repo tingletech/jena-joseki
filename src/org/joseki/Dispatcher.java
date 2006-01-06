@@ -18,8 +18,6 @@ public class Dispatcher
 {
     private static Log log = LogFactory.getLog(Dispatcher.class) ;
     
-    public static final String configurationProperty  = "org.joseki.rdfserver.config" ;
-    
     static Configuration   configuration = null ;
     static ServiceRegistry serviceRegistry = null ;
 
@@ -27,7 +25,6 @@ public class Dispatcher
     
     public static void dispatch(String serviceURI, Request request, Response response) throws ExecutionException
     {
-        
         if ( serviceRegistry == null )
         {
             log.fatal("Service registry not initialized") ;
@@ -97,7 +94,7 @@ public class Dispatcher
     public static void initServiceRegistry(FileManager fileManager, String configURI)
     {    
         if ( configURI == null )
-            configURI = System.getProperty(configurationProperty, RDFServer.defaultConfigFile) ;
+            configURI = System.getProperty(Joseki.configurationFileProperty, RDFServer.defaultConfigFile) ;
         setConfiguration(fileManager, configURI) ;
     }
     

@@ -17,7 +17,7 @@ import org.apache.commons.logging.* ;
 
 /** Standalone server.
  * 
- * @version $Id: RDFServer.java,v 1.13 2005-12-26 19:19:54 andy_seaborne Exp $
+ * @version $Id: RDFServer.java,v 1.14 2006-01-06 18:05:37 andy_seaborne Exp $
  * @author  Andy Seaborne
  */
 
@@ -38,10 +38,6 @@ public class RDFServer
     /** System property for the port number. */    
     public static final String propertyPort       = "org.joseki.rdfserver.port" ;
 
-    /** Override the web.xml init-param for the configuration file.
-     */  
-    public static final String configurationProperty   = "org.joseki.rdfserver.config" ;
-    
     /** Default location for the Joseki server */
     public static final String defaultServerBaseURI = "/" ;
     
@@ -85,7 +81,7 @@ public class RDFServer
             // Set system property so the dispatcher finds it later,
             // probably during servlet creation on first request,
             // or SOAP service initialization 
-            System.setProperty(configurationProperty, configFile) ;
+            System.setProperty(Joseki.configurationFileProperty, configFile) ;
 
         // Build the web application and server
         try {

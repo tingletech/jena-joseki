@@ -6,14 +6,25 @@
 
 package org.joseki.junit;
 
+import java.io.ByteArrayInputStream;
 import java.io.InputStream;
+
+import org.joseki.Joseki;
 
 import junit.framework.TestCase;
 
+import com.hp.hpl.jena.query.Query;
+import com.hp.hpl.jena.query.QueryFactory;
+import com.hp.hpl.jena.query.ResultSet;
+import com.hp.hpl.jena.query.ResultSetFactory;
+import com.hp.hpl.jena.query.ResultSetFormatter;
 import com.hp.hpl.jena.query.engineHTTP.HttpContentType;
 import com.hp.hpl.jena.query.engineHTTP.HttpQuery;
 import com.hp.hpl.jena.query.engineHTTP.Params;
 import com.hp.hpl.jena.query.engineHTTP.QueryExceptionHTTP;
+import com.hp.hpl.jena.query.resultset.ResultSetRewindable;
+import com.hp.hpl.jena.query.resultset.XMLInput;
+import com.hp.hpl.jena.rdf.model.Model;
 
 public class ProtocolTest extends TestCase
 {
@@ -21,14 +32,16 @@ public class ProtocolTest extends TestCase
     int responseCode = -1 ;
     String acceptType ;
     String responseType ;
+    String response ;
     
-    public ProtocolTest(String name, String target, String acceptType, int response,  String responseType)
+    public ProtocolTest(String name, String target, String acceptType, int responseCode,  String responseType, String response)
     { 
         super(name) ;
         httpQuery = new HttpQuery(target) ;
-        responseCode = response ;
+        this.responseCode = responseCode ;
         this.acceptType = acceptType ;
         this.responseType = responseType ;
+        this.response = response;
     }
         
     public Params getParams() { return httpQuery ; }
@@ -40,10 +53,55 @@ public class ProtocolTest extends TestCase
             httpQuery.setAccept(acceptType) ;
         try {
             InputStream in = httpQuery.exec() ;
-            assertEquals(responseCode, httpQuery.getConnection().getResponseCode() ) ;
+            assertEquals("Different response codes", responseCode, httpQuery.getConnection().getResponseCode() ) ;
             String cType = httpQuery.getConnection().getContentType() ;
             cType = new HttpContentType(cType).getMediaType() ;
             assertEquals("Different content types", responseType, cType) ;
+
+            Query query = QueryFactory.create(this.httpQuery.getValue("query"));
+
+            if(this.responseType.equals(Joseki.contentTypeResultsXML)) {
+            	
+            	if(query.getQueryType() == Query.QueryTypeAsk) {
+
+            		// Convert the query response to boolean
+            		boolean qresult = XMLInput.booleanFromXML(in) ;
+                	
+                	// Convert the expected to ResultSet and then to Model
+                	ByteArrayInputStream exin = new ByteArrayInputStream(this.response.getBytes());
+                	boolean exresult = XMLInput.booleanFromXML(exin) ;
+                	
+                	assertEquals("ASK result did not match", exresult, qresult);
+
+            		
+            	} else if(query.getQueryType() == Query.QueryTypeSelect) {
+
+                	// Convert the query response to ResultSet and then to Model
+                	ResultSetRewindable qrs = ResultSetFactory.copyResults(ResultSetFactory.fromXML(in));
+                	Model qmodel = ResultSetFormatter.toModel(qrs);
+
+                	/*
+                	  
+                	//Debugging only
+                	 
+                	qrs.reset();
+                	ResultSetFormatter.out(System.err, qrs);
+                	
+                	qrs.reset();
+                	System.err.println(ResultSetFormatter.asXMLString(qrs));
+                	
+                	*/
+                	
+                	// Convert the expected to ResultSet and then to Model
+                	ByteArrayInputStream exin = new ByteArrayInputStream(this.response.getBytes());
+                	ResultSet rs = ResultSetFactory.fromXML(exin);
+                	Model model = ResultSetFormatter.toModel(rs);
+                	
+                	assertTrue("ResultSet are not isomorphic", model.isIsomorphicWith(qmodel));
+            		
+            	}
+            }
+            
         } catch (QueryExceptionHTTP ex)
         {
             int rc = ex.getResponseCode() ;

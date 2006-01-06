@@ -4,7 +4,7 @@
  * [See end of file]
  */
 
-package dev;
+package org.joseki.util;
 
 import java.io.File;
 
@@ -13,8 +13,6 @@ import org.apache.commons.logging.LogFactory;
 
 public class RunUtils
 {
-    
-    
     public static void setLog4j()
     {
         setPropertyDefault("org.apache.commons.logging.Log",
