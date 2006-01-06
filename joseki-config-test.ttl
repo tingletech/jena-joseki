@@ -17,11 +17,6 @@
 
 ## --------------------------------------------------------------
 
-<> joseki:include <file:joseki-defs.ttl> .
-    # Include other configuration information
- 
-## --------------------------------------------------------------
-
 []  rdf:type joseki:Server ;
     joseki:serverDebug   "true" ;
     .
@@ -143,7 +138,6 @@ _:model2 rdf:type ja:MemoryModel ;
 
 _:modelRDFS
     rdfs:label "RDFS test model" ;
-    ja:baseModel domainOf ja:dbClass
         [ a ja:MemoryModel ;
           ja:content [
               ja:externalContent <file:Data/Test/rdfsTestData1.ttl> ;

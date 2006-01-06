@@ -16,15 +16,15 @@ public class RunServer
     {
         RunUtils.setLog4j() ;
         
-        //System.setProperty("jena.assembler.vocab", "file:etc/vocab.n3") ;
-        try
-        {
-            Class.forName("com.mysql.jdbc.Driver") ;
-        } catch (ClassNotFoundException e)
-        {
-            e.printStackTrace();
-            return ;
-        }
+//        //System.setProperty("jena.assembler.vocab", "file:etc/vocab.n3") ;
+//        try
+//        {
+//            Class.forName("com.mysql.jdbc.Driver") ;
+//        } catch (ClassNotFoundException e)
+//        {
+//            e.printStackTrace();
+//            return ;
+//        }
         
         
         String[] a = new String[]{"joseki-config-test.ttl"} ;

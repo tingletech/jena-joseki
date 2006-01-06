@@ -21,7 +21,7 @@ ex:a2 rdf:type ja:RDBModel ;
         ja:dbURL          <jdbc:mysql://localhost/data> ;
         ja:dbUser         "user" ;
         ja:dbPassword     "password" ;
-        ja:dbClass        "com.mysql.jdbc.Driver" ; # Ignored
+        ja:dbClass        "com.mysql.jdbc.Driver" ;
     ] ;
     ja:modelName "books" 
     . 
@@ -38,7 +38,7 @@ ex:a3 rdf:type ja:RDBModel ;
         ja:dbPassword     "password" ;
         ja:dbClass        "com.mysql.jdbc.Driver" ;
     ] ;
-    ja:modelName "DEFAULT" # BROKEN
+    ja:modelName "DEFAULT"
     . 
 
 ## ----------------
