@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<sparql
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema#"
+    xmlns="http://www.w3.org/2005/sparql-results#" >
+  <head>
+    <variable name="who"/>
+    <variable name="g"/>
+    <variable name="mbox"/>
+  </head>
+  <results ordered="false" distinct="false">
+    <result>
+      <binding name="who">
+        <literal>Bob Hacker</literal>
+      </binding>
+      <binding name="g">
+        <uri>http://www.w3.org/2001/sw/DataAccess/proto-tests/data/select/queryonly-foaf-bob.ttl</uri>
+      </binding>
+      <binding name="mbox">
+        <uri>mailto:bob@oldcorp.example</uri>
+      </binding>
+    </result>
+    <result>
+      <binding name="who">
+        <literal>Alice Hacker</literal>
+      </binding>
+      <binding name="g">
+        <uri>http://www.w3.org/2001/sw/DataAccess/proto-tests/data/select/queryonly-foaf-alice.ttl</uri>
+      </binding>
+      <binding name="mbox">
+        <uri>mailto:alice@work.example</uri>
+      </binding>
+    </result>
+  </results>
+</sparql>

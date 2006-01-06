@@ -18,7 +18,7 @@
                 	ptest:graphData <http://www.w3.org/2001/sw/DataAccess/proto-tests/data/describe/simple-data.rdf>
                 ]
             ] ;
-            ptest:service service:sparql ;
+            ptest:service service:sparql ;             
             ptest:query <simple-query.rq> ;
             ptest:acceptType "application/rdf+xml" ;
             ptest:preferredResult [

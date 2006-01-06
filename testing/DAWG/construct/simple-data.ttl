@@ -1,0 +1,18 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>.
+@prefix foaf: <http://xmlns.com/foaf/0.1/>.
+@prefix myfoaf: <http://my.example/jose/foaf.rdf#>.
+
+myfoaf:jose rdf:type foaf:Person .
+            foaf:name "Jose Jimeñez";
+            foaf:nick "Little Jo" ;
+            foaf:workplaceHomepage <http://www.corp.example/> ;
+            foaf:homepage <http://my.example/jose/> ;
+            foaf:knows myfoaf:juan ;
+
+myfoaf:juan rdf:type foaf:Person ;
+            foaf:mbox <mailto:juan@mail.example> .
+
+myfoaf:kendall foaf:knows myfoaf:edd .
+
+myfoaf:julia rdf:type foaf:Person ;
+             foaf:mbox <mailto:julia@mail.example> .

@@ -1,0 +1,7 @@
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+
+<http://www.w3.org/2001/sw/DataAccess/proto-tests/data/select/ambiguous-foaf-susan.ttl>
+	dc:publisher "Susan Hacker" .
+
+<http://www.w3.org/2001/sw/DataAccess/proto-tests/data/select/ambiguous-foaf-john.ttl>
+	dc:publisher "John Hacker" .

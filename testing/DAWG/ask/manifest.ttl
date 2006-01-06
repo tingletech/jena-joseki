@@ -5,7 +5,6 @@
 @prefix example: <http://my.other.example/> .
 @prefix service: <http://localhost:2020/> .
 
-
 <>  rdf:type ptest:Manifest ;
     rdfs:comment "SPARQL Protocol Examples" ;
     ptest:entries (

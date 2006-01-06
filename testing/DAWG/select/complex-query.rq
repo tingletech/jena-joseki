@@ -5,4 +5,3 @@ SELECT ?who ?g ?mbox
 WHERE {  ?g dc:publisher ?who .
    GRAPH ?g { ?x foaf:mbox ?mbox }
 }
-

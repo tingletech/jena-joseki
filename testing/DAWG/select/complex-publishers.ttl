@@ -1,0 +1,13 @@
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+
+<http://www.w3.org/2001/sw/DataAccess/proto-tests/data/select/complex-foaf-alice.ttl>
+	dc:publisher "Alice" .
+	
+<http://www.w3.org/2001/sw/DataAccess/proto-tests/data/select/complex-foaf-bob.ttl>
+	dc:publisher "Bob" .
+
+<http://www.w3.org/2001/sw/DataAccess/proto-tests/data/select/complex-foaf-susan.ttl>
+	dc:publisher "Susan" .
+
+<http://www.w3.org/2001/sw/DataAccess/proto-tests/data/select/complex-foaf-john.ttl>
+	dc:publisher "John" .
