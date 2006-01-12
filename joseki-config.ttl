@@ -49,7 +49,7 @@
 
 []
     rdf:type            joseki:Service ;
-#    rdfs:label          "service point" ;
+    rdfs:label          "service point" ;
     joseki:serviceRef   "sparql" ;
     joseki:processor    joseki:ProcessorSPARQL ;
     .
@@ -57,7 +57,7 @@
 # Service 2 - SPARQL processor only handling a given dataset
 []
     rdf:type            joseki:Service ;
-#    rdfs:label          "SPARQL on the books model" ;
+    rdfs:label          "SPARQL on the books model" ;
     joseki:serviceRef   "books" ;
     # dataset part
     joseki:dataset      _:books ;
@@ -71,9 +71,9 @@
 ## Datasets
 
 _:books   rdf:type joseki:RDFDataSet ;
-#    rdfs:label "Books" ;
+    rdfs:label "Books" ;
     joseki:defaultGraph
-      [ #rdfs:label "books.n3" ;
+      [ rdfs:label "books.n3" ;
         a ja:MemoryModel ;
         ja:content [ja:externalContent <file:Data/books.n3> ] ;
       ]
@@ -88,7 +88,7 @@ _:books   rdf:type joseki:RDFDataSet ;
 ## ----- definitions --------------------------------------------------
 
 joseki:ProcessorSPARQL
-#    rdfs:label "General SPARQL processor" ;
+    rdfs:label "General SPARQL processor" ;
     rdf:type joseki:Processor ;
     module:implementation joseki:ImplSPARQL ;
 
@@ -98,7 +98,7 @@ joseki:ProcessorSPARQL
     .
 
 joseki:ProcessorSPARQL_FixedDS
-#    rdfs:label "SPARQL processor for fixed datasets" ;
+    rdfs:label "SPARQL processor for fixed datasets" ;
     rdf:type joseki:Processor ;
     module:implementation joseki:ImplSPARQL ;
 
