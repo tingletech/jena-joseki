@@ -35,7 +35,7 @@ public class ConfigDataset //implements Dataset
     /** @return Returns the resources for the default graph. */
     public Resource getDefaultGraph() { return defaultGraph ;  }
     
-    /** @param Set the resource to use to make the default graph. */
+    /** @param dftGraph Set the resource to use to make the default graph. */
     public void setDefaultGraph(Resource dftGraph) { this.defaultGraph = dftGraph ; }
 
     /** @return Returns the namedGraphs. */

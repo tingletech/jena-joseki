@@ -6,7 +6,7 @@
     <!-- The major and minor version numbers  -->
     <property name="version-major"   value="3"/>
     <property name="version-minor"   value="0"/>
-    <property name="version-status"  value="-pre-pre-0"/>
+    <property name="version-status"  value="-pre-0"/>
     <property name="version"
          value="${version-major}.${version-minor}${version-status}"/>
 
@@ -34,7 +34,7 @@
     <property name="javadoc.dir"     value="doc/javadoc"/>
 
     <property name="doc.dir"         value="doc"/>
-    <property name="web.dir"         value="Web"/>
+    <!-- <property name="web.dir"         value="Web"/> -->
     <property name="webapp.name"     value="joseki"/>
 
     <!-- Where to build the web application -->
@@ -114,6 +114,7 @@
 
     <target name="jar" depends="make-jar"
 	    description="Create the Joseki JAR file">
+	<!-- <antcall target="clean-build-dirs"/> -->
     </target>
 
 
@@ -122,7 +123,6 @@
         <jar jarfile="${jar.dir}/${jar.name}"
              basedir="${classes.build.dir}">
         </jar>
-	<antcall target="clean-build-dirs"/>
     </target>
 
     <!-- ============================================== -->
@@ -225,12 +225,14 @@
 		     includes="**"/>
         </copy>
 
+	<!--
         <copy todir="${dist.dir}/${web.dir}">
             <fileset dir="${web.dir}">
               <include name="**"/>
               <exclude name="**/CVS/**"/>
             </fileset>
         </copy>
+	-->
 
     <!-- Documentation -->
         <copy todir="${dist.dir}/${doc.dir}">
@@ -332,7 +334,6 @@
         <zip zipfile="${dist.root}/${dist.name}-webapp.zip">
             <fileset dir="dist">
                 <include name="${dist.path}/${webapp.name}.war"/>
-                <include name="${dist.path}/Web/**"/>
                 <include name="${dist.path}/copyright.txt"/>
                 <include name="${dist.path}/README.txt"/>
                 <include name="${dist.path}/etc/**"/>

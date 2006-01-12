@@ -16,6 +16,7 @@ import com.hp.hpl.jena.query.Dataset;
 import com.hp.hpl.jena.query.DatasetFactory;
 import com.hp.hpl.jena.rdf.model.*;
 import com.hp.hpl.jena.assembler.Assembler;
+import com.hp.hpl.jena.assembler.Mode;
 import com.hp.hpl.jena.util.FileManager;
 import com.hp.hpl.jena.vocabulary.JenaModelSpec;
 
@@ -34,7 +35,7 @@ public class DatasetDesc
     /** @return Returns the resources for the default graph. */
     public Resource getDefaultGraph() { return defaultGraph ;  }
     
-    /** @param Set the resource to use to make the default graph. */
+    /** @param dftGraph Set the resource to use to make the default graph. */
     public void setDefaultGraph(Resource dftGraph) { this.defaultGraph = dftGraph ; }
 
     /** @return Returns the namedGraphs. */
@@ -91,7 +92,7 @@ public class DatasetDesc
         }
 
         try {
-            return Assembler.general.openModel( r );
+            return Assembler.general.openModel( r, Mode.REUSE ) ;
         } catch (Exception ex) 
         { throw new JosekiServerException("Failed to assemble model", ex) ; }
     }
