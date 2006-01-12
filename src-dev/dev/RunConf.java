@@ -12,9 +12,9 @@ public class RunConf
     public static void main(String argv[])
     {
         Model spec = FileManager.get().loadModel( "assem1.ttl" );
-        //one(spec, "ex:a1" ) ;
+        one(spec, "ex:a1" ) ;
         //one(spec, "ex:a2" ) ;
-        one(spec, "ex:a3" ) ;
+        //one(spec, "ex:a3" ) ;
         //one(spec, "ex:a4" ) ;
         //one(spec, "ex:a5" ) ;
     }

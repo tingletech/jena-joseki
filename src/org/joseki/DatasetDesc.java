@@ -78,12 +78,13 @@ public class DatasetDesc
     
     private Model buildModel(Resource r)
     {
-        log.info("Attempt to build dataset: "+Utils.nodeLabel(r)) ;
-//      {
-//      StmtIterator sIter = r.listProperties() ;
-//      while ( sIter.hasNext() )
-//          log.info("  "+sIter.nextStatement()) ;
-//  }
+        log.info("Attempt to build model: "+Utils.nodeLabel(r)) ;
+        if ( false )
+        {
+            StmtIterator sIter = r.listProperties() ;
+            while ( sIter.hasNext() )
+                log.info("  "+sIter.nextStatement()) ;
+        }
 
         if ( r.hasProperty(JenaModelSpec.loadWith) || r.hasProperty(JenaModelSpec.maker) )
         {

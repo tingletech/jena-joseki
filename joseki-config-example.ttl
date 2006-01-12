@@ -136,10 +136,8 @@ _:books   rdf:type joseki:RDFDataSet ;
 
 _:model1  rdf:type ja:MemoryModel ;
     rdfs:label "Model(plain)" ;
-    ja:content [
-        ja:externalContent <file:FILE-1.ttl> ;
-        ja:externalContent <file:FILE-2.ttl> ;
-        ] ;
+    ja:content [ ja:externalContent <file:FILE-1.ttl> ] ;
+    ja:content [ ja:externalContent <file:FILE-2.ttl> ] ;
     .
 
 ## ---- Database

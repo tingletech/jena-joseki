@@ -8,7 +8,11 @@
 ## In-memory, loaded with a file 
 
 ex:a1 a ja:MemoryModel ;
-    ja:content [ja:externalContent <file:Data/test_data.n3>]
+    ja:content [ ja:externalContent <file:Data/test_data.n3>]
+    .
+
+ex:b1 a ja:MemoryModel ;
+    ja:content [ja:externalContent <file:Data/books.n3>] ;
     .
 
 ## ----------------
