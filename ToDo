@@ -20,6 +20,11 @@
 >              <fileset dir="${webapps.build.dir}" excludes="**/web.xml"/>
 >          </war>
 
+====pre-0
+-joseki-config.ttl not in build
+-no query.html , no stylesheet in webapp
+-need to document initial setup
+
 Joseki3
 =======
 
