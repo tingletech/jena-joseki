@@ -41,7 +41,7 @@
     <property name="webapps.build.dir"
                   value="webapps.build/${webapp.name}"/>
     
-    <!-- Where the webapp is deploy by default -->
+    <!-- Where the webapp is deploy by default : also the development name -->
     <property name="webapps.deploy.dir"      value="webapps/${webapp.name}"/>
 
     <path id="runClasspath">
@@ -158,6 +158,19 @@
             description="Format the webapps/ area">
         <copy tofile="${webapps.build.dir}/WEB-INF/web.xml" 
               file="etc/webapp-web.xml"/>
+        <!-- Example setup -->   
+        <copy todir="${webapps.build.dir}">
+          <fileset dir="${webapps.deploy.dir}">
+            <include name="query.html"/>   
+            <include name="xml-to-html.xsl"/>   
+            <include name="index.html"/>   
+          </fileset>   
+        </copy>
+        <mkdir dir="${webapps.build.dir}/StyleSheets"/>   
+        <copy todir="${webapps.build.dir}/StyleSheets">
+          <fileset dir="${webapps.deploy.dir}/StyleSheets">
+          </fileset> 
+        </copy>   
     </target>
 
     <target name="copy-webapp-libs" depends="check-jar">
@@ -172,7 +185,7 @@
     </target>
 
     <target name="war-file" depends="check-jar,webapp-build"
-      description="Create a web application archive (WAR) fie" >
+      description="Create a web application archive (WAR) file" >
         <war warfile="${webapps.name}.war"
              webxml="${webapps.build.dir}/WEB-INF/web.xml">
             <fileset dir="${webapps.build.dir}" excludes="**/web.xml"/>
@@ -271,17 +284,21 @@
         <copy todir="${dist.dir}" file="CopyrightNotice.txt"/>
         <copy todir="${dist.dir}" file="README.txt"/>
         <copy todir="${dist.dir}" file="build.xml"/>
+     
+        <!-- Out-of-the-box  configuration -->
+        <copy todir="${dist.dir}" file="joseki-config.ttl"/>
+        <copy todir="${dist.dir}" file="joseki-config-example.ttl"/>
 
         <copy todir="${dist.dir}/bin">
           <fileset dir="bin" excludes="*.~" />
         </copy>
 
         <copy todir="${dist.dir}/etc">
-	  <fileset dir="etc">
-	    <include name="**"/>
-	    <exclude name="*.~"/>
-	    <exclude name="jetty.xml"/>
-	    </fileset>
+	      <fileset dir="etc">
+	        <include name="**"/>
+            <exclude name="*.~"/>
+    	    <exclude name="jetty.xml"/>
+	      </fileset>
         </copy>
 
         <copy todir="${dist.dir}/Data">
