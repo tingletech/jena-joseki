@@ -21,9 +21,9 @@
 >          </war>
 
 ====pre-0
--joseki-config.ttl not in build
--no query.html , no stylesheet in webapp
--need to document initial setup
+- need to document initial setup
+- check!
+  web.xml 
 
 Joseki3
 =======

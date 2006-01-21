@@ -10,7 +10,22 @@ PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.2//EN"
 
   <!-- SERVLETS -->
 
-  <!-- A well-known servlet for testing -->
+  <!-- Joseki servlet -->
+
+  <servlet>
+    <!-- NOT rdfserver (the application name) -->
+    <servlet-name>Jena SPARQL Server</servlet-name>
+    <servlet-class>org.joseki.http.Servlet</servlet-class>
+
+    <!-- Configuration file -->
+    <init-param>
+      <param-name>org.joseki.rdfserver.config</param-name>
+      <param-value>joseki-config.ttl</param-value>
+    </init-param>
+
+  </servlet>
+
+  <!-- A well-known servlets for testing -->
 
   <servlet>
     <servlet-name>Dumper</servlet-name>
@@ -20,16 +35,10 @@ PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.2//EN"
   </servlet>
 
   <servlet>
-    <!-- NOT rdfserver (the application name) -->
-    <servlet-name>Jena SPARQL Server</servlet-name>
-    <servlet-class>org.joseki.http.Servlet</servlet-class>
-
-    <!-- Configuration file -->
-    <init-param>
-      <param-name>jena.rdfserver.modelset</param-name>
-      <param-value>etc/joseki.n3</param-value>
-    </init-param>
-
+    <servlet-name>DumpBody</servlet-name>
+    <servlet-class>
+      org.joseki.servlets.DumpBodyServlet
+    </servlet-class>
   </servlet>
 
   <!-- MAPPINGS -->
@@ -69,6 +78,11 @@ PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.2//EN"
     <url-pattern>/dump</url-pattern>
   </servlet-mapping>
 
+  <servlet-mapping>
+    <servlet-name>DumpBody</servlet-name>
+    <url-pattern>/dump-body</url-pattern>
+  </servlet-mapping>
+
   <!-- Note: the URL pattern is very general -->
   <servlet-mapping>
     <servlet-name>Jena SPARQL Server</servlet-name>
@@ -82,16 +96,14 @@ PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.2//EN"
 
   <!-- SECURIY -->
 
-<!--
   <security-constraint>
     <web-resource-collection>
       <web-resource-name>Joseki</web-resource-name>
       <url-pattern>/*</url-pattern>
       <http-method>GET</http-method>
       <http-method>POST</http-method>
-      <http-method>OPTIONS</http-method>
+      <!-- <http-method>OPTIONS</http-method> -->
     </web-resource-collection>
   </security-constraint>
--->
 
 </web-app>
