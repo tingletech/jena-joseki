@@ -184,9 +184,9 @@
         </copy>
     </target>
 
-    <target name="war-file" depends="check-jar,webapp-build"
+    <target name="war-file" depends="check-jar,webapp-build-format,webapp-build"
       description="Create a web application archive (WAR) file" >
-        <war warfile="${webapps.name}.war"
+        <war warfile="${webapp.name}.war"
              webxml="${webapps.build.dir}/WEB-INF/web.xml">
             <fileset dir="${webapps.build.dir}" excludes="**/web.xml"/>
         </war>
