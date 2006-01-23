@@ -1,13 +1,3 @@
-> ------------------------------------------------------------------------
-> 
-> Index: build.xml
-> ===================================================================
-> RCS file: /cvsroot/joseki/Joseki3/build.xml,v
-> retrieving revision 1.9
-
-====pre-0
-~ Better documentation of query.html and first-use setup (start.html)
-
 Joseki3
 =======
 
