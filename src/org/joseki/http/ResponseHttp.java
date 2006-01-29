@@ -15,8 +15,8 @@ import javax.servlet.http.HttpServletResponse;
 import com.hp.hpl.jena.query.QueryException;
 import com.hp.hpl.jena.query.ResultSet;
 import com.hp.hpl.jena.query.ResultSetFormatter;
-import com.hp.hpl.jena.query.resultset.XMLOutput;
-import com.hp.hpl.jena.query.resultset.XMLOutputASK;
+//import com.hp.hpl.jena.query.resultset.XMLOutput;
+//import com.hp.hpl.jena.query.resultset.XMLOutputASK;
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.shared.JenaException;
 
@@ -168,10 +168,11 @@ public class ResponseHttp extends Response
             httpResponse.setStatus(HttpServletResponse.SC_OK) ;
             httpResponse.setHeader(Joseki.httpHeaderField, Joseki.httpHeaderValue);
             ServletOutputStream out = httpResponse.getOutputStream() ;
-            XMLOutput xOut = new XMLOutput() ;
-            xOut.setStylesheetURL(stylesheetURL) ;
-            xOut.setIncludeXMLinst(true) ;
-            xOut.format(out, resultSet) ;
+            ResultSetFormatter.outputAsXML(out, resultSet, stylesheetURL) ;
+//            XMLOutput xOut = new XMLOutput() ;
+//            xOut.setStylesheetURL(stylesheetURL) ;
+//            xOut.setIncludeXMLinst(true) ;
+//            xOut.format(out, resultSet) ;
             out.flush() ;
             httpResponse.flushBuffer();
         }
@@ -195,13 +196,25 @@ public class ResponseHttp extends Response
     protected void doResponseBoolean(Boolean result) throws QueryExecutionException
     {
         try {
+            String stylesheetURL = null ;
+            if ( request.containsParam(paramStyleSheet) )
+            {
+                stylesheetURL = request.getParam(paramStyleSheet) ;
+                if ( stylesheetURL != null )
+                {
+                    stylesheetURL = stylesheetURL.trim() ;
+                    if ( stylesheetURL.length() == 0 )
+                        stylesheetURL = null ;
+                }
+            }
             ser.setHttpResponse(httpRequest, httpResponse, Joseki.contentTypeResultsXML, null) ;
             httpResponse.setStatus(HttpServletResponse.SC_OK) ;
             httpResponse.setHeader(Joseki.httpHeaderField, Joseki.httpHeaderValue);
             
             ServletOutputStream outStream = httpResponse.getOutputStream() ;
-            XMLOutputASK fmt = new XMLOutputASK(outStream, null) ;
-            fmt.exec(result.booleanValue()) ;
+            ResultSetFormatter.outputAsXML(outStream, result.booleanValue(), stylesheetURL) ;
+//            XMLOutputASK fmt = new XMLOutputASK(outStream, null) ;
+//            fmt.exec(result.booleanValue()) ;
             outStream.flush() ;
           } 
           catch (QueryException qEx)
