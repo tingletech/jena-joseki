@@ -1,6 +1,9 @@
 Joseki3
 =======
 
++ error testing
+  No joseki:ImplSPARQL leads to silent error
+
 + Add a configurable output processor - default XML results / 
   Have SELECT only processor
 
