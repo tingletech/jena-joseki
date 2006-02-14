@@ -77,7 +77,7 @@ public class ProtocolTest extends TestCase
             	} else if(query.getQueryType() == Query.QueryTypeSelect) {
 
                 	// Convert the query response to ResultSet and then to Model
-                	ResultSetRewindable qrs = ResultSetFactory.copyResults(ResultSetFactory.fromXML(in));
+                	ResultSetRewindable qrs = ResultSetFactory.makeRewindable(ResultSetFactory.fromXML(in));
                 	Model qmodel = ResultSetFormatter.toModel(qrs);
 
                 	/*
