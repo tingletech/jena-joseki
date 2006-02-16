@@ -9,7 +9,7 @@ import java.util.* ;
 
 /** Constants and other definitions.
  * @author      Andy Seaborne
- * @version     $Id: Joseki.java,v 1.20 2006-02-16 16:06:18 andy_seaborne Exp $
+ * @version     $Id: Joseki.java,v 1.21 2006-02-16 17:09:02 andy_seaborne Exp $
  */
 public class Joseki
 {
@@ -101,7 +101,6 @@ public class Joseki
         setReaderType(contentTypeNTriples, "N-TRIPLE") ;
         setReaderType(contentTypeXML, "RDF/XML") ;
         setReaderType(contentTypeTurtle, "TURTLE") ;
-        
     }
     
     static Map jenaWriters = new HashMap() ;

@@ -136,10 +136,23 @@ public class ResponseHttp extends Response
         
         String acceptField = httpRequest.getHeader("Accept") ;
         if ( request.containsParam("accept"))
+        {
             acceptField = request.getParam("accept") ;
+            // Catch an easy mistake to make.
+            if ( acceptField.contains(" ") )
+            {
+                log.warn("The accept parameter value has a space in it - did you mean '+'?");
+                log.warn("You need to use %2B - '+' is the encoding of a space") ;  
+            }
+            // Some short names.
+            if ( acceptField.equalsIgnoreCase("json") ) 
+                acceptField = Joseki.contentTypeResultsJSON ;
+        }
         
         boolean wantsAppXML1 = HttpUtils.accept(acceptField, Joseki.contentTypeXML) ; 
         boolean wantsAppXML2 = HttpUtils.accept(acceptField, Joseki.contentTypeResultsXML) ;
+        
+        // Test exact match
         boolean wantsAppJSON = acceptField.equalsIgnoreCase(Joseki.contentTypeResultsJSON) ;
             //HttpUtils.accept(f, Joseki.contentTypeResultsJSON) ;
         
