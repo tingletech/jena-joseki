@@ -134,11 +134,40 @@ public class ResponseHttp extends Response
         boolean wantsStyle = request.containsParam(paramStyleSheet) ;
         String contentType = Joseki.contentTypeResultsXML ;
         
+        String acceptField = httpRequest.getHeader("Accept") ;
+        if ( request.containsParam("accept"))
+            acceptField = request.getParam("accept") ;
         
-        String f = httpRequest.getHeader("Accept") ;
-        boolean wantsAppXML1 = HttpUtils.accept(f, Joseki.contentTypeXML) ; 
-        boolean wantsAppXML2 = HttpUtils.accept(f, Joseki.contentTypeResultsXML) ;
+        boolean wantsAppXML1 = HttpUtils.accept(acceptField, Joseki.contentTypeXML) ; 
+        boolean wantsAppXML2 = HttpUtils.accept(acceptField, Joseki.contentTypeResultsXML) ;
+        boolean wantsAppJSON = acceptField.equalsIgnoreCase(Joseki.contentTypeResultsJSON) ;
+            //HttpUtils.accept(f, Joseki.contentTypeResultsJSON) ;
         
+        if ( wantsAppJSON )
+        {
+            // As JSON
+            try {
+                ser.setHttpResponse(httpRequest, httpResponse,  Joseki.contentTypeResultsJSON, null);  
+                httpResponse.setStatus(HttpServletResponse.SC_OK) ;
+                httpResponse.setHeader(Joseki.httpHeaderField, Joseki.httpHeaderValue);
+                ServletOutputStream out = httpResponse.getOutputStream() ;
+                ResultSetFormatter.outputAsJSON(out, resultSet) ;
+                out.flush() ;
+                httpResponse.flushBuffer();
+            }
+            catch (QueryException qEx)
+            {
+                log.info("Query execution error (SELECT/JSON): "+qEx) ;
+                throw new QueryExecutionException(ReturnCodes.rcQueryExecutionFailure, qEx.getMessage()) ;
+            }
+            catch (IOException ioEx)
+            {
+                log.warn("IOException "+ioEx) ;
+            }
+            return ;
+        }
+        
+        // Not JSON.  If not XML, then send as a model.
         if ( ! ( wantsAppXML1 || wantsAppXML2 ) )
         {
             // As model
@@ -146,6 +175,8 @@ public class ResponseHttp extends Response
             doResponseModel(m) ;
             return ;
         }
+        
+        // XML result set format.
         
         String stylesheetURL = null ;
         if ( request.containsParam(paramStyleSheet) )
@@ -183,7 +214,7 @@ public class ResponseHttp extends Response
         }
         catch (IOException ioEx)
         {
-            log.warn("IOExceptionecution "+ioEx) ;
+            log.warn("IOException "+ioEx) ;
         }
 //        catch (NotFoundException ex)
 //        {
