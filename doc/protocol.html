@@ -1,0 +1,47 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>Joseki - Protocol</title>
+<link rel="stylesheet" type="text/css" href="styles/doc.css" />
+</head>
+<body>
+
+<h1>Joseki - Protocol</h1>
+
+<p>Joseki supports both HTTP and SOAP bindings for the SPARQL protocol.
+Both bindings access the same set of services and same set of datasets.
+
+</p>
+
+
+<h2>HTTP</h2>
+
+<p>Some additional paramters are supported: use of these parameters is outside the SPARQL protocol
+and are not available on all SPARQL servers.</p>
+
+<p>Additional provides the <code>application/sparql-results+json</code>
+MIME type for the
+<a href="http://mindswap.org/~kendall/sparql-results-json/">JSON format for SPARQL query results</a>.</p>
+
+<ul>
+
+<li><code>stylesheet</code>: Includes a stylesheet directive with the given URL
+in SPARQL XML results format responds.</li>
+
+<li><code>accept</code>: Normally, the request uses the HTTP Accept header to request a particular format. 
+Occasionally, it is hard to set the header in some toolkits or the header may be choosen automatically.
+This parameter is used to override the request HTTP header for explicit control.
+It's use is not recommended when the Accept request header can be used.</li>
+
+<li><code>callback</code>: Used with JSON format for the SPARQL results.
+See the <a href="http://developer.yahoo.net/common/json.html">Yahoo! documentation</a>.
+</li>
+
+</ul>
+
+<h2>SOAP</h2>
+
+<p>There are no additional parameters for the SOAP binding.</p>
+
+
+</body>
+</html>
