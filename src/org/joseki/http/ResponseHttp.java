@@ -147,11 +147,34 @@ public class ResponseHttp extends Response
         {
             // As JSON
             try {
+                // TODO Will need to CVS merge this
+                String jsonRef = null ;
+                String callback = request.getParam("callback") ;
+                
                 ser.setHttpResponse(httpRequest, httpResponse,  Joseki.contentTypeResultsJSON, null);  
                 httpResponse.setStatus(HttpServletResponse.SC_OK) ;
                 httpResponse.setHeader(Joseki.httpHeaderField, Joseki.httpHeaderValue);
                 ServletOutputStream out = httpResponse.getOutputStream() ;
+                if ( callback != null )
+                {
+                    int i = callback.indexOf(".obj") ;
+                    
+                    if ( i > 0 )
+                    {
+                        jsonRef = callback.substring(i+".obj".length()) ;
+                        callback = callback.substring(0,i) ;
+                    }
+                    out.print(callback) ;
+                    out.println("(") ;
+                }
                 ResultSetFormatter.outputAsJSON(out, resultSet) ;
+                if ( callback != null )
+                {
+                    out.print(")") ;
+                    if ( jsonRef != null )
+                        out.print(jsonRef) ;
+                    out.println() ;
+                }
                 out.flush() ;
                 httpResponse.flushBuffer();
             }
