@@ -132,22 +132,9 @@ public class ResponseHttp extends Response
     protected void doResponseResultSet(ResultSet resultSet) throws QueryExecutionException
     {
         boolean wantsStyle = request.containsParam(paramStyleSheet) ;
-        String contentType = Joseki.contentTypeResultsXML ;
+        String contentType = Joseki.contentTypeResultsXML ;         // Default choice
         
-        String acceptField = httpRequest.getHeader("Accept") ;
-        if ( request.containsParam("accept"))
-        {
-            acceptField = request.getParam("accept") ;
-            // Catch an easy mistake to make.
-            if ( acceptField.contains(" ") )
-            {
-                log.warn("The accept parameter value has a space in it - did you mean '+'?");
-                log.warn("You need to use %2B - '+' is the encoding of a space") ;  
-            }
-            // Some short names.
-            if ( acceptField.equalsIgnoreCase("json") ) 
-                acceptField = Joseki.contentTypeResultsJSON ;
-        }
+        String acceptField = chooseAcceptField() ;
         
         boolean wantsAppXML1 = HttpUtils.accept(acceptField, Joseki.contentTypeXML) ; 
         boolean wantsAppXML2 = HttpUtils.accept(acceptField, Joseki.contentTypeResultsXML) ;
@@ -191,17 +178,7 @@ public class ResponseHttp extends Response
         
         // XML result set format.
         
-        String stylesheetURL = null ;
-        if ( request.containsParam(paramStyleSheet) )
-        {
-            stylesheetURL = request.getParam(paramStyleSheet) ;
-            if ( stylesheetURL != null )
-            {
-                stylesheetURL = stylesheetURL.trim() ;
-                if ( stylesheetURL.length() == 0 )
-                    stylesheetURL = null ;
-            }
-        }
+        String stylesheetURL = chooseStylesheet() ;
 
         // Firefox will prompt if application/sparlq-result+xml 
         if ( stylesheetURL != null )
@@ -239,26 +216,30 @@ public class ResponseHttp extends Response
     
     protected void doResponseBoolean(Boolean result) throws QueryExecutionException
     {
+        String acceptField = chooseAcceptField() ;
+        // Test exact match
+        boolean wantsAppJSON = acceptField.equalsIgnoreCase(Joseki.contentTypeResultsJSON) ;
+            //HttpUtils.accept(f, Joseki.contentTypeResultsJSON) ;
+        
         try {
-            String stylesheetURL = null ;
-            if ( request.containsParam(paramStyleSheet) )
-            {
-                stylesheetURL = request.getParam(paramStyleSheet) ;
-                if ( stylesheetURL != null )
-                {
-                    stylesheetURL = stylesheetURL.trim() ;
-                    if ( stylesheetURL.length() == 0 )
-                        stylesheetURL = null ;
-                }
-            }
-            ser.setHttpResponse(httpRequest, httpResponse, Joseki.contentTypeResultsXML, null) ;
+            String stylesheetURL = chooseStylesheet() ;
+            
+            String contentType = Joseki.contentTypeResultsXML ;
+            if ( stylesheetURL != null )
+                contentType = Joseki.contentTypeXML ;
+            
+            if ( wantsAppJSON )
+                contentType = Joseki.contentTypeResultsJSON ;
+            
+            ser.setHttpResponse(httpRequest, httpResponse, contentType, null) ;
             httpResponse.setStatus(HttpServletResponse.SC_OK) ;
             httpResponse.setHeader(Joseki.httpHeaderField, Joseki.httpHeaderValue);
             
             ServletOutputStream outStream = httpResponse.getOutputStream() ;
-            ResultSetFormatter.outputAsXML(outStream, result.booleanValue(), stylesheetURL) ;
-//            XMLOutputASK fmt = new XMLOutputASK(outStream, null) ;
-//            fmt.exec(result.booleanValue()) ;
+            if ( wantsAppJSON )
+                ResultSetFormatter.outputAsJSON(outStream, result.booleanValue()) ;
+            else
+                ResultSetFormatter.outputAsXML(outStream, result.booleanValue(), stylesheetURL) ;
             outStream.flush() ;
           } 
           catch (QueryException qEx)
@@ -284,6 +265,41 @@ public class ResponseHttp extends Response
             //msg("Error in operation: URI = " + uri + " : " + httpMsg);
         log.info("Error: URI = " + request.getServiceURI() + " : " + httpMsg) ;
         httpSerializer.sendError(execEx, httpResponse) ;
+    }
+    
+    private String chooseStylesheet()
+    {
+        String stylesheetURL = null ;
+        if ( request.containsParam(paramStyleSheet) )
+        {
+            stylesheetURL = request.getParam(paramStyleSheet) ;
+            if ( stylesheetURL != null )
+            {
+                stylesheetURL = stylesheetURL.trim() ;
+                if ( stylesheetURL.length() == 0 )
+                    stylesheetURL = null ;
+            }
+        }
+        return stylesheetURL ;
+    }
+    
+    private String chooseAcceptField()
+    {
+        String acceptField = httpRequest.getHeader("Accept") ;
+        if ( request.containsParam("accept"))
+        {
+            acceptField = request.getParam("accept") ;
+            // Catch an easy mistake to make.
+            if ( acceptField.contains(" ") )
+            {
+                log.warn("The accept parameter value has a space in it - did you mean '+'?");
+                log.warn("You need to use %2B - '+' is the encoding of a space") ;  
+            }
+            // Some short names.
+            if ( acceptField.equalsIgnoreCase("json") ) 
+                acceptField = Joseki.contentTypeResultsJSON ;
+        }
+        return acceptField ; 
     }
 }
 
