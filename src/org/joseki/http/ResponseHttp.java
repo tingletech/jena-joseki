@@ -174,11 +174,14 @@ public class ResponseHttp extends Response
         // Serialialization is the content type unless overridden. 
         String serializationType = contentType ;
 
-        // output field causes the serialization to be set but the returned content-type is text/plain   
+        // output field causes the serialization to be set
+        // but the returned content-type is some text/ type
         if ( outputField != null )
         {
             serializationType = outputField ;
             contentType = Joseki.contentTypeTextPlain ;
+            if ( serializationType.equals(Joseki.contentTypeResultsJSON) )
+                contentType = Joseki.contentTypeTextJavascript;
         }
         
         // ---- Form: XML
@@ -274,18 +277,10 @@ public class ResponseHttp extends Response
     {
         String callback = paramCallback() ;
         String outputField = paramOutput() ;
-        String jsonRef = null ;
         ServletOutputStream out = httpResponse.getOutputStream() ;
         
         if ( callback != null )
         {
-            int i = callback.indexOf(".") ;
-            
-            if ( i > 0 )
-            {
-                jsonRef = callback.substring(i) ;
-                callback = callback.substring(0,i) ;
-            }
             out.print(callback) ;
             out.println("(") ;
         }
@@ -294,8 +289,6 @@ public class ResponseHttp extends Response
         
         if ( callback != null )
         {
-            if ( jsonRef != null )
-                out.print(jsonRef) ;
             out.print(")") ;
             out.println() ;
         }

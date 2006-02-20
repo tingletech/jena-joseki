@@ -9,7 +9,7 @@ import java.util.* ;
 
 /** Constants and other definitions.
  * @author      Andy Seaborne
- * @version     $Id: Joseki.java,v 1.22 2006-02-20 13:00:16 andy_seaborne Exp $
+ * @version     $Id: Joseki.java,v 1.23 2006-02-20 17:19:10 andy_seaborne Exp $
  */
 public class Joseki
 {
@@ -50,27 +50,28 @@ public class Joseki
     
     //public static final String baseURI = "http://joseki.org/" ;
 
-    public static final String contentTypeAppN3        = "application/n3" ;
-    public static final String contentTypeTurtle       = "application/turtle" ;
-    public static final String contentTypeRDFXML       = "application/rdf+xml" ;
-    public static final String contentTypeNTriples     = "application/n-triples" ;
-    public static final String contentTypeXML          = "application/xml" ;
-    public static final String contentTypeResultsXML   = "application/sparql-results+xml" ;
-    public static final String contentTypeResultsJSON  = "application/sparql-results+json" ;
+    public static final String contentTypeAppN3           = "application/n3" ;
+    public static final String contentTypeTurtle          = "application/turtle" ;
+    public static final String contentTypeRDFXML          = "application/rdf+xml" ;
+    public static final String contentTypeNTriples        = "application/n-triples" ;
+    public static final String contentTypeXML             = "application/xml" ;
+    public static final String contentTypeResultsXML      = "application/sparql-results+xml" ;
+    public static final String contentTypeResultsJSON     = "application/sparql-results+json" ;
     
     // Short names for "output="
-    public static final String contentOutputJSON       = "json" ;
-    public static final String contentOutputXML        = "xml" ;
-    public static final String contentOutputSPARQL     = "sparql" ;
+    public static final String contentOutputJSON          = "json" ;
+    public static final String contentOutputXML           = "xml" ;
+    public static final String contentOutputSPARQL        = "sparql" ;
 
-    public static final String contentTypeTextPlain    = "text/plain" ;
-    public static final String contentTypeTextN3       = "text/n3" ;
-    public static final String contentTypeForText      = contentTypeTextPlain ;
+    public static final String contentTypeTextPlain       = "text/plain" ;
+    public static final String contentTypeTextJavascript  = "text/javascript" ;
+    public static final String contentTypeTextN3          = "text/n3" ;
+    public static final String contentTypeForText         = contentTypeTextPlain ;
     
-    public static final String charsetUTF8             = "utf-8" ;
+    public static final String charsetUTF8                = "utf-8" ;
     
-    public static String serverContentType             = contentTypeRDFXML ;
-    public static String clientContentType             = contentTypeRDFXML ;
+    public static String serverContentType                = contentTypeRDFXML ;
+    public static String clientContentType                = contentTypeRDFXML ;
     
     // Various control falgs and settings.
 
