@@ -36,6 +36,8 @@ public class ResponseHttp extends Response
     static AcceptItem defaultCharset      = new AcceptItem(Joseki.charsetUTF8) ;
     static AcceptList prefCharset         = new AcceptList("utf-8") ;
     
+    interface OutputContent { void output(ServletOutputStream out) ; }
+
     // These EXCLUDE application/xml
     static AcceptItem defaultContentType  = new AcceptItem(Joseki.contentTypeRDFXML) ;
     
@@ -51,10 +53,16 @@ public class ResponseHttp extends Response
     private HttpServletResponse httpResponse ;
     private HttpServletRequest httpRequest ; 
     
+    
     static final String paramStyleSheet = "stylesheet" ;
-
+    static final String paramAccept     = "accept" ;
+    static final String paramOutput     = "output" ;        // See Yahoo! developer: http://developer.yahoo.net/common/json.html 
+    static final String paramCallback   = "callback" ;
+    static final String headerAccept    = "Accept" ;
+    
     ResponseHttp(Request request, HttpServletRequest httpRequest, HttpServletResponse httpResponse) 
     { 
+        // TODO Move content negotiation to constructor so early failures.
         super(request) ;
         this.httpResponse = httpResponse ;
         this.httpRequest = httpRequest ; 
@@ -62,14 +70,12 @@ public class ResponseHttp extends Response
     
     protected void doResponseModel(Model model) throws QueryExecutionException
     {
-        // TODO Move content negotiation to constructor so early failures.
-        
         String mimeType = null ;
         String writerMimeType = null ;
         String charset = null ;
         
         // TODO : should this be text/plain?
-        String f = httpRequest.getHeader("Accept") ;
+        String f = httpRequest.getHeader(headerAccept) ;
         String textContentType =  HttpUtils.match(f, "text/*") ; 
 
         if ( textContentType != null )
@@ -129,64 +135,45 @@ public class ResponseHttp extends Response
         }
     }
     
-    protected void doResponseResultSet(ResultSet resultSet) throws QueryExecutionException
+    protected void doResponseResultSet(final ResultSet resultSet) throws QueryExecutionException
     {
         boolean wantsStyle = request.containsParam(paramStyleSheet) ;
         String contentType = Joseki.contentTypeResultsXML ;         // Default choice
         
-        String acceptField = chooseAcceptField() ;
+        String acceptField = paramAcceptField() ;
+        String outputField = paramOutput() ;
         
         boolean wantsAppXML1 = HttpUtils.accept(acceptField, Joseki.contentTypeXML) ; 
         boolean wantsAppXML2 = HttpUtils.accept(acceptField, Joseki.contentTypeResultsXML) ;
         
         // Test exact match
-        boolean wantsAppJSON = acceptField.equalsIgnoreCase(Joseki.contentTypeResultsJSON) ;
-            //HttpUtils.accept(f, Joseki.contentTypeResultsJSON) ;
+        boolean wantsAppJSON = 
+            acceptField.equalsIgnoreCase(Joseki.contentTypeResultsJSON) ;
+        if ( outputField != null && outputField.equals(Joseki.contentOutputJSON) )
+            wantsAppJSON = true ;
         
         if ( wantsAppJSON )
         {
             // As JSON
             try {
-                // TODO Will need to CVS merge this
-                String jsonRef = null ;
-                String callback = request.getParam("callback") ;
-                
-                ser.setHttpResponse(httpRequest, httpResponse,  Joseki.contentTypeResultsJSON, null);  
-                httpResponse.setStatus(HttpServletResponse.SC_OK) ;
-                httpResponse.setHeader(Joseki.httpHeaderField, Joseki.httpHeaderValue);
-                ServletOutputStream out = httpResponse.getOutputStream() ;
-                if ( callback != null )
-                {
-                    int i = callback.indexOf(".obj") ;
-                    
-                    if ( i > 0 )
+                contentType = Joseki.contentTypeResultsJSON ;
+
+                if ( outputField != null && outputField.equals(Joseki.contentOutputJSON) )
+                    contentType = Joseki.contentTypeTextPlain ;
+
+                jsonOutput(contentType, new OutputContent(){
+                    public void output(ServletOutputStream out)
                     {
-                        jsonRef = callback.substring(i+".obj".length()) ;
-                        callback = callback.substring(0,i) ;
+                        ResultSetFormatter.outputAsJSON(out, resultSet) ;
                     }
-                    out.print(callback) ;
-                    out.println("(") ;
-                }
-                ResultSetFormatter.outputAsJSON(out, resultSet) ;
-                if ( callback != null )
-                {
-                    out.print(")") ;
-                    if ( jsonRef != null )
-                        out.print(jsonRef) ;
-                    out.println() ;
-                }
-                out.flush() ;
-                httpResponse.flushBuffer();
+                }) ;
             }
             catch (QueryException qEx)
             {
                 log.info("Query execution error (SELECT/JSON): "+qEx) ;
                 throw new QueryExecutionException(ReturnCodes.rcQueryExecutionFailure, qEx.getMessage()) ;
             }
-            catch (IOException ioEx)
-            {
-                log.warn("IOException "+ioEx) ;
-            }
+            catch (IOException ioEx) { log.warn("IOException(ignored) "+ioEx, ioEx) ; }
             return ;
         }
         
@@ -201,79 +188,75 @@ public class ResponseHttp extends Response
         
         // XML result set format.
         
-        String stylesheetURL = chooseStylesheet() ;
+        final String stylesheetURL = paramStylesheet() ;
 
         // Firefox will prompt if application/sparlq-result+xml 
         if ( stylesheetURL != null )
             contentType = Joseki.contentTypeXML ;
-        
         try {
-            ser.setHttpResponse(httpRequest, httpResponse, contentType, null);  
-            httpResponse.setStatus(HttpServletResponse.SC_OK) ;
-            httpResponse.setHeader(Joseki.httpHeaderField, Joseki.httpHeaderValue);
-            ServletOutputStream out = httpResponse.getOutputStream() ;
-            ResultSetFormatter.outputAsXML(out, resultSet, stylesheetURL) ;
-//            XMLOutput xOut = new XMLOutput() ;
-//            xOut.setStylesheetURL(stylesheetURL) ;
-//            xOut.setIncludeXMLinst(true) ;
-//            xOut.format(out, resultSet) ;
-            out.flush() ;
-            httpResponse.flushBuffer();
+            output(contentType, null, new OutputContent()
+                {
+                    public void output(ServletOutputStream out)
+                    {
+                        ResultSetFormatter.outputAsXML(out, resultSet, stylesheetURL) ;
+                    }
+                }) ;
         }
         catch (QueryException qEx)
         {
             log.info("Query execution error (SELECT/XML): "+qEx) ;
             throw new QueryExecutionException(ReturnCodes.rcQueryExecutionFailure, qEx.getMessage()) ;
         }
-        catch (IOException ioEx)
-        {
-            log.warn("IOException "+ioEx) ;
-        }
-//        catch (NotFoundException ex)
-//        {
-//            log.info("Query execution error (SELECT/XML): "+ex) ;
-//            throw new QueryExecutionException(ExecutionError.rcQueryExecutionFailure, ex.getMessage()) ;
-//        }
+        catch (IOException ioEx) { log.warn("IOException(ignored) "+ioEx, ioEx) ; }
+
     }
     
     
-    protected void doResponseBoolean(Boolean result) throws QueryExecutionException
+    protected void doResponseBoolean(final Boolean result) throws QueryExecutionException
     {
-        String acceptField = chooseAcceptField() ;
+        String acceptField = paramAcceptField() ;
+
         // Test exact match
         boolean wantsAppJSON = acceptField.equalsIgnoreCase(Joseki.contentTypeResultsJSON) ;
-            //HttpUtils.accept(f, Joseki.contentTypeResultsJSON) ;
         
         try {
-            String stylesheetURL = chooseStylesheet() ;
-            
+            final String stylesheetURL = paramStylesheet() ;
             String contentType = Joseki.contentTypeResultsXML ;
+            String charset = null ;
+            OutputContent proc = null ;
+            
             if ( stylesheetURL != null )
                 contentType = Joseki.contentTypeXML ;
             
             if ( wantsAppJSON )
+            {
                 contentType = Joseki.contentTypeResultsJSON ;
-            
-            ser.setHttpResponse(httpRequest, httpResponse, contentType, null) ;
-            httpResponse.setStatus(HttpServletResponse.SC_OK) ;
-            httpResponse.setHeader(Joseki.httpHeaderField, Joseki.httpHeaderValue);
-            
-            ServletOutputStream outStream = httpResponse.getOutputStream() ;
-            if ( wantsAppJSON )
-                ResultSetFormatter.outputAsJSON(outStream, result.booleanValue()) ;
+                charset = Joseki.charsetUTF8 ;
+                proc = new OutputContent(){
+                    public void output(ServletOutputStream out)
+                    {
+                        ResultSetFormatter.outputAsJSON(out, result.booleanValue()) ;
+                    }
+                };
+            }
             else
-                ResultSetFormatter.outputAsXML(outStream, result.booleanValue(), stylesheetURL) ;
-            outStream.flush() ;
+            {
+                proc = new OutputContent(){
+                    public void output(ServletOutputStream out)
+                    {
+                        ResultSetFormatter.outputAsXML(out, result.booleanValue(), stylesheetURL) ;
+                    }
+                };
+            }   
+             
+            output(contentType, charset, proc) ;  
           } 
           catch (QueryException qEx)
           {
               log.info("Query execution error (ASK): "+qEx) ;
               throw new QueryExecutionException(ReturnCodes.rcQueryExecutionFailure, null) ;
           }
-          catch (IOException ioEx)
-          {
-              log.warn("IOExceptionecution "+ioEx) ;
-          }
+          catch (IOException ioEx) { log.warn("IOException(ignored) "+ioEx, ioEx) ; }
       }
 
     protected void doException(ExecutionException execEx)
@@ -290,39 +273,94 @@ public class ResponseHttp extends Response
         httpSerializer.sendError(execEx, httpResponse) ;
     }
     
-    private String chooseStylesheet()
+    private void output(String contentType, String charset, OutputContent proc)  throws IOException
     {
-        String stylesheetURL = null ;
-        if ( request.containsParam(paramStyleSheet) )
+        ser.setHttpResponse(httpRequest, httpResponse, contentType, charset);  
+        httpResponse.setStatus(HttpServletResponse.SC_OK) ;
+        httpResponse.setHeader(Joseki.httpHeaderField, Joseki.httpHeaderValue);
+        ServletOutputStream out = httpResponse.getOutputStream() ;
+        proc.output(out) ;
+        out.flush() ;
+        httpResponse.flushBuffer();
+    }
+
+    private void jsonOutput(String contentType, OutputContent proc) throws IOException
+    {
+        String callback = paramCallback() ;
+        String outputField = paramOutput() ;
+        String jsonRef = null ;
+        ServletOutputStream out = httpResponse.getOutputStream() ;
+        
+        if ( callback != null )
         {
-            stylesheetURL = request.getParam(paramStyleSheet) ;
-            if ( stylesheetURL != null )
+            int i = callback.indexOf(".obj") ;
+            
+            if ( i > 0 )
             {
-                stylesheetURL = stylesheetURL.trim() ;
-                if ( stylesheetURL.length() == 0 )
-                    stylesheetURL = null ;
+                jsonRef = callback.substring(i+".obj".length()) ;
+                callback = callback.substring(0,i) ;
             }
+            out.print(callback) ;
+            out.println("(") ;
         }
-        return stylesheetURL ;
+        
+        output(contentType, Joseki.charsetUTF8, proc) ;
+        
+        if ( callback != null )
+        {
+            out.print(")") ;
+            if ( jsonRef != null )
+                out.print(jsonRef) ;
+            out.println() ;
+        }
+        out.flush() ;
+        httpResponse.flushBuffer();
+    }
+
+    private String paramStylesheet() { return fetchParam(paramStyleSheet) ; }
+    
+    private String paramOutput() { return fetchParam(paramOutput) ; }
+    
+    private String paramAcceptField()
+    {
+        String acceptField = httpRequest.getHeader(headerAccept) ;
+        String acceptParam = fetchParam(paramAccept) ;
+        
+        if ( acceptParam != null )
+            acceptField = acceptParam ;
+        
+        if (acceptField == null )
+            return null ;
+        
+        // Catch an easy mistake to make.
+        if ( acceptField.contains(" ") )
+        {
+            log.warn("The accept parameter value has a space in it - did you mean '+'?");
+            log.warn("You need to use %2B - '+' is the encoding of a space") ;  
+        }
+        // Some short names.
+        if ( acceptField.equalsIgnoreCase(Joseki.contentOutputJSON) ) 
+            acceptField = Joseki.contentTypeResultsJSON ;
+
+        return acceptField ; 
     }
     
-    private String chooseAcceptField()
+    private String paramCallback() { return fetchParam(paramCallback) ; }
+    
+    private String fetchParam(String parameterName)
     {
-        String acceptField = httpRequest.getHeader("Accept") ;
-        if ( request.containsParam("accept"))
+        String value = null ;
+        if ( request.containsParam(parameterName) )
         {
-            acceptField = request.getParam("accept") ;
-            // Catch an easy mistake to make.
-            if ( acceptField.contains(" ") )
+            value = request.getParam(parameterName) ;
+            if ( value != null )
             {
-                log.warn("The accept parameter value has a space in it - did you mean '+'?");
-                log.warn("You need to use %2B - '+' is the encoding of a space") ;  
+                value = value.trim() ;
+                if ( value.length() == 0 )
+                    value = null ;
             }
-            // Some short names.
-            if ( acceptField.equalsIgnoreCase("json") ) 
-                acceptField = Joseki.contentTypeResultsJSON ;
         }
-        return acceptField ; 
+        return value ;
     }
 }
 
