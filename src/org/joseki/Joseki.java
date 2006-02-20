@@ -9,7 +9,7 @@ import java.util.* ;
 
 /** Constants and other definitions.
  * @author      Andy Seaborne
- * @version     $Id: Joseki.java,v 1.21 2006-02-16 17:09:02 andy_seaborne Exp $
+ * @version     $Id: Joseki.java,v 1.22 2006-02-20 13:00:16 andy_seaborne Exp $
  */
 public class Joseki
 {
@@ -57,6 +57,11 @@ public class Joseki
     public static final String contentTypeXML          = "application/xml" ;
     public static final String contentTypeResultsXML   = "application/sparql-results+xml" ;
     public static final String contentTypeResultsJSON  = "application/sparql-results+json" ;
+    
+    // Short names for "output="
+    public static final String contentOutputJSON       = "json" ;
+    public static final String contentOutputXML        = "xml" ;
+    public static final String contentOutputSPARQL     = "sparql" ;
 
     public static final String contentTypeTextPlain    = "text/plain" ;
     public static final String contentTypeTextN3       = "text/n3" ;

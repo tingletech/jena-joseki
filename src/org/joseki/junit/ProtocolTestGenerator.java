@@ -173,9 +173,9 @@ public class ProtocolTestGenerator implements ManifestItemHandler
 	        if(g != null) {
 	            String gn = TestUtils.getLiteralOrURI(g, TestProtocolVocab.graphName) ;
 	            String gd = TestUtils.getLiteralOrURI(g, TestProtocolVocab.graphData) ;
-	            if(qStr.contains(gn)) {
+	            // if(qStr.contains(gn))
+                if ( qStr.indexOf(gn) >= 0 )
 	            	qStr = qStr.replaceFirst(gn, gd);
-	            }
 	        }
 	        
 	        StmtIterator sIter = ds.listProperties(TestProtocolVocab.namedGraph) ;
@@ -185,9 +185,9 @@ public class ProtocolTestGenerator implements ManifestItemHandler
 	            Resource ng = stmt.getResource() ;
 	            String gn = TestUtils.getLiteralOrURI(ng, TestProtocolVocab.graphName) ;
 	            String gd = TestUtils.getLiteralOrURI(ng, TestProtocolVocab.graphData) ;
-	            if(qStr.contains(gn)) {
+	            //if(qStr.contains(gn))
+                if ( qStr.indexOf(gn) >= 0 )
 	            	qStr = qStr.replaceFirst(gn, gd);
-	            }	            
 	        }
 	        sIter.close() ;
 	        

@@ -32,6 +32,10 @@ Occasionally, it is hard to set the header in some toolkits or the header may be
 This parameter is used to override the request HTTP header for explicit control.
 It's use is not recommended when the Accept request header can be used.</li>
 
+<li><code>output</code>: request output to be serilized as for a particular content type but get the HTTP
+response type set to text/plain regardless.  Used for debugging and also with <code>callback</code>
+for Yahoo! protocol for JSON.</li>
+
 <li><code>callback</code>: Used with JSON format for the SPARQL results.
 See the <a href="http://developer.yahoo.net/common/json.html">Yahoo! documentation</a>.
 </li>
