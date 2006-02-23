@@ -21,7 +21,7 @@ import com.hp.hpl.jena.shared.JenaException;
 /** Extracting operation data from HTTP servlet requests and formatting results for sending back.
  * 
  * @author      Andy Seaborne
- * @version     $Id: HttpResultSerializer.java,v 1.3 2005-12-26 19:19:54 andy_seaborne Exp $
+ * @version     $Id: HttpResultSerializer.java,v 1.4 2006-02-23 18:38:39 andy_seaborne Exp $
  */
 public class HttpResultSerializer
 {
@@ -139,9 +139,11 @@ public class HttpResultSerializer
             int httpRC = -1;
             String httpMsg = execEx.shortMessage ;
             if (execEx.shortMessage == null)
-                httpMsg = ReturnCodes.errorString(execEx.returnCode);;
+                httpMsg = ReturnCodes.errorString(execEx.returnCode);
     
             // Map from internal error codes to HTTP ones.
+            // 400 is SPARQL malformed query
+            // 500 is SPAQRL query request refused
             switch (execEx.returnCode)
             {
                 case ReturnCodes.rcOK :
@@ -188,6 +190,9 @@ public class HttpResultSerializer
                     break ;
                 case ReturnCodes.rcServiceUnavailable:
                     httpRC = HttpServletResponse.SC_SERVICE_UNAVAILABLE ;
+                    break ;
+                case ReturnCodes.rcResourceNotFound:
+                    httpRC = HttpServletResponse.SC_INTERNAL_SERVER_ERROR ;
                     break ;
                 default :
                     httpRC = HttpServletResponse.SC_INTERNAL_SERVER_ERROR;

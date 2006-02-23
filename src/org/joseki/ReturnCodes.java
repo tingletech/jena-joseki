@@ -6,7 +6,7 @@
 package org.joseki;
 
 /**
- * @version     $Id: ReturnCodes.java,v 1.2 2005-12-26 19:19:54 andy_seaborne Exp $
+ * @version     $Id: ReturnCodes.java,v 1.3 2006-02-23 18:38:39 andy_seaborne Exp $
  * @author      Andy Seaborne
  */
 
@@ -25,6 +25,7 @@ public class ReturnCodes
     static public final int rcArgumentError          = 12 ;
     static public final int rcNotImplemented         = 13 ;
     static public final int rcServiceUnavailable     = 14 ;
+    static public final int rcResourceNotFound       = 15 ;
     
     static public final int rcQueryParseFailure      = 100 ;
     static public final int rcQueryExecutionFailure  = 101 ;
@@ -46,6 +47,7 @@ public class ReturnCodes
           "Error in arguments", 
           "Not implemented" ,
           "Service unavailable",
+          "Resource not found",
           null // Terminator
     };
 
