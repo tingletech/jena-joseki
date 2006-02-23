@@ -23,7 +23,7 @@ declare default element namespace "http://www.w3.org/1999/xhtml";
 
 
 (: URI of input SPARQL Query Results document :)
-declare variable $results-doc := doc( "output.xml" );
+declare variable $results-doc := doc( "output.srx" );
 
 
 (: How to set serialization parameters? :)
