@@ -4,39 +4,7 @@ Joseki3
 + error testing
   No joseki:ImplSPARQL leads to silent error
   
-+ Ungraeful:
-2006-02-16 16:18:18 - Joseki                    :: Internal server error
-com.hp.hpl.jena.shared.NotFoundException: Not found: http://www.xfront.com/rdf/Champion.rd
-f
-        at com.hp.hpl.jena.util.FileManager.readModelWorker(FileManager.java:371)
-        at com.hp.hpl.jena.util.FileManager.readModel(FileManager.java:343)
-        at com.hp.hpl.jena.query.util.DatasetUtils.createDatasetGraph(DatasetUtils.java:11
-3)
-        at com.hp.hpl.jena.query.engine1.QueryEngine.init(QueryEngine.java:98)
-        at com.hp.hpl.jena.query.engine1.QueryEngine.execSelect(QueryEngine.java:283)
-        at org.joseki.processors.SPARQL.execQuery(SPARQL.java:162)
-        at org.joseki.processors.QueryCom.exec(QueryCom.java:28)
-        at org.joseki.Service.exec(Service.java:28)
-        at org.joseki.Dispatcher.dispatch(Dispatcher.java:48)
-        at org.joseki.http.Servlet.doGet(Servlet.java:165)
-        at javax.servlet.http.HttpServlet.service(HttpServlet.java:596)
-        at javax.servlet.http.HttpServlet.service(HttpServlet.java:689)
-        at org.mortbay.jetty.servlet.ServletHolder.handle(ServletHolder.java:428)
-        at org.mortbay.jetty.servlet.WebApplicationHandler.dispatch(WebApplicationHandler.
-java:473)
-        at org.mortbay.jetty.servlet.ServletHandler.handle(ServletHandler.java:568)
-        at org.mortbay.http.HttpContext.handle(HttpContext.java:1530)
-        at org.mortbay.jetty.servlet.WebApplicationContext.handle(WebApplicationContext.ja
-va:633)
-        at org.mortbay.http.HttpContext.handle(HttpContext.java:1482)
-        at org.mortbay.http.HttpServer.service(HttpServer.java:909)
-        at org.mortbay.http.HttpConnection.service(HttpConnection.java:816)
-        at org.mortbay.http.HttpConnection.handleNext(HttpConnection.java:982)
-        at org.mortbay.http.HttpConnection.handle(HttpConnection.java:833)
-        at org.mortbay.http.SocketListener.handleConnection(SocketListener.java:244)
-        at org.mortbay.util.ThreadedServer.handle(ThreadedServer.java:357)
-        at org.mortbay.util.ThreadPool$PoolThread.run(ThreadPool.java:534)
-
++ web.xml - change to explicit services and/or    http://localhost/sparql/ ...
 
 + Add a configurable output processor - default XML results / 
   Have SELECT only processor
