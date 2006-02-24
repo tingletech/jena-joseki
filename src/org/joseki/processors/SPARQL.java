@@ -67,7 +67,14 @@ public class SPARQL extends QueryCom implements Loadable
         log.info("Dataset description: "+allowDatasetDesc+" // Web loading: "+allowWebLoading) ;
     }
     
+    static Object globalLock = new Object() ; 
+    
     public void execQuery(Request request, Response response, DatasetDesc datasetDesc) throws QueryExecutionException
+    {
+        execQueryWorker(request, response, datasetDesc) ;
+    }
+    
+    private void execQueryWorker(Request request, Response response, DatasetDesc datasetDesc) throws QueryExecutionException
     {
         try {
             //log.info("Request: "+request.paramsAsString()) ;
@@ -206,9 +213,17 @@ public class SPARQL extends QueryCom implements Loadable
             throw qExEx ;
         }
         catch (JenaException ex)
-        { throw ex ; }
+        {   // Parse exceptions
+            log.info("JenaException: "+ex.getMessage()) ;
+            QueryExecutionException qExEx = new QueryExecutionException(ReturnCodes.rcArgumentUnreadable, ex.getMessage()) ;
+            throw qExEx ;
+        }
         catch (RuntimeException ex)
-        { throw ex ; }
+        {// Parse exceptions
+            log.info("Exception: "+ex.getMessage()) ;
+            QueryExecutionException qExEx = new QueryExecutionException(ReturnCodes.rcInternalError, ex.getMessage()) ;
+            throw qExEx ;
+        }
     }
     
     private String formatForLog(String queryString)
