@@ -114,8 +114,15 @@ code {
 <textarea name="query" cols="70" rows="15">
 PREFIX books:   <http://example.org/book/>
 PREFIX dc:      <http://purl.org/dc/elements/1.1/>
-SELECT ?book ?title WHERE { ?book dc:title ?title }
+
+SELECT ?book ?title
+WHERE
+  { ?book dc:title ?title }
 </textarea>
+<br/>
+Line numbers:
+<input type="radio" name="linenumbers" value="true" checked>yes</input>
+<input type="radio" name="linenumbers" value="false">no</input>
 <br/>
 <input type="submit" value="Validate SPARQL Query" />
 </form>

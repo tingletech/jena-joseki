@@ -59,7 +59,8 @@ public class Validator extends HttpServlet
 
     public void doPost(HttpServletRequest httpRequest, HttpServletResponse httpResponse)
     { validationRequest(httpRequest, httpResponse) ; }
-
+    
+    static final String paramLineNumbers = "linenumbers" ;
     static final String paramQuery = "query" ;
     static final String respService = "X-Service" ;
     
@@ -71,7 +72,7 @@ public class Validator extends HttpServlet
             
             String[] args = httpRequest.getParameterValues(paramQuery) ;
             
-            if ( args.length == 0 )
+            if ( args == null || args.length == 0 )
             {
                 httpResponse.sendError(HttpServletResponse.SC_BAD_REQUEST, "No query parameter to validator") ;
                 return ;
@@ -84,8 +85,17 @@ public class Validator extends HttpServlet
             }
 
             String queryString = httpRequest.getParameter(paramQuery) ;
+            
+            
+            
             queryString = queryString.replace("\r\n", "\n") ;
             
+            String lineNumbersArg = httpRequest.getParameter(paramLineNumbers) ; 
+            
+            boolean lineNumbers = true ;
+            
+            if ( lineNumbersArg != null )
+                lineNumbers = lineNumbersArg.equalsIgnoreCase("true") || lineNumbersArg.equalsIgnoreCase("yes") ;
             
             // Headers
             httpResponse.setCharacterEncoding("UTF-8") ;
@@ -104,14 +114,14 @@ public class Validator extends HttpServlet
             // Print query as received
             {
                 String prefix = "    " ;
-                outStream.println("<hr/>") ;
+                outStream.println("<p>Input:</p>") ;
                 startFixed(outStream) ;
-                if ( true )
+                if ( false )
                 {
                     columns(prefix, outStream) ;
                     outStream.println() ;
                 }
-                IndentedLineBuffer buff = new IndentedLineBuffer(true) ; 
+                IndentedLineBuffer buff = new IndentedLineBuffer(lineNumbers) ; 
                 
                 IndentedWriter out = buff.getIndentedWriter() ; 
                 out.print(queryString) ;
@@ -119,7 +129,6 @@ public class Validator extends HttpServlet
                 outStream.print(htmlQuote(buff.asString())) ;
                 finishFixed(outStream) ;
             }
-            outStream.println("<hr/>") ;
             
             // Attempt to parse it.
             Query query = null ;
@@ -127,6 +136,7 @@ public class Validator extends HttpServlet
                 query = QueryFactory.create(queryString) ;
             } catch (QueryParseException ex)
             {
+                outStream.println("<p>Syntax error:</p>") ;
                 startFixed(outStream) ;
                 outStream.println(ex.getMessage()) ;
                 finishFixed(outStream) ;
@@ -135,16 +145,17 @@ public class Validator extends HttpServlet
             // OK?  Pretty print
             if ( query != null )
             {
+                outStream.println("<p>Formatted, parsed query:</p>") ;
+
                 String prefix = "    " ;
                 startFixed(outStream) ;
 //                columns(prefix, outStream) ;
-                IndentedLineBuffer buff = new IndentedLineBuffer(true) ; 
+                IndentedLineBuffer buff = new IndentedLineBuffer(lineNumbers) ; 
                 IndentedWriter out = buff.getIndentedWriter() ;
                 query.serialize(out) ;
                 out.flush() ;
                 outStream.print(htmlQuote(buff.asString())) ;
                 finishFixed(outStream) ;
-                outStream.println("<hr/>") ;
             }
             
             //Report deatils
@@ -169,7 +180,7 @@ public class Validator extends HttpServlet
         outStream.println("<head>") ;
         outStream.println(" <title>SPARQL Validator Report</title>") ;
         outStream.println(" <style>") ;
-        outStream.println(" hr { border-width: 1pt; } ") ; 
+        outStream.println(" hr { border:0 ; width:90%; heigh: 1px; }") ;
         // Sort out!
         outStream.println("pre {") ;
         outStream.println("    font-family: monospace; font-size: 10pt ;") ;
