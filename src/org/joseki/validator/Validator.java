@@ -21,6 +21,7 @@ import org.apache.commons.logging.LogFactory;
 import com.hp.hpl.jena.query.Query;
 import com.hp.hpl.jena.query.QueryFactory;
 import com.hp.hpl.jena.query.QueryParseException;
+import com.hp.hpl.jena.query.util.IndentedLineBuffer;
 import com.hp.hpl.jena.query.util.IndentedWriter;
 
 public class Validator extends HttpServlet 
@@ -99,20 +100,28 @@ public class Validator extends HttpServlet
             // ********* Need to encode < and >
             
             outStream.println("<body>") ;
+            outStream.println("<h1>SPARQL Validator</h1>") ;
             // Print query as received
             {
                 String prefix = "    " ;
+                outStream.println("<hr/>") ;
                 startFixed(outStream) ;
-                columns(prefix, outStream) ;
-                IndentedWriter out = new IndentedWriter(outStream, true) ;
-                out.incIndent(prefix.length()) ;
+                if ( true )
+                {
+                    columns(prefix, outStream) ;
+                    outStream.println() ;
+                }
+                IndentedLineBuffer buff = new IndentedLineBuffer(true) ; 
+                
+                IndentedWriter out = buff.getIndentedWriter() ; 
                 out.print(queryString) ;
-                out.decIndent(prefix.length()) ;
                 out.flush() ;
+                outStream.print(htmlQuote(buff.asString())) ;
                 finishFixed(outStream) ;
-                out = null ;
             }
-            outStream.println("<br/>") ;
+            outStream.println("<hr/>") ;
+            
+            // Attempt to parse it.
             Query query = null ;
             try {
                 query = QueryFactory.create(queryString) ;
@@ -126,17 +135,16 @@ public class Validator extends HttpServlet
             // OK?  Pretty print
             if ( query != null )
             {
-                outStream.println("<hr/>") ;
                 String prefix = "    " ;
                 startFixed(outStream) ;
 //                columns(prefix, outStream) ;
-                IndentedWriter out = new IndentedWriter(outStream, true) ;
-                out.incIndent(prefix.length()) ;
+                IndentedLineBuffer buff = new IndentedLineBuffer(true) ; 
+                IndentedWriter out = buff.getIndentedWriter() ;
                 query.serialize(out) ;
-                out.decIndent(prefix.length()) ;
                 out.flush() ;
+                outStream.print(htmlQuote(buff.asString())) ;
                 finishFixed(outStream) ;
-                out = null ;
+                outStream.println("<hr/>") ;
             }
             
             //Report deatils
@@ -148,18 +156,42 @@ public class Validator extends HttpServlet
         }
     }
     
+    private String htmlQuote(String str)
+    {
+        str = str.replace("<", "&lt;") ;
+        str = str.replace(">", "&gt;") ;
+        return str ;
+
+    }
+
     private void printHead(ServletOutputStream outStream) throws IOException
     {
-        outStream.println("<html>") ;
         outStream.println("<head>") ;
         outStream.println(" <title>SPARQL Validator Report</title>") ;
+        outStream.println(" <style>") ;
+        outStream.println(" hr { border-width: 1pt; } ") ; 
+        // Sort out!
+        outStream.println("pre {") ;
+        outStream.println("    font-family: monospace; font-size: 10pt ;") ;
+        outStream.println("    line-height: 14pt ;") ;
+        outStream.println("    margin-top: 1 ; margin-bottom: 1 ;") ;
+        outStream.println("    margin-left: 5ex ;") ;
+        outStream.println("    }") ;
+        outStream.println(".box {") ; 
+        outStream.println("    margin-left : 5% ; margin-right :    5% ; ") ;
+        outStream.println("    border: solid ; border-width: 1pt; ") ; 
+        outStream.println("    background-color: #F0F0F0; padding: 2mm;") ;
+        outStream.println("    page-break-inside: avoid ;") ;
+        outStream.println("    }") ;
+        
+        outStream.println(" </style>") ;
         //outStream.println() ;
         outStream.println("</head>") ;
     }
 
     private void startFixed(ServletOutputStream outStream) throws IOException
     {
-        outStream.println("<pre>") ;
+        outStream.println("<pre class=\"box\">") ;
     }
 
     private void columns(String prefix, ServletOutputStream outStream) throws IOException
