@@ -41,11 +41,28 @@ PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.2//EN"
     </servlet-class>
   </servlet>
 
+  <servlet>
+    <servlet-name>Validator</servlet-name>
+    <servlet-class>
+      org.joseki.validator.Validator
+    </servlet-class>
+  </servlet>
+
   <!-- MAPPINGS -->
 
   <servlet-mapping>
     <servlet-name>default</servlet-name>
     <url-pattern>/favicon.ico</url-pattern>
+  </servlet-mapping>
+
+  <servlet-mapping>
+    <servlet-name>Validator</servlet-name>
+    <url-pattern>/validator</url-pattern>
+  </servlet-mapping>
+
+  <servlet-mapping>
+    <servlet-name>default</servlet-name>
+    <url-pattern>/validator.html</url-pattern>
   </servlet-mapping>
 
   <!-- Warning: using /* for Joseki services 
