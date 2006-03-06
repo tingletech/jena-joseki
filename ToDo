@@ -3,6 +3,8 @@ Joseki3
 
 + Chunk encoding (Jetty default) seems to confuse FF (KERS's at least) so maybe turn off 
   Or upgrade Jetty?
+  
++ Locking can't always be MRSW (inference caches) -- Concurrent request problem
 
 + error testing
   No joseki:ImplSPARQL leads to silent error
