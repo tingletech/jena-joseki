@@ -23,6 +23,7 @@ import org.joseki.util.GraphUtils;
 
 public class SPARQL extends QueryCom implements Loadable
 {
+    // TODO Refactor into the stages of a query 
     static Log log = LogFactory.getLog(SPARQL.class) ;
     static final Property allowDatasetDescP = ResourceFactory.createProperty(JosekiVocab.getURI(), "allowExplicitDataset") ;
     static final Property allowWebLoadingP = ResourceFactory.createProperty(JosekiVocab.getURI(), "allowWebLoading") ;
@@ -129,8 +130,7 @@ public class SPARQL extends QueryCom implements Loadable
             // ---- Dataset
             
             Dataset dataset = datasetFromProtocol(request) ;
-            
-            
+
             boolean useQueryDesc = false ;
             
             if ( dataset == null )
@@ -219,7 +219,7 @@ public class SPARQL extends QueryCom implements Loadable
             throw qExEx ;
         }
         catch (RuntimeException ex)
-        {// Parse exceptions
+        {   // Parse exceptions
             log.info("Exception: "+ex.getMessage()) ;
             QueryExecutionException qExEx = new QueryExecutionException(ReturnCodes.rcInternalError, ex.getMessage()) ;
             throw qExEx ;

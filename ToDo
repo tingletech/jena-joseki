@@ -1,6 +1,8 @@
 Joseki3
 =======
 
++ Refactor SPARQL.java to pick out the stages so the general process can be inherited.
+
 + Chunk encoding (Jetty default) seems to confuse FF (KERS's at least) so maybe turn off 
   Or upgrade Jetty?
   

@@ -76,7 +76,7 @@ public class DatasetDesc
     
     public void clearDataset() { dataset = null ; }
     
-    private Model buildModel(Resource r)
+    protected Model buildModel(Resource r)
     {
         log.info("Attempt to build model: "+Utils.nodeLabel(r)) ;
         if ( false )
