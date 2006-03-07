@@ -1,155 +1,41 @@
-<html>
-<head>
-<title>SPARQLer - An RDF Query Server</title>
-<link rel="stylesheet" type="text/css" href="StyleSheets/joseki.css" />
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <title>SPARQLer - An RDF Query Server</title>
+    <link rel="stylesheet" type="text/css" href="StyleSheets/joseki.css" />
+  </head>
+<body>
+    <h1>SPARQLer</h1>
 
-<style>
-body {
-    font-family: Verdana, Arial, Helvetica, sans-serif ;
-    font-size: 10pt ;
-    line-height: 18pt ;
-    color: black;
-    background: white ;
-    margin: 0 ;
-}
+    <p>This site provides a number of SPARQL services:</p>
+    <ul>
+      <li><code>sparql</code> : a general purpose SPARQL processor that processes graphs from the web.</li>
+      <li><code>books</code> : a SPARQL processor that answers queries on small books database only.</li>
+    </ul>
 
-p { margin-left: 2% ; margin-right: 2% ; }
+    <p>Web interfaces:</p>
+    <ul>
+      <li><a href="validator.html">SPARQL query validator</a></li>
+      <li><a href="query.html">Form for queries on the books database</a></li>
+      <li><a href="sparql.html">General purpose SPARQL processor</a></li>
+    </ul>
 
-/* Makes lists a little tighter 
-li { line-height: 14pt ; }
-
-/* Broswer CSS2 table support is rather "individual" */
-
-table {
-  font-family: Verdana, Arial, sans-serif ;
-  font-size: 10pt ;
-  border-collapse: collapse;
-  border: 1px solid black ;
-  cellspacing: 0 ;
-  cellpadding: 0 
-}
-
-td {
-  border: 1px solid #808080 ;
-  empty-cells: show;
-  padding: 5 ;
-  spacing: 0 ;
-  vertical-align:top;
-  text-align:center
-}
-
-
-th {
-  border: 1px solid #808080 ;
-  empty-cells: show;
-  padding: 5 ;
-  vertical-align:top;
-  text-align:center
-}
-
-.box 
-{ margin-left :     5% ;
-  margin-right :    5% ;
-  border:           solid ;
-  border-width:     1pt; 
-  background-color: #F0F0F0; 
-  padding:          2mm;
-  page-break-inside: avoid ;
-}
-
-.noindent     { margin-left: -5% ; margin-right: -5%; }
-.moreindent   { margin-left:  5% ; margin-right:  5%; }
-
-
-/* Use this for the document title as displayed on the page at the top. */
-h1 {
-    text-aling:center ;
-    font-size: 14pt;
-    line-height: 24pt ;
-    font-weight: bold;
-    color:#000;
-    background:#CADFF4;
-    padding-left: 1ex;
-    padding-right: 1ex;
-    text-align:center;
-}
-
-h2 {
-    font-size: 12pt;
-    line-height: 16pt ;
-    font-size: 110%;
-    font-weight: bold;
-    color: #003399;
-    background:#CADFF4;
-    margin-bottom:5px;
-    padding-left: 1ex;
-    padding-right: 1ex;
-}
-
-h3, h4, h5 {
-    font-size: 100%;
-    font-weight: bold;
-    margin-bottom:3px;
-}
-
-ul { list-style-type: disc }
-dt { font-weight: bold }
-
-/* Change background/foreground colour on hover */
-
-A:link { color: rgb(0, 0, 255) }        /* for unvisited links */
-A:hover { color: rgb(255, 0, 0) }       /* when mouse is over link */
-
-/* No extra space between paragraphs : inherits from body */
-pre {
-    font-family: monospace;
-    font-size: 10pt ;
-    line-height: 14pt ;
-    margin-top: 1 ;
-    margin-bottom: 1 ;
-    margin-left: 5ex ;
-    }
-
-/* Some general utility definitions */
-.centered {
-    text-align: center;
-}
-
-.caption {
-    text-align: center;
-    font-size: smaller;
-}
-
-code {
-    font-size: 10pt;
-}
-
-.footnote {
-    font-size: smaller;
-    border-top: thin solid gray;
-}
-</style>
-
-</head>
-<body style="margin-top:0">
-
-<h1>SPARQLer - Joseki server with SPARQL Query processor</h1>
+    <p>SPARQL is defined by 3 documents:</p>
 
 <p>
-SPARQL is a query language and protocol for access to RDF datasets.
+<a href="http://www.w3.org/TR/rdf-sparql-query/">SPARQL query language</a>
 </p>
 
 <p>
-<a href="http://www.w3.org/TR/rdf-sparql-query/">SPARQL working draft</a>
+<a href="http://www.w3.org/TR/rdf-sparql-protocol/">SPARQL protocol</a>
 </p>
 
 <p>
-Online
-<a href="query.html">Query Form</a> for experimenting with SPARQL queries.
+<a href="http://www.w3.org/TR/rdf-sparql-XMLres/">SPARQL XML results format</a>
 </p>
-
-</div>
 
 </body>
 </html>

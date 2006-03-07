@@ -1,157 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
 <html xmlns="http://www.w3.org/1999/xhtml">
-<head><title>SPARQLer</title>
+  <head><title>SPARQLer</title>
+  <link rel="stylesheet" type="text/css" href="StyleSheets/joseki.css" />
+  </head>
 
-<!-- <link rel="stylesheet" type="text/css" href="StyleSheets/joseki.css" /> -->
+  <body>
+    <h1>SPARQLer - An RDF Query Demo</h1>
+    <p>Example queries (or edit and write your own!).  All the text boxes invoke the same "books" service - they just get initialised with different examples.</p>
+    <hr/>
 
-<style>
-body {
-    font-family: Verdana, Arial, Helvetica, sans-serif ;
-    font-size: 10pt ;
-    line-height: 18pt ;
-    color: black;
-    background: white ;
-    margin: 0 ;
-}
+    <div class="moreindent">
 
-p { margin-left: 2% ; margin-right: 2% ; }
+      <form action="books" method="get">
+	<p>SELECT - get variables (apply XSLT stylesheet)</p>
+<p><textarea name="query" cols="70" rows="5">
+PREFIX books:   &lt;http://example.org/book/&gt;
+PREFIX dc:      &lt;http://purl.org/dc/elements/1.1/&gt;
+SELECT ?book ?title
+WHERE 
+  { ?book dc:title ?title }</textarea>
+	  <br/>
+	  XSLT style sheet (leave blank for none): 
+	  <input name="stylesheet" size="25" value="xml-to-html.xsl" />
+	  or JSON output: <input type="checkbox" name="output" value="json"/>
+	  <br/>
+	  <input type="submit" value="Get Results" />
+	</p>
+      </form>
 
-li { line-height: 14pt ; }
+      <hr/>
 
-.box 
-{ margin-left :     5% ;
-  margin-right :    5% ;
-  border:           solid ;
-  border-width:     1pt; 
-  background-color: #F0F0F0; 
-  padding:          2mm;
-  page-break-inside: avoid ;
-}
-
-.noindent     { margin-left: -5% ; margin-right: -5%; }
-.moreindent   { margin-left:  5% ; margin-right:  5%; }
-
-
-/* Use this for the document title as displayed on the page at the top. */
-h1 {
-    text-aling:center ;
-    font-size: 14pt;
-    line-height: 24pt ;
-    font-weight: bold;
-    color:#000;
-    background:#CADFF4;
-    padding-left: 1ex;
-    padding-right: 1ex;
-    text-align:center;
-}
-
-h2 {
-    font-size: 12pt;
-    line-height: 16pt ;
-    font-size: 110%;
-    font-weight: bold;
-    color: #003399;
-    background:#CADFF4;
-    margin-bottom:5px;
-    padding-left: 1ex;
-    padding-right: 1ex;
-}
-
-h3, h4, h5 {
-    font-size: 100%;
-    font-weight: bold;
-    margin-bottom:3px;
-}
-
-ul { list-style-type: disc }
-dt { font-weight: bold }
-
-/* Change background/foreground colour on hover */
-
-A:link { color: rgb(0, 0, 255) }        /* for unvisited links */
-A:hover { color: rgb(255, 0, 0) }       /* when mouse is over link */
-
-/* No extra space between paragraphs : inherits from body */
-pre {
-    font-family: monospace;
-    font-size: 10pt ;
-    line-height: 14pt ;
-    margin-top: 1 ;
-    margin-bottom: 1 ;
-    margin-left: 5ex ;
-    }
-
-/* Some general utility definitions */
-.centered {
-    text-align: center;
-}
-
-.caption {
-    text-align: center;
-    font-size: smaller;
-}
-
-code {
-    font-size: 10pt;
-}
-
-.footnote {
-    font-size: smaller;
-    border-top: thin solid gray;
-}
-</style>
-
-</head>
-
-<body style="margin-top:0">
-<h1>SPARQLer - An RDF Query Demo</h1>
-<p>Example queries (or edit and write your own!).  All the text boxes invoke the same service - they just get initialised with different examples.<p>
-<hr/>
-
-<div class="moreindent">
-
-
-<form action="books">
-SELECT - get variables (apply XSLT stylesheet)<br/>
-<textarea name="query" cols="70" rows="5">
-PREFIX books:   <http://example.org/book/>
-PREFIX dc:      <http://purl.org/dc/elements/1.1/>
-SELECT ?book ?title WHERE { ?book dc:title ?title }
-</textarea>
-<br/>
-XSLT style sheet (leave blank for none): 
-<input name="stylesheet" size="25" value="xml-to-html.xsl" />
-<br/>
-<input type="submit" value="Get Results" />
-</form>
-<hr/>
-
-<form action="books">
-CONSTRUCT - return a graph<br/>
-<textarea name="query" cols="70" rows="5">
-PREFIX dc:      <http://purl.org/dc/elements/1.1/>
-CONSTRUCT { $book dc:title $title } WHERE { $book dc:title $title }
-</textarea>
-<br/>
-<input type="submit" value="Get Results" />
-</form>
-<hr/>
-
-<form action="sparql">
-General SPARQL query<br/>
-<textarea name="query" cols="70" rows="6">
-</textarea>
-<br/>
-Target graph URI:
-<input name="default-graph-uri" size="25" value="" />
-<br/>
-Style sheet (XML result form):
-<input name="stylesheet" size="25" value="xml-to-html.xsl" />
-<br/>
-<input type="submit" value="Get Results" />
-</form>
-</div>
-
-<hr/>
-
-</body>
+      <form action="books">
+	<p>CONSTRUCT - return a graph</p>
+	<p><textarea name="query" cols="70" rows="5">
+PREFIX dc:      &lt;http://purl.org/dc/elements/1.1/&gt;
+CONSTRUCT { $book dc:title $title }
+WHERE 
+  { $book dc:title $title }
+	  </textarea>
+	  <br/>
+	  <input type="submit" value="Get Results" />
+	</p>
+      </form>
+      <hr/>
+    </div>
+  </body>
 </html>

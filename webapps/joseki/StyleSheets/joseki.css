@@ -1,18 +1,3 @@
-/* CVS $Id$ */
-
-/* Media-specific rules */
-
-/* Nice margin on web pages, don't bother for printed pages */
-@media print {
-    body { margin-left: 0; margin-right: 0; }
-}
-
-@media screen, projection {
-    body { margin-left: 5%; margin-right: 5%; }
-}
-
-/* Non media-specific rules */
-
 body {
     font-family: Verdana, Arial, Helvetica, sans-serif ;
     font-size: 10pt ;
@@ -24,11 +9,9 @@ body {
 
 p { margin-left: 2% ; margin-right: 2% ; }
 
-/* Makes lists a little tighter 
+/* Makes lists a little tighter
 li { line-height: 14pt ; }
-
-
-/* Broswer CSS2 table support is rather "individual" */
+*/
 
 table {
   font-family: Verdana, Arial, sans-serif ;
@@ -72,13 +55,17 @@ th {
 
 
 /* Use this for the document title as displayed on the page at the top. */
+
+
 h1 {
-    text-aling:center ;
+    text-align:center ;
     font-size: 14pt;
     line-height: 24pt ;
     font-weight: bold;
     color:#000;
     background:#CADFF4;
+    padding: 0 ;
+    margin: 0 ;
     padding-left: 1ex;
     padding-right: 1ex;
     text-align:center;

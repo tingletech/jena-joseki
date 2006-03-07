@@ -88,7 +88,7 @@ public class Validator extends HttpServlet
             
             
             
-            queryString = queryString.replace("\r\n", "\n") ;
+            //queryString = queryString.replace("\r\n", "\n") ;
             
             String lineNumbersArg = httpRequest.getParameter(paramLineNumbers) ; 
             
@@ -105,6 +105,7 @@ public class Validator extends HttpServlet
             ServletOutputStream outStream = httpResponse.getOutputStream() ;
 
             outStream.println("<html>") ;
+            
             printHead(outStream) ;
             
             // ********* Need to encode < and >
@@ -123,7 +124,10 @@ public class Validator extends HttpServlet
                 }
                 IndentedLineBuffer buff = new IndentedLineBuffer(lineNumbers) ; 
                 
-                IndentedWriter out = buff.getIndentedWriter() ; 
+                IndentedWriter out = buff.getIndentedWriter() ;
+                
+                // Strip trailing whitespace
+                queryString = queryString.replaceAll("(\r|\n| )*$", "") ;
                 out.print(queryString) ;
                 out.flush() ;
                 outStream.print(htmlQuote(buff.asString())) ;
@@ -179,23 +183,7 @@ public class Validator extends HttpServlet
     {
         outStream.println("<head>") ;
         outStream.println(" <title>SPARQL Validator Report</title>") ;
-        outStream.println(" <style>") ;
-        outStream.println(" hr { border:0 ; width:90%; heigh: 1px; }") ;
-        // Sort out!
-        outStream.println("pre {") ;
-        outStream.println("    font-family: monospace; font-size: 10pt ;") ;
-        outStream.println("    line-height: 14pt ;") ;
-        outStream.println("    margin-top: 1 ; margin-bottom: 1 ;") ;
-        outStream.println("    margin-left: 5ex ;") ;
-        outStream.println("    }") ;
-        outStream.println(".box {") ; 
-        outStream.println("    margin-left : 5% ; margin-right :    5% ; ") ;
-        outStream.println("    border: solid ; border-width: 1pt; ") ; 
-        outStream.println("    background-color: #F0F0F0; padding: 2mm;") ;
-        outStream.println("    page-break-inside: avoid ;") ;
-        outStream.println("    }") ;
-        
-        outStream.println(" </style>") ;
+        outStream.println(" <link rel=\"stylesheet\" type=\"text/css\" href=\"StyleSheets/joseki.css\" />") ;
         //outStream.println() ;
         outStream.println("</head>") ;
     }
