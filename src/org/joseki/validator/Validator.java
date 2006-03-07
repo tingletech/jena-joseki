@@ -173,10 +173,19 @@ public class Validator extends HttpServlet
     
     private String htmlQuote(String str)
     {
-        str = str.replace("<", "&lt;") ;
-        str = str.replace(">", "&gt;") ;
-        return str ;
-
+        StringBuffer sBuff = new StringBuffer() ;
+        for ( int i = 0 ; i < str.length() ; i++ )
+        {
+            char ch = str.charAt(i) ;
+            switch (ch)
+            {
+                case '<': sBuff.append("&lt;") ; break ;
+                case '>': sBuff.append("&gt;") ; break ;
+                case '&': sBuff.append("&amp;") ; break ;
+                default: sBuff.append(ch) ; break ;
+            }
+        }
+        return sBuff.toString() ; 
     }
 
     private void printHead(ServletOutputStream outStream) throws IOException
