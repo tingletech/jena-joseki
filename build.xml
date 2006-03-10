@@ -161,9 +161,7 @@
         <!-- Example setup -->   
         <copy todir="${webapps.build.dir}">
           <fileset dir="${webapps.deploy.dir}">
-            <include name="query.html"/>   
-            <include name="xml-to-html.xsl"/>   
-            <include name="index.html"/>   
+            <include name="*.*"/>   
           </fileset>   
         </copy>
         <mkdir dir="${webapps.build.dir}/StyleSheets"/>   

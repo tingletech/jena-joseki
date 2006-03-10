@@ -44,7 +44,7 @@ th {
 { margin-left :     5% ;
   margin-right :    5% ;
   border:           solid ;
-  border-width:     1pt; 
+  border-width:     thin; 
   background-color: #F0F0F0; 
   padding:          2mm;
   page-break-inside: avoid ;

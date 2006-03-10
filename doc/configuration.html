@@ -14,7 +14,9 @@ or the query protocol request. </p> <p>The same
 configuration is used for both HTTP and SOAP.</p> <p>The
 configuration file is an RDF graph. The default name is
 "joseki-config.ttl" and is often written in Turtle or N3, rather than
-RDF/XML. The server can read the full range of RDF serializations.</p><h2>Example</h2>
+RDF/XML. The server can read the full range of RDF serializations.</p>
+<p>Beware that the <code>web.xml</code> file must route incoming requests to the 
+Joseki servlet. See the <a href="protocol.html#http">protocol specific details</a>.</p><h2>Example</h2>
 <p>First, we declare some prefixes, then some basic information
 about this file. Because the configuration file is RDF, order of the
 sections does not matter to the server but it does help a human reading
