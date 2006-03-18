@@ -24,11 +24,11 @@ import org.joseki.util.GraphUtils;
 public class SPARQL extends QueryCom implements Loadable
 {
     // TODO Refactor into the stages of a query 
-    static Log log = LogFactory.getLog(SPARQL.class) ;
+    private static Log log = LogFactory.getLog(SPARQL.class) ;
     static final Property allowDatasetDescP = ResourceFactory.createProperty(JosekiVocab.getURI(), "allowExplicitDataset") ;
     static final Property allowWebLoadingP = ResourceFactory.createProperty(JosekiVocab.getURI(), "allowWebLoading") ;
     
-    static Model m = ModelFactory.createDefaultModel() ;
+    static private Model m = ModelFactory.createDefaultModel() ;
     
     static final Literal XSD_TRUE   = m.createTypedLiteral(true) ; 
     static final Literal XSD_FALSE  = m.createTypedLiteral(false) ;
@@ -37,12 +37,11 @@ public class SPARQL extends QueryCom implements Loadable
     public static final String P_NAMED_GRAPH    = "named-graph-uri" ;
     public static final String P_DEFAULT_GRAPH  = "default-graph-uri" ;
     
-    boolean allowDatasetDesc = false ;
-    boolean allowWebLoading  = false ;
+    protected boolean allowDatasetDesc = false ;
+    protected boolean allowWebLoading  = false ;
     
-    int maxTriples = 10000 ;
-    
-    FileManager fileManager ; 
+    protected int maxTriples = 10000 ;
+    protected FileManager fileManager ; 
     
     
     public SPARQL()
@@ -67,8 +66,6 @@ public class SPARQL extends QueryCom implements Loadable
         
         log.info("Dataset description: "+allowDatasetDesc+" // Web loading: "+allowWebLoading) ;
     }
-    
-    static Object globalLock = new Object() ; 
     
     public void execQuery(Request request, Response response, DatasetDesc datasetDesc) throws QueryExecutionException
     {
@@ -246,7 +243,7 @@ public class SPARQL extends QueryCom implements Loadable
         return false ;
     }
     
-    private Dataset datasetFromProtocol(Request request) throws QueryExecutionException
+    protected Dataset datasetFromProtocol(Request request) throws QueryExecutionException
     {
         try {
             
