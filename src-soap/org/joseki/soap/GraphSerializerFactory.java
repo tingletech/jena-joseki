@@ -13,7 +13,6 @@ import javax.xml.namespace.QName;
 
 import org.apache.axis.Constants;
 import org.apache.axis.encoding.SerializerFactory;
-import org.apache.axis.encoding.Serializer;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -33,7 +32,7 @@ public class GraphSerializerFactory implements SerializerFactory
     public static SerializerFactory create(Class javaType, QName xmlType)
     { return new GraphSerializerFactory(javaType, xmlType) ; } 
     
-    public Serializer getSerializerAs(String mechanismType)
+    public javax.xml.rpc.encoding.Serializer getSerializerAs(String mechanismType)
     {
         //log.info("getSerializerAs("+mechanismType+")") ;
         return new GraphSerializer() ;
