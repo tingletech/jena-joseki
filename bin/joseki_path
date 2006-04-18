@@ -6,4 +6,4 @@ then
     exit 1
     fi
 
-exec make_classpath "$JOSEKIROOT"
+exec "$JOSEKIROOT/bin/make_classpath" "$JOSEKIROOT"

@@ -3,6 +3,8 @@
 # $Id: rdfserver,v 1.1 2003/07/09 15:58:42 andy_seaborne Exp $
 
 [ "$JOSEKIROOT" = "" ] && { echo "JOSEKIROOT unset" 1>&2 ; exit 1 ; }
+
+# Make sure all the scripts are on the PATH
 CP="$(joseki_path)"
 
 ## ============= java logging
