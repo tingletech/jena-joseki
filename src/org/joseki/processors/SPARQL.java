@@ -34,6 +34,7 @@ public class SPARQL extends QueryCom implements Loadable
     static final Literal XSD_FALSE  = m.createTypedLiteral(false) ;
     
     public static final String P_QUERY          = "query" ;
+    public static final String P_QUERY_REF      = "query-uri" ;
     public static final String P_NAMED_GRAPH    = "named-graph-uri" ;
     public static final String P_DEFAULT_GRAPH  = "default-graph-uri" ;
     
@@ -76,20 +77,43 @@ public class SPARQL extends QueryCom implements Loadable
     {
         try {
             //log.info("Request: "+request.paramsAsString()) ;
-            String queryString = request.getParam(P_QUERY) ;
-            if  (queryString == null )
+            String queryString = null ;
+            
+            if ( request.containsParam(P_QUERY) )
+            {
+                queryString = request.getParam(P_QUERY) ;
+                if  (queryString == null )
+                {
+                    log.debug("No query argument (but query parameter exists)") ;
+                    throw new JosekiServerException("Query string is null") ;
+                }
+            }
+            
+            if ( request.containsParam(P_QUERY_REF) )
+            {
+                String queryURI = request.getParam(P_QUERY_REF) ;
+                if ( queryURI == null )
+                {
+                    log.debug("No query reference argument (but query parameter exists)") ;
+                    throw new JosekiServerException("Query reference is null") ;
+                }
+                queryString = getRemoteString(queryURI) ;
+            }
+            
+            if ( queryString == null )
             {
                 log.debug("No query argument") ;
                 throw new QueryExecutionException(ReturnCodes.rcQueryExecutionFailure,
                     "No query string");    
             }
+
+            
             if ( queryString.equals("") )
             {
                 log.debug("Empty query string") ;
                 throw new QueryExecutionException(ReturnCodes.rcQueryExecutionFailure,
                     "Empty query string");    
             }
-            
             // ---- Query
             
             String queryStringLog = formatForLog(queryString) ;
@@ -334,6 +358,15 @@ public class SPARQL extends QueryCom implements Loadable
                                               ReturnCodes.rcArgumentError, "Parameter error");
         }
         
+    }
+
+    /**
+     * @param queryURI
+     * @return
+     */
+    private String getRemoteString(String queryURI)
+    {
+        return FileManager.get().readWholeFileAsUTF8(queryURI) ;
     }
 }
 
