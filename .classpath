@@ -22,7 +22,7 @@
 	<classpathentry kind="lib" path="lib2/saaj.jar"/>
 	<classpathentry kind="lib" path="lib2/wsdl4j-1.5.1.jar"/>
 	<classpathentry kind="lib" path="lib/stax-api-1.0.jar"/>
-	<classpathentry kind="lib" path="lib-jdbc/mysql-connector-java-3.2.0-alpha-bin.jar"/>
+	<classpathentry kind="lib" path="lib-jdbc//mysql-connector-java-5.0.0-beta-bin.jar"/>
 	<classpathentry kind="lib" path="lib/antlr-2.7.5.jar"/>
 	<classpathentry kind="lib" path="lib/log4j-1.2.12.jar"/>
 	<classpathentry sourcepath="/ARQ/src" kind="lib" path="lib/arq.jar"/>
