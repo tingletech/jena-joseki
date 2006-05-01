@@ -15,7 +15,7 @@ import org.joseki.util.Convert;
 /** org.joseki.server.http.HttpUtils
  * 
  * @author Andy Seaborne
- * @version $Id: HttpUtils.java,v 1.2 2005-12-26 19:19:54 andy_seaborne Exp $
+ * @version $Id: HttpUtils.java,v 1.3 2006-05-01 18:10:16 andy_seaborne Exp $
  */
 
 public class HttpUtils
@@ -110,6 +110,7 @@ public class HttpUtils
             tmp = Convert.decWWWForm(tmp) ;
             tmp = tmp.replace('\n', ' ') ;
             tmp = tmp.replace('\r', ' ') ;
+            // You may need to split this - Eclipse bug means it wants the AbstractStringBuffer class 
             sbuff.append("?").append(tmp);
         }
         return sbuff.toString() ;

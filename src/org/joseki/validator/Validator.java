@@ -182,7 +182,11 @@ public class Validator extends HttpServlet
                 case '<': sBuff.append("&lt;") ; break ;
                 case '>': sBuff.append("&gt;") ; break ;
                 case '&': sBuff.append("&amp;") ; break ;
-                default: sBuff.append(ch) ; break ;
+                default: 
+                    // Work around Eclipe bug with StringBuffer.append(char)
+                    //try { sBuff.append(ch) ; } catch (Exception ex) {}
+                    sBuff.append(ch) ;
+                    break ;  
             }
         }
         return sBuff.toString() ; 
