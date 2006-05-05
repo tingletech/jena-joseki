@@ -16,7 +16,8 @@ import org.joseki.*;
 public abstract class QueryCom implements Processor
 {
     Lock lock = new LockMRSW() ;
-        
+    
+    /** Execute a query without a lock */ 
     public void exec(Request request, Response response, DatasetDesc datasetDesc) throws ExecutionException
     {
         // Dataset ds = getDataset(request) ;
@@ -29,7 +30,8 @@ public abstract class QueryCom implements Processor
         } finally { lock.leaveCriticalSection() ; }
     }
     
-    abstract void execQuery(Request request, Response response, DatasetDesc datasetDesc) throws QueryExecutionException ;
+    /** Execute a query within an MRSW lock */ 
+    public abstract void execQuery(Request request, Response response, DatasetDesc datasetDesc) throws QueryExecutionException ;
 }
 
 /*
