@@ -159,8 +159,10 @@ public class ResponseHttp extends Response
         
         boolean wantsStyle = request.containsParam(paramStyleSheet) ;
         String acceptField = paramAcceptField() ;
-        String outputField = paramOutput() ;
+        if ( acceptField == null )
+            acceptField = Joseki.contentTypeResultsXML ;
         
+        String outputField = paramOutput() ;
         String contentType = Joseki.contentTypeResultsXML ;
         
         // ---- Choose the content type and serialization.
@@ -307,8 +309,7 @@ public class ResponseHttp extends Response
         
         if ( acceptParam != null )
             acceptField = acceptParam ;
-        
-        if (acceptField == null )
+        if ( acceptField == null )
             return null ;
         
 //        // Catch an easy mistake to make.  Unfortunately, can't get the message to the caller very easily. 
