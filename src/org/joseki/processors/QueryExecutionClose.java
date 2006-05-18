@@ -20,7 +20,7 @@ public class QueryExecutionClose implements ResponseCallback
         this.qexec = qexec ;
     }
     
-    public void exec()
+    public void callback()
     {
         qexec.close() ;
     }

@@ -70,155 +70,13 @@ public class SPARQL extends QueryCom implements Loadable
     
     public void execQuery(Request request, Response response, DatasetDesc datasetDesc) throws QueryExecutionException
     {
-        execQueryWorker(request, response, datasetDesc) ;
+        execQueryProtected(request, response, datasetDesc) ;
     }
     
-    private void execQueryWorker(Request request, Response response, DatasetDesc datasetDesc) throws QueryExecutionException
+    public void execQueryProtected(Request request, Response response, DatasetDesc datasetDesc) throws QueryExecutionException
     {
         try {
-            //log.info("Request: "+request.paramsAsString()) ;
-            String queryString = null ;
-            
-            if ( request.containsParam(P_QUERY) )
-            {
-                queryString = request.getParam(P_QUERY) ;
-                if  (queryString == null )
-                {
-                    log.debug("No query argument (but query parameter exists)") ;
-                    throw new JosekiServerException("Query string is null") ;
-                }
-            }
-            
-            if ( request.containsParam(P_QUERY_REF) )
-            {
-                String queryURI = request.getParam(P_QUERY_REF) ;
-                if ( queryURI == null )
-                {
-                    log.debug("No query reference argument (but query parameter exists)") ;
-                    throw new JosekiServerException("Query reference is null") ;
-                }
-                queryString = getRemoteString(queryURI) ;
-            }
-            
-            if ( queryString == null )
-            {
-                log.debug("No query argument") ;
-                throw new QueryExecutionException(ReturnCodes.rcQueryExecutionFailure,
-                    "No query string");    
-            }
-
-            
-            if ( queryString.equals("") )
-            {
-                log.debug("Empty query string") ;
-                throw new QueryExecutionException(ReturnCodes.rcQueryExecutionFailure,
-                    "Empty query string");    
-            }
-            // ---- Query
-            
-            String queryStringLog = formatForLog(queryString) ;
-            log.info("Query: "+queryStringLog) ;
-            
-            Query query = null ;
-            try {
-                // NB syntax is ARQ (a superset of SPARQL)
-                query = QueryFactory.create(queryString, Syntax.syntaxARQ) ;
-            } catch (QueryException ex)
-            {
-                // TODO Enable errors to be sent as body
-                //    response.setError(ExecutionError.rcQueryParseFailure)
-                //    OutputString out = response.getOutputStream() ;
-                //    out.write(something meaning full)
-                String tmp = queryString +"\n\r" + ex.getMessage() ;
-                throw new QueryExecutionException(ReturnCodes.rcQueryParseFailure, "Parse error: \n"+tmp) ;
-            } catch (Throwable thrown)
-            {
-                log.info("Query unknown error during parsing: "+queryStringLog, thrown) ;
-                throw new QueryExecutionException(ReturnCodes.rcQueryParseFailure, "Unknown Parse error") ;
-            }
-            
-            // Check arguments
-            
-            if ( ! allowDatasetDesc )
-            {
-                // Restrict to service dataset only. 
-               if ( datasetInProtocol(request) )
-                   throw new QueryExecutionException(ReturnCodes.rcArgumentError, "This service does not allow the dataset to be specified in the protocol request") ;
-               if ( query.hasDatasetDescription() )
-                   throw new QueryExecutionException(ReturnCodes.rcArgumentError, "This service does not allow the dataset to be specified in the query") ;
-            }
-            
-            // ---- Dataset
-            
-            Dataset dataset = datasetFromProtocol(request) ;
-
-            boolean useQueryDesc = false ;
-            
-            if ( dataset == null )
-            {
-                // No dataset in protocol
-                if ( query.hasDatasetDescription() )
-                    useQueryDesc = true ;
-                // If in query, then the query engine will do the loading.
-            }
-            
-            // Use the service dataset description if
-            // not in query and not in protocol. 
-            if ( !useQueryDesc && dataset == null )
-            {
-                if ( datasetDesc != null )
-                    dataset = datasetDesc.getDataset() ;
-            }
-            
-            if ( !useQueryDesc && dataset == null )
-                throw new QueryExecutionException(ReturnCodes.rcQueryExecutionFailure, "No datatset given") ;
-            
-            QueryExecution qexec = null ;
-            
-            if ( useQueryDesc )
-                qexec = QueryExecutionFactory.create(query) ;
-            else
-                qexec = QueryExecutionFactory.create(query, dataset) ;
-            
-            if ( query.hasDatasetDescription() )
-                qexec = QueryExecutionFactory.create(query) ;
-            else
-                qexec = QueryExecutionFactory.create(query, dataset) ;
-            
-            response.setCallback(new QueryExecutionClose(qexec)) ;
-            
-            if ( query.isSelectType() )
-            {
-                response.setResultSet(qexec.execSelect()) ;
-                log.info("OK/select: "+queryStringLog) ;
-                return ;
-            }
-            
-            if ( query.isConstructType() )
-            {
-                Model model = qexec.execConstruct() ;
-                response.setModel(model) ;
-                log.info("OK/construct: "+queryStringLog) ;
-                return ;
-            }
-
-            if ( query.isDescribeType() )
-            {
-                Model model = qexec.execDescribe() ;
-                response.setModel(model) ;
-                log.info("OK/describe: "+queryStringLog) ;
-                return ;
-            }
-
-            if ( query.isAskType() )
-            {
-                boolean b = qexec.execAsk() ;
-                response.setBoolean(b) ;
-                log.info("OK/ask: "+queryStringLog) ;
-                return ;
-            }
-
-            log.warn("Unknown query type - "+queryStringLog) ;
+            execQueryWorker(request, response, datasetDesc) ;
         }
         catch (QueryException qEx)
         {
@@ -234,17 +92,165 @@ public class SPARQL extends QueryCom implements Loadable
             throw qExEx ;
         }
         catch (JenaException ex)
-        {   // Parse exceptions
+        {
             log.info("JenaException: "+ex.getMessage()) ;
             QueryExecutionException qExEx = new QueryExecutionException(ReturnCodes.rcArgumentUnreadable, ex.getMessage()) ;
             throw qExEx ;
         }
-        catch (RuntimeException ex)
-        {   // Parse exceptions
-            log.info("Exception: "+ex.getMessage()) ;
+        catch (Throwable ex)
+        {   // Attempt to catch anything
+            log.info("Throwable: "+ex.getMessage()) ;
             QueryExecutionException qExEx = new QueryExecutionException(ReturnCodes.rcInternalError, ex.getMessage()) ;
             throw qExEx ;
         }
+    }
+    
+    
+    private void execQueryWorker(Request request, Response response, DatasetDesc datasetDesc) throws QueryExecutionException
+    {
+        //log.info("Request: "+request.paramsAsString()) ;
+        String queryString = null ;
+        
+        if ( request.containsParam(P_QUERY) )
+        {
+            queryString = request.getParam(P_QUERY) ;
+            if  (queryString == null )
+            {
+                log.debug("No query argument (but query parameter exists)") ;
+                throw new JosekiServerException("Query string is null") ;
+            }
+        }
+        
+        if ( request.containsParam(P_QUERY_REF) )
+        {
+            String queryURI = request.getParam(P_QUERY_REF) ;
+            if ( queryURI == null )
+            {
+                log.debug("No query reference argument (but query parameter exists)") ;
+                throw new JosekiServerException("Query reference is null") ;
+            }
+            queryString = getRemoteString(queryURI) ;
+        }
+        
+        if ( queryString == null )
+        {
+            log.debug("No query argument") ;
+            throw new QueryExecutionException(ReturnCodes.rcQueryExecutionFailure,
+            "No query string");    
+        }
+        
+        
+        if ( queryString.equals("") )
+        {
+            log.debug("Empty query string") ;
+            throw new QueryExecutionException(ReturnCodes.rcQueryExecutionFailure,
+            "Empty query string");    
+        }
+        // ---- Query
+        
+        String queryStringLog = formatForLog(queryString) ;
+        log.info("Query: "+queryStringLog) ;
+        
+        Query query = null ;
+        try {
+            // NB syntax is ARQ (a superset of SPARQL)
+            query = QueryFactory.create(queryString, Syntax.syntaxARQ) ;
+        } catch (QueryException ex)
+        {
+            // TODO Enable errors to be sent as body
+            //    response.setError(ExecutionError.rcQueryParseFailure)
+            //    OutputString out = response.getOutputStream() ;
+            //    out.write(something meaning full)
+            String tmp = queryString +"\n\r" + ex.getMessage() ;
+            throw new QueryExecutionException(ReturnCodes.rcQueryParseFailure, "Parse error: \n"+tmp) ;
+        } catch (Throwable thrown)
+        {
+            log.info("Query unknown error during parsing: "+queryStringLog, thrown) ;
+            throw new QueryExecutionException(ReturnCodes.rcQueryParseFailure, "Unknown Parse error") ;
+        }
+        
+        // Check arguments
+        
+        if ( ! allowDatasetDesc )
+        {
+            // Restrict to service dataset only. 
+            if ( datasetInProtocol(request) )
+                throw new QueryExecutionException(ReturnCodes.rcArgumentError, "This service does not allow the dataset to be specified in the protocol request") ;
+            if ( query.hasDatasetDescription() )
+                throw new QueryExecutionException(ReturnCodes.rcArgumentError, "This service does not allow the dataset to be specified in the query") ;
+        }
+        
+        // ---- Dataset
+        
+        Dataset dataset = datasetFromProtocol(request) ;
+        
+        boolean useQueryDesc = false ;
+        
+        if ( dataset == null )
+        {
+            // No dataset in protocol
+            if ( query.hasDatasetDescription() )
+                useQueryDesc = true ;
+            // If in query, then the query engine will do the loading.
+        }
+        
+        // Use the service dataset description if
+        // not in query and not in protocol. 
+        if ( !useQueryDesc && dataset == null )
+        {
+            if ( datasetDesc != null )
+                dataset = datasetDesc.getDataset() ;
+        }
+        
+        if ( !useQueryDesc && dataset == null )
+            throw new QueryExecutionException(ReturnCodes.rcQueryExecutionFailure, "No datatset given") ;
+        
+        QueryExecution qexec = null ;
+        
+        if ( useQueryDesc )
+            qexec = QueryExecutionFactory.create(query) ;
+        else
+            qexec = QueryExecutionFactory.create(query, dataset) ;
+        
+        if ( query.hasDatasetDescription() )
+            qexec = QueryExecutionFactory.create(query) ;
+        else
+            qexec = QueryExecutionFactory.create(query, dataset) ;
+        
+        response.setCallback(new QueryExecutionClose(qexec)) ;
+        
+        if ( query.isSelectType() )
+        {
+            response.setResultSet(qexec.execSelect()) ;
+            log.info("OK/select: "+queryStringLog) ;
+            return ;
+        }
+        
+        if ( query.isConstructType() )
+        {
+            Model model = qexec.execConstruct() ;
+            response.setModel(model) ;
+            log.info("OK/construct: "+queryStringLog) ;
+            return ;
+        }
+        
+        if ( query.isDescribeType() )
+        {
+            Model model = qexec.execDescribe() ;
+            response.setModel(model) ;
+            log.info("OK/describe: "+queryStringLog) ;
+            return ;
+        }
+        
+        if ( query.isAskType() )
+        {
+            boolean b = qexec.execAsk() ;
+            response.setBoolean(b) ;
+            log.info("OK/ask: "+queryStringLog) ;
+            return ;
+        }
+        
+        log.warn("Unknown query type - "+queryStringLog) ;
     }
     
     private String formatForLog(String queryString)
