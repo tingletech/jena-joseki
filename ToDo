@@ -3,11 +3,14 @@ Joseki3
 
 + Documentation
   HTTP parameters
+   webapps/WEB_INF/web.xml needs to be chnaged for a service
 
 + Refactor SPARQL.java to pick out the stages so the general process can be inherited.
 
 + Chunk encoding (Jetty default) seems to confuse FF (KERS's at least) so maybe turn off 
   Or upgrade Jetty?
+
++ Config of one model should be the same as a datset of one default graph
   
 + Locking can't always be MRSW (inference caches) -- Concurrent request problem
 

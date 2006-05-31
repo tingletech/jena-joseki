@@ -285,6 +285,7 @@ public class SPARQL extends QueryCom implements Loadable
             
             DataSource dataset = null ;
             
+            // TODO Refactor: get names and call DatasetUtils.createDatasetGraph
 //          if ( graphURL != null && request.getBaseURI() != null )
 //          graphURL = RelURI.resolve(graphURL, request.getBaseURI()) ;
             
