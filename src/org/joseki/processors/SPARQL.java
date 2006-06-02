@@ -13,6 +13,7 @@ import com.hp.hpl.jena.query.*;
 import com.hp.hpl.jena.rdf.model.*;
 import com.hp.hpl.jena.shared.JenaException;
 import com.hp.hpl.jena.shared.NotFoundException;
+import com.hp.hpl.jena.shared.QueryStageException;
 import com.hp.hpl.jena.util.FileManager;
 
 import org.apache.commons.logging.*;
@@ -91,6 +92,14 @@ public class SPARQL extends QueryCom implements Loadable
             QueryExecutionException qExEx = new QueryExecutionException(ReturnCodes.rcResourceNotFound, ex.getMessage()) ;
             throw qExEx ;
         }
+        catch (QueryStageException ex)
+        {
+            // Something nasty happened 
+            log.warn("QueryStageException: "+ex.getMessage(), ex) ;
+            QueryExecutionException qExEx = new QueryExecutionException(ReturnCodes.rcInternalError, ex.getMessage()) ;
+            throw qExEx ;
+        }
+        
         catch (JenaException ex)
         {
             log.info("JenaException: "+ex.getMessage()) ;
