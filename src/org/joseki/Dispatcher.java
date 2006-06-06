@@ -53,15 +53,6 @@ public class Dispatcher
             response.sendException(ex) ;
             return ;
         }
-//      catch (ExecutionException ex)
-//      {
-//          log.warn("Service execution error", ex) ;
-////          httpResponse.setStatus() ;
-////          httpResponse.flushBuffer() ;
-////          httpResponse.getWriter().close() ;
-//          httpResponse.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR) ;
-//      } 
-
     }
 
     //  This method contains the pragmatic algorithm to determine the configuration URI.
