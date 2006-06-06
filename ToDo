@@ -10,7 +10,8 @@ Joseki3
 + Chunk encoding (Jetty default) seems to confuse FF (KERS's at least) so maybe turn off 
   Or upgrade Jetty?
 
-+ Config of one model should be the same as a datset of one default graph
++ ** Config of one model should be the same as a datset of one default graph
+  joseki:dataset      _:someModel
   
 + Locking can't always be MRSW (inference caches) -- Concurrent request problem
 
