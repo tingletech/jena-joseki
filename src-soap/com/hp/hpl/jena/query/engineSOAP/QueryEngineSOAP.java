@@ -132,6 +132,11 @@ public class QueryEngineSOAP implements QueryExecution
         return new ResultSetAxis(result.getSparql()) ;
     }
 
+    public Model execConstruct(Model model)
+    { 
+        return model.add(execConstruct()) ;
+    }
+    
     public Model execConstruct()
     {
         QueryResult result = exec() ;
@@ -139,6 +144,11 @@ public class QueryEngineSOAP implements QueryExecution
             throw new QueryExceptionSOAP("Not a CONSTRUCT query: "+queryString) ;
             
         return (Model)result.getRDF() ;
+    }
+
+    public Model execDescribe(Model model)
+    {
+        return model.add(execDescribe()) ; 
     }
 
     public Model execDescribe()
