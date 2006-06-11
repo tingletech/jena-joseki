@@ -52,13 +52,16 @@ PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.2//EN"
   <!-- MAPPINGS -->
 
   <!-- Map URLs to SPARQL service processors -->
-  <!-- Rules:
+  <!-- Rules: SPARQl services are anoything
        /sparql
        Anything starting /sparql/
        Anything starting /service/
        Warning: using /* for Joseki services 
        means that the welcome page is not handled.
        Nor other mappings like /*.html, unless explicitly enumerated.
+  You can change this - just make sure that each service name
+  in the Joseki config file is mapped, here, to 
+  "SPARQL service processor"
   -->
 
   <!-- Demo service -->
@@ -87,32 +90,12 @@ PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.2//EN"
     <url-pattern>/validator</url-pattern>
   </servlet-mapping>
 
-<!--
-  <servlet-mapping>
-    <servlet-name>default</servlet-name>
-    <url-pattern>/index.html</url-pattern>
-  </servlet-mapping>
-
-  <servlet-mapping>
-    <servlet-name>default</servlet-name>
-    <url-pattern>/xml-to-html.xsl</url-pattern>
-  </servlet-mapping>
-
-  <servlet-mapping>
-    <servlet-name>default</servlet-name>
-    <url-pattern>/query.html</url-pattern>
-  </servlet-mapping>
-
-  <servlet-mapping>
-    <servlet-name>default</servlet-name>
-    <url-pattern>/robots.txt</url-pattern>
-  </servlet-mapping>
+  <!-- A few utilities -->
 
   <servlet-mapping>
     <servlet-name>Dumper</servlet-name>
     <url-pattern>/dump</url-pattern>
   </servlet-mapping>
--->
 
   <servlet-mapping>
     <servlet-name>DumpBody</servlet-name>

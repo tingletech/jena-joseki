@@ -21,6 +21,7 @@ import org.apache.commons.logging.LogFactory;
 import com.hp.hpl.jena.query.Query;
 import com.hp.hpl.jena.query.QueryFactory;
 import com.hp.hpl.jena.query.QueryParseException;
+import com.hp.hpl.jena.query.Syntax;
 import com.hp.hpl.jena.query.util.IndentedLineBuffer;
 import com.hp.hpl.jena.query.util.IndentedWriter;
 
@@ -61,6 +62,7 @@ public class Validator extends HttpServlet
     { validationRequest(httpRequest, httpResponse) ; }
     
     static final String paramLineNumbers = "linenumbers" ;
+    static final String paramFormat = "outputFormat" ;
     static final String paramQuery = "query" ;
     static final String respService = "X-Service" ;
     
@@ -85,12 +87,27 @@ public class Validator extends HttpServlet
             }
 
             String queryString = httpRequest.getParameter(paramQuery) ;
-            
-            
-            
             //queryString = queryString.replace("\r\n", "\n") ;
             
             String lineNumbersArg = httpRequest.getParameter(paramLineNumbers) ; 
+
+            String a[] = httpRequest.getParameterValues(paramFormat) ;
+            
+            boolean outputSPARQL = false ;
+            boolean outputPrefix = false ;
+            if ( a != null )
+            {
+                for ( int i = 0 ; i < a.length ; i++ )
+                {
+                    if ( a[i].equals("sparql") ) 
+                        outputSPARQL = true ;
+                    if ( a[i].equals("prefix") ) 
+                        outputPrefix = true ;
+                }
+            }
+            
+//            if ( ! outputSPARQL && ! outputPrefix )
+//                outputSPARQL = true ;
             
             boolean lineNumbers = true ;
             
@@ -147,7 +164,7 @@ public class Validator extends HttpServlet
             }
             
             // OK?  Pretty print
-            if ( query != null )
+            if ( query != null && outputSPARQL )
             {
                 outStream.println("<p>Formatted, parsed query:</p>") ;
 
@@ -162,7 +179,22 @@ public class Validator extends HttpServlet
                 finishFixed(outStream) ;
             }
             
-            //Report deatils
+            // OK?  Pretty print
+            if ( query != null && outputPrefix )
+            {
+                outStream.println("<p>Abstract structure</p>") ;
+
+                String prefix = "    " ;
+                startFixed(outStream) ;
+//                columns(prefix, outStream) ;
+                IndentedLineBuffer buff = new IndentedLineBuffer(lineNumbers) ; 
+                IndentedWriter out = buff.getIndentedWriter() ;
+                query.serialize(out, Syntax.syntaxPrefix) ;
+                out.flush() ;
+                outStream.print(htmlQuote(buff.asString())) ;
+                finishFixed(outStream) ;
+            }
+            
             outStream.println("</html>") ;
             
         } catch (Exception ex)

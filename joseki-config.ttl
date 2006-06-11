@@ -14,6 +14,9 @@
 ## It is an RDF graph - order of RDF triples does not matter
 ## to the machine but it does help people who need to edit this file.
 
+## Note: web.xml must be in-step with this file.
+## for each service, 
+
 ## Note: adding rdfs:label to blank nodes will cause Joseki 
 ## to print that in log messages.
 
