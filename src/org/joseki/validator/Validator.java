@@ -137,8 +137,6 @@ public class Validator extends HttpServlet
             
             printHead(outStream) ;
             
-            // ********* Need to encode < and >
-            
             outStream.println("<body>") ;
             outStream.println("<h1>SPARQL Validator</h1>") ;
             // Print query as received
@@ -191,10 +189,9 @@ public class Validator extends HttpServlet
                 finishFixed(outStream) ;
             }
             
-            // OK?  Pretty print
             if ( query != null && outputPrefix )
             {
-                outStream.println("<p>Abstract structure</p>") ;
+                outStream.println("<p>Abstract structure:</p>") ;
 
                 String prefix = "    " ;
                 startFixed(outStream) ;
