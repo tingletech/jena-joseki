@@ -62,9 +62,10 @@ public class Validator extends HttpServlet
     { validationRequest(httpRequest, httpResponse) ; }
     
     static final String paramLineNumbers = "linenumbers" ;
-    static final String paramFormat = "outputFormat" ;
-    static final String paramQuery = "query" ;
-    static final String respService = "X-Service" ;
+    static final String paramFormat      = "outputFormat" ;
+    static final String paramQuery       = "query" ;
+    static final String paramSyntax      = "languageSyntax" ;
+    static final String respService      = "X-Service" ;
     
     private void validationRequest(HttpServletRequest httpRequest, HttpServletResponse httpResponse)
     {
@@ -88,6 +89,17 @@ public class Validator extends HttpServlet
 
             String queryString = httpRequest.getParameter(paramQuery) ;
             //queryString = queryString.replace("\r\n", "\n") ;
+            
+            String querySyntax = httpRequest.getParameter(paramSyntax) ;
+            if ( querySyntax == null || querySyntax.equals("") )
+                querySyntax = "SPARQL" ;
+
+            Syntax language = Syntax.lookup(querySyntax) ;
+            if ( language == null )
+            {
+                httpResponse.sendError(HttpServletResponse.SC_BAD_REQUEST, "Unknown syntax: "+querySyntax) ;
+                return ;
+            }
             
             String lineNumbersArg = httpRequest.getParameter(paramLineNumbers) ; 
 
@@ -154,7 +166,7 @@ public class Validator extends HttpServlet
             // Attempt to parse it.
             Query query = null ;
             try {
-                query = QueryFactory.create(queryString) ;
+                query = QueryFactory.create(queryString, language) ;
             } catch (QueryParseException ex)
             {
                 outStream.println("<p>Syntax error:</p>") ;
