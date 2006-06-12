@@ -79,6 +79,7 @@ public class SPARQL extends QueryCom implements Loadable
         try {
             execQueryWorker(request, response, datasetDesc) ;
         }
+        catch (QueryExecutionException qEx) { throw qEx; }
         catch (QueryException qEx)
         {
             log.info("Query execution error: "+qEx) ;
@@ -289,6 +290,9 @@ public class SPARQL extends QueryCom implements Loadable
             List graphURLs = request.getParams(P_DEFAULT_GRAPH) ;
             List namedGraphs = request.getParams(P_NAMED_GRAPH) ;
             
+            graphURLs = removeEmptyValues(graphURLs) ;
+            namedGraphs = removeEmptyValues(namedGraphs) ;
+            
             if ( graphURLs.size() == 0 && namedGraphs.size() == 0 )
                 return null ;
             
@@ -376,6 +380,17 @@ public class SPARQL extends QueryCom implements Loadable
         
     }
 
+    private List removeEmptyValues(List strList)
+    {
+        for ( Iterator iter = strList.iterator() ; iter.hasNext(); )
+        {
+            String v = (String)iter.next();
+            if ( v.equals("") ) 
+                iter.remove() ;
+        }
+        return strList ; 
+    }
+    
     /**
      * @param queryURI
      * @return
