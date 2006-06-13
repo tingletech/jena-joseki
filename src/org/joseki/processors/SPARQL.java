@@ -71,10 +71,10 @@ public class SPARQL extends QueryCom implements Loadable
     
     public void execQuery(Request request, Response response, DatasetDesc datasetDesc) throws QueryExecutionException
     {
-        execQueryProtected(request, response, datasetDesc) ;
+        execQueryProtected(request, response, datasetDesc, 0) ;
     }
     
-    public void execQueryProtected(Request request, Response response, DatasetDesc datasetDesc) throws QueryExecutionException
+    public void execQueryProtected(Request request, Response response, DatasetDesc datasetDesc, int attempts) throws QueryExecutionException
     {
         try {
             execQueryWorker(request, response, datasetDesc) ;
@@ -95,12 +95,19 @@ public class SPARQL extends QueryCom implements Loadable
         }
         catch (QueryStageException ex)
         {
-            // Something nasty happened 
+            if ( attempts == 0 && causeLooksRetryable(ex) )
+            {
+                attempts ++ ;
+                log.warn("Execution failure (retryable) : retry: "+attempts) ;
+                datasetDesc.clearDataset() ;
+                execQueryProtected(request, response, datasetDesc, attempts) ;
+                return ;
+            }
+            
             log.warn("QueryStageException: "+ex.getMessage(), ex) ;
             QueryExecutionException qExEx = new QueryExecutionException(ReturnCodes.rcInternalError, ex.getMessage()) ;
             throw qExEx ;
         }
-        
         catch (JenaException ex)
         {
             log.info("JenaException: "+ex.getMessage()) ;
@@ -109,10 +116,21 @@ public class SPARQL extends QueryCom implements Loadable
         }
         catch (Throwable ex)
         {   // Attempt to catch anything
-            log.info("Throwable: "+ex.getMessage()) ;
+            log.debug("Throwable: "+ex.getMessage()) ;
             QueryExecutionException qExEx = new QueryExecutionException(ReturnCodes.rcInternalError, ex.getMessage()) ;
             throw qExEx ;
         }
+    }
+    
+    private boolean causeLooksRetryable(Throwable ex)
+    {
+        while ( ex != null )
+        {
+            if ( ex.getClass().getName().equals("com.mysql.jdbc.CommunicationsException") )
+                return true ;
+            ex = ex.getCause() ;
+        }
+        return false ;
     }
     
     
@@ -228,10 +246,20 @@ public class SPARQL extends QueryCom implements Loadable
             qexec = QueryExecutionFactory.create(query, dataset) ;
         
         response.setCallback(new QueryExecutionClose(qexec)) ;
-        
+        executeQuery(query, queryStringLog, qexec, response) ;
+    }
+    
+    private void executeQuery(Query query, String queryStringLog, QueryExecution qexec, Response response)
+        throws QueryExecutionException
+    {
         if ( query.isSelectType() )
         {
-            response.setResultSet(qexec.execSelect()) ;
+            // Force query execute now.
+            // Breaks streaming :-( but we need to know if the request succeeds or not 
+            // to cope with MySQL comms timeouts.
+            ResultSet rs = qexec.execSelect() ;
+            rs = ResultSetFactory.copyResults(rs) ;
+            response.setResultSet(rs) ;
             log.info("OK/select: "+queryStringLog) ;
             return ;
         }
