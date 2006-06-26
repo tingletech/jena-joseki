@@ -247,6 +247,7 @@ public class SPARQL extends QueryCom implements Loadable
         
         response.setCallback(new QueryExecutionClose(qexec)) ;
         executeQuery(query, queryStringLog, qexec, response) ;
+        
     }
     
     private void executeQuery(Query query, String queryStringLog, QueryExecution qexec, Response response)
