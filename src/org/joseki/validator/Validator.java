@@ -61,11 +61,12 @@ public class Validator extends HttpServlet
     public void doPost(HttpServletRequest httpRequest, HttpServletResponse httpResponse)
     { validationRequest(httpRequest, httpResponse) ; }
     
-    static final String paramLineNumbers = "linenumbers" ;
-    static final String paramFormat      = "outputFormat" ;
-    static final String paramQuery       = "query" ;
-    static final String paramSyntax      = "languageSyntax" ;
-    static final String respService      = "X-Service" ;
+    static final String paramLineNumbers      = "linenumbers" ;
+    static final String paramFormat           = "outputFormat" ;
+    static final String paramQuery            = "query" ;
+    static final String paramSyntax           = "languageSyntax" ;
+    //static final String paramSyntaxExtended   = "extendedSyntax" ;
+    static final String respService           = "X-Service" ;
     
     private void validationRequest(HttpServletRequest httpRequest, HttpServletResponse httpResponse)
     {

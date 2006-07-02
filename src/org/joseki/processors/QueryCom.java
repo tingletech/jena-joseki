@@ -15,25 +15,22 @@ import org.joseki.*;
 
 public abstract class QueryCom implements Processor
 {
-    public Lock lock = new LockMRSW() ;
+    Lock lock = new LockMRSW() ;
     
     /** Execute a query without a lock */ 
     public void exec(Request request, Response response, DatasetDesc datasetDesc) throws ExecutionException
     {
-        
-        if ( datasetDesc != null && datasetDesc.getDataset() != null )
-        {
-            // Lock
-            // Or move locking into SPARQL and do when the source of the dataset is decides.
-        }
-        // Dataset ds = getDataset(request) ;
-        // Do locking on dataset
         // TODO Transactional lock
         
-        lock.enterCriticalSection(Lock.READ) ;
+        Lock operationLock = lock ;
+        
+        if ( datasetDesc != null && datasetDesc.getDataset() != null )
+            operationLock = datasetDesc.getDataset().getLock() ;
+        
+        operationLock.enterCriticalSection(Lock.READ) ;
         try {
             execQuery(request, response, datasetDesc) ;
-        } finally { lock.leaveCriticalSection() ; }
+        } finally { operationLock.leaveCriticalSection() ; }
     }
     
     /** Execute a query within an MRSW lock */ 

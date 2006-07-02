@@ -20,25 +20,23 @@ SELECT ?book ?title
 WHERE
    { ?book dc:title ?title }</textarea>
 <br/>
-	  Line numbers:
-	  <input type="radio" name="linenumbers" value="true" checked="checked"/>Yes
-	  <input type="radio" name="linenumbers" value="false"/>No
-	  
-	  <br/>
+  Input syntax:
+    <input type="radio" name="languageSyntax" value="SPARQL" checked="checked"/>SPARQL
+    <input type="radio" name="languageSyntax" value="Prefix"/>Prefix notation
+    <input type="radio" name="languageSyntax" value="ARQ"/>SPARQL extended syntax
+  <br/>
+Output syntax:
+  <input type="checkbox" name="outputFormat" value="sparql" checked="checked"/>SPARQL
+  <input type="checkbox" name="outputFormat" value="prefix"/>Prefix notation
+  <br/>
 
-	  <input type="checkbox" name="outputFormat" value="sparql" checked="checked"/>
-	  Display SPARQL format
-	  <br/>
+  Line numbers:
+  <input type="radio" name="linenumbers" value="true" checked="checked"/>Yes
+  <input type="radio" name="linenumbers" value="false"/>No
+  <br/>
 
-	  <input type="checkbox" name="outputFormat" value="prefix"/>
-	  Display abstract format
-	  <br/>
 
-	  <input type="checkbox" name="languageSyntax" value="ARQ"/>
-	  Enable extended syntax
-	  <br/>
-
-	  <input type="submit" value="Validate SPARQL Query" />
+  <input type="submit" value="Validate SPARQL Query" />
 	</p>
       </form>
 
