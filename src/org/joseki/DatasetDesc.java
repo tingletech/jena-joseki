@@ -26,27 +26,27 @@ public class DatasetDesc
     static Log log = LogFactory.getLog(DatasetDesc.class) ;
     Model confModel ;
     // Resource will keep the config model around as well. 
-    Resource defaultGraph = null ;
-    Map namedGraphs = new HashMap() ;
+    Resource defaultGraphDesc = null ;
+    Map namedGraphsDesc = new HashMap() ;
     Dataset dataset = null ;
     
     public DatasetDesc(Model conf) { confModel = conf ; }
     
     /** @return Returns the resources for the default graph. */
-    public Resource getDefaultGraph() { return defaultGraph ;  }
+    public Resource getDefaultGraphDesc() { return defaultGraphDesc ;  }
     
     /** @param dftGraph Set the resource to use to make the default graph. */
-    public void setDefaultGraph(Resource dftGraph) { this.defaultGraph = dftGraph ; }
+    public void setDefaultGraphDesc(Resource dftGraph) { this.defaultGraphDesc = dftGraph ; }
 
     /** @return Returns the namedGraphs. */
-    public Map getNamedGraphs()
+    public Map getNamedGraphsDesc()
     {
-        return namedGraphs ;
+        return namedGraphsDesc ;
     }
 
-    public void addNamedGraph(String uri, Resource r)
+    public void addNamedGraphDesc(String uri, Resource r)
     {
-        namedGraphs.put(uri, r) ;
+        namedGraphsDesc.put(uri, r) ;
     }
     
     /** Drop any dataset to free system resources */ 
@@ -57,16 +57,16 @@ public class DatasetDesc
         if ( dataset == null )
         {
             DataSource ds = DatasetFactory.create() ;
-            if ( getDefaultGraph() != null )
+            if ( getDefaultGraphDesc() != null )
             {
-                Model m = buildModel(getDefaultGraph()) ;
+                Model m = buildModel(getDefaultGraphDesc()) ;
                 ds.setDefaultModel(m) ;
             }
             
-            for ( Iterator iter = namedGraphs.keySet().iterator() ; iter.hasNext() ; )
+            for ( Iterator iter = namedGraphsDesc.keySet().iterator() ; iter.hasNext() ; )
             {
                 String n = (String)iter.next() ;
-                Resource r = (Resource)namedGraphs.get(n) ; 
+                Resource r = (Resource)namedGraphsDesc.get(n) ; 
                 ds.addNamedModel(n, buildModel(r)) ;
             }
             dataset = ds ;
@@ -150,18 +150,18 @@ public class DatasetDesc
         StringBuffer sbuff = new StringBuffer() ;
         sbuff.append("{") ;
         boolean first = true ;  
-        if ( defaultGraph != null )
+        if ( defaultGraphDesc != null )
         {
-            sbuff.append(Utils.nodeLabel(defaultGraph)) ;
+            sbuff.append(Utils.nodeLabel(defaultGraphDesc)) ;
             first = false ;
         }
-        for ( Iterator iter = namedGraphs.keySet().iterator() ; iter.hasNext() ; )
+        for ( Iterator iter = namedGraphsDesc.keySet().iterator() ; iter.hasNext() ; )
         {
             if ( first )
                 sbuff.append(" ") ;
             first = false ;
             String n = (String)iter.next() ;
-            Resource r = (Resource)namedGraphs.get(n) ;
+            Resource r = (Resource)namedGraphsDesc.get(n) ;
             sbuff.append("(") ;
             sbuff.append(n) ;
             sbuff.append(", ") ;

@@ -538,7 +538,7 @@ public class Configuration
                     if ( dftGraph != null )
                     {
                         log.info("  Default graph : "+Utils.nodeLabel(dftGraph)) ;
-                        src.setDefaultGraph(dftGraph) ;
+                        src.setDefaultGraphDesc(dftGraph) ;
                         numDefaultGraphs++ ;
                     }
                     dft = dftGraph ;
@@ -563,13 +563,13 @@ public class Configuration
                         throw new ConfigurationErrorException("No data for graph <"+graphName.getURI()+">") ;
                     }
                     
-                    if ( src.getNamedGraphs().containsKey(graphName.getURI()) )
+                    if ( src.getNamedGraphsDesc().containsKey(graphName.getURI()) )
                     {
                         warn("  Skipping duplicate named graph: <"+graphName.getURI()+">") ;
                         continue ;
                     }
                     
-                    src.addNamedGraph(graphName.getURI(), graphData) ;
+                    src.addNamedGraphDesc(graphName.getURI(), graphData) ;
                     numNamedGraphs++ ; 
                 }
                 
