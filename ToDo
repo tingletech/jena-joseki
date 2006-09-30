@@ -1,9 +1,16 @@
 Joseki3
 =======
 
++ Other endpoint for processor requests (web form)
+
++ Dataset assembler
+    Tidy vocabulary up
+    Change examples
+    ChangeLog
+
 + Documentation
   HTTP parameters
-   webapps/WEB_INF/web.xml needs to be chnaged for a service
+   webapps/WEB_INF/web.xml needs to be changed for a service
 
 + Refactor SPARQL.java to pick out the stages so the general process can be inherited.
 
