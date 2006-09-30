@@ -1,6 +1,8 @@
 Joseki3
 =======
 
++ Upgrade to Jetty6
+
 + Other endpoint for processor requests (web form)
 
 + Dataset assembler
