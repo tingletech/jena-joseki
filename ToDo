@@ -3,9 +3,16 @@ Joseki3
 
 + Upgrade to Jetty6
 
++ Release checking
+	License up to date? (Copy from ARQ + jetty)
+	Download and front page.
+
 + Other endpoint for processor requests (web form)
 
 + Dataset assembler
+	keep DatasetDesc but make it a wrapper for a Resource
+	  + checking code for the well-formness of a dataset
+	  + call to assembler
     Tidy vocabulary up
     Change examples
     ChangeLog
