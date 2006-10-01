@@ -82,7 +82,13 @@ public class Configuration
         checkServiceReferences() ;
         server = findServer() ;
         log.info("==== Datasets ====") ;
-        OLD_findDataSets() ;
+        if ( false )
+        {
+            checkForJosekiDatasetDesc() ;
+            OLD_findDataSets() ;
+        }
+        else
+            findDatasets() ; // New
         log.info("==== Services ====") ;
         findServices() ;
         log.info("==== Bind services to the server ====") ;
@@ -728,7 +734,7 @@ public class Configuration
             String[] s = new String[]{
                 stdHeaders(),
                 "ASK",
-                "{ ?x rdf:type joseki:joseki:RDFDataSet }"
+                "{ ?x rdf:type joseki:RDFDataSet }"
             } ;
             Query query = makeQuery(s) ;
             QueryExecution qexec = QueryExecutionFactory.create(query, confModel) ;
