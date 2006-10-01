@@ -46,16 +46,18 @@ dataset is added to the service description:</p> <pre class="box"># Service 2 - 
 <p>Here, we have used a blank node with a label, then placed the
 description of the dataset elsewhere. We coudl have places the
 definition inline or used a URI.</p> <h3>Defining Datasets</h3>
+<p>A dataset is defined using a <a href="http://jena.sourceforge.net/assembler/">
+Jena assembler description</a> augmented with vocabulary to handle RDF datasets, 
+not just single Jena models. </p>
 <p>An RDF dataset is a collection of a unnamed, default graph and
 zero or more named graphs. Queries access the named graph through the
 GRAPH keyword in SPARQL.</p> <p>Each graph is a Jena
-model, and these are described with the Jena Assembler vocabulary
-(ref). We give some example configuration here but the assembler
+model, and these are described with the Jena Assembler vocabulary. We give some example configuration here but the assembler
 descriptions can describe a wide variety of model setups, including
 connection to an external OWL DL reasoner, such as <a href="http://www.mindswap.org/2003/pellet/">Pellet</a>
 (an open source reasoner from <a href="http://www.mindswap.org/">MINDSWAP</a>).</p>
 <p>This first dataset just has one graph - the default graph. The
-content is loaded from a file (theer coudl be several files loaded) but
+content is loaded from a file (there could be several files loaded) but
 the file name does not give the model a name. The dataset description has an explicit type.</p> <pre class="box"># A dataset of one model as the default graph<br><br>_:books rdf:type joseki:RDFDataSet ;<br>    rdfs:label      "Books" ;<br>    joseki:defaultGraph<br>       [ a ja:MemoryModel ;<br>         rdfs:label "books.n3" ;<br>         ja:content [ ja:externalContent &lt;file:Data/books.n3&gt; ]<br>       ] ;<br>    .<br></pre>
 <p>A more complicated example places the default graph
 description elsewhere and has two, named graph. Note that the names of

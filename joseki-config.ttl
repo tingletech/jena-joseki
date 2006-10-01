@@ -1,3 +1,5 @@
+## IN TRANSITITION to Dataset assembler usage
+
 # This file is written in N3 / Turtle
 
 @prefix rdfs:   <http://www.w3.org/2000/01/rdf-schema#> .
@@ -73,8 +75,15 @@
 ## --------------------------------------------------------------
 ## Datasets
 
-_:books   rdf:type joseki:RDFDataSet ;
+_:books   rdf:type ja:RDFDataset ;
+          rdf:type joseki:RDFDataSet ;
     rdfs:label "Books" ;
+    # Either - or
+    ja:defaultGraph 
+      [ rdfs:label "books.n3" ;
+        a ja:MemoryModel ;
+        ja:content [ja:externalContent <file:Data/books.n3> ] ;
+      ] ;
     joseki:defaultGraph
       [ rdfs:label "books.n3" ;
         a ja:MemoryModel ;

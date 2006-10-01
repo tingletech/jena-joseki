@@ -491,7 +491,7 @@ public class Configuration
             "SELECT ?x ?dft ?graphName ?graphData",
             "{ ?x a ja:RDFDataset ;",
             "  OPTIONAL { ?x ja:defaultGraph ?dft }",
-            "  OPTIONAL { ?x ja:namedGraph  [ joseki:graphName ?graphName ; joseki:graph ?graphData ] }",  
+            "  OPTIONAL { ?x ja:namedGraph  [ ja:graphName ?graphName ; ja:graph ?graphData ] }",  
             "}", 
             "ORDER BY ?x ?dft ?graphName"
         } ;
