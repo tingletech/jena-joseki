@@ -1,34 +1,25 @@
 Joseki3
 =======
 
-+ Upgrade to Jetty6
+==Release
+
++ Documentation
+    Change examples
+    ChangeLog
+  HTTP parameters
+   webapps/WEB_INF/web.xml needs to be changed for a service
+
++ Upgrade to Jetty6??
 
 + Release checking
-	License up to date? (Copy from ARQ + jetty)
 	Download and front page.
 
 + Other endpoint for processor requests (web form)
 
-+ Dataset assembler
-	keep DatasetDesc but make it a wrapper for a Resource
-	  + checking code for the well-formness of a dataset
-	  + call to assembler
-    Tidy vocabulary up
-    Change examples
-    ChangeLog
-
-+ Documentation
-  HTTP parameters
-   webapps/WEB_INF/web.xml needs to be changed for a service
+- - - - - - - - - -
 
 + Refactor SPARQL.java to pick out the stages so the general process can be inherited.
 
-+ Chunk encoding (Jetty default) seems to confuse FF (KERS's at least) so maybe turn off 
-  Or upgrade Jetty?
-
-+ ** Config of one model should be the same as a datset of one default graph
-  joseki:dataset      _:someModel
-  
 + Locking can't always be MRSW (inference caches) -- Concurrent request problem
 
 + error testing
@@ -39,43 +30,19 @@ Joseki3
 + Add a configurable output processor - default XML results / 
   Have SELECT only processor
 
-+ Update all XSD and WSDL to latest and rebuild
-
 + Need "application/sparql-query"
 
 + Teach HttpUtils about "+" as in "application/sparql-results+xml"
 
 + MIME type "text/rdf+n3"
 
-+ Enable arbitrary classes to implement a DaatsetDesc or be a factory for Models.
-
-+ Get baseURI from Document to set parsing one.
-
-+ Release time?
-
-+ Protocol tests
-  Other tests
-
 + Add version id (build, ARQ) to HTTP headers
 
 + Add strict mode (i.e it's SPARQL and SPARQL only) q service
-  As separate processors.
+  As separate processors?
 
 + Test harness
 
-+ Documentation
-
-+ Merge in SOAP code and lib2/ into a single codebase
-
-+ Better error and warning handling when dynamically building a dataset
-
-+ Test configuration (test of errors by looking in registry, and configuration members)
-
-+ Dataset cache coupled to descriptions.
-  need dataset set cache and "description key"
-
-+ Check whether loading broken RDF causes a memory leak
-  
 + Transactional locking in QueryCom
 
 - - - - - - - - - - - -
@@ -86,4 +53,3 @@ Joseki3
 + "Accept: */*" matches text/* and gets readable form.
   Should be application/rdf+xml.
   maybe test for application/rdf+xml, application/xml first?
-

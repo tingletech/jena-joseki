@@ -6,48 +6,21 @@
 
 package org.joseki;
 
-import java.util.*;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.hp.hpl.jena.query.DataSource;
-import com.hp.hpl.jena.query.Dataset;
-import com.hp.hpl.jena.query.DatasetFactory;
-import com.hp.hpl.jena.rdf.model.*;
 import com.hp.hpl.jena.assembler.Assembler;
-import com.hp.hpl.jena.assembler.Mode;
-import com.hp.hpl.jena.util.FileManager;
-import com.hp.hpl.jena.vocabulary.JenaModelSpec;
+import com.hp.hpl.jena.query.Dataset;
+import com.hp.hpl.jena.rdf.model.Resource;
 
 
 public class DatasetDesc
 {
     static Log log = LogFactory.getLog(DatasetDesc.class) ;
-    Model confModel ;
-    // Resource will keep the config model around as well. 
-    Resource defaultGraphDesc = null ;
-    Map namedGraphsDesc = new HashMap() ;
+    Resource datasetRoot ; 
     Dataset dataset = null ;
     
-    public DatasetDesc(Model conf) { confModel = conf ; }
-    
-    /** @return Returns the resources for the default graph. */
-    public Resource getDefaultGraphDesc() { return defaultGraphDesc ;  }
-    
-    /** @param dftGraph Set the resource to use to make the default graph. */
-    public void setDefaultGraphDesc(Resource dftGraph) { this.defaultGraphDesc = dftGraph ; }
-
-    /** @return Returns the namedGraphs. */
-    public Map getNamedGraphsDesc()
-    {
-        return namedGraphsDesc ;
-    }
-
-    public void addNamedGraphDesc(String uri, Resource r)
-    {
-        namedGraphsDesc.put(uri, r) ;
-    }
+    public DatasetDesc(Resource datasetRoot) { this.datasetRoot = datasetRoot ; }
     
     /** Drop any dataset to free system resources */ 
     public void freeDataset() { dataset = null ; }
@@ -55,121 +28,18 @@ public class DatasetDesc
     public Dataset getDataset()
     {
         if ( dataset == null )
-        {
-            DataSource ds = DatasetFactory.create() ;
-            if ( getDefaultGraphDesc() != null )
-            {
-                Model m = buildModel(getDefaultGraphDesc()) ;
-                ds.setDefaultModel(m) ;
-            }
-            
-            for ( Iterator iter = namedGraphsDesc.keySet().iterator() ; iter.hasNext() ; )
-            {
-                String n = (String)iter.next() ;
-                Resource r = (Resource)namedGraphsDesc.get(n) ; 
-                ds.addNamedModel(n, buildModel(r)) ;
-            }
-            dataset = ds ;
-        }
+            dataset = (Dataset)Assembler.general.open(datasetRoot) ;
         return dataset ;
     }
     
     public void clearDataset() { dataset = null ; }
     
-    protected Model buildModel(Resource r)
-    {
-        log.info("Attempt to build model: "+Utils.nodeLabel(r)) ;
-        if ( false )
-        {
-            StmtIterator sIter = r.listProperties() ;
-            while ( sIter.hasNext() )
-                log.info("  "+sIter.nextStatement()) ;
-        }
-
-        if ( r.hasProperty(JenaModelSpec.loadWith) || r.hasProperty(JenaModelSpec.maker) )
-        {
-            log.warn("Build model using JenaModelSpec (deprecated)") ;
-            return buildModelOld(r) ;
-        }
-
-        try {
-            return Assembler.general.openModel( r, Mode.REUSE ) ;
-        } catch (Exception ex) 
-        { throw new JosekiServerException("Failed to assemble model", ex) ; }
-    }
-    
-    private Model buildModelOld(Resource r)
-    {
-        ModelSpec mSpec = ModelFactory.createSpec(r, confModel) ;
-        
-        if ( r.hasProperty(JenaModelSpec.maker) )
-        {
-            String modelName = r.getProperty(JenaModelSpec.modelName).getString() ;
-            log.info("Building named model: "+Utils.nodeLabel(r)+" / "+modelName) ;
-        }
-        else
-            log.info("Building model: "+Utils.nodeLabel(r)) ;
-        
-        // TODO Use this code when Jena Assemblers available 
-        //        Model m = mSpec.openModel() ;
-        //        return m ;  
-        
-        //return mSpec.createDefaultModel() ;
-        //BEST -- ?? -- return mSpec.createModel() ;
-        
-        if ( r.hasProperty(JenaModelSpec.loadWith) )
-        {
-            // Assume it is a in-memory model
-            log.info("Creating a memory model") ;
-            Model m = ModelFactory.createDefaultModel() ;
-            String data = r.getProperty(JenaModelSpec.loadWith).getResource().getURI() ;
-            FileManager.get().readModel(m, data) ;
-            return m ;
-        }
-        
-        if ( r.hasProperty(JenaModelSpec.maker) )
-        {
-            Resource r2 = r.getProperty(JenaModelSpec.maker).getResource() ;
-            if ( r2.hasProperty(JenaModelSpec.hasConnection) )
-            {
-                // Database
-                Model m = mSpec.openModel() ;
-                //                log.warn("Only accessing asserted statements in database model") ;
-                //                ModelRDB mdb = (ModelRDB)m ;
-                //                mdb.setQueryOnlyAsserted(true) ;
-                //                mdb.setDoFastpath(true) ;
-                
-                return m ;        
-            }
-        }
-        throw new JosekiServerException("Unrecognized model description: "+Utils.nodeLabel(r)) ;
-    }
-    
     public String toString()
     {
-        StringBuffer sbuff = new StringBuffer() ;
-        sbuff.append("{") ;
-        boolean first = true ;  
-        if ( defaultGraphDesc != null )
-        {
-            sbuff.append(Utils.nodeLabel(defaultGraphDesc)) ;
-            first = false ;
-        }
-        for ( Iterator iter = namedGraphsDesc.keySet().iterator() ; iter.hasNext() ; )
-        {
-            if ( first )
-                sbuff.append(" ") ;
-            first = false ;
-            String n = (String)iter.next() ;
-            Resource r = (Resource)namedGraphsDesc.get(n) ;
-            sbuff.append("(") ;
-            sbuff.append(n) ;
-            sbuff.append(", ") ;
-            sbuff.append(Utils.nodeLabel(r)) ;
-            sbuff.append(")") ;
-        }
-        sbuff.append("}") ;
-        return sbuff.toString() ;
+        if ( dataset != null )
+            return dataset.toString() ;
+        
+        return "Dataset not set : "+Utils.nodeLabel(datasetRoot) ;
     }
 }
 /*

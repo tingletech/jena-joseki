@@ -82,13 +82,7 @@ public class Configuration
         checkServiceReferences() ;
         server = findServer() ;
         log.info("==== Datasets ====") ;
-        if ( false )
-        {
-            checkForJosekiDatasetDesc() ;
-            OLD_findDataSets() ;
-        }
-        else
-            findDatasets() ; // New
+        findDatasets() ;
         log.info("==== Services ====") ;
         findServices() ;
         log.info("==== Bind services to the server ====") ;
@@ -530,18 +524,16 @@ public class Configuration
                 {
                     log.info("New dataset: "+Utils.nodeLabel(x)) ;
 
-                    src = new DatasetDesc(confModel) ;
-
-                    // Place in the configuration
-                    // TODO Chnage to a set of resources.
-
+                    src = new DatasetDesc(x) ;
                     datasets.put(x, src) ;
+                    
+                    // The rest is just checking structures ...
                     numDatasets ++ ;
 
                     if ( dftGraph != null )
                     {
                         log.info("  Default graph : "+Utils.nodeLabel(dftGraph)) ;
-                        src.setDefaultGraphDesc(dftGraph) ;
+                        //src.setDefaultGraphDesc(dftGraph) ;
                         numDefaultGraphs++ ;
                     }
                     dft = dftGraph ;
@@ -566,13 +558,6 @@ public class Configuration
                         throw new ConfigurationErrorException("No data for graph <"+graphName.getURI()+">") ;
                     }
 
-                    if ( src.getNamedGraphsDesc().containsKey(graphName.getURI()) )
-                    {
-                        warn("  Skipping duplicate named graph: <"+graphName.getURI()+">") ;
-                        continue ;
-                    }
-
-                    src.addNamedGraphDesc(graphName.getURI(), graphData) ;
                     numNamedGraphs++ ; 
                 }
 
@@ -581,123 +566,6 @@ public class Configuration
         } finally { qexec.close() ; }
     }
     
-    // TODO Remove
-    private void OLD_findDataSets()
-    {
-        if ( false )
-        {
-            // Debug
-            List x = findByType(JosekiVocab.RDFDataSet) ;
-    
-            for ( Iterator iter = x.iterator()  ; iter.hasNext() ; )
-            {
-                Resource r = (Resource)iter.next() ;
-                log.info("Dataset: "+Utils.nodeLabel(r)) ;
-            }
-        }
-        
-        // Warn about old stuff.
-        checkForJMS() ;
-        
-        // Need to do validity checking on the configuration model.
-        // Can also do like services - once with a fixed query then reduce elements
-        // to see if we find the same things
-
-        String[] s = new String[] {
-               "SELECT ?x ?dft ?graphName ?graphData",
-               "{ ?x a joseki:RDFDataSet ;",
-               "  OPTIONAL { ?x joseki:defaultGraph ?dft }",
-               "  OPTIONAL { ?x joseki:namedGraph  [ joseki:graphName ?graphName ; joseki:graphData ?graphData ] }",  
-               "}", 
-               "ORDER BY ?x ?dft ?graphName"
-               } ;
-               
-        
-        Query query = makeQuery(s) ;
-        QueryExecution qexec = QueryExecutionFactory.create(query, confModel) ;
-        try {
-            ResultSet rs = qexec.execSelect() ;
-            if ( false )
-            {
-                ResultSetRewindable rs2 = ResultSetFactory.makeRewindable(rs) ;
-                ResultSetFormatter.out(System.out, rs2, query) ;
-                rs2.reset() ;
-                rs = rs2 ;
-            }
-            
-            DatasetDesc src = null ;
-            Resource ds = null ;
-            Resource dft = null ;
-            for ( ; rs.hasNext() ; )
-            {
-                QuerySolution qs = rs.nextSolution() ;
-                Resource x = qs.getResource("x") ;
-                
-                Resource dftGraph = qs.getResource("dft") ; 
-                Resource graphName = qs.getResource("graphName") ;
-                Resource graphData = qs.getResource("graphData") ;
-                
-                if ( dftGraph == null && graphName == null )
-                    // Note the named graph match assumed a well-formed name/data pair
-                    warn("Dataset with no default graph and no named graphs: "+ Utils.nodeLabel(x)) ;
-                
-                // New dataset
-                if ( ! x.equals(ds) )
-                {
-                    log.info("New dataset: "+Utils.nodeLabel(x)) ;
-                    
-                    src = new DatasetDesc(confModel) ;
-                    
-                    // Place in the configuration
-                    datasets.put(x, src) ;
-                    numDatasets ++ ;
-                    
-                    if ( dftGraph != null )
-                    {
-                        log.info("  Default graph : "+Utils.nodeLabel(dftGraph)) ;
-                        src.setDefaultGraphDesc(dftGraph) ;
-                        numDefaultGraphs++ ;
-                    }
-                    dft = dftGraph ;
-                }
-                else
-                {
-                    // Check one default model.
-                    if ( dftGraph != null && !dftGraph.equals(dft) )
-                        warn("  Two default graphs") ;
-                }
-                
-                if ( graphName != null )
-                {
-                    log.info("  Graph / named : <"+graphName+">") ;
-                    
-                    if ( graphName.isAnon() )
-                        throw new ConfigurationErrorException("Graph name can't be a blank node") ; 
-                    
-                    if ( graphData == null )
-                    {
-                        warn("  Graph name but no graph data: <"+graphName.getURI()+">") ;
-                        throw new ConfigurationErrorException("No data for graph <"+graphName.getURI()+">") ;
-                    }
-                    
-                    if ( src.getNamedGraphsDesc().containsKey(graphName.getURI()) )
-                    {
-                        warn("  Skipping duplicate named graph: <"+graphName.getURI()+">") ;
-                        continue ;
-                    }
-                    
-                    src.addNamedGraphDesc(graphName.getURI(), graphData) ;
-                    numNamedGraphs++ ; 
-                }
-                
-                ds = x ;
-            }
-        } finally { qexec.close() ; }
-        
-        
-        //checkNamedGraphDescriptions() ;
-    }
-
     private void checkForJMS()
     {
         String[] s = new String[] {
@@ -759,7 +627,7 @@ public class Configuration
             QueryExecution qexec = QueryExecutionFactory.create(query, confModel) ;
             if ( qexec.execAsk()  )
             {
-                log.warn("Use of old style joseki:defaultGraph/joseki:namedGraph  is not supported") ;
+                log.warn("Use of old style joseki:defaultGraph/joseki:namedGraph is not supported") ;
                 log.warn("Use Jena assembler ja:defaultGraph/ja:namedGraph") ;
             }
             qexec.close() ;

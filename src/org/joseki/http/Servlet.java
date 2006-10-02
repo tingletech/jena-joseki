@@ -17,10 +17,10 @@ import org.joseki.*;
 
 /** The servlet class.
  * @author  Andy Seaborne
- * @version $Id: Servlet.java,v 1.17 2006-01-06 18:05:37 andy_seaborne Exp $
+ * @version $Id: Servlet.java,v 1.18 2006-10-02 15:37:40 andy_seaborne Exp $
  */
 
-public class Servlet extends HttpServlet implements Connector
+public class Servlet extends HttpServlet
 {
     private static final long serialVersionUID = 1L;  // Serializable.
     
