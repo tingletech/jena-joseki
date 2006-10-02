@@ -5,19 +5,18 @@
 
 package org.joseki;
 
-import java.util.* ;
+import java.util.Iterator;
+import java.util.List;
 
-import org.mortbay.jetty.* ;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.mortbay.jetty.Server;
+import org.mortbay.jetty.webapp.WebAppContext;
 import org.mortbay.util.MultiException;
-
-import org.mortbay.jetty.servlet.* ;
-
-//import org.joseki.Joseki ;
-import org.apache.commons.logging.* ;
 
 /** Standalone server.
  * 
- * @version $Id: RDFServer.java,v 1.14 2006-01-06 18:05:37 andy_seaborne Exp $
+ * @version $Id: RDFServer.java,v 1.15 2006-10-02 18:55:40 andy_seaborne Exp $
  * @author  Andy Seaborne
  */
 
@@ -30,7 +29,7 @@ public class RDFServer
     static int count = 0 ;
 
     Server server = null ;
-    WebApplicationContext webAppContextJoseki = null ;
+    WebAppContext webAppContextJoseki = null ;
     boolean earlyInitialize = true ;
     
     int port = -1 ;
@@ -85,16 +84,11 @@ public class RDFServer
 
         // Build the web application and server
         try {
-            server = new Server() ;
-            server.addListener(":"+port) ;
-            
-            webAppContextJoseki = 
-                    server.addWebApplication(serverBaseURI, "./webapps/joseki/") ;
-            webAppContextJoseki.setDefaultsDescriptor("etc/webdefault-minimal.xml") ;
-            
-            if ( webAppContextJoseki == null )
-                throw new JosekiServerException("Failed to create the web application (null returned)") ;
-            log.info("Created Joseki server: port="+port+"  URI="+serverBaseURI) ;
+            // And the Jetty server uses SLF4J 
+            server = new Server(port) ;
+            webAppContextJoseki = new WebAppContext(server, "webapps/joseki", "/") ;
+            server.addHandler(webAppContextJoseki) ;
+            server.start();
         } catch (Exception ex)
         {
             log.warn("RDFServer: Failed to create web application server: "+ex) ;
@@ -151,7 +145,7 @@ public class RDFServer
             
         } catch (MultiException ex)
         {
-            List exs = ex.getExceptions() ;
+            List exs = ex.getThrowables() ;
             java.net.BindException bindException = null ;
             for ( Iterator iter = exs.iterator() ; iter.hasNext() ; )
             {
@@ -175,6 +169,7 @@ public class RDFServer
         catch (Exception exMisc)
         {
             log.warn("Exception (server startup): "+exMisc) ;
+            exMisc.printStackTrace(System.err) ;
             System.exit(98) ;
         }
         
@@ -224,7 +219,7 @@ public class RDFServer
         try
         {
             server.stop() ;
-        } catch (InterruptedException e)
+        } catch (Exception e)
         {
             log.warn("Problems stopping server: ",e) ;
         }
