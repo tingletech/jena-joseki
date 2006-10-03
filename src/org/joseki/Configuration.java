@@ -20,8 +20,10 @@ import com.hp.hpl.jena.vocabulary.RDF;
 import com.hp.hpl.jena.vocabulary.RDFS;
 
 import org.apache.commons.logging.*;
+import org.joseki.module.Loadable;
 import org.joseki.module.Loader;
 import org.joseki.module.LoaderException;
+import org.joseki.vocabulary.JosekiSchema;
 
 public class Configuration
 {
@@ -81,6 +83,7 @@ public class Configuration
     {
         checkServiceReferences() ;
         server = findServer() ;
+        initServer(server) ;
         log.info("==== Datasets ====") ;
         findDatasets() ;
         log.info("==== Services ====") ;
@@ -215,6 +218,24 @@ public class Configuration
         return (Resource)x.get(0) ; 
     }
 
+    private void initServer(Resource server)
+    {
+        if ( server.hasProperty(JosekiSchema.initialization) )
+        {
+            StmtIterator sIter = server.listProperties(JosekiSchema.initialization) ;
+            for( ; sIter.hasNext(); )
+            {
+                Statement s = sIter.nextStatement() ;
+                Resource initResource = s.getResource() ;
+                Loadable obj = loader.loadAndInstantiateImplementation(initResource, ServerInitialization.class) ;
+                // The object will have been called during loading.
+                //ServerInitialization initObj = (ServerInitialization)obj ;
+            }
+            
+            
+        }
+    }
+    
     // ----------------------------------------------------------
     // Services
     
@@ -335,7 +356,7 @@ public class Configuration
                 // ----
                 Processor proc = null ;
                 try {
-                    proc =(Processor)loader.loadAndInstantiate(procRes, Processor.class) ;
+                    proc =(Processor)loader.loadAndInstantiateImplementation(procRes, Processor.class) ;
                 } catch (LoaderException ex)
                 {
                     warn(""+ex.getMessage()) ;

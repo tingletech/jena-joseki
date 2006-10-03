@@ -18,7 +18,7 @@ import com.hp.hpl.jena.shared.* ;
  * Understands the RDF properties for naming and initializing a new instance. 
  * 
  * @author  Andy Seaborne
- * @version $Id: Loader.java,v 1.2 2005-12-26 19:19:54 andy_seaborne Exp $
+ * @version $Id: Loader.java,v 1.3 2006-10-03 11:04:42 andy_seaborne Exp $
  */
 
 public class Loader
@@ -31,7 +31,7 @@ public class Loader
     {
     }
  
-    public Loadable loadAndInstantiate(Resource bindingResource, Class expectedType)  
+    public Loadable loadAndInstantiateImplementation(Resource bindingResource, Class expectedType)  
     {
         log.debug("Attempt to load: "+PrintUtils.fmt(bindingResource)) ;
         
@@ -57,6 +57,11 @@ public class Loader
             throw new LoaderException("No definition for "+PrintUtils.fmt(bindingResource)) ;
         }
 
+        return loadAndInstantiateClass(implementation, bindingResource, expectedType) ;
+    }
+        
+    public Loadable loadAndInstantiateClass(Resource implementation, Resource initResource, Class expectedType)
+    {
         String className = "<<unset>>" ;
         try {
             RDFNode n = implementation.getRequiredProperty(JosekiModule.className).getObject() ;
@@ -97,7 +102,8 @@ public class Loader
                 throw new LoaderException("  " + className + " is not of class "+expectedType.getName()) ;
 
             // Looks good - now initialize it.
-            module.init(bindingResource, implementation) ;
+            if ( initResource != null )
+                module.init(initResource, implementation) ;
 
             //logger.debug("  Class: " + className);
             //log.debug("Module: " + uriInterface) ; 

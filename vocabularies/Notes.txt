@@ -1,0 +1,5 @@
+schemagen --rdfs -i "$FILE" -n "$CLASS" -a "$NS" -o "$CLASS".java -e N3
+
+schemagen --rdfs -i joseki-schema.ttl -n "JosekiSchema" \
+    -a "http://joseki.org/2005/06/configuration#"  \
+    -o JosekiSchema.java -e N3

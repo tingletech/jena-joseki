@@ -28,6 +28,18 @@
 
 []  rdf:type joseki:Server ;
     joseki:serverDebug   "true" ;
+    # Example of some initialization code.
+    joseki:initialization
+        [ module:implementation 
+            [ module:className <java:org.joseki.util.ServiceInitSimple> ;
+              rdfs:label "Example initializer" ; ]
+        ] ;
+    # ... which can be repeated.
+    joseki:initialization
+        [ module:implementation 
+            [ module:className <java:org.joseki.util.ServiceInitSimple> ;
+              rdfs:label "Example2" ; ]
+        ] ;
     .
 
 ## --------------------------------------------------------------

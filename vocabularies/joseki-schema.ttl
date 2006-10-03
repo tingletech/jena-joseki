@@ -11,7 +11,7 @@
 <> rdfs:comment "Configuration schema for Joseki" ;
    rdfs:seeAlso <http://joseki.org/> .
 
-<> rdfs:comment "$Id: joseki-schema.ttl,v 1.1 2005-06-24 19:48:36 andy_seaborne Exp $" .
+<> rdfs:comment "$Id: joseki-schema.ttl,v 1.2 2006-10-03 11:04:41 andy_seaborne Exp $" .
 
 ## ------------------------------------------------------------
 ## Configuration
@@ -27,6 +27,10 @@
 :Server     rdf:type    rdfs:Class ;
     rdfs:comment  "Server" ;
     rdfs:label    "Server" ;
+    .
+
+:initialization  rdf:type    rdf:Property ;
+    rdfs:domain         rdfs:Resource ;
     .
 
 ## ------------------------------------------------------------
@@ -76,6 +80,7 @@
 
 ## ------------------------------------------------------------
 ## Dataset
+## OLD - do not use.
 
 :RDFDataSet     rdf:type    rdfs:Class ;
     rdfs:comment            "" ;

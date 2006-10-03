@@ -13,7 +13,18 @@ Joseki3 is not compatible with Joseki2.
 
 == Changes from Joseki 3.0 beta 1&2
 
-+ The configuration file now uses Jena assembler vocabulary for datasets, as well as graphs.
++ The configuration file now uses Jena assemblers for datasets as well as models.
+  See joseki-config-ex.ttl for examples
+  Warning are issued for use of the vocabulary used in Joseki-3-dev releases.
+
++ Jar file changes
+  common-logging.jar ==> commons-logging-1.1.jar
+  arq-extra.jar : new
+  Upgraded to wstx-asl-3.0.0
+
++ Uses Jetty 6, upgraded from Jetty 5.
+	org.mortbay*jar ==> jetty*jar
+	javax.servlet.jar ==> servlet-api-2.5-6.0.1.jar
 
 
 
