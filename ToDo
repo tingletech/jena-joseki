@@ -9,8 +9,6 @@ Joseki3
   HTTP parameters
    webapps/WEB_INF/web.xml needs to be changed for a service
 
-+ Upgrade to Jetty6??
-
 + Release checking
 	Download and front page.
 

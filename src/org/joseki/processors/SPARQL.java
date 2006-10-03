@@ -9,25 +9,28 @@ package org.joseki.processors;
 import java.util.Iterator;
 import java.util.List;
 
-import com.hp.hpl.jena.query.*;
-import com.hp.hpl.jena.rdf.model.*;
-import com.hp.hpl.jena.shared.JenaException;
-import com.hp.hpl.jena.shared.NotFoundException;
-import com.hp.hpl.jena.shared.QueryStageException;
-import com.hp.hpl.jena.util.FileManager;
-
-import org.apache.commons.logging.*;
-
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.joseki.*;
 import org.joseki.module.Loadable;
 import org.joseki.util.GraphUtils;
+
+import com.hp.hpl.jena.query.*;
+import com.hp.hpl.jena.rdf.model.*;
+import com.hp.hpl.jena.shared.*;
+import com.hp.hpl.jena.util.FileManager;
 
 public class SPARQL extends QueryCom implements Loadable
 {
     // TODO Refactor into the stages of a query 
     private static Log log = LogFactory.getLog(SPARQL.class) ;
-    static final Property allowDatasetDescP = ResourceFactory.createProperty(JosekiVocab.getURI(), "allowExplicitDataset") ;
-    static final Property allowWebLoadingP = ResourceFactory.createProperty(JosekiVocab.getURI(), "allowWebLoading") ;
+    
+    static final String policyMRSW  = JosekiVocab.lockingPolicyMRSW.getURI();
+    static final String policyMutex = JosekiVocab.lockingPolicyMutex.getURI();
+    static final String policyNone  = JosekiVocab.lockingPolicyNone.getURI();
+    
+    static final Property allowDatasetDescP = JosekiVocab.allowExplicitDataset ;
+    static final Property allowWebLoadingP  = JosekiVocab.allowWebLoading ;
     
     static private Model m = ModelFactory.createDefaultModel() ;
     
@@ -65,6 +68,49 @@ public class SPARQL extends QueryCom implements Loadable
             allowDatasetDesc = true ;
         if ( service.hasProperty(allowWebLoadingP, XSD_TRUE) )
             allowWebLoading = true ;
+
+        if ( ! service.hasProperty(JosekiVocab.lockingPolicy) )
+        {
+            log.info("Locking policy not declared - default to mutex") ;
+            setLock(new LockMutex()) ;
+        }
+
+        
+        if ( service.hasProperty(JosekiVocab.lockingPolicy) )
+        {
+            RDFNode policy = service.getProperty(JosekiVocab.lockingPolicy).getObject() ;
+
+            if ( ! policy.isURIResource() )
+            {
+                log.warn("Locking policy is not a URI") ;
+                setLock(new LockMutex()) ;
+            }
+            else
+            {
+                String policyURI = ((Resource)policy).getURI() ;
+    
+                if ( policyURI.equals(policyMRSW) )
+                {
+                    log.info("Locking policy: multiple reader, single writer") ;
+                    setLock(new LockMRSW()) ;
+                }
+                else if (policyURI.equals(policyMutex) )
+                {
+                    log.info("Locking policy: single request") ;
+                    setLock(new LockMutex()) ;
+                }
+                else if (policyURI.equals(policyNone) )
+                {
+                    log.info("Locking policy: none") ;
+                    setLock(new LockMutex()) ;
+                }
+                else
+                {
+                    log.warn("Unrecognized locking policy: <"+policyURI+">") ;
+                    setLock(new LockMutex()) ;
+                }
+            }
+        }
         
         log.info("Dataset description: "+allowDatasetDesc+" // Web loading: "+allowWebLoading) ;
     }

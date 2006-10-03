@@ -8,20 +8,18 @@ package org.joseki.processors;
 
 
 import com.hp.hpl.jena.shared.Lock;
-import com.hp.hpl.jena.shared.LockMRSW;
+import com.hp.hpl.jena.shared.LockMutex;
 
 import org.joseki.*;
 
 
 public abstract class QueryCom implements Processor
 {
-    Lock lock = new LockMRSW() ;
+    Lock lock = new LockMutex() ;   // Default and safe choice
     
     /** Execute a query without a lock */ 
     public void exec(Request request, Response response, DatasetDesc datasetDesc) throws ExecutionException
     {
-        // TODO Transactional lock
-        
         Lock operationLock = lock ;
         
         if ( datasetDesc != null && datasetDesc.getDataset() != null )
@@ -31,6 +29,11 @@ public abstract class QueryCom implements Processor
         try {
             execQuery(request, response, datasetDesc) ;
         } finally { operationLock.leaveCriticalSection() ; }
+    }
+
+    public void setLock(Lock lock)
+    {
+        this.lock = lock ;
     }
     
     /** Execute a query within an MRSW lock */ 

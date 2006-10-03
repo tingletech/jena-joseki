@@ -23,7 +23,6 @@ import org.apache.commons.logging.*;
 import org.joseki.module.Loadable;
 import org.joseki.module.Loader;
 import org.joseki.module.LoaderException;
-import org.joseki.vocabulary.JosekiSchema;
 
 public class Configuration
 {
@@ -220,9 +219,9 @@ public class Configuration
 
     private void initServer(Resource server)
     {
-        if ( server.hasProperty(JosekiSchema.initialization) )
+        if ( server.hasProperty(JosekiVocab.initialization) )
         {
-            StmtIterator sIter = server.listProperties(JosekiSchema.initialization) ;
+            StmtIterator sIter = server.listProperties(JosekiVocab.initialization) ;
             for( ; sIter.hasNext(); )
             {
                 Statement s = sIter.nextStatement() ;
@@ -394,12 +393,12 @@ public class Configuration
         }
         finally { qexec.close() ; }
         
-        // Check that we don't find more part forms services 
-        // than well formed service descriptions
-        checkServicesImpls(serviceResources) ;
-
-        // Check that we don't find more part formed service impls
-        // than well formed service descriptions
+//        // Check that we don't find more part forms services 
+//        // than well formed service descriptions
+//        checkServicesImpls(serviceResources) ;
+//
+//        // Check that we don't find more part formed service impls
+//        // than well formed service descriptions
         
         return serviceResources ;
     }
@@ -442,17 +441,17 @@ public class Configuration
         return desc ;
     }
 
-    private void checkServicesImpls(Set definedServices)
-    {
-        // ---- Check : class names for implementations
-        List x = findByType(JosekiVocab.ServicePoint) ;
-        for ( Iterator iter = x.iterator() ; iter.hasNext() ; )
-        {
-            Resource r = (Resource)iter.next() ;
-            if ( !definedServices.contains(r) )
-                 warn("No implementation for service: "+Utils.nodeLabel(r) ) ;
-        }
-    }
+//    private void checkServicesImpls(Set definedServices)
+//    {
+//        // ---- Check : class names for implementations
+//        List x = findByType(JosekiVocab. .ServicePoint) ;
+//        for ( Iterator iter = x.iterator() ; iter.hasNext() ; )
+//        {
+//            Resource r = (Resource)iter.next() ;
+//            if ( !definedServices.contains(r) )
+//                 warn("No implementation for service: "+Utils.nodeLabel(r) ) ;
+//        }
+//    }
 
     // ----------------------------------------------------------
     // Server set up
