@@ -11,27 +11,9 @@ then
 
 cd "$JOSEKIROOT"
 
-## JETTY_HOME=${JETTY_HOME:-/home/afs/sys/Jetty-4}
-JETTY_HOME=${JETTY_HOME:-/home/afs/sys/Jetty-5}
-
-CP2="$(alljars $PWD/lib)"
-CP2="$CP2;$(alljars $PWD/lib2)"
-CP2="$CP2;$JAVA_HOME/lib/tools.jar"
-
-# Core Jetty - in lib/
-# CP2="$CP2;$(alljars $JETTY_HOME/lib)"
-# Extra Jetty
-CP2="$CP2;$(alljars $JETTY_HOME/ext)"
-
-if [ "$CP" != "" ]
-then
-    CP2="$CP;$CP2"
-else
-    CP2="$JOSEKIROOT/classes;$CP2"
-    fi
+CP="$($JOSEKIROOT/bin/make_classpath $JOSEKIROOT)"
 
 #DEBUG=-DDEBUG=true
-FIX=-Dorg.mortbay.util.FileResource.checkAliases=false 
 
 LOGCONFIG=${LOGCONFIG:-file:etc/log4j.properties}
 LOGGING="-Dlog4j.configuration=${LOGCONFIG}"
@@ -39,4 +21,4 @@ LOGGING="-Dlog4j.configuration=${LOGCONFIG}"
 ## Run a basic server
 CONFIG=etc/jetty.xml
 
-java -cp "$CP2" $LOGGING $DEBUG $FIX org.mortbay.jetty.Server $CONFIG
+java -cp "$CP" $LOGGING $DEBUG org.mortbay.jetty.Server $CONFIG
