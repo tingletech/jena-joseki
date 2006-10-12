@@ -226,6 +226,9 @@ joseki:ProcessorSPARQL
     # Parameters - this processor processes FROM/FROM NAMED
     joseki:allowExplicitDataset       "true"^^xsd:boolean ;
     joseki:allowWebLoading            "true"^^xsd:boolean ;
+    ## And has no locking policy (it loads daat each time).
+    ## The default is mutex (one request at a time)
+    joseki:lockingPolicy                joseki:lockingPolicyNone ;
     .
 
 joseki:ProcessorSPARQL_FixedDS
@@ -236,6 +239,8 @@ joseki:ProcessorSPARQL_FixedDS
     # This processor does not accept queries with FROM/FROM NAMED
     joseki:allowExplicitDataset       "false"^^xsd:boolean ;
     joseki:allowWebLoading            "false"^^xsd:boolean ;
+    joseki:lockingPolicy              joseki:lockingPolicyMRSW ;
+    ## joseki:lockingPolicy                joseki:lockingPolicyMutex ;
     .
 
 joseki:ImplSPARQL

@@ -1,5 +1,7 @@
 schemagen --rdfs -i "$FILE" -n "$CLASS" -a "$NS" -o "$CLASS".java -e N3
 
-schemagen --rdfs -i joseki-schema.ttl -n "JosekiSchema" \
+schemagen --rdfs -e N3 \
+    -i joseki-schema.ttl -n "JosekiSchemaBase" \
     -a "http://joseki.org/2005/06/configuration#"  \
-    -o JosekiSchema.java -e N3
+    -o ../src/org/joseki/vocabulary/JosekiSchemaBase.java \
+    --package org.joseki.vocabulary
