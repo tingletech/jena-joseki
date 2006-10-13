@@ -6,7 +6,7 @@
     <!-- The major and minor version numbers  -->
     <property name="version-major"   value="3"/>
     <property name="version-minor"   value="0"/>
-    <property name="version-status"  value="-dev-6"/>
+    <property name="version-status"  value="-rc-0"/>
     <property name="version"
          value="${version-major}.${version-minor}${version-status}"/>
 
@@ -175,8 +175,8 @@
         <copy todir="${webapps.build.dir}/WEB-INF/lib">
           <fileset dir="${lib.dir}"  >
               <include name="*.jar"/>
-              <exclude name="javax.servlet.jar"/>
-              <exclude name="org.mortbay.*.jar"/>
+              <exclude name="jservlet-api-*.jar"/>
+              <exclude name="jetty.*.jar"/>
               <exclude name="jasper*.jar"/>
           </fileset>
         </copy>
