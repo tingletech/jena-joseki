@@ -18,8 +18,6 @@ Joseki3
 
 + Refactor SPARQL.java to pick out the stages so the general process can be inherited.
 
-+ Locking can't always be MRSW (inference caches) -- Concurrent request problem
-
 + error testing
   No joseki:ImplSPARQL leads to silent error
   
@@ -40,8 +38,6 @@ Joseki3
   As separate processors?
 
 + Test harness
-
-+ Transactional locking in QueryCom
 
 - - - - - - - - - - - -
 

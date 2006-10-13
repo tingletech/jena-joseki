@@ -1,3 +1,5 @@
+# Example fragments.
+
 # This file is written in N3 / Turtle
 
 @prefix rdfs:   <http://www.w3.org/2000/01/rdf-schema#> .
@@ -114,27 +116,26 @@
 ## --------------------------------------------------------------
 ## Datasets
 
-## VERY OLD
 
-_:ds1   rdf:type joseki:RDFDataSet ;
+_:ds1   rdf:type ja:RDFDataset ;
     joseki:defaultGraph    _:model1 ;
     rdfs:label "Dataset _:ds1" ;
-    joseki:namedGraph
-        [ joseki:graphName      <http://example.org/name1> ;
-          joseki:graphData      _:model1 ] ;
+    ja:namedGraph
+        [ ja:graphName      <http://example.org/name1> ;
+          ja:graphData      _:model1 ] ;
     # Could use the location manager and have the named thing only
     # Can't have two names for one graph?
-    joseki:namedGraph
-        [ joseki:graphName      <http://example.org/name2> ;
-          joseki:graphData  _:model2 
+    ja:namedGraph
+        [ ja:graphName      <http://example.org/name2> ;
+          ja:graphData  _:model2 
         ] ;
     ## Short versions?
     .
 
 # A dataset of one model as the default graph, data loaded from a file.
-_:books   rdf:type joseki:RDFDataSet ;
+_:books   rdf:type ja:RDFDataset ;
     rdfs:label "Books" ;
-   joseki:defaultGraph
+   ja:defaultGraph
       [ rdfs:label "books.n3" ;
         a ja:MemoryModel ;
         ja:content [ja:externalContent <file:Data/books.n3> ] ;

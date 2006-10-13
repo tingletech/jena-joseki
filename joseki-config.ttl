@@ -1,5 +1,3 @@
-## IN TRANSITITION to Dataset assembler usage
-
 # This file is written in N3 / Turtle
 
 @prefix rdfs:   <http://www.w3.org/2000/01/rdf-schema#> .
@@ -35,6 +33,12 @@
 
 []  rdf:type joseki:Server ;
     joseki:serverDebug   "true" ;
+    # Example of some initialization code.
+    joseki:initialization
+        [ module:implementation 
+            [ module:className <java:org.joseki.util.ServiceInitSimple> ;
+              rdfs:label "Example initializer" ; ]
+        ] ;
     .
 
 ## --------------------------------------------------------------
@@ -76,7 +80,6 @@
 ## Datasets
 
 _:books   rdf:type ja:RDFDataset ;
-          rdf:type joseki:RDFDataSet ;
     rdfs:label "Books" ;
     # Either - or
     ja:defaultGraph 

@@ -14,7 +14,8 @@ or the query protocol request. </p> <p>The same
 configuration is used for both HTTP and SOAP.</p> <p>The
 configuration file is an RDF graph. The default name is
 "joseki-config.ttl" and is often written in Turtle or N3, rather than
-RDF/XML. The server can read the full range of RDF serializations.</p>
+RDF/XML. The server can read the full range of RDF serializations. The 
+distribution includes examples in &quot;joseki-config-example.ttl&quot;</p>
 <p>Beware that the <code>web.xml</code> file must route incoming requests to the 
 Joseki servlet. See the <a href="protocol.html#http">protocol specific details</a>.</p>
 <p>(Example web.xml)</p><h2>Example</h2>
@@ -48,7 +49,8 @@ description of the dataset elsewhere. We coudl have places the
 definition inline or used a URI.</p> <h3>Defining Datasets</h3>
 <p>A dataset is defined using a <a href="http://jena.sourceforge.net/assembler/">
 Jena assembler description</a> augmented with vocabulary to handle RDF datasets, 
-not just single Jena models. </p>
+not just single Jena models. <a href="http://jena.sourceforge.net/ARQ/">ARQ</a> 
+also directly understands the augmented vocabulary.</p>
 <p>An RDF dataset is a collection of a unnamed, default graph and
 zero or more named graphs. Queries access the named graph through the
 GRAPH keyword in SPARQL.</p> <p>Each graph is a Jena
@@ -58,11 +60,11 @@ connection to an external OWL DL reasoner, such as <a href="http://www.mindswap.
 (an open source reasoner from <a href="http://www.mindswap.org/">MINDSWAP</a>).</p>
 <p>This first dataset just has one graph - the default graph. The
 content is loaded from a file (there could be several files loaded) but
-the file name does not give the model a name. The dataset description has an explicit type.</p> <pre class="box"># A dataset of one model as the default graph<br><br>_:books rdf:type joseki:RDFDataSet ;<br>    rdfs:label      "Books" ;<br>    joseki:defaultGraph<br>       [ a ja:MemoryModel ;<br>         rdfs:label "books.n3" ;<br>         ja:content [ ja:externalContent &lt;file:Data/books.n3&gt; ]<br>       ] ;<br>    .<br></pre>
+the file name does not give the model a name. The dataset description has an explicit type.</p> <pre class="box"># A dataset of one model as the default graph<br><br>_:books rdf:type ja:RDFDataset ;<br>    rdfs:label      "Books" ;<br>    ja:defaultGraph<br>       [ a ja:MemoryModel ;<br>         rdfs:label "books.n3" ;<br>         ja:content [ ja:externalContent &lt;file:Data/books.n3&gt; ]<br>       ] ;<br>    .<br></pre>
 <p>A more complicated example places the default graph
 description elsewhere and has two, named graph. Note that the names of
 the graphs are not the same as where the data for the graphs comes from.</p>
-<pre class="box">_:ds1 rdf:type joseki:RDFDataSet ;<br>    joseki:defaultGraph   _:model0 ;<br>    rdfs:label            "Dataset _:ds1" ;<br>    joseki:namedGraph<br>        [ joseki:graphName  &lt;http://example.org/name1&gt; ;<br>          joseki:graphData  _:model1 ] ;<br>    joseki:namedGraph<br>        [ joseki:graphName  &lt;http://example.org/name2&gt; ;<br>          joseki:graphData  _:model2 ] ;<br>    .<br></pre>
+<pre class="box">_:ds1 rdf:type joseki:RDFDataSet ;<br>    joseki:defaultGraph   _:model0 ;<br>    rdfs:label            "Dataset _:ds1" ;<br>    ja:namedGraph<br>        [ ja:graphName  &lt;http://example.org/name1&gt; ;<br>          ja:graphData  _:model1 ] ;<br>    ja:namedGraph<br>        [ ja:graphName  &lt;http://example.org/name2&gt; ;<br>          ja:graphData  _:model2 ] ;<br>    .<br></pre>
 <h3>Model Descriptions</h3> <p>Next, we have model
 descriptions, using the Jena assembler vocabulary:</p> <pre class="box">## --------------------------------------------------------------<br>## Individual graphs (Jena calls them Models)<br>## (syntax of data files is determined by file extension - defaults to RDF/XML)<br><br>_:model0 rdf:type ja:MemoryModel ;<br>    rdfs:label "Model (plain, merge the 2 RDF files)" ;<br>    ja:content [ <br>        ja:externalContent &lt;file:D1.ttl&gt; ;<br>        ja:externalContent &lt;file:D2.ttl&gt; ;<br>      ] ;<br>    .<br><br>_:model1 rdf:type ja:MemoryModel ;<br>    rdfs:label "Model (D1.ttl for content)" ;<br>    ja:content [ <br>        ja:externalContent &lt;file:D1.ttl&gt; ;<br>       ] ;<br>    .<br><br>_:model2 rdf:type ja:MemoryModel ;<br>    rdfs:label "Model (D2.ttl for content)" ;<br>    ja:content [ <br>        ja:externalContent &lt;file:D2.ttl&gt; ;<br>      ] ;<br>    .<br></pre>
 <p>The dataset example placed the description for the data for
@@ -72,5 +74,10 @@ inline, using blank nodes, but it is convenient to give them URIs and
 place the definitions elsewhere.&nbsp;Each processor description can
 have parameters which are passed to each class instance when created.</p> <p>A
 processor implemented by a module that is a dynamically loaded Java class.&nbsp;</p>
-<pre class="box">joseki:ProcessorSPARQL<br>    rdf:type                     joseki:Processor ;<br>    rdfs:label                   "General SPARQL processor" ;<br>    module:implementation        joseki:ImplSPARQL ;<br>    # Parameters - this processor processes FROM/FROM NAMED<br>    joseki:allowExplicitDataset  "true"^^xsd:boolean ;<br>    joseki:allowWebLoading       "true"^^xsd:boolean ;<br>    .<br><br>joseki:ProcessorSPARQL_FixedDS<br>    rdf:type                     joseki:Processor ;<br>    rdfs:label                   "SPARQL processor for fixed datasets" ;<br>    module:implementation        joseki:ImplSPARQL ;<br>    # This processor does not accept queries with FROM/FROM NAMED<br>    joseki:allowExplicitDataset  "false"^^xsd:boolean ;<br>    joseki:allowWebLoading       "false"^^xsd:boolean ;<br> .<br><br>joseki:ImplSPARQL<br>    rdf:type          joseki:ServiceImpl ;<br>    module:className  &lt;java:org.joseki.processors.SPARQL&gt; .<br><br># For Emacs:<br># Local Variables:<br># tab-width: 4<br># indent-tabs-mode: nil<br># End:<br></pre><p></p>
+<pre class="box">joseki:ProcessorSPARQL<br>    rdf:type                     joseki:Processor ;<br>    rdfs:label                   "General SPARQL processor" ;<br>    module:implementation        joseki:ImplSPARQL ;<br>    # Parameters - this processor processes FROM/FROM NAMED<br>    joseki:allowExplicitDataset  "true"^^xsd:boolean ;<br>    joseki:allowWebLoading       "true"^^xsd:boolean ;
+    ## And has no locking policy (it loads data each time).
+    ## The default is mutex (one request at a time)
+    joseki:lockingPolicy joseki:lockingPolicyNone ;<br>    .<br><br>joseki:ProcessorSPARQL_FixedDS<br>    rdf:type                     joseki:Processor ;<br>    rdfs:label                   "SPARQL processor for fixed datasets" ;<br>    module:implementation        joseki:ImplSPARQL ;<br>    # This processor does not accept queries with FROM/FROM NAMED<br>    joseki:allowExplicitDataset  "false"^^xsd:boolean ;<br>    joseki:allowWebLoading       "false"^^xsd:boolean ;
+    # Fixed background dataset : multiple read requests are OK
+    joseki:lockingPolicy joseki:lockingPolicyMRSW ;<br> .<br><br>joseki:ImplSPARQL<br>    rdf:type          joseki:ServiceImpl ;<br>    module:className  &lt;java:org.joseki.processors.SPARQL&gt; .<br><br># For Emacs:<br># Local Variables:<br># tab-width: 4<br># indent-tabs-mode: nil<br># End:<br></pre><p></p>
 </body></html>
