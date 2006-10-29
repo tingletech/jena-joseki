@@ -17,6 +17,9 @@ public class Run
         x = HttpUtils.match("*/*", "text/*") ;
         x = HttpUtils.match("text/html", "text/*") ;
         x = HttpUtils.match("application/xml", "text/*") ;
+        
+        String ff = "text/xml,application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5" ;
+        x = HttpUtils.match(ff, "text/*") ;
     }
 }
 

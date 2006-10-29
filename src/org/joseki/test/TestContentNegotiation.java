@@ -13,11 +13,14 @@ import junit.framework.TestCase;
 /** org.joseki.server.http.TestContentNegotiation
  * 
  * @author Andy Seaborne
- * @version $Id: TestContentNegotiation.java,v 1.3 2005-12-26 19:19:54 andy_seaborne Exp $
+ * @version $Id: TestContentNegotiation.java,v 1.4 2006-10-29 22:06:41 andy_seaborne Exp $
  */
 
 public class TestContentNegotiation extends TestCase
 {
+    static final String ctFirefox = "text/xml,application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5" ;
+    static final String ctIE_6  = "image/gif, image/x-xbitmap, image/jpeg, image/pjpeg, application/x-shockwave-flash, application/vnd.ms-excel, application/msword, */*" ;
+    
     static final String ctApplicationXML     =  "application/xml" ;
     static final String ctApplicationRDFXML  =  "application/rdf+xml" ;
     static final String ctApplicationStar    =  "application/*" ;
