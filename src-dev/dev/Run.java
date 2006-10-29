@@ -4,18 +4,20 @@
  * [See end of file]
  */
 
-package org.joseki;
+package dev;
 
-import org.joseki.vocabulary.JosekiSchemaBase;
+import org.joseki.http.HttpUtils;
 
-import com.hp.hpl.jena.rdf.model.Resource;
-import com.hp.hpl.jena.rdf.model.ResourceFactory;
-
-public class JosekiVocab extends JosekiSchemaBase
+public class Run
 {
-    public static Resource lockingPolicyMRSW  = ResourceFactory.createResource(NS+"lockingPolicyMRSW") ;
-    public static Resource lockingPolicyMutex = ResourceFactory.createResource(NS+"lockingPolicyMutex") ;
-    public static Resource lockingPolicyNone  = ResourceFactory.createResource(NS+"lockingPolicyNone") ;
+    public static void main(String[] argv)
+    {
+        //String f = httpRequest.getHeader(headerAccept) ;
+        String x ;
+        x = HttpUtils.match("*/*", "text/*") ;
+        x = HttpUtils.match("text/html", "text/*") ;
+        x = HttpUtils.match("application/xml", "text/*") ;
+    }
 }
 
 /*
