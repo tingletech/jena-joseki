@@ -71,31 +71,48 @@ public class ResponseHttp extends Response
         String writerMimeType = null ;
         String charset = null ;
         
-        String f = httpRequest.getHeader(headerAccept) ;
-        String textContentType =  HttpUtils.match(f, "text/*") ; 
-
-        if ( textContentType != null )
-        {
-            // Send to a browser.  Send as whatever the default type is for the 
-            writerMimeType = Joseki.contentTypeForText ;
-            mimeType = Joseki.contentTypeForText ;
-            log.debug("MIME type (text-like): "+writerMimeType) ;
-        }
+        // Return text/plain if it looks like a browser.
+        String acceptHeader = httpRequest.getHeader(headerAccept) ;
+//        String textContentType =  HttpUtils.match(f, "text/*") ; 
+//
+//        if ( textContentType != null )
+//        {
+//            // Send to a browser.  Send as whatever the default type is for the 
+//            writerMimeType = Joseki.contentTypeForText ;
+//            mimeType = Joseki.contentTypeForText ;
+//            log.debug("MIME type (text-like): "+writerMimeType) ;
+//        }
         
         if ( mimeType == null )
         {
-            AcceptItem i = HttpUtils.chooseContentType(httpRequest, prefContentType, defaultContentType) ; 
-            mimeType = i.getAcceptType() ;
+            AcceptItem i = HttpUtils.chooseContentType(httpRequest, prefContentType, null /*defaultContentType*/) ;
+            if ( i != null )
+                mimeType = i.getAcceptType() ;
         }
         
         if ( charset == null )
         {
             AcceptItem i = HttpUtils.chooseCharset(httpRequest,  prefCharset, defaultCharset) ;
-            charset = i.getAcceptType() ;
+            if ( i != null )
+                charset = i.getAcceptType() ;
         }
         
         if ( writerMimeType == null )
             writerMimeType = mimeType ;
+        
+        if ( mimeType == null || charset == null )
+        {
+            try
+            {
+                httpResponse.sendError(HttpServletResponse.SC_UNSUPPORTED_MEDIA_TYPE) ;
+            } catch (IOException ex)
+            {
+                log.warn("Internal server error") ;
+                try { httpResponse.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR) ; }
+                catch (Exception e) {}
+            }
+        }
+        
         
         ser.setHttpResponse(httpRequest, httpResponse, mimeType, charset);   
         
