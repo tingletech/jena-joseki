@@ -104,7 +104,7 @@ public class ResponseHttp extends Response
         {
             try
             {
-                httpResponse.sendError(HttpServletResponse.SC_UNSUPPORTED_MEDIA_TYPE) ;
+                httpResponse.sendError(HttpServletResponse.SC_NOT_ACCEPTABLE) ;
             } catch (IOException ex)
             {
                 log.warn("Internal server error") ;
