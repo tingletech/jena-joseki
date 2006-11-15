@@ -113,7 +113,6 @@ public class ResponseHttp extends Response
             }
         }
         
-        
         ser.setHttpResponse(httpRequest, httpResponse, mimeType, charset);   
         
         try {
