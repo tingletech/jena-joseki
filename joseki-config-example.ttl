@@ -211,6 +211,23 @@ _:model_inf_2 rdfs:label "Inf-2" ;
          [ ja:reasonerURL <http://jena.hpl.hp.com/2003/RDFSExptRuleReasoner> ] 
     . 
 
+# Pellet : a dataset with a single model (Pellet through DIG)
+_:test rdf:type ja:RDFDataset ;
+     rdfs:label "Test" ;
+     ja:defaultGraph
+        [ ja:baseModel
+             [ a ja:MemoryModel ;
+               ja:content [ja:externalContent <http://www.example.org/test>] ; 
+             ] ;
+         ja:reasoner
+             [ <http://jena.hpl.hp.com/2003/JenaReasoner#extReasonerURL>
+                      <http://localhost:8081/> ;
+               ja:reasonerURL <http://jena.hpl.hp.com/2003/DIGReasoner>
+             ]
+        ] ;
+     .
+
+
 
 ## --------------------------------------------------------------
 ## Processors

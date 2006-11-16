@@ -29,8 +29,9 @@ LOG="$LOG1 $LOG2"
 ## Check if there are copies of the joseki.jar in lib
 ## and the webapps directory
 
+JAVA=java
+if [ "$JAVA_HOME" != "" ]
+    JAVA="$JAVA_HOME/bin/java"
+    fi
 
-
-
-
-exec java -cp "$CP" $LOG joseki.rdfserver "$@"
+exec "$JAVA" -cp "$CP" $LOG joseki.rdfserver "$@"
