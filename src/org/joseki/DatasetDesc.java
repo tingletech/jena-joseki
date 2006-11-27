@@ -25,10 +25,12 @@ public class DatasetDesc
     /** Drop any dataset to free system resources */ 
     public void freeDataset() { dataset = null ; }
     
+    public Resource getResource() { return datasetRoot ; }
+    
     public Dataset getDataset()
     {
         if ( dataset == null )
-            dataset = (Dataset)Assembler.general.open(datasetRoot) ;
+            dataset = (Dataset)Assembler.general.open(getResource()) ;
         return dataset ;
     }
     
