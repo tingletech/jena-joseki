@@ -273,7 +273,7 @@ public class SPARQL extends QueryCom implements Loadable
         if ( !useQueryDesc && dataset == null )
         {
             if ( datasetDesc != null )
-                dataset = datasetDesc.getDataset() ;
+                dataset = getDataset(datasetDesc) ;
         }
         
         if ( !useQueryDesc && dataset == null )
@@ -294,6 +294,11 @@ public class SPARQL extends QueryCom implements Loadable
         response.setCallback(new QueryExecutionClose(qexec)) ;
         executeQuery(query, queryStringLog, qexec, response) ;
         
+    }
+    
+    protected Dataset getDataset(DatasetDesc datasetDesc)
+    {
+        return datasetDesc.getDataset() ;
     }
     
     private void executeQuery(Query query, String queryStringLog, QueryExecution qexec, Response response)
