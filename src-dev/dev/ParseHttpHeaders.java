@@ -1,5 +1,5 @@
 /*
- * (c) Copyright 2004, 2005, 2006 Hewlett-Packard Development Company, LP
+ * (c) Copyright 2004, 2005, 2006, 2007 Hewlett-Packard Development Company, LP
  * All rights reserved.
  * [See end of file]
  */
@@ -10,7 +10,7 @@ package dev;
 /** apps.ParseHttpHeaders
  * 
  * @author Andy Seaborne
- * @version $Id: ParseHttpHeaders.java,v 1.2 2005-12-26 19:19:54 andy_seaborne Exp $
+ * @version $Id: ParseHttpHeaders.java,v 1.3 2007-01-02 13:58:09 andy_seaborne Exp $
  */
 
 public class ParseHttpHeaders
@@ -104,7 +104,7 @@ public class ParseHttpHeaders
 }
 
 /*
- * (c) Copyright 2004, 2005, 2006 Hewlett-Packard Development Company, LP
+ * (c) Copyright 2004, 2005, 2006, 2007 Hewlett-Packard Development Company, LP
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without

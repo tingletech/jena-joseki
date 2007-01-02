@@ -1,5 +1,5 @@
 /*
- * (c) Copyright 2004, 2005, 2006 Hewlett-Packard Development Company, LP
+ * (c) Copyright 2004, 2005, 2006, 2007 Hewlett-Packard Development Company, LP
  * All rights reserved.
  * [See end of file]
  */
@@ -13,7 +13,7 @@ import junit.framework.TestCase;
 /** org.joseki.server.http.TestContentNegotiation
  * 
  * @author Andy Seaborne
- * @version $Id: TestContentNegotiation.java,v 1.4 2006-10-29 22:06:41 andy_seaborne Exp $
+ * @version $Id: TestContentNegotiation.java,v 1.5 2007-01-02 13:58:06 andy_seaborne Exp $
  */
 
 public class TestContentNegotiation extends TestCase
@@ -89,7 +89,7 @@ public class TestContentNegotiation extends TestCase
 }
 
 /*
- * (c) Copyright 2004, 2005, 2006 Hewlett-Packard Development Company, LP
+ * (c) Copyright 2004, 2005, 2006, 2007 Hewlett-Packard Development Company, LP
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without

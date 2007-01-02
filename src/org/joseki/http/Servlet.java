@@ -1,5 +1,5 @@
 /*
- * (c) Copyright 2003, 2004, 2005, 2006 Hewlett-Packard Development Company, LP
+ * (c) Copyright 2003, 2004, 2005, 2006, 2007 Hewlett-Packard Development Company, LP
  * [See end of file]
  */
 
@@ -17,7 +17,7 @@ import org.joseki.*;
 
 /** The servlet class.
  * @author  Andy Seaborne
- * @version $Id: Servlet.java,v 1.18 2006-10-02 15:37:40 andy_seaborne Exp $
+ * @version $Id: Servlet.java,v 1.19 2007-01-02 13:58:06 andy_seaborne Exp $
  */
 
 public class Servlet extends HttpServlet
@@ -323,7 +323,7 @@ public class Servlet extends HttpServlet
 }
 
 /*
- *  (c) Copyright 2003, 2004, 2005, 2006 Hewlett-Packard Development Company, LP
+ *  (c) Copyright 2003, 2004, 2005, 2006, 2007 Hewlett-Packard Development Company, LP
  *  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without

@@ -171,7 +171,7 @@ _:modelDB1 rdf:type ja:RDBModel ;
         ja:dbClass        "com.mysql.jdbc.Driver" ;
     ] ;
     ja:modelName "ModelName" 
-    . 
+    .
 
 ## ----------------
 ## Database model, default model in database

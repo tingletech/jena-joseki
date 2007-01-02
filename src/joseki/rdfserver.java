@@ -1,5 +1,5 @@
 /*
- * (c) Copyright 2003, 2004, 2005, 2006 Hewlett-Packard Development Company, LP
+ * (c) Copyright 2003, 2004, 2005, 2006, 2007 Hewlett-Packard Development Company, LP
  * [See end of file]
  */
 
@@ -12,7 +12,7 @@ import org.joseki.* ;
 /** Command line application to run an RDF Server
  *
  * @author  Andy Seaborne
- * @version $Id: rdfserver.java,v 1.7 2005-12-26 19:19:54 andy_seaborne Exp $
+ * @version $Id: rdfserver.java,v 1.8 2007-01-02 13:58:09 andy_seaborne Exp $
  */
 
 

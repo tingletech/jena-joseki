@@ -1,5 +1,5 @@
 /*
- * (c) Copyright 2003, 2004, 2005, 2006 Hewlett-Packard Development Company, LP
+ * (c) Copyright 2003, 2004, 2005, 2006, 2007 Hewlett-Packard Development Company, LP
  * [See end of file]
  */
 
@@ -18,7 +18,7 @@ import com.hp.hpl.jena.shared.* ;
  * Understands the RDF properties for naming and initializing a new instance. 
  * 
  * @author  Andy Seaborne
- * @version $Id: Loader.java,v 1.3 2006-10-03 11:04:42 andy_seaborne Exp $
+ * @version $Id: Loader.java,v 1.4 2007-01-02 13:58:14 andy_seaborne Exp $
  */
 
 public class Loader
@@ -177,7 +177,7 @@ public class Loader
 
 
 /*
- *  (c) Copyright 2003, 2004, 2005, 2006 Hewlett-Packard Development Company, LP
+ *  (c) Copyright 2003, 2004, 2005, 2006, 2007 Hewlett-Packard Development Company, LP
  *  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without

@@ -1,5 +1,5 @@
 /*
- * (c) Copyright 2003, 2004, 2005, 2006 Hewlett-Packard Development Company, LP
+ * (c) Copyright 2003, 2004, 2005, 2006, 2007 Hewlett-Packard Development Company, LP
  * [See end of file]
  */
 
@@ -16,7 +16,7 @@ import org.mortbay.util.MultiException;
 
 /** Standalone server.
  * 
- * @version $Id: RDFServer.java,v 1.15 2006-10-02 18:55:40 andy_seaborne Exp $
+ * @version $Id: RDFServer.java,v 1.16 2007-01-02 13:58:07 andy_seaborne Exp $
  * @author  Andy Seaborne
  */
 
@@ -232,7 +232,7 @@ public class RDFServer
 }
 
 /*
- *  (c) Copyright 2003, 2004, 2005, 2006 Hewlett-Packard Development Company, LP
+ *  (c) Copyright 2003, 2004, 2005, 2006, 2007 Hewlett-Packard Development Company, LP
  *  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without

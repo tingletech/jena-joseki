@@ -1,5 +1,5 @@
 /*
- * (c) Copyright 2004, 2005, 2006 Hewlett-Packard Development Company, LP
+ * (c) Copyright 2004, 2005, 2006, 2007 Hewlett-Packard Development Company, LP
  * All rights reserved.
  * [See end of file]
  */
@@ -12,7 +12,7 @@ import org.joseki.util.StringUtils ;
 /** A class to handle HTTP accept items with parameters 
  * 
  * @author Andy Seaborne
- * @version $Id: AcceptRange.java,v 1.2 2005-12-26 19:19:54 andy_seaborne Exp $
+ * @version $Id: AcceptRange.java,v 1.3 2007-01-02 13:58:06 andy_seaborne Exp $
  */
 
 // Only used for parsing Accept: headers
@@ -100,7 +100,7 @@ class AcceptRange extends AcceptItem
 }
 
 /*
- * (c) Copyright 2004, 2005, 2006 Hewlett-Packard Development Company, LP
+ * (c) Copyright 2004, 2005, 2006, 2007 Hewlett-Packard Development Company, LP
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without

@@ -1,5 +1,5 @@
 /*
- * (c) Copyright 2003, 2004, 2005, 2006 Hewlett-Packard Development Company, LP
+ * (c) Copyright 2003, 2004, 2005, 2006, 2007 Hewlett-Packard Development Company, LP
  * [See end of file]
  */
 
@@ -21,7 +21,7 @@ import com.hp.hpl.jena.shared.JenaException;
 /** Extracting operation data from HTTP servlet requests and formatting results for sending back.
  * 
  * @author      Andy Seaborne
- * @version     $Id: HttpResultSerializer.java,v 1.4 2006-02-23 18:38:39 andy_seaborne Exp $
+ * @version     $Id: HttpResultSerializer.java,v 1.5 2007-01-02 13:58:06 andy_seaborne Exp $
  */
 public class HttpResultSerializer
 {
@@ -267,7 +267,7 @@ public class HttpResultSerializer
 
 
 /*
- *  (c) Copyright 2003, 2004, 2005, 2006 Hewlett-Packard Development Company, LP
+ *  (c) Copyright 2003, 2004, 2005, 2006, 2007 Hewlett-Packard Development Company, LP
  *  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
