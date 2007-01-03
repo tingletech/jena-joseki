@@ -22,6 +22,10 @@ import com.hp.hpl.jena.query.Query;
 import com.hp.hpl.jena.query.QueryFactory;
 import com.hp.hpl.jena.query.QueryParseException;
 import com.hp.hpl.jena.query.Syntax;
+import com.hp.hpl.jena.query.engine2.QueryEngine2;
+import com.hp.hpl.jena.query.engine2.QueryEngineQuad;
+import com.hp.hpl.jena.query.engine2.op.Op;
+import com.hp.hpl.jena.query.serializer.SerializationContext;
 import com.hp.hpl.jena.query.util.IndentedLineBuffer;
 import com.hp.hpl.jena.query.util.IndentedWriter;
 
@@ -108,6 +112,9 @@ public class Validator extends HttpServlet
             
             boolean outputSPARQL = false ;
             boolean outputPrefix = false ;
+            boolean outputAlgebra = false ;
+            boolean outputQuads = false ;
+            
             if ( a != null )
             {
                 for ( int i = 0 ; i < a.length ; i++ )
@@ -116,6 +123,10 @@ public class Validator extends HttpServlet
                         outputSPARQL = true ;
                     if ( a[i].equals("prefix") ) 
                         outputPrefix = true ;
+                    if ( a[i].equals("algebra") ) 
+                        outputAlgebra = true ;
+                    if ( a[i].equals("quads") ) 
+                        outputQuads = true ;
                 }
             }
             
@@ -145,15 +156,10 @@ public class Validator extends HttpServlet
                 String prefix = "    " ;
                 outStream.println("<p>Input:</p>") ;
                 startFixed(outStream) ;
-                if ( false )
-                {
-                    columns(prefix, outStream) ;
-                    outStream.println() ;
-                }
+//                    columns(prefix, outStream) ;
+
                 IndentedLineBuffer buff = new IndentedLineBuffer(lineNumbers) ; 
-                
                 IndentedWriter out = buff.getIndentedWriter() ;
-                
                 // Strip trailing whitespace
                 queryString = queryString.replaceAll("(\r|\n| )*$", "") ;
                 out.print(queryString) ;
@@ -179,7 +185,6 @@ public class Validator extends HttpServlet
             {
                 outStream.println("<p>Formatted, parsed query:</p>") ;
 
-                String prefix = "    " ;
                 startFixed(outStream) ;
 //                columns(prefix, outStream) ;
                 IndentedLineBuffer buff = new IndentedLineBuffer(lineNumbers) ; 
@@ -194,7 +199,6 @@ public class Validator extends HttpServlet
             {
                 outStream.println("<p>Abstract structure:</p>") ;
 
-                String prefix = "    " ;
                 startFixed(outStream) ;
 //                columns(prefix, outStream) ;
                 IndentedLineBuffer buff = new IndentedLineBuffer(lineNumbers) ; 
@@ -204,6 +208,41 @@ public class Validator extends HttpServlet
                 outStream.print(htmlQuote(buff.asString())) ;
                 finishFixed(outStream) ;
             }
+            
+            if ( query != null && outputAlgebra )
+            {
+                outStream.println("<p>Algebra structure:</p>") ;
+                QueryEngine2 ref = new QueryEngine2(query) ;
+                
+                startFixed(outStream) ;
+//                columns(prefix, outStream) ;
+                Op op = ref.getOp() ;
+                SerializationContext sCxt = new SerializationContext(query) ;
+                IndentedLineBuffer buff = new IndentedLineBuffer(lineNumbers) ; 
+                IndentedWriter out = buff.getIndentedWriter() ;
+                op.output(out, sCxt) ;
+                out.flush() ;
+                outStream.print(htmlQuote(buff.asString())) ;
+                finishFixed(outStream) ;
+            }
+            
+            if ( query != null && outputQuads )
+            {
+                outStream.println("<p>Quad structure:</p>") ;
+                QueryEngineQuad ref = new QueryEngineQuad(query) ;
+                
+                startFixed(outStream) ;
+//                columns(prefix, outStream) ;
+                Op op = ref.getOp() ;
+                SerializationContext sCxt = new SerializationContext(query) ;
+                IndentedLineBuffer buff = new IndentedLineBuffer(lineNumbers) ; 
+                IndentedWriter out = buff.getIndentedWriter() ;
+                op.output(out, sCxt) ;
+                out.flush() ;
+                outStream.print(htmlQuote(buff.asString())) ;
+                finishFixed(outStream) ;
+            }
+                
             
             outStream.println("</html>") ;
             
