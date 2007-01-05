@@ -22,7 +22,7 @@ import com.hp.hpl.jena.query.Query;
 import com.hp.hpl.jena.query.QueryFactory;
 import com.hp.hpl.jena.query.QueryParseException;
 import com.hp.hpl.jena.query.Syntax;
-import com.hp.hpl.jena.query.engine2.QueryEngine2;
+import com.hp.hpl.jena.query.engine2.QueryEngineRef;
 import com.hp.hpl.jena.query.engine2.QueryEngineQuad;
 import com.hp.hpl.jena.query.engine2.op.Op;
 import com.hp.hpl.jena.query.serializer.SerializationContext;
@@ -202,7 +202,7 @@ public class Validator extends HttpServlet
             if ( query != null && outputAlgebra )
             {
                 outStream.println("<p>Algebra structure:</p>") ;
-                QueryEngine2 ref = new QueryEngine2(query) ;
+                QueryEngineRef ref = new QueryEngineRef(query) ;
                 final SerializationContext sCxt = new SerializationContext(query) ;
                 final Op op = ref.getOp() ;
                 Content c = new Content(){
