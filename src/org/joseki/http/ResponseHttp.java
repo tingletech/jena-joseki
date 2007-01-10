@@ -18,6 +18,7 @@ import com.hp.hpl.jena.query.ResultSetFormatter;
 //import com.hp.hpl.jena.query.resultset.XMLOutput;
 //import com.hp.hpl.jena.query.resultset.XMLOutputASK;
 import com.hp.hpl.jena.rdf.model.Model;
+import com.hp.hpl.jena.rdf.model.RDFException;
 import com.hp.hpl.jena.shared.JenaException;
 
 import org.apache.commons.logging.Log;
@@ -119,14 +120,18 @@ public class ResponseHttp extends Response
             try {
                 ser.writeModel(model, request, httpRequest, httpResponse, writerMimeType) ;
             }
+//            catch (RDFException rEx)
+//            {
+//                log.warn("JenaException", jEx);
+//            }
             catch (JenaException jEx)
             {
                 //msg(Level.WARNING, "RDFException", rdfEx);
-                log.warn("JenaException", jEx);
+                log.warn("JenaException: "+jEx.getMessage(), jEx);
                 //printStackTrace(printName + "(execute)", rdfEx);
                 httpResponse.sendError(
                         HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
-                        "JenaException: " + jEx);
+                        "JenaException: " + jEx.getMessage());
                 return;
             } catch (Exception ex)
             {

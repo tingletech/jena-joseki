@@ -6,7 +6,7 @@
 package org.joseki;
 
 /**
- * @version     $Id: ReturnCodes.java,v 1.4 2007-01-02 13:58:07 andy_seaborne Exp $
+ * @version     $Id: ReturnCodes.java,v 1.5 2007-01-10 23:14:56 andy_seaborne Exp $
  * @author      Andy Seaborne
  */
 
@@ -15,7 +15,7 @@ public class ReturnCodes
     static public final int rcOK                     = 0 ;
     static public final int rcNoSuchQueryLanguage    = 3 ;
     static public final int rcInternalError          = 4 ;
-    static public final int rcRDFException           = 5 ;
+    static public final int rcJenaException           = 5 ;
     static public final int rcNoSuchURI              = 6 ;
     static public final int rcSecurityError          = 7 ;
     static public final int rcOperationNotSupported  = 8 ;
@@ -37,7 +37,7 @@ public class ReturnCodes
           "Query excution failed",
           "No such query language",
           "Internal Error",
-          "RDFException" ,
+          "JenaException" ,
           "No such URI" ,
           "Access control failure",
           "Operation not supported on URI", 
