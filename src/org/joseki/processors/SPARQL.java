@@ -157,7 +157,7 @@ public class SPARQL extends QueryCom implements Loadable
         catch (JenaException ex)
         {
             log.info("JenaException: "+ex.getMessage()) ;
-            QueryExecutionException qExEx = new QueryExecutionException(ReturnCodes.rcArgumentUnreadable, ex.getMessage()) ;
+            QueryExecutionException qExEx = new QueryExecutionException(ReturnCodes.rcJenaException, ex.getMessage()) ;
             throw qExEx ;
         }
         catch (Throwable ex)

@@ -21,7 +21,7 @@ import com.hp.hpl.jena.shared.JenaException;
 /** Extracting operation data from HTTP servlet requests and formatting results for sending back.
  * 
  * @author      Andy Seaborne
- * @version     $Id: HttpResultSerializer.java,v 1.5 2007-01-02 13:58:06 andy_seaborne Exp $
+ * @version     $Id: HttpResultSerializer.java,v 1.6 2007-01-10 23:14:56 andy_seaborne Exp $
  */
 public class HttpResultSerializer
 {
@@ -161,7 +161,7 @@ public class HttpResultSerializer
                 case ReturnCodes.rcInternalError :
                     httpRC = HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
                     break;
-                case ReturnCodes.rcRDFException :
+                case ReturnCodes.rcJenaException :
                     httpRC = HttpServletResponse.SC_BAD_REQUEST ;
                     break ;
                 case ReturnCodes.rcNoSuchURI:
