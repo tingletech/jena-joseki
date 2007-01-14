@@ -6,7 +6,7 @@
 
 package org.joseki;
 
-import com.hp.hpl.jena.rdf.model.RDFException;
+import com.hp.hpl.jena.shared.JenaException;
 import com.hp.hpl.jena.shared.NotFoundException;
 import com.hp.hpl.jena.util.FileManager;
 
@@ -118,15 +118,15 @@ public class Dispatcher
         try {
             configuration = new Configuration(fileManager, configURI, tmp) ;
             log.info("Loaded data source configuration: " + configURI);
-        } catch (RDFException rdfEx)
-        {
-            // Trouble processing a configuration 
-            throw new ConfigurationErrorException("RDF Exception: "+rdfEx.getMessage(), rdfEx) ;
-            //return false ;
         } catch (NotFoundException ex)
         {
             throw new ConfigurationErrorException("Not found: "+ex.getMessage(), ex) ;
             //return false;
+        } catch (JenaException rdfEx)
+        {
+            // Trouble processing a configuration 
+            throw new ConfigurationErrorException("RDF Exception: "+rdfEx.getMessage(), rdfEx) ;
+            //return false ;
         }
             
         Registry.add(RDFServer.ServiceRegistryName, tmp) ;
