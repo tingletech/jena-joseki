@@ -29,9 +29,9 @@
 	<classpathentry kind="lib" path="lib/jenatest.jar"/>
 	<classpathentry kind="lib" path="lib/wstx-asl-3.0.0.jar"/>
 	<classpathentry kind="lib" path="lib/commons-logging-1.1.jar"/>
-	<classpathentry kind="lib" path="lib/jetty-6.0.1.jar"/>
-	<classpathentry kind="lib" path="lib/jetty-util-6.0.1.jar"/>
-	<classpathentry kind="lib" path="lib/servlet-api-2.5-6.0.1.jar"/>
 	<classpathentry kind="lib" path="lib/slf4j-log4j12.jar"/>
+	<classpathentry kind="lib" path="lib/jetty-6.1.1.jar"/>
+	<classpathentry kind="lib" path="lib/jetty-util-6.1.1.jar"/>
+	<classpathentry kind="lib" path="lib/servlet-api-2.5-6.1.1.jar"/>
 	<classpathentry kind="output" path="classes"/>
 </classpath>

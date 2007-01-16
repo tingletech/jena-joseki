@@ -6,7 +6,6 @@
 
 @prefix module: <http://joseki.org/2003/06/module#> .
 @prefix joseki: <http://joseki.org/2005/06/configuration#> .
-@prefix ql:     <http://jena.hpl.hp.com/2003/07/query/> .
 @prefix ja:     <http://jena.hpl.hp.com/2005/11/Assembler#> .
 
 ## --------------------------------------------------------------
@@ -71,7 +70,7 @@
     joseki:dataset      _:books ;
     # Service part.
     # This processor will not allow either the protocol,
-    # nor the query, to specify the datset.
+    # nor the query, to specify the dataset.
     joseki:processor    joseki:ProcessorSPARQL_FixedDS ;
     .
 
