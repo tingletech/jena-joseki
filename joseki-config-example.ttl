@@ -79,24 +79,6 @@
     joseki:processor    joseki:ProcessorSPARQL_FixedDS ;
     .
 
-## ## Axis/SOAP
-## []
-##     rdf:type            joseki:Service ;
-##     rdfs:label          "SPARQL/SOAP testing" ;
-##     joseki:serviceRef   "sparql-query" ;
-##     # dataset part
-##     joseki:dataset      _:books ;
-##     # Service part.
-##     # This processor will not allow either the protocol,
-##     # nor the query, to specify the datset.
-##     joseki:processor    joseki:ProcessorSPARQL_FixedDS ;
-##     .
-
-## Add a FOAF named graph example.
-
-
-## Move to an example config file.
-
 ## # Service 3 - has defintions inline
 ## []
 ##     rdf:type    joseki:Service ;
@@ -159,7 +141,9 @@ _:model1  rdf:type ja:MemoryModel ;
 
 ## ----------------
 ## Database, named model in database.
-## Does not automatically beome the graph name - need to give that in dataset.
+## The graph name here is just some local name - the published name is
+## defined in the dataset.
+## "reificationMode minimal" allows faster queries to operate.
 
 _:modelDB1 rdf:type ja:RDBModel ;
     ja:connection
@@ -170,6 +154,7 @@ _:modelDB1 rdf:type ja:RDBModel ;
         ja:dbPassword     "password" ;
         ja:dbClass        "com.mysql.jdbc.Driver" ;
     ] ;
+    ja:reificationMode    ja:minimal ;      ## Minimal means fastpath is possible.
     ja:modelName "ModelName" 
     .
 
@@ -185,6 +170,7 @@ _:modelDB2 rdf:type ja:RDBModel ;
         ja:dbPassword     "password" ;
         ja:dbClass        "com.mysql.jdbc.Driver" ;
     ] ;
+    ja:reificationMode    ja:minimal ;      ## Minimal means fastpath is possible.
     ja:modelName "DEFAULT"
     . 
 
