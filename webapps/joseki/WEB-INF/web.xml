@@ -52,7 +52,7 @@ PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.2//EN"
   <!-- MAPPINGS -->
 
   <!-- Map URLs to SPARQL service processors -->
-  <!-- Rules: SPARQl services are anoything
+  <!-- Rules: SPARQL services are anything
        /sparql
        Anything starting /sparql/
        Anything starting /service/
