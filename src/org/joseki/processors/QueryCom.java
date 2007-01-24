@@ -17,7 +17,7 @@ public abstract class QueryCom implements Processor
 {
     Lock lock = new LockMutex() ;   // Default and safe choice
     
-    /** Execute a query without a lock */ 
+    /** Execute a query, providing a lock */ 
     public void exec(Request request, Response response, DatasetDesc datasetDesc) throws ExecutionException
     {
         Lock operationLock = lock ;
