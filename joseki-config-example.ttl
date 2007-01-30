@@ -87,7 +87,7 @@
 ##     # Required - serviceRef
 ##     joseki:serviceRef         "example" ;
 ##     joseki:dataset
-##         [ joseki:defaultGraph    _:model1 ; ] ;
+##         [ ja:defaultGraph    _:model1 ; ] ;
 ##     joseki:processor
 ##         # Does not exist - causes a config warning and this
 ##         # service is not available for requests
@@ -100,7 +100,7 @@
 
 
 _:ds1   rdf:type ja:RDFDataset ;
-    joseki:defaultGraph    _:model1 ;
+    ja:defaultGraph    _:model1 ;
     rdfs:label "Dataset _:ds1" ;
     ja:namedGraph
         [ ja:graphName      <http://example.org/name1> ;

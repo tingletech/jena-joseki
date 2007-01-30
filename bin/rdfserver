@@ -31,6 +31,7 @@ LOG="$LOG1 $LOG2"
 
 JAVA=java
 if [ "$JAVA_HOME" != "" ]
+then
     JAVA="$JAVA_HOME/bin/java"
     fi
 

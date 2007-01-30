@@ -85,11 +85,6 @@ _:books   rdf:type ja:RDFDataset ;
         a ja:MemoryModel ;
         ja:content [ja:externalContent <file:Data/books.n3> ] ;
       ] ;
-    joseki:defaultGraph
-      [ rdfs:label "books.n3" ;
-        a ja:MemoryModel ;
-        ja:content [ja:externalContent <file:Data/books.n3> ] ;
-      ]
     .
 
 

@@ -469,10 +469,7 @@ public class Configuration
             }
             ref = Service.canonical(ref) ;
             registry.add(ref, srv) ;
-            if ( srv.getDatasetDesc() != null)
-                log.info("Service: "+srv.getRef()+" "+srv.getDatasetDesc().toString()) ;
-            else
-                log.info("Service: "+srv.getRef()) ;
+            log.info("Service: "+srv.getRef()) ;
         }
     }
 
