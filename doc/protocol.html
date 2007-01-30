@@ -7,15 +7,10 @@
 
 <h1>Joseki - Protocol</h1>
 
-<p>Joseki supports both HTTP and SOAP bindings for the SPARQL protocol.
-Both bindings access the same set of services and same set of datasets.
-
-</p>
-
-
-<h2><a name="http" id="http">HTTP</a></h2>
+<p>Joseki supports the HTTP binding for
+<a href="http://www.w3.org/TR/rdf-sparql-protocol/">the SPARQL protocol</a>.</p>
 <h3>Servlet routing : web.xml</h3>
-<p>The <code>web.xml</code>, which control routing incoming requests to 
+<p>The <code>web.xml</code>, which controls routing incoming requests to 
 servlets, must be set correctly. The default <code>web.xml</code> in the 
 download routes:</p>
 <ul>
@@ -53,14 +48,11 @@ response type set to text/plain regardless.  Used for debugging and also with <c
 for Yahoo! protocol for JSON.</li>
 
 <li><code>callback</code>: Used with JSON format for the SPARQL results.
-See the <a href="http://developer.yahoo.net/common/json.html">Yahoo! documentation</a>.
-</li>
+See the <a href="http://developer.yahoo.net/common/json.html">Yahoo! documentation</a>.</li>
 
 </ul>
 
-<h2><a name="soap" id="soap">SOAP</a></h2>
-
-<p>There are no additional parameters for the SOAP binding.</p>
+<p>&nbsp;</p>
 
 
 </body>
