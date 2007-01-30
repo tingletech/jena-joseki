@@ -1,6 +1,12 @@
 Joseki3
 =======
 
+Joseki 3.1
+----------
+
+Joseki 3.0
+----------
+
 Joseki3 is not compatible with Joseki2.
 
 + Supports the SPARQL protocol over HTTP (Last Call version)
@@ -14,7 +20,7 @@ Joseki3 is not compatible with Joseki2.
 == Changes from Joseki 3.0 beta 1&2
 
 + The configuration file now uses Jena assemblers for datasets as well as models.
-  See joseki-config-ex.ttl for examples
+  See joseki-config-example.ttl for examples
   Warning are issued for use of the vocabulary used in Joseki-3-dev releases.
 
 + Jar file changes
