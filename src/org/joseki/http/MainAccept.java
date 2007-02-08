@@ -9,16 +9,21 @@ package org.joseki.http;
 /** org.joseki.server.http.MainAccept
  * 
  * @author Andy Seaborne
- * @version $Id: MainAccept.java,v 1.4 2007-01-02 13:58:06 andy_seaborne Exp $
+ * @version $Id: MainAccept.java,v 1.5 2007-02-08 16:17:57 andy_seaborne Exp $
  */
 
 public class MainAccept
 {
+    // Bug:
+    //  Accept: application/n3,application/rdf+xml;q=0.5 ==> application/rdf+xml
+    // 
+    
     public static void main(String[] argv)
     {
         String acceptFirefox = "text/xml,  application/xml,  application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5" ;
         String acceptIE = "image/gif, image/x-xbitmap, image/jpeg, image/pjpeg, application/x-shockwave-flash, application/vnd.ms-excel, application/vnd.ms-powerpoint, application/msword, */*" ;
         String xAccept =  "image/gif,image/jpeg" ;
+        String qAccept =  "application/n3,application/rdf+xml;q=0.5" ;
         
 //        testOne("ISO-8859-1,utf-8;q=0.7,*;q=0.7") ;
 //        testOne(ffAccept) ;
@@ -28,23 +33,26 @@ public class MainAccept
 //        testOne(" , a,,  ") ;
         
         AcceptItem dft = new AcceptItem("default") ;
-        AcceptItem aText = new AcceptItem("text/*") ;
-        
-        AcceptList myPrefs1 = new AcceptList(new String[]{"application/xml","text/*"}) ;
-        AcceptList myPrefs2 = new AcceptList(new String[]{"application/rdf+xml"}) ;
-        
-        AcceptList alIE = new AcceptList(acceptIE) ;
-        AcceptList alFF = new AcceptList(acceptFirefox) ;
-        AcceptList alX = new AcceptList(xAccept) ;
-        
-        chooseTest(acceptIE, myPrefs1, dft) ;
-        chooseTest(acceptFirefox, myPrefs1, dft) ;
-        chooseTest(acceptIE, myPrefs2, dft) ;
-        chooseTest(acceptFirefox, myPrefs2, dft) ;
+//        AcceptItem aText = new AcceptItem("text/*") ;
+//        
+        //AcceptList myPrefs1 = new AcceptList(new String[]{"application/xml","text/*"}) ;
+        //AcceptList myPrefs2 = new AcceptList(new String[]{"application/rdf+xml"}) ;
+        AcceptList myPrefs3 = new AcceptList(new String[]{"application/rdf+xml", "application/n3"}) ;
+//        
+//        AcceptList alIE = new AcceptList(acceptIE) ;
+//        AcceptList alFF = new AcceptList(acceptFirefox) ;
+//        AcceptList alX = new AcceptList(xAccept) ;
+//        
+//        chooseTest(acceptIE, myPrefs1, dft) ;
+//        chooseTest(acceptFirefox, myPrefs1, dft) ;
+//        chooseTest(acceptIE, myPrefs2, dft) ;
+//        chooseTest(acceptFirefox, myPrefs2, dft) ;
+//
+//        acceptTest(alFF, aText) ;
+//        acceptTest(alIE, aText) ;
+//        acceptTest(alX, aText) ;
 
-        acceptTest(alFF, aText) ;
-        acceptTest(alIE, aText) ;
-        acceptTest(alX, aText) ;
+        chooseTest(qAccept, myPrefs3, dft) ;
         
     }
 
@@ -52,6 +60,7 @@ public class MainAccept
     {
         System.out.println("Choose Test") ;
         System.out.println("Header: "+header) ;
+        myPrefs.toString() ;
         System.out.println("List:   "+myPrefs) ;
         
         AcceptItem a = HttpUtils.choose(header, myPrefs, dft) ;

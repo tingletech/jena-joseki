@@ -15,7 +15,7 @@ import org.apache.commons.logging.*;
 /** A class to handle a list of accept types
  * 
  * @author Andy Seaborne
- * @version $Id: AcceptList.java,v 1.5 2007-01-02 13:58:06 andy_seaborne Exp $
+ * @version $Id: AcceptList.java,v 1.6 2007-02-08 16:17:57 andy_seaborne Exp $
  */
 
 public class AcceptList
@@ -84,6 +84,8 @@ public class AcceptList
     
     static public AcceptItem match(AcceptList proposalList, AcceptList offerList)
     {
+        // TODO Need to find the best match, not the first offer match.
+        // Find every offer match, choose the highest q factor
         for ( Iterator iter = offerList.iterator() ; iter.hasNext() ; )
         {
             AcceptItem i2 = (AcceptItem)iter.next() ;
@@ -93,7 +95,6 @@ public class AcceptList
         }
         return null ;
     }
-    
     
     public AcceptItem first()
     {
@@ -214,7 +215,7 @@ public class AcceptList
         boolean first = true ;
         for ( Iterator iter = x.iterator() ; iter.hasNext() ; )
         {
-            AcceptRange a = (AcceptRange)iter.next() ; 
+            AcceptItem a = (AcceptItem)iter.next() ; 
             if ( ! first )
                 tmp = tmp +" " ;
             tmp = tmp + a ;
