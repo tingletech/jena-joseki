@@ -6,12 +6,17 @@
 
 package org.joseki.http;
 
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+
+import org.apache.commons.logging.LogFactory;
 import org.joseki.util.StringUtils ;
 
 /** A class to handle HTTP Accept types
  * 
  * @author Andy Seaborne
- * @version $Id: AcceptItem.java,v 1.4 2007-01-02 13:58:06 andy_seaborne Exp $
+ * @version $Id: AcceptItem.java,v 1.5 2007-02-10 17:27:19 andy_seaborne Exp $
  */
 
 public class AcceptItem
@@ -25,13 +30,32 @@ public class AcceptItem
     private String type = null ;
     private String subType = null ;
     
+    private Map params = new HashMap() ;
+    double q = 1.0 ;
+    int posn = 0 ;      // Used in sorting to retain order amongst equals. 
     
     protected AcceptItem() { }
+    
+    public AcceptItem(AcceptItem other, double otherQ)
+    {
+        this(other) ;
+        this.q = otherQ ;
+    }
+    
+    public AcceptItem(AcceptItem other)
+    {
+        this.acceptType = other.acceptType ;
+        this.type = other.type ;
+        this.subType = other.subType ;
+        this.params = new HashMap(other.params) ;
+        this.q = other.q ;
+        // Not posn.
+    }
     
     public AcceptItem(String s)
     {
         acceptType = s ;
-        parseAndSet(s) ;
+        parseOneEntry(s) ;
     }
     
     public AcceptItem(String type, String subType)
@@ -43,7 +67,30 @@ public class AcceptItem
             acceptType = type+"/"+subType ;
     }
     
-    protected void parseAndSet(String s)
+    private void parseOneEntry(String s)
+    {
+        String[] x = StringUtils.split(s, ";") ;
+        parseAndSetType(x[0]) ;
+        
+        for ( int i = 1 ; i < x.length ; i++ )
+        {
+            // Each a parameter
+            String z[] = StringUtils.split(x[i], "=") ;
+            if ( z.length == 2 )
+            {
+                this.params.put(z[0], z[1]) ;
+                if ( z[0].equals("q") )
+                    try {
+                        q = Double.parseDouble(z[1]) ;
+                    } catch (NumberFormatException ex)
+                    {}
+            }
+            else
+                LogFactory.getLog(AcceptItem.class).warn("Duff parameter: "+x[i]+" in "+s) ;
+        }
+    }
+    
+    protected void parseAndSetType(String s)
     {
         acceptType = s ;
         String[] t = StringUtils.split(s, "/") ;
@@ -91,16 +138,56 @@ public class AcceptItem
         return x == null || x.equals("*") ;
     }
     
-    // Rename as toHeaderString
+    /** Format for use in HTTP header
+     */
+    
     public String toHeaderString()
     {
-        return acceptType ;
+        StringBuffer b = new StringBuffer() ;
+        b.append(acceptType) ;
+        for ( Iterator iter = params.keySet().iterator() ; iter.hasNext() ; )
+        {
+            String k = (String)iter.next() ;
+            String v = (String)params.get(k) ;
+            b.append(";") ;
+            b.append(k) ;
+            b.append("=") ;
+            b.append(v) ;
+        }
+        return b.toString() ;
     }
+    
+    /** Format to show structure - intentionally different from header
+     *  form so you can tell parsing happened correctly
+     */  
     
     public String toString()
     {
-        return acceptType ;
+        StringBuffer b = new StringBuffer() ;
+        b.append("[") ;
+        b.append(acceptType) ;
+        for ( Iterator iter = params.keySet().iterator() ; iter.hasNext() ; )
+        {
+            String k = (String)iter.next() ;
+            String v = (String)params.get(k) ;
+            b.append(" ") ;
+            b.append(k) ;
+            b.append("=") ;
+            b.append(v) ;
+        }
+        b.append("]") ;
+        return b.toString() ;
     }
+    
+//    public String toHeaderString()
+//    {
+//        return acceptType ;
+//    }
+//    
+//    public String toString()
+//    {
+//        return acceptType ;
+//    }
     /**
      * @return Returns the acceptType.
      */

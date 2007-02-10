@@ -13,7 +13,7 @@ import junit.framework.TestCase;
 /** org.joseki.server.http.TestContentNegotiation
  * 
  * @author Andy Seaborne
- * @version $Id: TestContentNegotiation.java,v 1.5 2007-01-02 13:58:06 andy_seaborne Exp $
+ * @version $Id: TestContentNegotiation.java,v 1.6 2007-02-10 17:27:22 andy_seaborne Exp $
  */
 
 public class TestContentNegotiation extends TestCase
@@ -58,6 +58,24 @@ public class TestContentNegotiation extends TestCase
     { testMatch("text/xml,text/*", "text/*,text/plain", "text/xml") ; }
     
     public void testQualNeg1() { testMatch("text/xml;q=0.5,text/plain", "text/*", "text/plain") ; }
+    
+    public void testQualNeg2()
+    {
+        testMatch(
+                "application/n3,application/rdf+xml;q=0.5",
+                "application/rdf+xml,application/n3" , 
+                "application/n3") ;
+    }
+    
+    public void testQualNeg3()
+    {
+        testMatch(
+                "application/n3,application/rdf+xml;q=0.5",
+                "application/n3,application/rdf+xml" , 
+                "application/n3") ;
+    }
+    
+
     
     // Worker.  Does request 'header' match server 'offer' with 'result'?
     private void testMatch(String header, String offer, String result)

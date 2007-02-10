@@ -12,17 +12,17 @@ import org.joseki.util.StringUtils ;
 import org.apache.commons.logging.*;
 
 
-/** A class to handle a list of accept types
+/** A class to handle a list of accept types (AcceptRanges)
  * 
  * @author Andy Seaborne
- * @version $Id: AcceptList.java,v 1.6 2007-02-08 16:17:57 andy_seaborne Exp $
+ * @version $Id: AcceptList.java,v 1.7 2007-02-10 17:27:19 andy_seaborne Exp $
  */
 
 public class AcceptList
 {
     // Documentation at end
     private static Log log = LogFactory.getLog(AcceptList.class) ;
-    List list ; // List of AcceptItems
+    List list ; // List of AcceptRanges
     
     
     /**
@@ -67,15 +67,17 @@ public class AcceptList
             if ( i.accepts(aItem) )
             {
                 // Return the more grounded term
-                if ( i.moreGroundedThan(aItem) )
-                    return i ;
-                return aItem ;
+                // E.g. i = text/plain ; aItem = text/*
+                
+                if ( aItem.moreGroundedThan(i) )
+                    i = new AcceptItem(aItem, i.q) ;
+                return i ;
             }
         }
         return null ;
     }
     
-    /** Find the first thing in list2 (the offer) with the proposal  
+    /** Find the best thing in offer list with the proposal  
      * 
      * @param proposalList Client list of possibilities
      * @param offerList    Server list of possibilities
@@ -86,14 +88,21 @@ public class AcceptList
     {
         // TODO Need to find the best match, not the first offer match.
         // Find every offer match, choose the highest q factor
+        
+        AcceptItem choice = null ;
+        
         for ( Iterator iter = offerList.iterator() ; iter.hasNext() ; )
         {
             AcceptItem i2 = (AcceptItem)iter.next() ;
-            AcceptItem m = proposalList.match(i2) ;
+            AcceptItem m = proposalList.match(i2) ; // XXX
             if ( m != null )
-                return m ;
+            {
+                if ( choice != null && choice.q >= m.q )
+                    continue ; 
+                choice = m ;
+            }
         }
-        return null ;
+        return choice ;
     }
     
     public AcceptItem first()
@@ -112,12 +121,12 @@ public class AcceptList
     {
         public int compare(Object arg1, Object arg2)
         {
-            if ( ! (arg1 instanceof AcceptRange) )
+            if ( ! (arg1 instanceof AcceptItem) )
                 throw new ClassCastException("Not a AcceptItem: "+arg1.getClass().getName()) ;
-            if ( ! (arg2 instanceof AcceptRange) )
+            if ( ! (arg2 instanceof AcceptItem) )
                 throw new ClassCastException("Not a AcceptItem: "+arg2.getClass().getName()) ;
-            AcceptRange mType1 = (AcceptRange)arg1 ; 
-            AcceptRange mType2 = (AcceptRange)arg2 ;
+            AcceptItem mType1 = (AcceptItem)arg1 ; 
+            AcceptItem mType2 = (AcceptItem)arg2 ;
             
             int r = Double.compare(mType1.q, mType2.q) ;
             
@@ -175,7 +184,7 @@ public class AcceptList
         {
             if ( x[i].equals(""))
                 continue ;
-            AcceptRange mType = new AcceptRange(x[i]) ;
+            AcceptItem mType = new AcceptItem(x[i]) ;
             mType.posn = i ;
             l.add(mType) ;
         }
@@ -195,7 +204,7 @@ public class AcceptList
         {
             if ( ! first )
                 tmp = tmp +"," ;
-            tmp = tmp + ((AcceptRange)iter.next()).toHeaderString() ;
+            tmp = tmp + ((AcceptItem)iter.next()).toHeaderString() ;
             first = false ;
         }
         return tmp ;
@@ -218,6 +227,7 @@ public class AcceptList
             AcceptItem a = (AcceptItem)iter.next() ; 
             if ( ! first )
                 tmp = tmp +" " ;
+            a.toString();
             tmp = tmp + a ;
             first = false ;
         }
