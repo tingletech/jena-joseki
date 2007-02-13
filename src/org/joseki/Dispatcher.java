@@ -20,7 +20,9 @@ public class Dispatcher
     
     static Configuration   configuration = null ;
     static ServiceRegistry serviceRegistry = null ;
-
+    public static Configuration   getConfiguration()      { return configuration ; }
+    public static ServiceRegistry getServiceRegistry()    { return serviceRegistry ; }
+    
     //Dispatcher dispatcher = new Dispatcher() ;
     
     public static void dispatch(String serviceURI, Request request, Response response) throws ExecutionException

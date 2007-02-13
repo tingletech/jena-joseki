@@ -10,7 +10,7 @@ import java.util.* ;
 
 /** 
  * @author Andy Seaborne
- * @version $Id: ServiceRegistry.java,v 1.5 2007-01-02 13:58:07 andy_seaborne Exp $
+ * @version $Id: ServiceRegistry.java,v 1.6 2007-02-13 10:00:28 andy_seaborne Exp $
  */
 
 public class ServiceRegistry
@@ -24,7 +24,7 @@ public class ServiceRegistry
     
     //private ServiceRegistry() { }
     
-    public static ServiceRegistry get() { return globalRegistry ; }
+    //public static ServiceRegistry get() { return globalRegistry ; }
     
     private static void init()
     {
