@@ -11,10 +11,8 @@ package dev;
 import com.hp.hpl.jena.query.QueryException;
 import com.hp.hpl.jena.query.QueryExecution;
 import com.hp.hpl.jena.query.ResultSetFormatter;
-import com.hp.hpl.jena.query.engineHTTP.QueryEngineHTTP;
-import com.hp.hpl.jena.query.engineSOAP.QueryEngineSOAP;
+import com.hp.hpl.jena.query.engine.http.QueryEngineHTTP;
 import com.hp.hpl.jena.query.util.StringUtils;
-import com.hp.hpl.jena.rdf.model.Model;
 
 public class RunClient
 {
@@ -22,19 +20,8 @@ public class RunClient
     static String endpointHttp = "http://localhost:2020/rdfs" ;
     public static void main(String[] args)
     {
-        doHttpSelect() ; System.exit(0) ;
-        
-        doOneSelectQuery() ; System.exit(0) ;
-        //doOneConstructQuery() ; System.exit(0) ;
-        
-        
-//        System.out.println("Object version") ;
-//        WSClient.clientOM() ; 
-//        System.out.println() ;
-//        System.out.println("Raw version") ;
-//        WSClient.clientRaw() ; System.exit(0) ;
-//        System.exit(0) ;
-        //runLimitedGraph() ;  System.exit(0) ;
+        doHttpSelect() ;
+        System.exit(0) ;
     }
     
     public static void doHttpSelect()
@@ -53,40 +40,6 @@ public class RunClient
         }
     }
     
-    
-    // -------- SOAP
-    
-    public static void doOneSelectQuery()
-    {
-        String queryStr = "SELECT ?z {?x ?y ?z . FILTER regex(?z, 'Harry')}\n" ;
-        
-        try {
-            QueryExecution qexec = new QueryEngineSOAP(queryStr, endpointSOAP) ;
-            ResultSetFormatter.out(System.out, qexec.execSelect()) ;
-            qexec.close() ;
-        } 
-        catch (QueryException ex)
-        {
-            System.out.println("Query error: "+ex.getMessage()) ;
-        }
-    }
-
-    public static void doOneConstructQuery()
-    {
-        String endpoint = "http://localhost:2525/axis/services/sparql-query" ;
-        String s[]= new String[]{
-            "PREFIX dc:      <http://purl.org/dc/elements/1.1/>",
-            "CONSTRUCT { $book dc:title $title } WHERE { $book dc:title $title }"
-        } ;
-            
-        String queryStr = concat(s) ; 
-
-        QueryExecution qexec = new QueryEngineSOAP(queryStr, endpoint) ;
-        Model m = qexec.execConstruct() ;
-        m.write(System.out, "N3") ;
-        qexec.close() ;
-    }
-
     static private String concat(String [] a)
     {
         return StringUtils.join("\n", a) ; 

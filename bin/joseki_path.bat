@@ -2,6 +2,7 @@
 @REM Script to build the Joseki classpath
 @REM $Id: joseki_path.bat,v 1.5 2004/01/09 18:21:34 andy_seaborne Exp $
 
+@REM Must be windows format \ not /
 if "%JOSEKIROOT%" == ""  goto noRoot
 
 REM Do this to put the developement .class files first

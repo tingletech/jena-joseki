@@ -7,18 +7,8 @@
 	<classpathentry kind="lib" path="lib/xercesImpl.jar"/>
 	<classpathentry kind="lib" path="lib/xml-apis.jar"/>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="src" path="src-soap"/>
 	<classpathentry kind="src" path="src-dev"/>
-	<classpathentry kind="lib" path="lib2/activation.jar"/>
-	<classpathentry kind="lib" path="lib2/axis.jar" sourcepath="src-axis.zip"/>
-	<classpathentry kind="lib" path="lib2/axis-ant.jar"/>
-	<classpathentry kind="lib" path="lib2/commons-discovery-0.2.jar"/>
-	<classpathentry kind="lib" path="lib2/jaxrpc.jar"/>
-	<classpathentry kind="lib" path="lib2/mailapi.jar"/>
-	<classpathentry kind="lib" path="lib2/saaj.jar"/>
-	<classpathentry kind="lib" path="lib2/wsdl4j-1.5.1.jar"/>
 	<classpathentry kind="lib" path="lib/stax-api-1.0.jar"/>
-	<classpathentry kind="lib" path="lib-jdbc/mysql-connector-java-5.0.0-beta-bin.jar"/>
 	<classpathentry kind="lib" path="lib/antlr-2.7.5.jar"/>
 	<classpathentry kind="lib" path="lib/log4j-1.2.12.jar"/>
 	<classpathentry kind="lib" path="lib/arq.jar" sourcepath="/ARQ/src"/>

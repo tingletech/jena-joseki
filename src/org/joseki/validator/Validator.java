@@ -22,9 +22,9 @@ import com.hp.hpl.jena.query.Query;
 import com.hp.hpl.jena.query.QueryFactory;
 import com.hp.hpl.jena.query.QueryParseException;
 import com.hp.hpl.jena.query.Syntax;
-import com.hp.hpl.jena.query.engine2.QueryEngineRef;
-import com.hp.hpl.jena.query.engine2.QueryEngineQuad;
-import com.hp.hpl.jena.query.engine2.op.Op;
+import com.hp.hpl.jena.query.algebra.AlgebraGenerator;
+import com.hp.hpl.jena.query.algebra.AlgebraGeneratorQuad;
+import com.hp.hpl.jena.query.algebra.op.Op;
 import com.hp.hpl.jena.query.serializer.SerializationContext;
 import com.hp.hpl.jena.query.util.IndentedLineBuffer;
 import com.hp.hpl.jena.query.util.IndentedWriter;
@@ -202,9 +202,8 @@ public class Validator extends HttpServlet
             if ( query != null && outputAlgebra )
             {
                 outStream.println("<p>Algebra structure:</p>") ;
-                QueryEngineRef ref = new QueryEngineRef(query) ;
+                final Op op = AlgebraGenerator.compile(query) ;
                 final SerializationContext sCxt = new SerializationContext(query) ;
-                final Op op = ref.getOp() ;
                 Content c = new Content(){
                     public void print(IndentedWriter out)
                     {  op.output(out, sCxt) ; }
@@ -215,9 +214,8 @@ public class Validator extends HttpServlet
             if ( query != null && outputQuads )
             {
                 outStream.println("<p>Quad structure:</p>") ;
-                QueryEngineQuad ref = new QueryEngineQuad(query) ;
+                final Op op = AlgebraGeneratorQuad.compile(query) ;
                 final SerializationContext sCxt = new SerializationContext(query) ;
-                final Op op = ref.getOp() ;
                 Content c = new Content(){
                     public void print(IndentedWriter out)
                     {  op.output(out, sCxt) ; }

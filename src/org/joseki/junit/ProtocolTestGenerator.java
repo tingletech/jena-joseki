@@ -12,9 +12,9 @@ package org.joseki.junit;
  */
 
 import junit.framework.TestSuite;
-import org.joseki.vocabulary.TestProtocolVocab; 
+import org.joseki.vocabulary.TestProtocolVocab;
 
-import com.hp.hpl.jena.query.engineHTTP.HttpParams;
+import com.hp.hpl.jena.query.engine.http.HttpParams;
 import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.rdf.model.Statement;
 import com.hp.hpl.jena.rdf.model.StmtIterator;
