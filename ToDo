@@ -1,6 +1,15 @@
 Joseki3
 =======
 
+Add: robots control to forms:
+    <META NAME="ROBOTS" CONTENT="NOINDEX">
+in your HTML document, that document won't be indexed.
+
+If you do:
+    <META NAME="ROBOTS" CONTENT="NOFOLLOW">
+
+
+
 --- MIME types
 Hi Andy,
 
