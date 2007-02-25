@@ -11,7 +11,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.joseki.vocabulary.TestProtocolVocab;
 
-import com.hp.hpl.jena.query.util.RelURI;
+import com.hp.hpl.jena.sparql.util.RelURI;
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.rdf.model.Statement;

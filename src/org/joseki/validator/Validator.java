@@ -22,12 +22,12 @@ import com.hp.hpl.jena.query.Query;
 import com.hp.hpl.jena.query.QueryFactory;
 import com.hp.hpl.jena.query.QueryParseException;
 import com.hp.hpl.jena.query.Syntax;
-import com.hp.hpl.jena.query.algebra.AlgebraGenerator;
-import com.hp.hpl.jena.query.algebra.AlgebraGeneratorQuad;
-import com.hp.hpl.jena.query.algebra.Op;
-import com.hp.hpl.jena.query.serializer.SerializationContext;
-import com.hp.hpl.jena.query.util.IndentedLineBuffer;
-import com.hp.hpl.jena.query.util.IndentedWriter;
+import com.hp.hpl.jena.sparql.engine.ref.QueryEngineRef;
+import com.hp.hpl.jena.sparql.engine.ref.QueryEngineQuad;
+import com.hp.hpl.jena.sparql.algebra.Op;
+import com.hp.hpl.jena.sparql.serializer.SerializationContext;
+import com.hp.hpl.jena.sparql.util.IndentedLineBuffer;
+import com.hp.hpl.jena.sparql.util.IndentedWriter;
 
 public class Validator extends HttpServlet 
 {
@@ -202,8 +202,9 @@ public class Validator extends HttpServlet
             if ( query != null && outputAlgebra )
             {
                 outStream.println("<p>Algebra structure:</p>") ;
-                final Op op = AlgebraGenerator.compile(query) ;
+                QueryEngineRef ref = new QueryEngineRef(query) ;
                 final SerializationContext sCxt = new SerializationContext(query) ;
+                final Op op = ref.getOp() ;
                 Content c = new Content(){
                     public void print(IndentedWriter out)
                     {  op.output(out, sCxt) ; }
@@ -214,8 +215,9 @@ public class Validator extends HttpServlet
             if ( query != null && outputQuads )
             {
                 outStream.println("<p>Quad structure:</p>") ;
-                final Op op = AlgebraGeneratorQuad.compile(query) ;
+                QueryEngineQuad ref = new QueryEngineQuad(query) ;
                 final SerializationContext sCxt = new SerializationContext(query) ;
+                final Op op = ref.getOp() ;
                 Content c = new Content(){
                     public void print(IndentedWriter out)
                     {  op.output(out, sCxt) ; }

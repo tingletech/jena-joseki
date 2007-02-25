@@ -6,8 +6,8 @@
 
 package org.joseki.junit;
 
-import com.hp.hpl.jena.query.junit.QueryTestException;
-import com.hp.hpl.jena.query.util.FmtUtils;
+import com.hp.hpl.jena.sparql.junit.QueryTestException;
+import com.hp.hpl.jena.sparql.util.FmtUtils;
 import com.hp.hpl.jena.rdf.model.Literal;
 import com.hp.hpl.jena.rdf.model.Property;
 import com.hp.hpl.jena.rdf.model.RDFNode;
@@ -17,7 +17,7 @@ import com.hp.hpl.jena.rdf.model.Resource;
 /** Test utilities.
  * 
  * @author Andy Seaborne
- * @version $Id: TestUtils.java,v 1.4 2007-01-02 13:58:06 andy_seaborne Exp $
+ * @version $Id: TestUtils.java,v 1.5 2007-02-25 17:14:18 andy_seaborne Exp $
  */
 
 public class TestUtils

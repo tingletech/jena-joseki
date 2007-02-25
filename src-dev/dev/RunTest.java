@@ -6,7 +6,7 @@
 
 package dev;
 
-import com.hp.hpl.jena.query.junit.SimpleTestRunner;
+import com.hp.hpl.jena.sparql.junit.SimpleTestRunner;
 import com.hp.hpl.jena.util.LocationMapper;
 
 import junit.framework.TestSuite;

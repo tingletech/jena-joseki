@@ -11,8 +11,8 @@ package dev;
 import com.hp.hpl.jena.query.QueryException;
 import com.hp.hpl.jena.query.QueryExecution;
 import com.hp.hpl.jena.query.ResultSetFormatter;
-import com.hp.hpl.jena.query.engine.http.QueryEngineHTTP;
-import com.hp.hpl.jena.query.util.StringUtils;
+import com.hp.hpl.jena.sparql.engine.http.QueryEngineHTTP;
+import com.hp.hpl.jena.sparql.util.StringUtils;
 
 public class RunClient
 {
