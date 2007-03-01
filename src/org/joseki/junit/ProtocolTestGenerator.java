@@ -12,13 +12,13 @@ package org.joseki.junit;
  */
 
 import junit.framework.TestSuite;
-import org.joseki.vocabulary.TestProtocolVocab; 
+import org.joseki.vocabulary.TestProtocolVocab;
 
-import com.hp.hpl.jena.sparql.engine.http.HttpParams;
 import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.rdf.model.Statement;
 import com.hp.hpl.jena.rdf.model.StmtIterator;
 import com.hp.hpl.jena.shared.NotFoundException;
+import com.hp.hpl.jena.sparql.engine.http.HttpParams;
 import com.hp.hpl.jena.util.FileManager;
 
 

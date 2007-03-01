@@ -6,15 +6,15 @@
 
 package dev;
 
-import com.hp.hpl.jena.sparql.junit.SimpleTestRunner;
-import com.hp.hpl.jena.util.LocationMapper;
-
 import junit.framework.TestSuite;
+import org.apache.log4j.Level;
+import org.apache.log4j.LogManager;
 import org.joseki.RDFServer;
 import org.joseki.junit.ProtocolTestSuiteFactory;
 import org.joseki.util.RunUtils;
 
-import org.apache.log4j.* ;
+import com.hp.hpl.jena.sparql.junit.SimpleTestRunner;
+import com.hp.hpl.jena.util.LocationMapper;
 
 public class RunTest
 {

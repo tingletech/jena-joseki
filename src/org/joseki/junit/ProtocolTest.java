@@ -9,22 +9,17 @@ package org.joseki.junit;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 
+import junit.framework.TestCase;
 import org.joseki.Joseki;
 
-import junit.framework.TestCase;
-
-import com.hp.hpl.jena.query.Query;
-import com.hp.hpl.jena.query.QueryFactory;
-import com.hp.hpl.jena.query.ResultSet;
-import com.hp.hpl.jena.query.ResultSetFactory;
-import com.hp.hpl.jena.query.ResultSetFormatter;
+import com.hp.hpl.jena.query.*;
+import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.sparql.engine.http.HttpContentType;
 import com.hp.hpl.jena.sparql.engine.http.HttpQuery;
 import com.hp.hpl.jena.sparql.engine.http.Params;
 import com.hp.hpl.jena.sparql.engine.http.QueryExceptionHTTP;
 import com.hp.hpl.jena.sparql.resultset.ResultSetRewindable;
 import com.hp.hpl.jena.sparql.resultset.XMLInput;
-import com.hp.hpl.jena.rdf.model.Model;
 
 public class ProtocolTest extends TestCase
 {
