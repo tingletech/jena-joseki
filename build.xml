@@ -76,11 +76,7 @@
     <target name="compile" depends="pre-compile,compile-java"
 	    description="Compile"/>
 
-    <target name="pre-compile">
-        <!-- Ensure a clean compile -->
-        <delete dir="${classes.build.dir}"/>
-        <mkdir dir="${classes.build.dir}"/>
-
+    <target name="pre-compile" depends="clean-build-dirs">
 	<tstamp>
           <format property="BUILD_TIME"      pattern="yyyy-MM-dd HH:mm Z"/>
           <format property="BUILD_TIME_XSD"  pattern="yyyy-MM-dd'T'HH:mm:ssZ"/>
