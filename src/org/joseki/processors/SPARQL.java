@@ -279,21 +279,20 @@ public class SPARQL extends QueryCom implements Loadable
         if ( !useQueryDesc && dataset == null )
             throw new QueryExecutionException(ReturnCodes.rcQueryExecutionFailure, "No datatset given") ;
         
-        QueryExecution qexec = null ;
-        
         if ( useQueryDesc )
-            qexec = QueryExecutionFactory.create(query) ;
-        else
-            qexec = QueryExecutionFactory.create(query, dataset) ;
+            // If using description, ignore dataset
+            dataset = null ;
         
-        if ( query.hasDatasetDescription() )
-            qexec = QueryExecutionFactory.create(query) ;
-        else
-            qexec = QueryExecutionFactory.create(query, dataset) ;
+        QueryExecution qexec = getQueryExecution(query, dataset) ;
         
         response.setCallback(new QueryExecutionClose(qexec)) ;
         executeQuery(query, queryStringLog, qexec, response) ;
         
+    }
+    
+    protected QueryExecution getQueryExecution(Query query, Dataset dataset)
+    {
+        return QueryExecutionFactory.create(query, dataset) ;
     }
     
     protected Dataset getDataset(DatasetDesc datasetDesc)
