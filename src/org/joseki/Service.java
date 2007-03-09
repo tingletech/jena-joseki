@@ -45,6 +45,16 @@ public class Service
             ref = ref.substring(1) ;
         return ref ;
     }
+
+    public Processor getProcessor()
+    {
+        return processor ;
+    }
+
+    public String getServiceRef()
+    {
+        return serviceRef ;
+    }
 }
 
 /*

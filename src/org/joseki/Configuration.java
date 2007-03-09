@@ -819,7 +819,7 @@ public class Configuration
         
         if ( ! r.getURI().startsWith("java:") )
         {
-            warn("Class name is a URI but not from the java: scheme") ;
+            warn("Class name is a URI but not from the java: scheme: "+r) ;
             return null ;
         }
         className = r.getURI().substring("java:".length()) ;
