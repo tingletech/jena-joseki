@@ -100,7 +100,7 @@ public class Configuration
                     s.getDatasetDesc().getDataset() ;
             } catch(Exception ex)
             { 
-                log.warn("Failed to build dataset from description: "+ex.getMessage(), ex) ;
+                log.warn("Failed to build dataset from description (service name: "+name+"): "+ex.getMessage(), ex) ;
                 continue ;
             }
         }
