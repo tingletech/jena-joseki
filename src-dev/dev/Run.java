@@ -12,6 +12,11 @@ public class Run
 {
     public static void main(String[] argv)
     {
+        joseki.rdfserver.main(new String[]{"joseki-config.ttl"}) ;
+    }
+    
+    public static void misc()
+    {
         //String f = httpRequest.getHeader(headerAccept) ;
         String x ;
         x = HttpUtils.match("*/*", "text/*") ;
