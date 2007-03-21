@@ -26,13 +26,17 @@
     dc:title    "Harry Potter and the Goblet of Fire" .
     
 :book5
-    dc:title    "Harry Potter and the Order of the Phoenix".
-    
-:book6
-    dc:title    "Harry Potter and the Half-Blood Prince".
-    
-    
+    dc:title    "Harry Potter and the Order of the Phoenix";
+    dc:creator  "J.K. Rowling" ;
+    .
 
+:book6
+    dc:title    "Harry Potter and the Half-Blood Prince";
+    dc:creator  "J.K. Rowling" .
+
+:book7
+    dc:title    "Harry Potter and the Deathly Hallows" ;
+    dc:creator  "J.K. Rowling" .
 _:a
     vcard:FN "J.K. Rowling" ;
     vcard:N
