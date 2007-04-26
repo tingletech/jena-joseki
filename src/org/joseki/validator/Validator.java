@@ -202,7 +202,7 @@ public class Validator extends HttpServlet
             if ( query != null && outputAlgebra )
             {
                 outStream.println("<p>Algebra structure:</p>") ;
-                final Op op = AlgebraGenerator.compile(query) ;
+                final Op op = AlgebraGenerator.compileQuery(query) ;
                 final SerializationContext sCxt = new SerializationContext(query) ;
                 Content c = new Content(){
                     public void print(IndentedWriter out)
@@ -214,7 +214,7 @@ public class Validator extends HttpServlet
             if ( query != null && outputQuads )
             {
                 outStream.println("<p>Quad structure:</p>") ;
-                final Op op = AlgebraGeneratorQuad.compile(query) ;
+                final Op op = AlgebraGeneratorQuad.compileQuery(query) ;
                 final SerializationContext sCxt = new SerializationContext(query) ;
                 Content c = new Content(){
                     public void print(IndentedWriter out)
