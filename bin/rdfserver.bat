@@ -6,7 +6,7 @@ echo Environment variable JOSEKIROOT not set
 goto :theEnd
 
 :ok
-call bin\joseki_path
+call bin\joseki_path.bat
 
 REM set LOGCONFIG=file:%JOSEKIROOT%\etc\log4j-detail.properties
 set LOGCONFIG=file:%JOSEKIROOT%\etc\log4j.properties
