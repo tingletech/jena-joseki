@@ -9,7 +9,7 @@ import java.util.* ;
 
 /** Constants and other definitions.
  * @author      Andy Seaborne
- * @version     $Id: Joseki.java,v 1.24 2007-01-02 13:58:07 andy_seaborne Exp $
+ * @version     $Id: Joseki.java,v 1.25 2007-06-11 18:50:14 andy_seaborne Exp $
  */
 public class Joseki
 {
@@ -50,10 +50,20 @@ public class Joseki
     
     //public static final String baseURI = "http://joseki.org/" ;
 
-    public static final String contentTypeAppN3           = "application/n3" ;
-    public static final String contentTypeTurtle          = "application/turtle" ;
+    public static final String contentTypeN3              = "text/rdf+n3" ;
+    public static final String contentTypeN3Alt           = "application/n3" ;
+
+    // Correct (at the moment)
+    public static final String contentTypeTurtle          = "application/x-turtle" ;
+    // Ideal
+    public static final String contentTypeTurtleAlt       = "application/turtle" ;
+    
     public static final String contentTypeRDFXML          = "application/rdf+xml" ;
-    public static final String contentTypeNTriples        = "application/n-triples" ;
+    
+    // MIME type for N-triple is text/plain (!!!)
+    public static final String contentTypeNTriples        = "text/plain" ;
+    public static final String contentTypeNTriplesAlt     = "application/n-triples" ;
+    
     public static final String contentTypeXML             = "application/xml" ;
     public static final String contentTypeResultsXML      = "application/sparql-results+xml" ;
     public static final String contentTypeResultsJSON     = "application/sparql-results+json" ;
@@ -65,8 +75,7 @@ public class Joseki
 
     public static final String contentTypeTextPlain       = "text/plain" ;
     public static final String contentTypeTextJavascript  = "text/javascript" ;
-    public static final String contentTypeTextN3          = "text/n3" ;
-    public static final String contentTypeForText         = contentTypeTextPlain ;
+    //public static final String contentTypeForText         = contentTypeTextPlain ;
     
     public static final String charsetUTF8                = "utf-8" ;
     
@@ -101,22 +110,24 @@ public class Joseki
     
     static Map jenaReaders = new HashMap() ;
     static {
-        setReaderType(contentTypeAppN3, "N3") ;
-        setReaderType(contentTypeTextN3, "N3") ;
+        setReaderType(contentTypeN3, "N3") ;
+        setReaderType(contentTypeN3Alt, "N3") ;
         setReaderType(contentTypeRDFXML, "RDF/XML") ;
         setReaderType(contentTypeNTriples, "N-TRIPLE") ;
         setReaderType(contentTypeXML, "RDF/XML") ;
         setReaderType(contentTypeTurtle, "TURTLE") ;
+        setReaderType(contentTypeTurtleAlt, "TURTLE") ;
     }
     
     static Map jenaWriters = new HashMap() ;
     static {
         setWriterType(contentTypeXML, "RDF/XML-ABBREV") ;
-        setWriterType(contentTypeAppN3, "N3") ;
-        setWriterType(contentTypeTextN3, "N3") ;
+        setWriterType(contentTypeN3, "N3") ;
+        setWriterType(contentTypeN3Alt, "N3") ;
         setWriterType(contentTypeRDFXML, "RDF/XML-ABBREV") ;
         setWriterType(contentTypeNTriples, "N-TRIPLE") ;
         setWriterType(contentTypeTurtle, "TURTLE") ;
+        setWriterType(contentTypeTurtleAlt, "TURTLE") ;
     }
 }
 

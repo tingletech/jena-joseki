@@ -7,6 +7,8 @@
 package org.joseki.http;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
@@ -40,12 +42,26 @@ public class ResponseHttp extends Response
     static String[] x = { //Joseki.contentTypeXML ,
                           Joseki.contentTypeRDFXML ,
                           Joseki.contentTypeTurtle ,
-                          Joseki.contentTypeAppN3 ,
-                          Joseki.contentTypeTextN3 ,
-                          Joseki.contentTypeNTriples } ;
+                          Joseki.contentTypeTurtleAlt ,
+                          Joseki.contentTypeN3 ,
+                          Joseki.contentTypeN3Alt ,
+                          Joseki.contentTypeNTriples,
+                          Joseki.contentTypeNTriplesAlt
+                          } ;
 
+    // MIME types we offer 
     static AcceptList prefContentType     = new AcceptList(x) ;
 
+    // The correct names for the above.
+    static Map correctedTypes = new HashMap() ;
+    static {
+        correctedTypes.put(Joseki.contentTypeXML, Joseki.contentTypeRDFXML) ;
+        correctedTypes.put(Joseki.contentTypeN3Alt, Joseki.contentTypeN3) ;
+        correctedTypes.put(Joseki.contentTypeTurtleAlt, Joseki.contentTypeTurtle) ;
+        correctedTypes.put(Joseki.contentTypeNTriplesAlt, Joseki.contentTypeNTriples) ;
+    }
+    
+    
     private HttpServletResponse httpResponse ;
     private HttpServletRequest httpRequest ; 
     
@@ -66,13 +82,13 @@ public class ResponseHttp extends Response
     
     protected void doResponseModel(Model model) throws QueryExecutionException
     {
-        String mimeType = null ;
-        String writerMimeType = null ;
+        String mimeType = null ;        // Header request type 
+        String writerMimeType = null ;  // Write for the request
         String charset = null ;
         
         // Return text/plain if it looks like a browser.
         String acceptHeader = httpRequest.getHeader(headerAccept) ;
-//        String textContentType =  HttpUtils.match(f, "text/*") ; 
+//        String textContentType =  HttpUtils.match(acceptHeader, "text/*") ; 
 //
 //        if ( textContentType != null )
 //        {
@@ -88,7 +104,7 @@ public class ResponseHttp extends Response
             if ( i != null )
                 mimeType = i.getAcceptType() ;
         }
-        
+  
         if ( charset == null )
         {
             AcceptItem i = HttpUtils.chooseCharset(httpRequest,  prefCharset, defaultCharset) ;
@@ -98,6 +114,11 @@ public class ResponseHttp extends Response
         
         if ( writerMimeType == null )
             writerMimeType = mimeType ;
+        
+        // If the requets is for test/plain, send N3 (sanity - avoid N-triples) 
+        if ( mimeType.equals(Joseki.contentTypeTextPlain) )
+            // text/plain => text/rdf+n3
+            writerMimeType = Joseki.contentTypeN3 ;
         
         if ( mimeType == null || charset == null )
         {
@@ -111,6 +132,13 @@ public class ResponseHttp extends Response
                 catch (Exception e) {}
             }
         }
+        
+        if ( correctedTypes.containsKey(mimeType) )
+            mimeType = (String)correctedTypes.get(mimeType) ;
+        
+        if ( mimeType.equals(Joseki.contentTypeN3) )
+            // Force to UTF-8 for N3 always
+            charset = Joseki.charsetUTF8 ;
         
         ser.setHttpResponse(httpRequest, httpResponse, mimeType, charset);   
         

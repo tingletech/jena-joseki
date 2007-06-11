@@ -15,7 +15,7 @@ import org.apache.commons.logging.*;
 /** A class to handle a list of accept types (AcceptRanges)
  * 
  * @author Andy Seaborne
- * @version $Id: AcceptList.java,v 1.7 2007-02-10 17:27:19 andy_seaborne Exp $
+ * @version $Id: AcceptList.java,v 1.8 2007-06-11 18:50:14 andy_seaborne Exp $
  */
 
 public class AcceptList
@@ -24,6 +24,16 @@ public class AcceptList
     private static Log log = LogFactory.getLog(AcceptList.class) ;
     List list ; // List of AcceptRanges
     
+    
+    /**
+     * Create a list of accept items from the give strings.
+     * @param acceptStrings
+     */
+    
+    public AcceptList(List acceptStrings)
+    {
+        list = new ArrayList(acceptStrings) ;
+    }
     
     /**
      * Create a list of accept items from the give strings.

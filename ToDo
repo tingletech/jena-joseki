@@ -24,6 +24,8 @@ application/x-turtle for Turtle
    This is the current official MIME type for Turtle, according to the
    spec [1]. application/turtle is planned, but has not been registered,
    and thus is not an official MIME type at the moment.
+   
+[DONE - application/turtle also offered]
 
 text/rdf+n3 for N3
    This will be the official MIME type for N3, according to the spec  
@@ -32,12 +34,16 @@ text/rdf+n3 for N3
    deployed, but was rejected because N3 belongs in the text/* tree.
    (Things in the text/* tree are supposed to be displayed as plain
    text if not understood by the client.)
+   
+[DONE - continue to offer application/n3]
 
 text/plain for N-Triples
    The official MIME type for N-Triples is indeed text/plain [3]. Joseki
    currently refuses requests for text/plain, and serving N-Triples  
 instead
    seems to be a good alternative.
+   
+[DONE]
 
 Second, please remove support for these non-existing MIME types:
 
@@ -45,6 +51,8 @@ text/n3
    There are a few deployments of this, but it was never in  
 consideration
    as an official MIME type.
+   
+[DONE]
 
 application/n-triples
    This is supported by Joseki and RAP's implementation of the RDF  
@@ -53,10 +61,14 @@ Net API,
 this
    type.
 
+[It's the ideal because of the x-*]
+
 Third, please always send out spec-conformant Content-Type headers in  
 responses, even if the client asked for an inofficial type. This  
 means Joseki should always answer these Content-Type headers when  
 serving RDF:
+
+[DONE - there is a correction map]
 
 application/rdf+xml
    when serving RDF/XML, even if the client asked for application/xml
@@ -72,6 +84,8 @@ text/rdf+n3; charset=utf-8
 
 text/plain
    when serving N-Triples.
+
+[DONE - always use UTF-8 for N3]
 
 Finally, FYI: There's also text/rdf for RDF/XML. It has seen a lot of  
 deployment in the early days. It is fundamentally broken because of a  
@@ -118,8 +132,6 @@ Richard
 + Need "application/sparql-query"
 
 + Teach HttpUtils about "+" as in "application/sparql-results+xml"
-
-+ MIME type "text/rdf+n3"
 
 + Add version id (build, ARQ) to HTTP headers
 

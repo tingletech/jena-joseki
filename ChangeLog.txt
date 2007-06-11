@@ -6,8 +6,11 @@ Joseki 3.1
 
 + Upgraded to ARQ 2.0
 
-+ Upgraded Jettey to 6.1.3
++ Upgraded Jetty to 6.1.3
   This changes the names of some jars.
+  
++ MIME types corrected
+  (thanks to Richard Cyganiak for doing the background research for this)
 
 Joseki 3.0
 ----------
