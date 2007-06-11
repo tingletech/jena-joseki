@@ -17,7 +17,7 @@ import org.joseki.*;
 
 /** The servlet class.
  * @author  Andy Seaborne
- * @version $Id: Servlet.java,v 1.20 2007-02-21 15:46:24 andy_seaborne Exp $
+ * @version $Id: Servlet.java,v 1.21 2007-06-11 19:37:20 andy_seaborne Exp $
  */
 
 public class Servlet extends HttpServlet
@@ -130,7 +130,7 @@ public class Servlet extends HttpServlet
                 log.debug(HttpUtils.fmtRequest(httpRequest)) ;
             
             // getRequestURL is the exact string used by the caller in the request.
-            // Internally, its the "request URI" that names the service
+            // Internally, it's the "request URI" that names the service
             
             //String requestURL = httpRequest.getRequestURL().toString() ;
             String uri = httpRequest.getRequestURI() ;
@@ -211,7 +211,7 @@ public class Servlet extends HttpServlet
 //        if ( servletPath != null && servletPath.length() > 0 )
 //            dispatchURI = dispatchURI.substring(servletPath.length()) ;
         
-        // Sugegsted by damien_coraboeuf
+        // Suggested by damien_coraboeuf
         // TODO Test and verify
 //        if ( servletPath != null && servletPath.length() > 0 )
 //            serviceURI = serviceURI.substring(servletPath.length()) ;
