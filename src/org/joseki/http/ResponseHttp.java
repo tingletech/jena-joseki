@@ -224,13 +224,10 @@ public class ResponseHttp extends Response
         String serializationType = contentType ;
 
         // output field causes the serialization to be set
-        // but the returned content-type is some text/ type
         if ( outputField != null )
         {
             serializationType = outputField ;
-            contentType = Joseki.contentTypeTextPlain ;
-            if ( serializationType.equals(Joseki.contentTypeResultsJSON) )
-                contentType = Joseki.contentTypeTextJavascript;
+            contentType = Joseki.contentTypeResultsJSON ;
         }
         
         // ---- Form: XML

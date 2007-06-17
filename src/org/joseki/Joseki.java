@@ -9,7 +9,7 @@ import java.util.* ;
 
 /** Constants and other definitions.
  * @author      Andy Seaborne
- * @version     $Id: Joseki.java,v 1.25 2007-06-11 18:50:14 andy_seaborne Exp $
+ * @version     $Id: Joseki.java,v 1.26 2007-06-17 16:01:11 andy_seaborne Exp $
  */
 public class Joseki
 {
@@ -74,7 +74,7 @@ public class Joseki
     public static final String contentOutputSPARQL        = "sparql" ;
 
     public static final String contentTypeTextPlain       = "text/plain" ;
-    public static final String contentTypeTextJavascript  = "text/javascript" ;
+    //public static final String contentTypeTextJavascript  = "text/javascript" ;
     //public static final String contentTypeForText         = contentTypeTextPlain ;
     
     public static final String charsetUTF8                = "utf-8" ;
