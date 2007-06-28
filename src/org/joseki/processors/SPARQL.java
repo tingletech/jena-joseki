@@ -162,7 +162,7 @@ public class SPARQL extends QueryCom implements Loadable
         }
         catch (Throwable ex)
         {   // Attempt to catch anything
-            log.debug("Throwable: "+ex.getMessage()) ;
+            log.debug("Throwable: "+ex.getMessage(), ex) ;
             QueryExecutionException qExEx = new QueryExecutionException(ReturnCodes.rcInternalError, ex.getMessage()) ;
             throw qExEx ;
         }
