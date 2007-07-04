@@ -88,6 +88,9 @@ public class ResponseHttp extends Response
         
         // Return text/plain if it looks like a browser.
         String acceptHeader = httpRequest.getHeader(headerAccept) ;
+        if ( acceptHeader == null )
+            acceptHeader = Joseki.contentTypeRDFXML ;
+        
 //        String textContentType =  HttpUtils.match(acceptHeader, "text/*") ; 
 //
 //        if ( textContentType != null )
@@ -100,7 +103,7 @@ public class ResponseHttp extends Response
         
         if ( mimeType == null )
         {
-            AcceptItem i = HttpUtils.chooseContentType(httpRequest, prefContentType, null /*defaultContentType*/) ;
+            AcceptItem i = HttpUtils.chooseContentType(httpRequest, prefContentType, defaultContentType) ;
             if ( i != null )
                 mimeType = i.getAcceptType() ;
         }
