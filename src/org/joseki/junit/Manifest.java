@@ -11,7 +11,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.joseki.vocabulary.TestProtocolVocab;
 
-import com.hp.hpl.jena.n3.RelURI;
+import com.hp.hpl.jena.n3.IRIResolver;
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.rdf.model.Statement;
@@ -32,7 +32,7 @@ public class Manifest
     
     public Manifest(String fn)
     {
-        filename = RelURI.resolve(fn) ;
+        filename = IRIResolver.resolveGlobal(fn) ;
         manifest = FileManager.get().loadModel(filename) ;
         parseManifest() ;
     }
