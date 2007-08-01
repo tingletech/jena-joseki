@@ -528,13 +528,17 @@ public class Configuration
                 QuerySolution qs = rs.nextSolution() ;
                 Resource x = qs.getResource("x") ;
 
+                // No - SDB datsets do not do any of this.
+                // Cope with no datset description, but print useful stuff
+                // if there is a broken one.
+                
+//                if ( dftGraph == null && graphName == null )
+//                    // Note the named graph match assumed a well-formed name/data pair
+//                    warn("Dataset with no default graph and no named graphs: "+ Utils.nodeLabel(x)) ;
+
                 Resource dftGraph = qs.getResource("dft") ; 
                 Resource graphName = qs.getResource("graphName") ;
                 Resource graphData = qs.getResource("graphData") ;
-
-                if ( dftGraph == null && graphName == null )
-                    // Note the named graph match assumed a well-formed name/data pair
-                    warn("Dataset with no default graph and no named graphs: "+ Utils.nodeLabel(x)) ;
 
                 // New dataset
                 if ( ! x.equals(ds) )
@@ -547,6 +551,7 @@ public class Configuration
                     // The rest is just checking structures ...
                     numDatasets ++ ;
 
+                    // -- Checking
                     if ( dftGraph != null )
                     {
                         log.info("  Default graph : "+Utils.nodeLabel(dftGraph)) ;
@@ -557,6 +562,7 @@ public class Configuration
                 }
                 else
                 {
+                    // -- Checking
                     // Check one default model.
                     if ( dftGraph != null && !dftGraph.equals(dft) )
                         warn("  Two default graphs") ;

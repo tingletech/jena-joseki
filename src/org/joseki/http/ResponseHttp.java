@@ -307,7 +307,7 @@ public class ResponseHttp extends Response
             httpMsg = ReturnCodes.errorString(execEx.returnCode);;
 
             //msg("Error in operation: URI = " + uri + " : " + httpMsg);
-        log.info("Error: URI = " + request.getServiceURI() + " : " + httpMsg) ;
+        log.info("Error: URI = " + request.getServiceURI() + " : " + httpMsg, execEx) ;
         httpSerializer.sendError(execEx, httpResponse) ;
     }
     
