@@ -35,9 +35,6 @@
 
 sdb:DatasetStore rdfs:subClassOf ja:RDFDataset .
 
-## Bug fix - will go away.
-## sdb:DatasetStore rdfs:subClassOf ja:Object .
-
 ## Dataset in SDB.  Both types are needed.
 
 _:books rdf:type sdb:DatasetStore , ja:RDFDataset ;
