@@ -90,10 +90,6 @@ _:books   rdf:type ja:RDFDataset ;
 
 ## --------------------------------------------------------------
 ## Processors
-## Usually, this section is empty because only standard
-## processors are used via inclusion of common definitions.
-
-## ----- definitions --------------------------------------------------
 
 joseki:ProcessorSPARQL
     rdfs:label "General SPARQL processor" ;

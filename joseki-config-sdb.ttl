@@ -28,13 +28,15 @@
 ## See also SDB documentation -- http://jena.hpl.hp.com/wiki/SDB
 ## Special declarations to cause SDB to be used.
 ## Initialize SDB.
+
 [] ja:loadClass "com.hp.hpl.jena.sdb.SDB" .
 
 ## Tell the system that sdb:DatasetStore is an implementation of ja:RDFDataset .
+
 sdb:DatasetStore rdfs:subClassOf ja:RDFDataset .
 
 ## Bug fix - will go away.
-sdb:DatasetStore rdfs:subClassOf ja:Object .
+## sdb:DatasetStore rdfs:subClassOf ja:Object .
 
 ## Dataset in SDB.  Both types are needed.
 
