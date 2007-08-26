@@ -1,6 +1,8 @@
 Joseki3
 =======
 
+++ LARQ : per processor index.
+
 Add: robots control to forms:
     <META NAME="ROBOTS" CONTENT="NOINDEX">
 in your HTML document, that document won't be indexed.
@@ -10,8 +12,7 @@ If you do:
 
 Find and close down all datasets on servlet shutdown.
 
-
-==Release
+== Release
 
 + Graph caching.
   Need some help from ARQ?
