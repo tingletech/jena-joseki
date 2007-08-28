@@ -1,3 +1,10 @@
+Building:
+Uses sparql-11.wsdl and sparql-types.xsd
+
+
+
+
+
 Local copies:
 
 xml.xsd, XMLSchema.dtd, datatypes.dtd

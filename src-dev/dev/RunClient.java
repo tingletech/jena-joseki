@@ -39,7 +39,6 @@ public class RunClient
             ex.printStackTrace() ;
         }
     }
-    
     static private String concat(String [] a)
     {
         return StringUtils.join("\n", a) ; 
