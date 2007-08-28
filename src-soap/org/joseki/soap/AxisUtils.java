@@ -13,10 +13,10 @@ import java.util.List;
 import com.hp.hpl.jena.graph.Node;
 import com.hp.hpl.jena.query.QuerySolution;
 import com.hp.hpl.jena.query.ResultSet;
-import com.hp.hpl.jena.query.resultset.ResultSetApply;
-import com.hp.hpl.jena.query.resultset.ResultSetProcessor;
-import com.hp.hpl.jena.query.util.NodeToLabelMap;
 import com.hp.hpl.jena.rdf.model.RDFNode;
+import com.hp.hpl.jena.sparql.resultset.ResultSetApply;
+import com.hp.hpl.jena.sparql.resultset.ResultSetProcessor;
+import com.hp.hpl.jena.sparql.util.NodeToLabelMap;
 
 import org.apache.axis.message.MessageElement;
 import org.apache.axis.message.Text;
@@ -32,7 +32,6 @@ public class AxisUtils
         Sparql sparqlResults = new Sparql() ;
         Results xmlResults = new Results() ;
         xmlResults.setOrdered(resultSet.isOrdered()) ;
-        xmlResults.setDistinct(resultSet.isDistinct()) ;
         
         Head head = new Head() ;
         sparqlResults.setHead(head) ;

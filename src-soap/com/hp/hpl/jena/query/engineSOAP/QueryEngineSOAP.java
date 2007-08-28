@@ -22,12 +22,13 @@ import org.joseki.ws1.SparqlQuery;
 import org.w3.www._2005._09.sparql_protocol_types.* ;
 
 // Clash with the types class of the same name -- import com.hp.hpl.jena.query.Query;
+import com.hp.hpl.jena.query.Dataset;
 import com.hp.hpl.jena.query.Query;
 import com.hp.hpl.jena.query.QueryExecution;
 import com.hp.hpl.jena.query.QuerySolution;
 import com.hp.hpl.jena.query.ResultSet;
-import com.hp.hpl.jena.query.util.Context;
 import com.hp.hpl.jena.rdf.model.Model;
+import com.hp.hpl.jena.sparql.util.Context;
 import com.hp.hpl.jena.util.FileManager;
 import com.hp.hpl.jena.vocabulary.RDF;
 
@@ -176,6 +177,11 @@ public class QueryEngineSOAP implements QueryExecution
 
     public void close()
     { }
+
+    public Dataset getDataset()
+    {
+        return null ;
+    }
 }
 
 /*

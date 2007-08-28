@@ -11,7 +11,12 @@ import java.util.List;
 
 import org.apache.axis.message.MessageElement;
 import org.apache.commons.logging.LogFactory;
-import org.w3.www._2005.sparql_results.*;
+import org.w3.www._2005.sparql_results.Binding;
+import org.w3.www._2005.sparql_results.Literal;
+import org.w3.www._2005.sparql_results.Result;
+import org.w3.www._2005.sparql_results.Results;
+import org.w3.www._2005.sparql_results.Sparql;
+import org.w3.www._2005.sparql_results.Variable;
 
 import com.hp.hpl.jena.datatypes.RDFDatatype;
 import com.hp.hpl.jena.datatypes.TypeMapper;
@@ -19,11 +24,11 @@ import com.hp.hpl.jena.graph.Node;
 import com.hp.hpl.jena.query.QuerySolution;
 import com.hp.hpl.jena.query.QuerySolutionMap;
 import com.hp.hpl.jena.query.ResultSet;
-import com.hp.hpl.jena.query.util.LabelToNodeMap;
-import com.hp.hpl.jena.query.util.NodeUtils;
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
 import com.hp.hpl.jena.rdf.model.RDFNode;
+import com.hp.hpl.jena.sparql.util.LabelToNodeMap;
+import com.hp.hpl.jena.sparql.util.ModelUtils;
 
 
 public class ResultSetAxis implements ResultSet
@@ -34,7 +39,7 @@ public class ResultSetAxis implements ResultSet
     boolean distinct = false ;
     Result[] results ;
     int index ; 
-    LabelToNodeMap bNodeLabels = new LabelToNodeMap(false) ;
+    LabelToNodeMap bNodeLabels =LabelToNodeMap.createBNodeMap() ;
     Model model = ModelFactory.createDefaultModel() ;
     
     
@@ -117,7 +122,7 @@ public class ResultSetAxis implements ResultSet
             {
                 String label = b.getBnode() ;
                 Node n = bNodeLabels.asNode(label) ;
-                RDFNode rdfNode = NodeUtils.convertGraphNodeToRDFNode(n, model) ;
+                RDFNode rdfNode = ModelUtils.convertGraphNodeToRDFNode(n, model) ;
                 qs.add(varName, rdfNode) ;
                 continue ;
             }

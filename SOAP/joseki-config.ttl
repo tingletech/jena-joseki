@@ -8,7 +8,7 @@
 @prefix joseki: <http://joseki.org/2005/06/configuration#> .
 @prefix ql:     <http://jena.hpl.hp.com/2003/07/query/> .
 
-@prefix jms:    <http://jena.hpl.hp.com/2003/08/jms#> .
+@prefix ja:     <http://jena.hpl.hp.com/2005/11/Assembler#> .
 
 ## --------------------------------------------------------------
 ## About this configuration
@@ -39,11 +39,13 @@
 
 # A dataset of one model as the default graph
 
-_:books   rdf:type joseki:RDFDataSet ;
+_:books   rdf:type ja:RDFDataset ;
     rdfs:label "Books" ;
-    joseki:defaultGraph
+    ja:defaultGraph
       [ rdfs:label "books.n3" ;
-        jms:loadWith  <file:../Data/books.n3> ] ;
+        a ja:MemoryModel ;
+        ja:content [ja:externalContent <file:../Data/books.n3>] ;
+      ]
     .
 
 ## ----- definitions --------------------------------------------------
