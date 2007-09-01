@@ -190,16 +190,6 @@ public class Validator extends HttpServlet
                 output(outStream, c, lineNumbers) ;
             }
             
-            if ( query != null && outputPrefix )
-            {
-                outStream.println("<p>Abstract structure:</p>") ;
-                Content c = new Content(){
-                    public void print(IndentedWriter out)
-                    { query.serialize(out, Syntax.syntaxPrefix) ; }
-                } ;
-                output(outStream, c , lineNumbers) ;
-            }
-            
             if ( query != null && outputAlgebra )
             {
                 outStream.println("<p>Algebra structure:</p>") ;

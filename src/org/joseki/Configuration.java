@@ -711,7 +711,10 @@ public class Configuration
     {
         if ( ! ( node instanceof Literal ) ) 
             return null ;
-        String ref = ((Literal)node).getLexicalForm() ;
+        Literal lit = ((Literal)node) ;
+        if ( ! lit.getLanguage().equals("") )
+            log.warn("Service reference has a language tag") ;
+        String ref = lit.getLexicalForm() ;
         return ref ;
     }
     
