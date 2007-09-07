@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- $Id: spq.wsdl,v 1.1 2007-09-07 14:30:06 andy_seaborne Exp $ -->
+
+<!--
+http://www.w3.org/2006/01/wsdl ==> http://www.w3.org/ns/wsdl
+  xmlns:wsoap="http://www.w3.org/ns/wsdl/soap"
+add <service>
+-->
+
+<description xmlns="http://www.w3.org/ns/wsdl"
+  xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+  xmlns:whttp="http://www.w3.org/ns/wsdl/http"
+  xmlns:st="http://www.w3.org/2005/09/sparql-protocol-types/#"
+  xmlns:wsoap="http://schemas.xmlsoap.org/wsdl/soap/"
+  xmlns:wsdlx="http://www.w3.org/ns/wsdl-extensions"
+  xmlns:tns="http://www.w3.org/2005/08/sparql-protocol-query/#"
+  targetNamespace="http://www.w3.org/2005/08/sparql-protocol-query/#">
+
+  <documentation> This document describes the SPARQL Protocol for RDF as a web service with one interface, SparqlQuery,
+  containing one operation, query; as welll as HTTP and SOAP bindings of that interface. See
+  http://www.w3.org/2001/sw/DataAccess/proto-wd/ for the SPARQL Protocol for RDF specification. </documentation>
+
+  <!-- type imports -->
+  <types>
+
+    <!-- the SPARQL XML Results Format namespace -->
+    <xs:import namespace="http://www.w3.org/2005/sparql-results#" 
+	       schemaLocation="result2.xsd"/>
+
+    <!-- the W3C XML Schema types for SPARQL Protocol -->
+    <xs:import namespace="http://www.w3.org/2005/09/sparql-protocol-types/#"
+	       schemaLocation="spt.xsd"/>
+
+  </types>
+
+  <!-- Abstract SparqlQuery Interface -->
+  <interface name="SparqlQuery" styleDefault="http://www.w3.org/ns/wsdl/style/iri">
+
+    <!-- the Interface Faults -->
+    <fault name="MalformedQuery" element="st:malformed-query"/>
+    <fault name="QueryRequestRefused" element="st:query-request-refused"/>
+
+	 <!-- the Interface Operation -->
+    <operation name="query" pattern="http://www.w3.org/ns/wsdl/in-out">
+
+      <documentation>The operation is used to convey queries and their results from clients to services and back
+      again.</documentation>
+
+      <input messageLabel="In" element="st:query-request"/>
+      <output messageLabel="Out" element="st:query-result"/>
+
+		<!-- the interface faults are out faults -->
+      <outfault ref="tns:MalformedQuery" messageLabel="Out"/>
+      <outfault ref="tns:QueryRequestRefused" messageLabel="Out"/>
+    </operation>
+
+  </interface>
+ 
+  <!-- the HTTP GET binding for query operation -->
+  <binding name="queryHttpGet" interface="tns:SparqlQuery"
+	    type="http://www.w3.org/ns/wsdl/http"
+	    whttp:version="1.1">
+
+    <fault ref="tns:MalformedQuery" whttp:code="400"/>
+    <fault ref="tns:QueryRequestRefused" whttp:code="500"/>
+
+    <operation ref="tns:query"
+	       wsdlx:safe="true"
+			 whttp:method="GET"
+			 whttp:faultSerialization="*/*"
+			 whttp:inputSerialization="application/x-www-form-urlencoded"
+			 whttp:outputSerialization="application/sparql-results+xml, application/rdf+xml, */*" />
+  </binding>
+
+  <binding name="queryHttpPost" interface="tns:SparqlQuery"
+		 type="http://www.w3.org/ns/wsdl/http"
+		 whttp:version="1.1">
+		
+	  <fault ref="tns:MalformedQuery" whttp:code="400"/>
+	  <fault ref="tns:QueryRequestRefused" whttp:code="500"/>
+		
+    <operation ref="tns:query"
+	       wsdlx:safe="true"
+		    whttp:method="POST" 
+			 whttp:faultSerialization="*/*"
+	       whttp:inputSerialization="application/x-www-form-urlencoded, application/xml"
+	       whttp:outputSerialization="application/sparql-results+xml, application/rdf+xml, */*" />	
+  </binding>
+		
+  <!-- the SOAP 1.2 binding (HTTP is underlying protocol; POST is the method.) -->
+  <binding name="querySoap" interface="tns:SparqlQuery"
+	   type="http://www.w3.org/ns/wsdl/soap"
+	   wsoap:version="1.2" 
+	   wsoap:protocol="http://www.w3.org/2003/05/soap/bindings/HTTP">
+
+    <fault ref="tns:MalformedQuery" wsoap:code="wsoap:Sender" />
+    <fault ref="tns:QueryRequestRefused" wsoap:code="wsoap:Sender" />
+
+    <operation ref="tns:query" wsoap:mep="http://www.w3.org/2003/05/soap/mep/request-response" />
+
+  </binding>
+
+
+  <service name="JosekiQueryService" interface="tns:SparqlQuery">
+    <documentation>Doc</documentation>
+    <endpoint name="sparql-query" 
+	      binding="tns:querySoap"
+	      address="http://localhost:2525/axis/services/sparql-query">
+    </endpoint>
+  </service>
+  
+</description>

@@ -1,0 +1,15 @@
+#!/bin/bash
+
+export AXIS2_HOME=/home/afs/sys/axis2-1.3
+export JAVA_HOME="/c/Progra~1/Java/jdk1.6.0_02"
+
+#D=sparql-protocol-query.wsdl 
+D=spq.wsdl 
+
+P="http://www.w3.org/2005/08/sparql-protocol-query/#=org.joseki.soap"
+
+sh ${AXIS2_HOME}/bin/axis2.sh  -DsocksProxyHost=socks-server \
+    org.apache.axis2.wsdl.WSDL2Java \
+    -wv 2 -ss -sd -uri "$D"
+
+#wsdl2java -wv 2 -uri "$D"

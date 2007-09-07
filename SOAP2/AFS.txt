@@ -1,0 +1,12 @@
+Axis2-1.3:
+
+Fix: axisserver.sh : need "" around 
+    -classpath "$AXIS2_CLASSPATH"
+
+Deploy:
+
+
+----------------
+Differences between:
+ result2.xsd in the proto-wd dir. and in the rf1 dir
+
