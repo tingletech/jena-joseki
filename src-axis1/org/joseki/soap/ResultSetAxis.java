@@ -27,6 +27,8 @@ import com.hp.hpl.jena.query.ResultSet;
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
 import com.hp.hpl.jena.rdf.model.RDFNode;
+
+import com.hp.hpl.jena.sparql.ARQNotImplemented;
 import com.hp.hpl.jena.sparql.util.LabelToNodeMap;
 import com.hp.hpl.jena.sparql.util.ModelUtils;
 
@@ -76,6 +78,12 @@ public class ResultSetAxis implements ResultSet
         QuerySolution oneRow = makeResultBinding(xmlRow) ;
         return oneRow ;
     }
+
+    public com.hp.hpl.jena.sparql.engine.binding.Binding nextBinding()
+    {
+        throw new ARQNotImplemented("ResultSetAxis.nextBinding") ;
+    }
+
 
     public int getRowNumber()
     {
