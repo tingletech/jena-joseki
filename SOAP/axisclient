@@ -2,7 +2,7 @@
 
 # XML parser
 CP="$(alljars ../lib)"
-CP="$CP;$(alljars ../lib2)"
+CP="$CP;$(alljars ../lib-axis1)"
 CP="../classes;$CP"
 
 LOGCONFIG=${LOGCONFIG:-file:log4j.properties}
