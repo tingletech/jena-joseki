@@ -6,6 +6,10 @@ Fix: axisserver.sh : need "" around
 Deploy:
 
 
+cd ~/sys/axis2-1.3/webapp
+ant create.war
+
+
 ----------------
 Differences between:
  result2.xsd in the proto-wd dir. and in the rf1 dir
