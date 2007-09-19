@@ -9,4 +9,4 @@ LOGCONFIG=${LOGCONFIG:-file:log4j.properties}
 LOG="-Dlog4j.configuration=${LOGCONFIG}"
 
 # echo $CP
-java -cp "$CP" $LOG devsoap.RunSOAPClient
+java -cp "$CP" $SOCKS $LOG devsoap.RunSOAPClient
