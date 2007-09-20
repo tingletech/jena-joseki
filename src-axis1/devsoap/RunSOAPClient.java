@@ -18,12 +18,21 @@ import com.hp.hpl.jena.sparql.util.StringUtils;
 public class RunSOAPClient
 {
     static String endpointSOAP = "http://demo.openlinksw.com/sparql" ;
+    //static String endpointSOAP = "http://localhost:2121/sparql" ;   // For tcpmon
+    
     //static String endpointSOAP = "http://localhost:2525/axis/services/sparql-query" ;
 //    static String endpointHttp = "http://localhost:2020/rdfs" ;
     
     public static void main(String[] args)
     {
-        doOneSelectQuery() ;
+        String qs = null ;
+        
+        if ( args.length > 0 )
+            qs = args[0] ;
+        else                
+            qs = "SELECT ?x {?x ?y ?z . FILTER regex(?z, 'Project Zero') }" ;
+        
+        doOneSelectQuery(qs) ;
         System.exit(0) ;
     }
     
@@ -45,10 +54,8 @@ public class RunSOAPClient
     
    // -------- SOAP
     
-    public static void doOneSelectQuery()
+    public static void doOneSelectQuery(String queryStr)
     {
-        //String queryStr = "SELECT ?z {?x ?y ?z . FILTER regex(?z, 'Harry')}\n" ;
-        String queryStr = "SELECT ?z {?x ?y ?z}\n" ;
         
         try {
             QueryExecution qexec = new QueryEngineSOAP(endpointSOAP, queryStr) ;

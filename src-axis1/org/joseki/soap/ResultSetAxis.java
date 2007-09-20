@@ -7,6 +7,7 @@
 package org.joseki.soap;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.apache.axis.message.MessageElement;
@@ -27,8 +28,8 @@ import com.hp.hpl.jena.query.ResultSet;
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
 import com.hp.hpl.jena.rdf.model.RDFNode;
-
-import com.hp.hpl.jena.sparql.ARQNotImplemented;
+import com.hp.hpl.jena.sparql.core.Var;
+import com.hp.hpl.jena.sparql.engine.binding.BindingMap;
 import com.hp.hpl.jena.sparql.util.LabelToNodeMap;
 import com.hp.hpl.jena.sparql.util.ModelUtils;
 
@@ -81,7 +82,18 @@ public class ResultSetAxis implements ResultSet
 
     public com.hp.hpl.jena.sparql.engine.binding.Binding nextBinding()
     {
-        throw new ARQNotImplemented("ResultSetAxis.nextBinding") ;
+        // Crude downcast  
+        QuerySolution qs = nextSolution() ;
+        BindingMap b = new BindingMap(null) ;
+        
+        for ( Iterator iter = qs.varNames() ; iter.hasNext(); )
+        {
+            String vn = (String)iter.next() ;
+            RDFNode n = qs.get(vn) ;
+            b.add(Var.alloc(vn), n.asNode()) ;
+        }
+        
+        return b ;
     }
 
 
