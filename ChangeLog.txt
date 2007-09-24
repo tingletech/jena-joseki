@@ -1,6 +1,11 @@
 Joseki3
 =======
 
+Joseki 3.2
+----------
+
++ Upgraded to ARQ 2.2 and lucene-core-2.2.0.jar
+
 Joseki 3.1
 ----------
 
