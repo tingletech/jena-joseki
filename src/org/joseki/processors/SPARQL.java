@@ -210,7 +210,7 @@ public class SPARQL extends QueryCom implements Loadable
         if ( queryString == null )
         {
             log.debug("No query argument") ;
-            throw new QueryExecutionException(ReturnCodes.rcQueryExecutionFailure,
+            throw new QueryExecutionException(ReturnCodes.rcBadRequest,
             "No query string");    
         }
         
@@ -218,7 +218,7 @@ public class SPARQL extends QueryCom implements Loadable
         if ( queryString.equals("") )
         {
             log.debug("Empty query string") ;
-            throw new QueryExecutionException(ReturnCodes.rcQueryExecutionFailure,
+            throw new QueryExecutionException(ReturnCodes.rcBadRequest,
             "Empty query string");    
         }
         // ---- Query
@@ -278,7 +278,7 @@ public class SPARQL extends QueryCom implements Loadable
         }
         
         if ( !useQueryDesc && dataset == null )
-            throw new QueryExecutionException(ReturnCodes.rcQueryExecutionFailure, "No dataset given") ;
+            throw new QueryExecutionException(ReturnCodes.rcBadRequest, "No dataset given") ;
         
         if ( useQueryDesc )
             // If using description, ignore dataset
@@ -451,7 +451,9 @@ public class SPARQL extends QueryCom implements Loadable
             
             return dataset ;
             
-        } catch (Exception ex)
+        } 
+        catch (QueryExecutionException ex) { throw ex ; }
+        catch (Exception ex)
         {
             log.info("SPARQL parameter error",ex) ;
             throw new QueryExecutionException(

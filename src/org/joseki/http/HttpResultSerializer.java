@@ -21,7 +21,7 @@ import com.hp.hpl.jena.shared.JenaException;
 /** Extracting operation data from HTTP servlet requests and formatting results for sending back.
  * 
  * @author      Andy Seaborne
- * @version     $Id: HttpResultSerializer.java,v 1.6 2007-01-10 23:14:56 andy_seaborne Exp $
+ * @version     $Id: HttpResultSerializer.java,v 1.7 2007-10-05 20:33:28 andy_seaborne Exp $
  */
 public class HttpResultSerializer
 {
@@ -132,6 +132,10 @@ public class HttpResultSerializer
         }
     }
     
+    // 400 is SPARQL malformed query
+    // 500 is SPAQRL query request refused
+    static int SPARQL_MalformedQuery = HttpServletResponse.SC_BAD_REQUEST ;
+    static int SPARQL_QueryRequestRefused =  HttpServletResponse.SC_INTERNAL_SERVER_ERROR ;
     
     public void sendError(ExecutionException execEx, HttpServletResponse response)
     {
@@ -141,19 +145,16 @@ public class HttpResultSerializer
             if (execEx.shortMessage == null)
                 httpMsg = ReturnCodes.errorString(execEx.returnCode);
     
-            // Map from internal error codes to HTTP ones.
-            // 400 is SPARQL malformed query
-            // 500 is SPAQRL query request refused
             switch (execEx.returnCode)
             {
                 case ReturnCodes.rcOK :
                     httpRC = 200;
                     break;
                 case ReturnCodes.rcQueryParseFailure :
-                    httpRC = HttpServletResponse.SC_BAD_REQUEST;
+                    httpRC = SPARQL_MalformedQuery;
                     break;
                 case ReturnCodes.rcQueryExecutionFailure :
-                    httpRC = HttpServletResponse.SC_BAD_REQUEST;
+                    httpRC = SPARQL_QueryRequestRefused;
                     break;
                 case ReturnCodes.rcNoSuchQueryLanguage :
                     httpRC = HttpServletResponse.SC_NOT_IMPLEMENTED ;
@@ -162,7 +163,7 @@ public class HttpResultSerializer
                     httpRC = HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
                     break;
                 case ReturnCodes.rcJenaException :
-                    httpRC = HttpServletResponse.SC_BAD_REQUEST ;
+                    httpRC = SPARQL_QueryRequestRefused ;
                     break ;
                 case ReturnCodes.rcNoSuchURI:
                     httpRC = HttpServletResponse.SC_NOT_FOUND ;
@@ -174,16 +175,16 @@ public class HttpResultSerializer
                     httpRC = HttpServletResponse.SC_NOT_IMPLEMENTED ;
                     break ;
                 case ReturnCodes.rcArgumentUnreadable:
-                    httpRC = HttpServletResponse.SC_BAD_REQUEST ;
+                    httpRC = HttpServletResponse.SC_INTERNAL_SERVER_ERROR ;
                     break ;
                 case ReturnCodes.rcImmutableModel:
                     httpRC = HttpServletResponse.SC_METHOD_NOT_ALLOWED ;
                     break ;
                 case ReturnCodes.rcConfigurationError:
-                    httpRC = HttpServletResponse.SC_INTERNAL_SERVER_ERROR ;
+                    httpRC = SPARQL_QueryRequestRefused ;
                     break ;
                 case ReturnCodes.rcArgumentError:
-                    httpRC = HttpServletResponse.SC_BAD_REQUEST ;
+                    httpRC = SPARQL_MalformedQuery ;
                     break ;
                 case ReturnCodes.rcNotImplemented:
                     httpRC = HttpServletResponse.SC_NOT_IMPLEMENTED ;
@@ -193,6 +194,9 @@ public class HttpResultSerializer
                     break ;
                 case ReturnCodes.rcResourceNotFound:
                     httpRC = HttpServletResponse.SC_INTERNAL_SERVER_ERROR ;
+                    break ;
+                case ReturnCodes.rcBadRequest:
+                    httpRC = SPARQL_MalformedQuery ;
                     break ;
                 default :
                     httpRC = HttpServletResponse.SC_INTERNAL_SERVER_ERROR;

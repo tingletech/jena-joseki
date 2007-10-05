@@ -6,7 +6,7 @@
 package org.joseki;
 
 /**
- * @version     $Id: ReturnCodes.java,v 1.5 2007-01-10 23:14:56 andy_seaborne Exp $
+ * @version     $Id: ReturnCodes.java,v 1.6 2007-10-05 20:33:26 andy_seaborne Exp $
  * @author      Andy Seaborne
  */
 
@@ -26,6 +26,7 @@ public class ReturnCodes
     static public final int rcNotImplemented         = 13 ;
     static public final int rcServiceUnavailable     = 14 ;
     static public final int rcResourceNotFound       = 15 ;
+    static public final int rcBadRequest             = 16 ;
     
     static public final int rcQueryParseFailure      = 100 ;
     static public final int rcQueryExecutionFailure  = 101 ;
