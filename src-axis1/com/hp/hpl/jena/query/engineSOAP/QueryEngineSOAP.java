@@ -13,15 +13,19 @@ import javax.xml.namespace.QName;
 import org.apache.axis.AxisFault;
 import org.apache.axis.encoding.TypeMapping;
 import org.apache.axis.encoding.TypeMappingRegistry;
+import org.apache.axis.types.URI;
+import org.apache.axis.types.URI.MalformedURIException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.joseki.soap.GraphDeserializerFactory;
 import org.joseki.soap.ResultSetAxis;
 import org.joseki.ws1.JosekiQueryServiceLocator;
 import org.joseki.ws1.SparqlQuery;
-import org.w3.www._2005._09.sparql_protocol_types.* ;
+import org.w3.www._2005._09.sparql_protocol_types.MalformedQuery;
+import org.w3.www._2005._09.sparql_protocol_types.QueryRequest;
+import org.w3.www._2005._09.sparql_protocol_types.QueryRequestRefused;
+import org.w3.www._2005._09.sparql_protocol_types.QueryResult;
 
-// Clash with the types class of the same name -- import com.hp.hpl.jena.query.Query;
 import com.hp.hpl.jena.query.Dataset;
 import com.hp.hpl.jena.query.Query;
 import com.hp.hpl.jena.query.QueryExecution;
@@ -90,10 +94,12 @@ public class QueryEngineSOAP implements QueryExecution
     
     private QueryResult exec()
     {
-        QueryRequest q = new QueryRequest() ;
-        q.setQuery(queryString) ;
         
         try {
+            QueryRequest q = new QueryRequest() ;
+            URI[] dft = { new URI("http://jena.hpl.hp.com/XXXXX") } ;
+            //q.setDefaultGraphUri(dft) ;
+            q.setQuery(queryString) ;
             return soapQuery.query(q) ;
         } catch (MalformedQuery ex)
         {
@@ -110,7 +116,12 @@ public class QueryEngineSOAP implements QueryExecution
         } catch (RemoteException e)
         {
             log.debug("Remote Exception: "+e.getMessage(), e) ;
-            throw new QueryExceptionSOAP("Remote Exception: "+e.getMessage(), e) ; 
+            throw new QueryExceptionSOAP("Remote Exception: "+e.getMessage(), e) ;
+        }
+        catch (MalformedURIException e)
+        {
+            log.debug("URI Exception: "+e.getMessage(), e) ;
+            throw new QueryExceptionSOAP("URI Exception: "+e.getMessage(), e) ;
         }
     }
 

@@ -62,6 +62,8 @@ public class ResultSetAxis implements ResultSet
     
     public boolean hasNext()
     {
+        if ( results == null )
+            return false ; 
         if ( index < results.length)
             return true ;
         return false ;

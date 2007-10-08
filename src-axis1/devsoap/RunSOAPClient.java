@@ -17,8 +17,8 @@ import com.hp.hpl.jena.sparql.util.StringUtils;
 
 public class RunSOAPClient
 {
-    static String endpointSOAP = "http://demo.openlinksw.com/sparql" ;
-    //static String endpointSOAP = "http://localhost:2121/sparql" ;   // For tcpmon
+    //static String endpointSOAP = "http://demo.openlinksw.com/sparql" ;
+    static String endpointSOAP = "http://localhost:2121/sparql" ;   // For tcpmon
     
     //static String endpointSOAP = "http://localhost:2525/axis/services/sparql-query" ;
 //    static String endpointHttp = "http://localhost:2020/rdfs" ;
@@ -30,9 +30,10 @@ public class RunSOAPClient
         if ( args.length > 0 )
             qs = args[0] ;
         else                
-            qs = "SELECT ?x {?x ?y ?z . FILTER regex(?z, 'Project Zero') }" ;
+            qs = "SELECT * {?x ?y ?z . }" ;
         
         doOneSelectQuery(qs) ;
+        doOneConstructQuery() ;
         System.exit(0) ;
     }
     
@@ -70,15 +71,14 @@ public class RunSOAPClient
 
     public static void doOneConstructQuery()
     {
-        String endpoint = "http://localhost:2525/axis/services/sparql-query" ;
         String s[]= new String[]{
             "PREFIX dc:      <http://purl.org/dc/elements/1.1/>",
-            "CONSTRUCT { $book dc:title $title } WHERE { $book dc:title $title }"
+            "CONSTRUCT { ?book dc:title ?title } WHERE { ?book dc:title ?title } LIMIT 10"
         } ;
             
         String queryStr = concat(s) ; 
 
-        QueryExecution qexec = new QueryEngineSOAP(queryStr, endpoint) ;
+        QueryExecution qexec = new QueryEngineSOAP(endpointSOAP, queryStr) ;
         Model m = qexec.execConstruct() ;
         m.write(System.out, "N3") ;
         qexec.close() ;
