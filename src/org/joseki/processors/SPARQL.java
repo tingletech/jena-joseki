@@ -276,9 +276,10 @@ public class SPARQL extends QueryCom implements Loadable
             if ( datasetDesc != null )
                 dataset = getDataset(datasetDesc) ;
         }
-        
-        if ( !useQueryDesc && dataset == null )
-            throw new QueryExecutionException(ReturnCodes.rcBadRequest, "No dataset given") ;
+
+        // How to test for a fixed dataset ... wait until SPARQL blows up!
+//        if ( !useQueryDesc && dataset == null )
+//            throw new QueryExecutionException(ReturnCodes.rcBadRequest, "No dataset given") ;
         
         if ( useQueryDesc )
             // If using description, ignore dataset

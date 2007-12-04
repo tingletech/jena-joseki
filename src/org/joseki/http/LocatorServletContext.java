@@ -14,11 +14,12 @@ import org.apache.commons.logging.LogFactory;
 
 import com.hp.hpl.jena.util.Locator;
 import com.hp.hpl.jena.util.FileUtils;
+import com.hp.hpl.jena.util.TypedStream;
 
 /** org.joseki.server.LocatorServletContext
  * 
  * @author Andy Seaborne
- * @version $Id: LocatorServletContext.java,v 1.3 2007-01-02 13:58:06 andy_seaborne Exp $
+ * @version $Id: LocatorServletContext.java,v 1.4 2007-12-04 17:38:50 andy_seaborne Exp $
  */
 
 public class LocatorServletContext implements Locator
@@ -31,7 +32,7 @@ public class LocatorServletContext implements Locator
         servletContext = context ;
     }
     
-    public InputStream open(String resourceName)
+    public TypedStream open(String resourceName)
     {
         if ( servletContext == null)
             return null ;
@@ -46,7 +47,7 @@ public class LocatorServletContext implements Locator
         InputStream in = servletContext.getResourceAsStream(fn);
         if (in != null)
             logger.debug("Reading as servlet resource: " + resourceName);
-        return in ;
+        return new TypedStream(in) ;
 
     }
 

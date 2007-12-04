@@ -7,12 +7,14 @@
 package dev;
 
 import org.joseki.http.HttpUtils;
+import org.joseki.util.RunUtils;
 
 public class Run
 {
     public static void main(String[] argv)
     {
-        joseki.rdfserver.main(new String[]{"joseki-config.ttl"}) ;
+        RunUtils.setLog4j() ;
+        joseki.rdfserver.main(new String[]{"joseki-config-sdb.ttl"}) ;
     }
     
     public static void misc()

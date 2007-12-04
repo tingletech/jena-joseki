@@ -18,17 +18,15 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.hp.hpl.jena.sparql.algebra.Algebra;
-import com.hp.hpl.jena.sparql.algebra.AlgebraGeneratorQuad;
-import com.hp.hpl.jena.sparql.algebra.Op;
-import com.hp.hpl.jena.sparql.serializer.SerializationContext;
-import com.hp.hpl.jena.sparql.util.IndentedLineBuffer;
-import com.hp.hpl.jena.sparql.util.IndentedWriter;
-
 import com.hp.hpl.jena.query.Query;
 import com.hp.hpl.jena.query.QueryFactory;
 import com.hp.hpl.jena.query.QueryParseException;
 import com.hp.hpl.jena.query.Syntax;
+import com.hp.hpl.jena.sparql.algebra.Algebra;
+import com.hp.hpl.jena.sparql.algebra.Op;
+import com.hp.hpl.jena.sparql.serializer.SerializationContext;
+import com.hp.hpl.jena.sparql.util.IndentedLineBuffer;
+import com.hp.hpl.jena.sparql.util.IndentedWriter;
 
 public class Validator extends HttpServlet 
 {
@@ -205,7 +203,7 @@ public class Validator extends HttpServlet
             if ( query != null && outputQuads )
             {
                 outStream.println("<p>Quad structure:</p>") ;
-                final Op op = AlgebraGeneratorQuad.compileQuery(query) ;
+                final Op op = Algebra.compileQuad(query) ;
                 final SerializationContext sCxt = new SerializationContext(query) ;
                 Content c = new Content(){
                     public void print(IndentedWriter out)

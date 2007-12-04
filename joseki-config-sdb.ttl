@@ -27,6 +27,7 @@
 
 ## See also SDB documentation -- http://jena.hpl.hp.com/wiki/SDB
 ## Special declarations to cause SDB to be used.
+
 ## Initialize SDB.
 
 [] ja:loadClass "com.hp.hpl.jena.sdb.SDB" .
@@ -35,7 +36,7 @@
 
 sdb:DatasetStore rdfs:subClassOf ja:RDFDataset .
 
-## Dataset in SDB.  Both types are needed.
+## Dataset in SDB.
 
 _:books rdf:type sdb:DatasetStore , ja:RDFDataset ;
     rdfs:label "Books" ;
