@@ -17,7 +17,7 @@ import org.joseki.*;
 
 /** The servlet class.
  * @author  Andy Seaborne
- * @version $Id: Servlet.java,v 1.21 2007-06-11 19:37:20 andy_seaborne Exp $
+ * @version $Id: Servlet.java,v 1.22 2007-12-07 10:57:45 andy_seaborne Exp $
  */
 
 public class Servlet extends HttpServlet
@@ -181,12 +181,22 @@ public class Servlet extends HttpServlet
     public void doPost(HttpServletRequest httpRequest, HttpServletResponse httpResponse)
     {
         String s = httpRequest.getContentType() ;
-        if ( s != null && ! s.equals("application/x-www-form-urlencoded") )
+        if ( s != null )
         {
-            try {
-                httpResponse.sendError(HttpServletResponse.SC_UNSUPPORTED_MEDIA_TYPE, "Must be application/x-www-form-urlencoded") ;
-            } catch (Exception ex) {}
-            return ;
+            // A charset isn't necessary but if it is present it is ignored.
+
+            // An accept item is actually a general header parser.
+            AcceptItem aItem = new AcceptItem(s) ;
+            String t1 = aItem.getType() ;
+            String t2 = aItem.getSubType() ;
+
+            if ( ! t1.equalsIgnoreCase("application") || ! t2.equalsIgnoreCase("x-www-form-urlencoded") )
+            {
+                try {
+                    httpResponse.sendError(HttpServletResponse.SC_UNSUPPORTED_MEDIA_TYPE, "Must be application/x-www-form-urlencoded") ;
+                } catch (Exception ex) {}
+                return ;
+            }
         }
         doGet(httpRequest, httpResponse) ;
     }

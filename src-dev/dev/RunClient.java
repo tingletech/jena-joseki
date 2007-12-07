@@ -17,7 +17,7 @@ import com.hp.hpl.jena.sparql.util.StringUtils;
 public class RunClient
 {
     static String endpointSOAP = "http://localhost:2525/axis/services/sparql-query" ;
-    static String endpointHttp = "http://localhost:2020/rdfs" ;
+    static String endpointHttp = "http://localhost:2020/books" ;
     public static void main(String[] args)
     {
         doHttpSelect() ;
