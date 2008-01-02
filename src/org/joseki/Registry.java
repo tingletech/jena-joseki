@@ -1,5 +1,5 @@
 /*
- * (c) Copyright 2004, 2005, 2006, 2007 Hewlett-Packard Development Company, LP
+ * (c) Copyright 2004, 2005, 2006, 2007, 2008 Hewlett-Packard Development Company, LP
  * All rights reserved.
  * [See end of file]
  */
@@ -11,7 +11,7 @@ import java.util.* ;
 /** A single general registry to bootstrap from.     
  * 
  * @author Andy Seaborne
- * @version $Id: Registry.java,v 1.3 2007-01-02 13:58:07 andy_seaborne Exp $
+ * @version $Id: Registry.java,v 1.4 2008-01-02 12:24:53 andy_seaborne Exp $
  */
 
 public class Registry
@@ -54,7 +54,7 @@ public class Registry
 }
 
 /*
- * (c) Copyright 2004, 2005, 2006, 2007 Hewlett-Packard Development Company, LP
+ * (c) Copyright 2004, 2005, 2006, 2007, 2008 Hewlett-Packard Development Company, LP
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without

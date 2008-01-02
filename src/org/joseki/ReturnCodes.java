@@ -1,12 +1,12 @@
 /*
- * (c) Copyright 2003, 2004, 2005, 2006, 2007 Hewlett-Packard Development Company, LP
+ * (c) Copyright 2003, 2004, 2005, 2006, 2007, 2008 Hewlett-Packard Development Company, LP
  * [See end of file]
  */
 
 package org.joseki;
 
 /**
- * @version     $Id: ReturnCodes.java,v 1.6 2007-10-05 20:33:26 andy_seaborne Exp $
+ * @version     $Id: ReturnCodes.java,v 1.7 2008-01-02 12:24:53 andy_seaborne Exp $
  * @author      Andy Seaborne
  */
 
@@ -63,7 +63,7 @@ public class ReturnCodes
 }
 
 /*
- *  (c) Copyright 2003, 2004, 2005, 2006, 2007 Hewlett-Packard Development Company, LP
+ *  (c) Copyright 2003, 2004, 2005, 2006, 2007, 2008 Hewlett-Packard Development Company, LP
  *  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
