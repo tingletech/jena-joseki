@@ -17,7 +17,7 @@ import org.joseki.*;
 
 /** The servlet class.
  * @author  Andy Seaborne
- * @version $Id: Servlet.java,v 1.23 2008-01-02 12:24:53 andy_seaborne Exp $
+ * @version $Id: Servlet.java,v 1.24 2008-01-04 14:19:42 andy_seaborne Exp $
  */
 
 public class Servlet extends HttpServlet
@@ -88,7 +88,7 @@ public class Servlet extends HttpServlet
         
         servletConfig = config;
         
-        // Modifiy the (Jena) global filemanager to include loading by servlet context  
+        // Modify the (Jena) global filemanager to include loading by servlet context  
         FileManager fileManager = FileManager.get() ;
 
         if (config != null)
