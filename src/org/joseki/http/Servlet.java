@@ -17,7 +17,7 @@ import org.joseki.*;
 
 /** The servlet class.
  * @author  Andy Seaborne
- * @version $Id: Servlet.java,v 1.24 2008-01-04 14:19:42 andy_seaborne Exp $
+ * @version $Id: Servlet.java,v 1.25 2008-01-07 16:27:25 andy_seaborne Exp $
  */
 
 public class Servlet extends HttpServlet
@@ -29,7 +29,7 @@ public class Servlet extends HttpServlet
     
     // This happens very early - check it.
     static {
-        try { log = LogFactory.getLog("Joseki") ; }
+        try { log = LogFactory.getLog(Servlet.class) ; }
         catch (Exception ex)
         {
             System.err.println("Exception creating the logger") ;
