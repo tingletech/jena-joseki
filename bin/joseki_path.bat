@@ -5,6 +5,7 @@
 @REM Must be windows format \ not /
 if "%JOSEKIROOT%" == ""  goto noRoot
 
+set CP=""
 REM Do this to put the developement .class files first
 REM NB no space before the ")"
 if EXIST %JOSEKIROOT%\classes (

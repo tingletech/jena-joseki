@@ -13,8 +13,6 @@ set LOGCONFIG=file:%JOSEKIROOT%\etc\log4j.properties
 set LOG=-Dlog4j.configuration=%LOGCONFIG%
 
 set JAVA=java.exe
-if "%JAVA_HOME%" == "" goto :endJavaHome
-set JAVA=%JAVA_HOME%\bin\java.exe
 
 :endJavaHome
 
