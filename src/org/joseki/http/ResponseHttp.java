@@ -304,10 +304,16 @@ public class ResponseHttp extends Response
         
         String httpMsg = execEx.shortMessage ;
         if (execEx.shortMessage == null)
-            httpMsg = ReturnCodes.errorString(execEx.returnCode);;
+            httpMsg = ReturnCodes.errorString(execEx.returnCode);
 
             //msg("Error in operation: URI = " + uri + " : " + httpMsg);
-        log.info("Error: URI = " + request.getServiceURI() + " : " + httpMsg, execEx) ;
+            
+        ExecutionException ex = execEx ;
+        if ( execEx instanceof QueryExecutionException )
+            // Don't detail queryex ecution problems (e.g. parse errors).
+            ex = null ;
+        
+        log.info("Error: URI = " + request.getServiceURI() + " : " + httpMsg, ex) ;
         httpSerializer.sendError(execEx, httpResponse) ;
     }
     

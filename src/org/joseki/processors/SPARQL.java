@@ -125,7 +125,8 @@ public class SPARQL extends QueryCom implements Loadable
         try {
             execQueryWorker(request, response, datasetDesc) ;
         }
-        catch (QueryExecutionException qEx) { throw qEx; }
+        catch (QueryExecutionException qEx)
+        { throw qEx; }
         catch (QueryException qEx)
         {
             log.info("Query execution error: "+qEx) ;
