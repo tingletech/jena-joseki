@@ -95,7 +95,7 @@ public class Dispatcher
     {
         if ( serviceRegistry != null )
         {
-            log.debug("Service registry already initialized") ;
+            //log.debug("Service registry already initialized") ;
             return ;
         }
         

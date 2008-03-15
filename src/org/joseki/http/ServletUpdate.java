@@ -4,43 +4,25 @@
  * [See end of file]
  */
 
-package org.joseki.processors;
+package org.joseki.http;
 
-import java.io.InputStream;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
-import com.hp.hpl.jena.rdf.model.Resource;
+import org.joseki.Request;
 
-import com.hp.hpl.jena.update.GraphStore;
-import com.hp.hpl.jena.update.GraphStoreFactory;
-import com.hp.hpl.jena.update.UpdateFactory;
-import com.hp.hpl.jena.update.UpdateRequest;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.joseki.*;
-import org.joseki.module.Loadable;
-
-public class SPARQLUpdate extends ProcessorBase implements Loadable
+public class ServletUpdate extends Servlet
 {
-    private static Log log = LogFactory.getLog(SPARQLUpdate.class) ;
+    public ServletUpdate() { super("Joseki/Update") ; }
     
-    public void init(Resource service, Resource implementation)
-    {}
-
-    public void execOperation(Request request, Response response, DatasetDesc datasetDesc)
-    throws QueryExecutionException
+    public void doPost(HttpServletRequest httpRequest, HttpServletResponse httpResponse)
     {
-        if ( ! request.getParam(Joseki.VERB).equals("POST") )
-            // Because nasty things happen otherwise.
-            throw new QueryExecutionException(ReturnCodes.rcBadRequest, "Updates must use POST") ;
-        log.info("SPARQLUpdate.execOperation") ;
-
-        // Implementation goes here!
-        InputStream in = request.getInputStream() ;
-        UpdateRequest updateRequest = UpdateFactory.read(in) ;
-        GraphStore gs = GraphStoreFactory.create(datasetDesc.getDataset()) ;
-        gs.execute(updateRequest) ;
-        response.sendResponse() ;
+        doCommon(httpRequest, httpResponse) ;
+    }
+    
+    protected void setupRequest(Request request, HttpServletRequest httpRequest)
+    {
+        // Verify charset here.
     }
 }
 

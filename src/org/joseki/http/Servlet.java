@@ -17,7 +17,7 @@ import org.joseki.*;
 
 /** The servlet class.
  * @author  Andy Seaborne
- * @version $Id: Servlet.java,v 1.26 2008-03-15 20:39:41 andy_seaborne Exp $
+ * @version $Id: Servlet.java,v 1.27 2008-03-15 21:01:11 andy_seaborne Exp $
  */
 
 public class Servlet extends HttpServlet
@@ -58,7 +58,12 @@ public class Servlet extends HttpServlet
     
     public Servlet()
     {
-        log.info("-------- Joseki") ;
+        this("Joseki") ;
+    }
+
+    public Servlet(String string)
+    {
+        log.info("-------- "+string) ;
     }
 
     public void init() throws ServletException
@@ -124,13 +129,13 @@ public class Servlet extends HttpServlet
     */
     public void doGet(HttpServletRequest httpRequest, HttpServletResponse httpResponse)
     {
-        doCommon(httpRequest, httpResponse, "GET") ;
+        doCommon(httpRequest, httpResponse) ;
     }
         
         
-      private void doCommon(HttpServletRequest httpRequest, HttpServletResponse httpResponse, String verb)
-      {
-          try {
+    protected void doCommon(HttpServletRequest httpRequest, HttpServletResponse httpResponse)
+    {
+        try {
             if ( log.isDebugEnabled() )
                 log.debug(HttpUtils.fmtRequest(httpRequest)) ;
             
@@ -153,23 +158,12 @@ public class Servlet extends HttpServlet
             log.info("["+sender+"] Service URI = <"+serviceURI+">") ;
             
             // Assemble parameters
-            Request request = new Request(serviceURI) ;
-            // params => request items
-            for ( Enumeration en = httpRequest.getParameterNames() ; en.hasMoreElements() ; )
-            {
-                String k = (String)en.nextElement() ;
-                String[] x = httpRequest.getParameterValues(k) ;
-                for(int i = 0 ; i < x.length ; i++ )
-                {
-                    String s = x[i] ;
-                    request.setParam(k, s) ;
-                }
-            }
+            Request request = new Request(serviceURI, httpRequest.getInputStream()) ;
             
-            request.setParam(Joseki.VERB, verb) ;
+            setupRequest(request, httpRequest) ;
+            request.setParam(Joseki.VERB, httpRequest.getMethod()) ;
             
             Response response = new ResponseHttp(request, httpRequest, httpResponse) ;
-
             Dispatcher.dispatch(serviceURI, request, response) ;
         }
         catch (Exception ex)
@@ -184,6 +178,21 @@ public class Servlet extends HttpServlet
         }        
     }
 
+
+    protected void setupRequest(Request request, HttpServletRequest httpRequest)
+    {
+        // params => request items
+        for ( Enumeration en = httpRequest.getParameterNames() ; en.hasMoreElements() ; )
+        {
+            String k = (String)en.nextElement() ;
+            String[] x = httpRequest.getParameterValues(k) ;
+            for(int i = 0 ; i < x.length ; i++ )
+            {
+                String s = x[i] ;
+                request.setParam(k, s) ;
+            }
+        }
+    }
 
     public void doPost(HttpServletRequest httpRequest, HttpServletResponse httpResponse)
     {
@@ -205,7 +214,7 @@ public class Servlet extends HttpServlet
                 return ;
             }
         }
-        doCommon(httpRequest, httpResponse, "POST") ;
+        doCommon(httpRequest, httpResponse) ;
     }
 
     // ------------------------------------------

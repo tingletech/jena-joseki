@@ -86,7 +86,7 @@ public class SPARQL_P
             int ind = path.lastIndexOf('/') ;
             // Works if i = -1.
             String serviceURI = path.substring(ind+1) ;
-            Request serviceRequest = new Request(serviceURI) ;
+            Request serviceRequest = new Request(serviceURI, null) ;
 
             // ---- Query
             

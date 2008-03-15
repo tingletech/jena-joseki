@@ -7,25 +7,28 @@
 
 package org.joseki;
 
+import java.io.InputStream;
 import java.util.*;
 
 /** General Request 
  * @author      Andy Seaborne
- * @version     $Id: Request.java,v 1.6 2008-01-02 12:24:53 andy_seaborne Exp $
+ * @version     $Id: Request.java,v 1.7 2008-03-15 21:01:11 andy_seaborne Exp $
  */
 public class Request
 {
     // How the operation was described.
     String serviceURI = null ;
+    InputStream input = null ;
 
     final static Object noValue = new Object() ; 
     // Parameters :: key => List of values pairs
     
     Map params = new HashMap();
 
-    public Request(String uri)
+    public Request(String uri, InputStream input)
     {
         serviceURI = uri ;
+        this.input = input ;
     }
     
     // ---- Parameters
@@ -56,7 +59,8 @@ public class Request
             return x ;
     }
     
-    
+    // NB This will be empty for a x-www-form-urlencoded request
+    public InputStream getInputStream() { return input ; }
     
     
     public void setParam(String name, String value)
