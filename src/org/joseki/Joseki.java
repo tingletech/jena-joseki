@@ -9,7 +9,7 @@ import java.util.* ;
 
 /** Constants and other definitions.
  * @author      Andy Seaborne
- * @version     $Id: Joseki.java,v 1.29 2008-01-02 12:24:53 andy_seaborne Exp $
+ * @version     $Id: Joseki.java,v 1.30 2008-03-15 20:39:40 andy_seaborne Exp $
  */
 public class Joseki
 {
@@ -81,6 +81,9 @@ public class Joseki
     
     public static String serverContentType                = contentTypeRDFXML ;
     public static String clientContentType                = contentTypeRDFXML ;
+    
+    // Hidden paramters  - illegal HTTP names
+    public static final String VERB          = "%verb" ;
     
     // Various control falgs and settings.
 

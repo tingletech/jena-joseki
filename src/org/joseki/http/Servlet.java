@@ -17,7 +17,7 @@ import org.joseki.*;
 
 /** The servlet class.
  * @author  Andy Seaborne
- * @version $Id: Servlet.java,v 1.25 2008-01-07 16:27:25 andy_seaborne Exp $
+ * @version $Id: Servlet.java,v 1.26 2008-03-15 20:39:41 andy_seaborne Exp $
  */
 
 public class Servlet extends HttpServlet
@@ -56,7 +56,6 @@ public class Servlet extends HttpServlet
     // The former means the configuration is in the webapp/servlet environment
     // The latter means the main application will programmatically do it.
     
-    /** Creates new JosekiWebAPI */
     public Servlet()
     {
         log.info("-------- Joseki") ;
@@ -125,7 +124,13 @@ public class Servlet extends HttpServlet
     */
     public void doGet(HttpServletRequest httpRequest, HttpServletResponse httpResponse)
     {
-        try {
+        doCommon(httpRequest, httpResponse, "GET") ;
+    }
+        
+        
+      private void doCommon(HttpServletRequest httpRequest, HttpServletResponse httpResponse, String verb)
+      {
+          try {
             if ( log.isDebugEnabled() )
                 log.debug(HttpUtils.fmtRequest(httpRequest)) ;
             
@@ -161,6 +166,8 @@ public class Servlet extends HttpServlet
                 }
             }
             
+            request.setParam(Joseki.VERB, verb) ;
+            
             Response response = new ResponseHttp(request, httpRequest, httpResponse) ;
 
             Dispatcher.dispatch(serviceURI, request, response) ;
@@ -183,7 +190,7 @@ public class Servlet extends HttpServlet
         String s = httpRequest.getContentType() ;
         if ( s != null )
         {
-            // A charset isn't necessary but if it is present it is ignored.
+            // A charset isn't necessary but if it is present it is checked.
 
             // An accept item is actually a general header parser.
             AcceptItem aItem = new AcceptItem(s) ;
@@ -198,13 +205,10 @@ public class Servlet extends HttpServlet
                 return ;
             }
         }
-        doGet(httpRequest, httpResponse) ;
+        doCommon(httpRequest, httpResponse, "POST") ;
     }
 
     // ------------------------------------------
-    // This should return a list of possibilities to allow for
-    // future changes.
-
     public static String chooseServiceURI(String uri, HttpServletRequest httpRequest)
     {
         String serviceURI = uri ;
@@ -245,31 +249,6 @@ public class Servlet extends HttpServlet
     }
     
     
-    // Reply when an exception was generated
-
-//    private void doExeception(ExecutionException execEx, String uri, HttpServletResponse response)
-//    {
-//        String httpMsg = ExecutionError.errorString(execEx.returnCode);
-//        //msg("Error in operation: URI = " + uri + " : " + httpMsg);
-//        log.info("Error: URI = " + uri + " : " + httpMsg);
-//        httpSerializer.sendError(execEx, response) ;
-//        return;
-//    }
-
-    // Desparate way to reply
-    
-//    private void doPanic(HttpServletResponse response, int reason)
-//    {
-//        // Panic.
-//        try {                
-//            response.setHeader(Joseki.httpHeaderField, Joseki.httpHeaderValue) ;
-//            response.setStatus(reason) ;
-//            response.flushBuffer() ;
-//            response.getWriter().close() ;
-//        } catch (Exception e) {}
-//    }
-
-
     /** Returns a short description of the servlet.
     */
     public String getServletInfo()

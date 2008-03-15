@@ -6,21 +6,39 @@
 
 package org.joseki.processors;
 
-import org.joseki.DatasetDesc;
-import org.joseki.QueryExecutionException;
-import org.joseki.Request;
-import org.joseki.Response;
 
-/** Old name - class left for renaming to old naming (compatibility) */
-public abstract class QueryCom extends ProcessorBase
+import com.hp.hpl.jena.shared.Lock;
+import com.hp.hpl.jena.shared.LockMutex;
+
+import org.joseki.*;
+
+
+public abstract class ProcessorBase implements Processor
 {
-    public void execOperation(Request request, Response response, DatasetDesc datasetDesc) throws QueryExecutionException
+    Lock lock = new LockMutex() ;   // Default and safe choice
+    
+    /** Execute a operation, providing a lock */ 
+    public void exec(Request request, Response response, DatasetDesc datasetDesc) throws ExecutionException
     {
-        execQuery(request, response, datasetDesc) ;
+        Lock operationLock = lock ;
+        
+        if ( datasetDesc != null && datasetDesc.getDataset() != null )
+            operationLock = datasetDesc.getDataset().getLock() ;
+        
+        operationLock.enterCriticalSection(Lock.READ) ;
+        try {
+            execOperation(request, response, datasetDesc) ;
+        } finally { operationLock.leaveCriticalSection() ; }
+    }
+
+    public void setLock(Lock lock)
+    {
+        this.lock = lock ;
     }
     
-    /** Execute a query within an MRSW lock */ 
-    public abstract void execQuery(Request request, Response response, DatasetDesc datasetDesc) throws QueryExecutionException ;
+    /** Execute an operation within an MRSW lock */ 
+    public abstract void execOperation(Request request, Response response, DatasetDesc datasetDesc)
+    throws ExecutionException ;
 }
 
 /*

@@ -1,30 +1,39 @@
 /*
- * (c) Copyright 2005, 2006, 2007, 2008 Hewlett-Packard Development Company, LP
+ * (c) Copyright 2008 Hewlett-Packard Development Company, LP
  * All rights reserved.
  * [See end of file]
  */
 
 package org.joseki.processors;
 
-import org.joseki.DatasetDesc;
-import org.joseki.QueryExecutionException;
-import org.joseki.Request;
-import org.joseki.Response;
+import com.hp.hpl.jena.rdf.model.Resource;
 
-/** Old name - class left for renaming to old naming (compatibility) */
-public abstract class QueryCom extends ProcessorBase
+import org.joseki.*;
+import org.joseki.module.Loadable;
+
+public class SPARQLUpdate extends ProcessorBase implements Loadable
 {
-    public void execOperation(Request request, Response response, DatasetDesc datasetDesc) throws QueryExecutionException
+
+    public void init(Resource service, Resource implementation)
+    {}
+
+
+    public void execOperation(Request request, Response response, DatasetDesc datasetDesc)
+    throws QueryExecutionException
     {
-        execQuery(request, response, datasetDesc) ;
+        if ( ! request.getParam(Joseki.VERB).equals("POST") )
+            // Because nasty things happen otherwise.
+            throw new QueryExecutionException(ReturnCodes.rcBadRequest, "Updates must use POST") ;
+        
+        // Need to decide how much of the processor/query path to reuse.
+        // Probable better to have a parallel servlet for SPARQL/Update while the code
+        // is maturing then merge with maximum sharing. 
+        
     }
-    
-    /** Execute a query within an MRSW lock */ 
-    public abstract void execQuery(Request request, Response response, DatasetDesc datasetDesc) throws QueryExecutionException ;
 }
 
 /*
- * (c) Copyright 2005, 2006, 2007, 2008 Hewlett-Packard Development Company, LP
+ * (c) Copyright 2008 Hewlett-Packard Development Company, LP
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
