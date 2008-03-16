@@ -5,6 +5,7 @@
 
 package org.joseki.http;
 
+import java.io.IOException;
 import java.util.*;
 import org.apache.commons.logging.*;
 
@@ -17,7 +18,7 @@ import org.joseki.*;
 
 /** The servlet class.
  * @author  Andy Seaborne
- * @version $Id: Servlet.java,v 1.27 2008-03-15 21:01:11 andy_seaborne Exp $
+ * @version $Id: Servlet.java,v 1.28 2008-03-16 18:29:11 andy_seaborne Exp $
  */
 
 public class Servlet extends HttpServlet
@@ -157,10 +158,7 @@ public class Servlet extends HttpServlet
             String sender = httpRequest.getRemoteAddr() ; 
             log.info("["+sender+"] Service URI = <"+serviceURI+">") ;
             
-            // Assemble parameters
-            Request request = new Request(serviceURI, httpRequest.getInputStream()) ;
-            
-            setupRequest(request, httpRequest) ;
+            Request request = setupRequest(serviceURI, httpRequest) ;
             request.setParam(Joseki.VERB, httpRequest.getMethod()) ;
             
             Response response = new ResponseHttp(request, httpRequest, httpResponse) ;
@@ -178,9 +176,11 @@ public class Servlet extends HttpServlet
         }        
     }
 
-
-    protected void setupRequest(Request request, HttpServletRequest httpRequest)
+    protected Request setupRequest(String serviceURI, HttpServletRequest httpRequest)
+    throws IOException
     {
+        // Assemble parameters
+        Request request = new Request(serviceURI, null) ;
         // params => request items
         for ( Enumeration en = httpRequest.getParameterNames() ; en.hasMoreElements() ; )
         {
@@ -192,6 +192,7 @@ public class Servlet extends HttpServlet
                 request.setParam(k, s) ;
             }
         }
+        return request ;
     }
 
     public void doPost(HttpServletRequest httpRequest, HttpServletResponse httpResponse)

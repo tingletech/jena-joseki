@@ -6,19 +6,20 @@
 
 package org.joseki.processors;
 
-import java.io.InputStream;
-
-import com.hp.hpl.jena.rdf.model.Resource;
-
-import com.hp.hpl.jena.update.GraphStore;
-import com.hp.hpl.jena.update.GraphStoreFactory;
-import com.hp.hpl.jena.update.UpdateFactory;
-import com.hp.hpl.jena.update.UpdateRequest;
+import java.io.Reader;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.joseki.*;
 import org.joseki.module.Loadable;
+
+import com.hp.hpl.jena.rdf.model.Resource;
+
+import com.hp.hpl.jena.sparql.modify.lang.ParserSPARQLUpdate;
+
+import com.hp.hpl.jena.update.GraphStore;
+import com.hp.hpl.jena.update.GraphStoreFactory;
+import com.hp.hpl.jena.update.UpdateRequest;
 
 public class SPARQLUpdate extends ProcessorBase implements Loadable
 {
@@ -36,8 +37,13 @@ public class SPARQLUpdate extends ProcessorBase implements Loadable
         log.info("SPARQLUpdate.execOperation") ;
 
         // Implementation goes here!
-        InputStream in = request.getInputStream() ;
-        UpdateRequest updateRequest = UpdateFactory.read(in) ;
+        Reader in = request.getStream() ;
+
+        // Reader with a Reader.  Normally discouraged because of charset issues 
+        // Hence no UpdateFactory operations.
+        ParserSPARQLUpdate p = new ParserSPARQLUpdate() ;
+        UpdateRequest updateRequest = new UpdateRequest() ;
+        p.parse(updateRequest, in) ;
         GraphStore gs = GraphStoreFactory.create(datasetDesc.getDataset()) ;
         gs.execute(updateRequest) ;
         response.sendResponse() ;

@@ -6,8 +6,13 @@
 
 package org.joseki.http;
 
+import java.io.IOException;
+import java.io.Reader;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import com.hp.hpl.jena.util.FileUtils;
 
 import org.joseki.Request;
 
@@ -20,9 +25,21 @@ public class ServletUpdate extends Servlet
         doCommon(httpRequest, httpResponse) ;
     }
     
-    protected void setupRequest(Request request, HttpServletRequest httpRequest)
+    protected Request setupRequest(String serviceURI, HttpServletRequest httpRequest) throws IOException
     {
         // Verify charset here.
+        String charEnc = httpRequest.getCharacterEncoding() ;
+        Reader reader = null ;
+        if ( charEnc == null )
+            reader = FileUtils.asBufferedUTF8(httpRequest.getInputStream()) ;
+        else
+        {
+            if ( ! charEnc.equalsIgnoreCase("UTF-8") )
+                log.warn(serviceURI+": request not UTF-8: "+charEnc) ;
+            reader = httpRequest.getReader() ;
+        }
+        
+        return new Request(serviceURI, reader) ;
     }
 }
 
