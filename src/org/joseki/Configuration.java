@@ -497,10 +497,13 @@ public class Configuration
         // Need to do validity checking on the configuration model.
         // Can also do like services - once with a fixed query then reduce elements
         // to see if we find the same things
-
+        
+        // The config file does not have RDFS applied (when used with assemblers it does)
+        // Look for immediate subclasses of ja:RDFDataset as well.
+        
         String[] s = new String[] {
             "SELECT ?x ?dft ?graphName ?graphData",
-            "{ ?x a ja:RDFDataset ;",
+            "{ { ?x a ja:RDFDataset } UNION { ?x a [ rdfs:subClassOf ja:RDFDataset ] }",  
             "  OPTIONAL { ?x ja:defaultGraph ?dft }",
             "  OPTIONAL { ?x ja:namedGraph  [ ja:graphName ?graphName ; ja:graph ?graphData ] }",  
             "}", 
@@ -772,7 +775,7 @@ public class Configuration
     private Query makeQuery(String qs) 
     {
         try {
-            Query query = QueryFactory.create(qs) ;
+            Query query = QueryFactory.create(qs, Syntax.syntaxARQ) ;
             return query ;
         } catch (QueryParseException ex)
         {

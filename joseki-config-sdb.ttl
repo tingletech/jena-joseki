@@ -35,11 +35,7 @@
 ## Tell the system that sdb:DatasetStore is an implementation of ja:RDFDataset .
 
 [] ja:loadClass "com.hp.hpl.jena.sdb.SDB" .
-
 sdb:DatasetStore rdfs:subClassOf ja:RDFDataset .
-
-## Dataset in SDB.
-#<#sdb> rdf:type sdb:DatasetStore , ja:RDFDataset ;
 
 ## # For SDB 1.0:
 ## <#sdb> rdf:type sdb:DatasetStore , ja:RDFDataset ;
@@ -47,8 +43,8 @@ sdb:DatasetStore rdfs:subClassOf ja:RDFDataset .
 ##     sdb:layout         "layout2" ;
 ##     sdb:connection ...
 
-# For SDB >1.1 :
-<#sdb> rdf:type sdb:DatasetStore  , ja:RDFDataset ;
+# For SDB >=1.1 :
+<#sdb> rdf:type sdb:DatasetStore ;
     sdb:store <#store> .
 
 <#store> rdf:type sdb:Store  ;
