@@ -41,7 +41,17 @@ sdb:DatasetStore rdfs:subClassOf ja:RDFDataset .
 ## Dataset in SDB.
 #<#sdb> rdf:type sdb:DatasetStore , ja:RDFDataset ;
 
-<#sdb> rdf:type sdb:DatasetStore ;
+## # For SDB 1.0:
+## <#sdb> rdf:type sdb:DatasetStore , ja:RDFDataset ;
+##     rdfs:label "SDB" ;
+##     sdb:layout         "layout2" ;
+##     sdb:connection ...
+
+# For SDB >1.1 :
+<#sdb> rdf:type sdb:DatasetStore  , ja:RDFDataset ;
+    sdb:store <#store> .
+
+<#store> rdf:type sdb:Store  ;
     rdfs:label "SDB" ;
     sdb:layout         "layout2" ;
     sdb:connection 
