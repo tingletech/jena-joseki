@@ -62,7 +62,7 @@
 []
     rdf:type            joseki:Service ;
     rdfs:label          "service point" ;
-    joseki:serviceRef   "sparql" ;
+    joseki:serviceRef   "sparql" ;  # web.xml just route this name to Joseki
     joseki:processor    joseki:ProcessorSPARQL ;
     .
 
@@ -70,7 +70,7 @@
 []
     rdf:type            joseki:Service ;
     rdfs:label          "SPARQL on the books model" ;
-    joseki:serviceRef   "books" ;
+    joseki:serviceRef   "books" ;   # web.xml just route this name to Joseki
     # dataset part
     joseki:dataset      _:books ;
     # Service part.
@@ -85,7 +85,7 @@
 ##     rdfs:label  "Inline example" ;
 ## 
 ##     # Required - serviceRef
-##     joseki:serviceRef         "example" ;
+##     joseki:serviceRef         "example" ;    # web.xml just route this name to Joseki
 ##     joseki:dataset
 ##         [ ja:defaultGraph    _:model1 ; ] ;
 ##     joseki:processor

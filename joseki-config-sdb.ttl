@@ -8,6 +8,8 @@
 @prefix sdb:      <http://jena.hpl.hp.com/2007/sdb#> .
 
 <> rdfs:label "Joseki Configuration File - SDB example" .
+# Stripped down to support one service that exposes an
+# SDB store as a SPARQL endpoint for query.
 
 []  rdf:type joseki:Server .
 
@@ -16,9 +18,9 @@
 
 []
     rdf:type            joseki:Service ;
-    rdfs:label          "SPARQL on the books model stored in SDB" ;
-    joseki:serviceRef   "books" ;
-    joseki:dataset      _:books ;
+    rdfs:label          "SPARQL-SDB" ;
+    joseki:serviceRef   "sparql" ;      # web.xml just route this name to Joseki
+    joseki:dataset      <#sdb> ;
     joseki:processor    joseki:ProcessorSPARQL_FixedDS ;
     .
 
@@ -30,56 +32,50 @@
 
 ## Initialize SDB.
 
-[] ja:loadClass "com.hp.hpl.jena.sdb.SDB" .
-
 ## Tell the system that sdb:DatasetStore is an implementation of ja:RDFDataset .
+
+[] ja:loadClass "com.hp.hpl.jena.sdb.SDB" .
 
 sdb:DatasetStore rdfs:subClassOf ja:RDFDataset .
 
 ## Dataset in SDB.
+#<#sdb> rdf:type sdb:DatasetStore , ja:RDFDataset ;
 
-_:books rdf:type sdb:DatasetStore , ja:RDFDataset ;
-    rdfs:label "Books" ;
+<#sdb> rdf:type sdb:DatasetStore ;
+    rdfs:label "SDB" ;
     sdb:layout         "layout2" ;
     sdb:connection 
     [ rdf:type sdb:SDBConnection ;
-      sdb:sdbType        "postgresql" ;
-      sdb:sdbHost        "localhost" ;
-      sdb:sdbName        "SDB" ;
+##       sdb:sdbType        "postgresql" ;
+##       sdb:sdbHost        "localhost" ;
+##       sdb:sdbName        "SDB" ;
+
+        # Using 
+        sdb:sdbType      "hsqldb" ;
+        sdb:sdbHost      "file" ;
+        sdb:sdbUser      "sa" ;
+        sdb:sdbPassword  "" ;
+        sdb:sdbName      "tmp/SDB" ;   # Location of the database
     ]
     .
 
 ## --------------------------------------------------------------
 ## Processors
 
-joseki:ProcessorSPARQL
-    rdfs:label "General SPARQL processor" ;
-    rdf:type joseki:Processor ;
-    module:implementation joseki:ImplSPARQL ;
-
-    # Parameters - this processor processes FROM/FROM NAMED
-    joseki:allowExplicitDataset       "true"^^xsd:boolean ;
-    joseki:allowWebLoading            "true"^^xsd:boolean ;
-    ## And has no locking policy (it loads data each time).
-    ## The default is mutex (one request at a time)
-    joseki:lockingPolicy                joseki:lockingPolicyNone ;
-    .
-
 joseki:ProcessorSPARQL_FixedDS
     rdfs:label "SPARQL processor for fixed datasets" ;
     rdf:type joseki:Processor ;
-    module:implementation joseki:ImplSPARQL ;
+    module:implementation 
+    [   rdf:type   joseki:ServiceImpl ;
+        module:className <java:org.joseki.processors.SPARQL>
+    ] ;
 
     # This processor does not accept queries with FROM/FROM NAMED
     joseki:allowExplicitDataset       "false"^^xsd:boolean ;
     joseki:allowWebLoading            "false"^^xsd:boolean ;
+    # The database is safe for MRSW (multiple-reader, single-writer).
     joseki:lockingPolicy              joseki:lockingPolicyMRSW ;
     .
-
-joseki:ImplSPARQL
-    rdf:type   joseki:ServiceImpl ;
-    module:className
-        <java:org.joseki.processors.SPARQL> .
 
 # Local Variables:        
 # tab-width: 4

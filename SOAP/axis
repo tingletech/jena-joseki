@@ -1,8 +1,0 @@
-#!/bin/bash
-
-# XML parser
-CP="$(alljars ../lib)"
-CP="$CP;$(alljars ../lib2)"
-CP="../classes;$CP"
-
-java -cp "$CP" org.apache.axis.client.AdminClient -p 2525 "$@"
