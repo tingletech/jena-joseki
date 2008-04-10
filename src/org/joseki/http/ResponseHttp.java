@@ -297,6 +297,10 @@ public class ResponseHttp extends Response
     }
     
     
+    protected void doResponseNothing() throws QueryExecutionException
+    {
+    }
+
     protected void doException(ExecutionException execEx)
     {
         HttpResultSerializer httpSerializer = new HttpResultSerializer() ;
@@ -313,7 +317,7 @@ public class ResponseHttp extends Response
             // Don't detail queryex ecution problems (e.g. parse errors).
             ex = null ;
         
-        log.info("Error: URI = " + request.getServiceURI() + " : " + httpMsg, ex) ;
+        log.info("Error: URI = " + request.getServiceURI() + " : " + httpMsg) ;
         httpSerializer.sendError(execEx, httpResponse) ;
     }
     

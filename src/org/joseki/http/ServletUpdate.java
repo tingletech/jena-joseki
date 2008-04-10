@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.hp.hpl.jena.util.FileUtils;
 
+import org.joseki.Joseki;
 import org.joseki.Request;
 
 public class ServletUpdate extends Servlet
@@ -39,7 +40,9 @@ public class ServletUpdate extends Servlet
             reader = httpRequest.getReader() ;
         }
         
-        return new Request(serviceURI, reader) ;
+        Request r = new Request(serviceURI, reader) ;
+        r.setParam(Joseki.OPERATION, Joseki.OP_UPDATE) ;
+        return r ;
     }
 }
 

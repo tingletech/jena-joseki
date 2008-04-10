@@ -6,23 +6,37 @@
 
 package org.joseki;
 
-import java.util.*;
-import com.hp.hpl.jena.query.*;
-import com.hp.hpl.jena.sparql.resultset.ResultSetRewindable;
-import com.hp.hpl.jena.sparql.util.StringUtils;
-import com.hp.hpl.jena.sparql.core.assembler.AssemblerUtils;
-import com.hp.hpl.jena.sparql.core.assembler.DatasetAssemblerVocab;
-import com.hp.hpl.jena.rdf.model.*;
-import com.hp.hpl.jena.shared.JenaException;
-import com.hp.hpl.jena.shared.NotFoundException;
-import com.hp.hpl.jena.util.FileManager;
-import com.hp.hpl.jena.vocabulary.RDF;
-import com.hp.hpl.jena.vocabulary.RDFS;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
-import org.apache.commons.logging.*;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.joseki.module.Loadable;
 import org.joseki.module.Loader;
 import org.joseki.module.LoaderException;
+
+import com.hp.hpl.jena.query.*;
+import com.hp.hpl.jena.rdf.model.Literal;
+import com.hp.hpl.jena.rdf.model.Model;
+import com.hp.hpl.jena.rdf.model.ModelFactory;
+import com.hp.hpl.jena.rdf.model.RDFNode;
+import com.hp.hpl.jena.rdf.model.Resource;
+import com.hp.hpl.jena.rdf.model.Statement;
+import com.hp.hpl.jena.rdf.model.StmtIterator;
+import com.hp.hpl.jena.shared.JenaException;
+import com.hp.hpl.jena.shared.NotFoundException;
+import com.hp.hpl.jena.sparql.core.assembler.AssemblerUtils;
+import com.hp.hpl.jena.sparql.core.assembler.DatasetAssemblerVocab;
+import com.hp.hpl.jena.sparql.resultset.ResultSetRewindable;
+import com.hp.hpl.jena.sparql.util.StringUtils;
+import com.hp.hpl.jena.util.FileManager;
+import com.hp.hpl.jena.vocabulary.RDF;
+import com.hp.hpl.jena.vocabulary.RDFS;
 
 public class Configuration
 {
@@ -255,7 +269,19 @@ public class Configuration
         
         QueryExecution qexec = QueryExecutionFactory.create(query, confModel) ;
         try {
-            for ( ResultSet rs = qexec.execSelect() ; rs.hasNext() ; )
+            
+            ResultSetRewindable rs = ResultSetFactory.makeRewindable(qexec.execSelect()) ;
+            if ( log.isDebugEnabled() )
+            {
+                String x = ResultSetFormatter.asText(rs) ;
+                if ( x.endsWith("\n") )
+                    x = x.substring(0, x.length()-2) ;
+                x = "Services References: \n"+x ; 
+                log.info(x) ;
+                rs.reset() ;
+            }
+            
+            for ( ; rs.hasNext() ; )
             {
                 this.numServiceTriples ++;
                 QuerySolution qs = rs.nextSolution() ;
@@ -308,12 +334,23 @@ public class Configuration
 
         Query query = makeQuery(s) ;
         QueryExecution qexec = QueryExecutionFactory.create(query, confModel) ;
+            
+        ResultSetRewindable rs = ResultSetFactory.makeRewindable(qexec.execSelect()) ;
+        if ( log.isDebugEnabled() )
+        {
+            String x = ResultSetFormatter.asText(rs) ;
+            if ( x.endsWith("\n") )
+                x = x.substring(0, x.length()-2) ;
+            x = "Services: \n"+x ; 
+            log.info(x) ;
+            rs.reset() ;
+        }
         
         // Does not mean the services are asscoiated with the server. 
         Set serviceResources = new HashSet() ; 
         
         try {
-            for ( ResultSet rs = qexec.execSelect() ; rs.hasNext() ; )
+            for ( ; rs.hasNext() ; )
             {
                 QuerySolution qs = rs.nextSolution() ;
                 RDFNode serviceNode = qs.getResource("service") ;
@@ -415,11 +452,23 @@ public class Configuration
         
         Query query = makeQuery(s) ;
         QueryExecution qexec = QueryExecutionFactory.create(query, confModel) ;
+
+        ResultSet rs = qexec.execSelect() ;
+//        ResultSetRewindable rs = ResultSetFactory.makeRewindable(qexec.execSelect()) ;
+//        if ( log.isDebugEnabled() )
+//        {
+//            String x = ResultSetFormatter.asText(rs) ;
+//            if ( x.endsWith("\n") )
+//                x = x.substring(0, x.length()-2) ;
+//            x = "Datasets for service: \n"+x ; 
+//            log.info(x) ;
+//            rs.reset() ;
+//        }
         
         
         List x = new ArrayList() ;
         try {
-            for ( ResultSet rs = qexec.execSelect() ; rs.hasNext() ; )
+            for ( ; rs.hasNext() ; )
             {
                 QuerySolution qs = rs.nextSolution() ;
                 x.add(qs.get("dataset")) ;
@@ -514,7 +563,19 @@ public class Configuration
         Query query = makeQuery(s) ;
         QueryExecution qexec = QueryExecutionFactory.create(query, confModel) ;
         try {
-            ResultSet rs = qexec.execSelect() ;
+            
+            ResultSetRewindable rs = ResultSetFactory.makeRewindable(qexec.execSelect()) ;
+            // Lots of bnodes - no help.
+            if ( false && log.isDebugEnabled() )
+            {
+                String x = ResultSetFormatter.asText(rs) ;
+                if ( x.endsWith("\n") )
+                    x = x.substring(0, x.length()-2) ;
+                x = "Datasets: \n"+x ; 
+                log.info(x) ;
+                rs.reset() ;
+            }
+            
             if ( false )
             {
                 ResultSetRewindable rs2 = ResultSetFactory.makeRewindable(rs) ;

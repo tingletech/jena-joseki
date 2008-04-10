@@ -9,7 +9,7 @@ import java.util.* ;
 
 /** Constants and other definitions.
  * @author      Andy Seaborne
- * @version     $Id: Joseki.java,v 1.30 2008-03-15 20:39:40 andy_seaborne Exp $
+ * @version     $Id: Joseki.java,v 1.31 2008-04-10 13:36:46 andy_seaborne Exp $
  */
 public class Joseki
 {
@@ -84,6 +84,11 @@ public class Joseki
     
     // Hidden paramters  - illegal HTTP names
     public static final String VERB          = "%verb" ;
+    public static final String OPERATION     = "%operation" ;
+    
+    // Names.
+    public static final String OP_QUERY      = "query" ;
+    public static final String OP_UPDATE     = "update" ;
     
     // Various control falgs and settings.
 

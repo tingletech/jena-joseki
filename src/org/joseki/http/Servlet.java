@@ -18,7 +18,7 @@ import org.joseki.*;
 
 /** The servlet class.
  * @author  Andy Seaborne
- * @version $Id: Servlet.java,v 1.28 2008-03-16 18:29:11 andy_seaborne Exp $
+ * @version $Id: Servlet.java,v 1.29 2008-04-10 13:36:46 andy_seaborne Exp $
  */
 
 public class Servlet extends HttpServlet
@@ -192,6 +192,7 @@ public class Servlet extends HttpServlet
                 request.setParam(k, s) ;
             }
         }
+        request.setParam(Joseki.OPERATION, Joseki.OP_QUERY) ;
         return request ;
     }
 

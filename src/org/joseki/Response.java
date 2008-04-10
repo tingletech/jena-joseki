@@ -21,7 +21,8 @@ abstract public class Response
     
     private Model responseModel = null ;
     private ResultSet responseResultSet = null ;
-    private Boolean responseBoolean = null ; 
+    private Boolean responseBoolean = null ;
+    private boolean responseNothing = false ; 
     
     private boolean done = false ;
     protected Request request ;
@@ -41,6 +42,10 @@ abstract public class Response
     public void setBoolean(boolean b) throws QueryExecutionException
     { checkState() ; this.responseBoolean = new Boolean(b) ; }
     
+
+    public void setOK() throws QueryExecutionException
+    { checkState() ; this.responseNothing = true ; }
+    
     public void sendException(ExecutionException execEx)
     {
         if ( done )
@@ -59,9 +64,9 @@ abstract public class Response
             return ;
         }
         
-        if ( responseModel == null && responseResultSet == null && responseBoolean == null )
+        if ( responseModel == null && responseResultSet == null && responseBoolean == null && ! responseNothing )
         {
-            log.warn("Nothing to send as a response") ;
+            log.warn("Response not set") ;
             throw new QueryExecutionException(ReturnCodes.rcInternalError,
                                               "Nothing to send as response") ;
         }
@@ -76,6 +81,9 @@ abstract public class Response
         if ( responseBoolean != null )
             doResponseBoolean(responseBoolean) ;
         
+        if ( responseNothing )
+            doResponseNothing() ;
+
         responseModel = null ;
         responseResultSet = null ;
         responseBoolean = null ;
@@ -85,6 +93,8 @@ abstract public class Response
         return ;
     }
     
+    abstract protected void doResponseNothing() throws QueryExecutionException ;
+
     abstract protected void doResponseModel(Model model) throws QueryExecutionException ;
     
     abstract protected void doResponseResultSet(ResultSet resultSet) throws QueryExecutionException ;

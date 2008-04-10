@@ -28,13 +28,15 @@ public class SPARQLUpdate extends ProcessorBase implements Loadable
     public void init(Resource service, Resource implementation)
     {}
 
+    // For now - just a static that is called in the "query" procoessing flow.
+    
     public void execOperation(Request request, Response response, DatasetDesc datasetDesc)
     throws QueryExecutionException
     {
         if ( ! request.getParam(Joseki.VERB).equals("POST") )
             // Because nasty things happen otherwise.
             throw new QueryExecutionException(ReturnCodes.rcBadRequest, "Updates must use POST") ;
-        log.info("SPARQLUpdate.execOperation") ;
+        log.info("SPARQL/Update Operation") ;
 
         // Implementation goes here!
         Reader in = request.getStream() ;
@@ -46,7 +48,7 @@ public class SPARQLUpdate extends ProcessorBase implements Loadable
         p.parse(updateRequest, in) ;
         GraphStore gs = GraphStoreFactory.create(datasetDesc.getDataset()) ;
         gs.execute(updateRequest) ;
-        response.sendResponse() ;
+        response.setOK() ;
     }
 }
 

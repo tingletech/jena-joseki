@@ -25,6 +25,8 @@ public abstract class ProcessorBase implements Processor
         if ( datasetDesc != null && datasetDesc.getDataset() != null )
             operationLock = datasetDesc.getDataset().getLock() ;
         
+        String op = request.getParam(Joseki.OPERATION) ;
+        
         operationLock.enterCriticalSection(Lock.READ) ;
         try {
             execOperation(request, response, datasetDesc) ;
@@ -36,7 +38,7 @@ public abstract class ProcessorBase implements Processor
         this.lock = lock ;
     }
     
-    /** Execute an operation within an MRSW lock */ 
+    /** Execute an operation within a lock */ 
     public abstract void execOperation(Request request, Response response, DatasetDesc datasetDesc)
     throws ExecutionException ;
 }
