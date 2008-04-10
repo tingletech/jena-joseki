@@ -62,7 +62,7 @@
 []
     rdf:type            joseki:Service ;
     rdfs:label          "service point" ;
-    joseki:serviceRef   "sparql" ;  # web.xml just route this name to Joseki
+    joseki:serviceRef   "sparql" ;
     joseki:processor    joseki:ProcessorSPARQL ;
     .
 
@@ -72,7 +72,7 @@
     rdfs:label          "SPARQL on the books model" ;
     joseki:serviceRef   "books" ;   # web.xml just route this name to Joseki
     # dataset part
-    joseki:dataset      _:books ;
+    joseki:dataset      <#books> ;
     # Service part.
     # This processor will not allow either the protocol,
     # nor the query, to specify the datset.
@@ -85,9 +85,9 @@
 ##     rdfs:label  "Inline example" ;
 ## 
 ##     # Required - serviceRef
-##     joseki:serviceRef         "example" ;    # web.xml just route this name to Joseki
+##     joseki:serviceRef         "example" ;    # web.xml must route this name to Joseki
 ##     joseki:dataset
-##         [ ja:defaultGraph    _:model1 ; ] ;
+##         [ ja:defaultGraph    <#model1> ; ] ;
 ##     joseki:processor
 ##         # Does not exist - causes a config warning and this
 ##         # service is not available for requests
@@ -99,23 +99,23 @@
 ## Datasets
 
 
-_:ds1   rdf:type ja:RDFDataset ;
-    ja:defaultGraph    _:model1 ;
-    rdfs:label "Dataset _:ds1" ;
+<#ds1>   rdf:type ja:RDFDataset ;
+    ja:defaultGraph    <#model1> ;
+    rdfs:label "Dataset 1" ;
     ja:namedGraph
         [ ja:graphName      <http://example.org/name1> ;
-          ja:graph          _:model1 ] ;
+          ja:graph          <#model1> ] ;
     # Could use the location manager and have the named thing only
     # Can't have two names for one graph?
     ja:namedGraph
         [ ja:graphName      <http://example.org/name2> ;
-          ja:graph          _:model2 
+          ja:graph          <#model2>
         ] ;
     ## Short versions?
     .
 
 # A dataset of one model as the default graph, data loaded from a file.
-_:books   rdf:type ja:RDFDataset ;
+<#books>   rdf:type ja:RDFDataset ;
     rdfs:label "Books" ;
    ja:defaultGraph
       [ rdfs:label "books.n3" ;
@@ -131,7 +131,7 @@ _:books   rdf:type ja:RDFDataset ;
 
 ## ---- Data model
 
-_:model1  rdf:type ja:MemoryModel ;
+<#model1>  rdf:type ja:MemoryModel ;
     rdfs:label "Model(plain)" ;
     ja:content [ ja:externalContent <file:FILE-1.ttl> ] ;
     ja:content [ ja:externalContent <file:FILE-2.ttl> ] ;
@@ -145,7 +145,7 @@ _:model1  rdf:type ja:MemoryModel ;
 ## defined in the dataset.
 ## "reificationMode minimal" allows faster queries to operate.
 
-_:modelDB1 rdf:type ja:RDBModel ;
+<#modelDB1> rdf:type ja:RDBModel ;
     ja:connection
     [
         ja:dbType "MySQL" ;
@@ -161,7 +161,7 @@ _:modelDB1 rdf:type ja:RDBModel ;
 ## ----------------
 ## Database model, default model in database
 
-_:modelDB2 rdf:type ja:RDBModel ;
+<#modelDB2> rdf:type ja:RDBModel ;
     ja:connection
     [
         ja:dbType "MySQL" ;
@@ -176,7 +176,7 @@ _:modelDB2 rdf:type ja:RDBModel ;
 
 # ---- RDFS Inference model - all from one file.
 
-_:model_inf_1 rdfs:label "Inf-1" ;
+<#model_inf_1> rdfs:label "Inf-1" ;
     ja:baseModel 
         [ a ja:MemoryModel ;
           ja:content [ja:externalContent <file:test_data_rdfs.ttl>] ;
@@ -187,7 +187,7 @@ _:model_inf_1 rdfs:label "Inf-1" ;
 
 # Separate ABox and TBox
 
-_:model_inf_2 rdfs:label "Inf-2" ;
+<#model_inf_2> rdfs:label "Inf-2" ;
     ja:baseModel 
         [ a ja:MemoryModel ;
           ja:content [ja:externalContent <file:Data/test_abox.ttl>] ;
@@ -198,7 +198,7 @@ _:model_inf_2 rdfs:label "Inf-2" ;
     . 
 
 # Pellet : a dataset with a single model (Pellet through DIG)
-_:test rdf:type ja:RDFDataset ;
+<#test> rdf:type ja:RDFDataset ;
      rdfs:label "Test" ;
      ja:defaultGraph
         [ ja:baseModel
