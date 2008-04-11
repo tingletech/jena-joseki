@@ -13,6 +13,7 @@ package org.joseki.servlets;
 
 import java.util.* ;
 import java.io.* ;
+
 import javax.servlet.http.*;
 import javax.servlet.* ;
 
@@ -58,6 +59,10 @@ public class DumpServlet extends HttpServlet
             out.print(dumpRequest(req)) ;
             out.println() ;
                         
+            out.println("==== Body");
+            out.println() ;
+            printBody(out, req) ;
+            
             out.println("==== ServletContext");
             out.println() ;
             out.print(dumpServletContext());
@@ -67,13 +72,6 @@ public class DumpServlet extends HttpServlet
             out.println() ;
             out.print(dumpEnvironment());
             out.println() ;
-
-            out.println("==== Body");
-            out.println() ;
-//            ServletInputStream in = req.getInputStream() ;
-//            String s = FileUtils.readWholeFileAsUTF8(in) ;
-//            out.print(s) ;
-//            out.println() ;
 
             out.println("</pre>") ;
 
@@ -205,22 +203,7 @@ public class DumpServlet extends HttpServlet
             }
 
             pw.println() ;
-
-            BufferedReader in = req.getReader() ;
-            if ( req.getContentLength() > 0 )
-                // Need +2 because last line may not have a CR/LF on it.
-                in.mark(req.getContentLength()+2) ;
-            else
-                // This is a dump - try to do something that works, even if inefficient.
-                in.mark(100*1024) ;
-
-
-            while(in.ready())
-            {
-                pw.println(in.readLine());
-            }
-
-            try { in.reset() ;} catch (IOException e) { System.out.println("DumpServlet: Reset of content failed: "+e) ; }
+            printBody(pw, req) ;
 
             pw.close() ;
             sw.close() ;
@@ -230,6 +213,25 @@ public class DumpServlet extends HttpServlet
         return null ;
     }
 
+    static void printBody(PrintWriter pw, HttpServletRequest req) throws IOException
+    {
+        BufferedReader in = req.getReader() ;
+        if ( req.getContentLength() > 0 )
+            // Need +2 because last line may not have a CR/LF on it.
+            in.mark(req.getContentLength()+2) ;
+        else
+            // This is a dump - try to do something that works, even if inefficient.
+            in.mark(100*1024) ;
+
+
+        while(in.ready())
+        {
+            pw.println(in.readLine());
+        }
+
+        try { in.reset() ;} catch (IOException e) { System.out.println("DumpServlet: Reset of content failed: "+e) ; }
+    }
+    
     /**
      * <code>dumpEnvironment</code>
      * @return String that is the HTML of the System properties as 

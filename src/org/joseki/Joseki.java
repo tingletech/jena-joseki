@@ -9,7 +9,7 @@ import java.util.* ;
 
 /** Constants and other definitions.
  * @author      Andy Seaborne
- * @version     $Id: Joseki.java,v 1.31 2008-04-10 13:36:46 andy_seaborne Exp $
+ * @version     $Id: Joseki.java,v 1.32 2008-04-11 09:02:27 andy_seaborne Exp $
  */
 public class Joseki
 {
@@ -67,6 +67,16 @@ public class Joseki
     public static final String contentTypeXML             = "application/xml" ;
     public static final String contentTypeResultsXML      = "application/sparql-results+xml" ;
     public static final String contentTypeResultsJSON     = "application/sparql-results+json" ;
+    
+    // There is no MIME for a SPARQL query.
+    // Either it is a GET or it is a "x-www-form-urlencoded"
+    
+    //public static final String contentSPARQL_X            = "application/x-sparql-query" ;
+    public static final String contentSPARQLUpdate_X      = "application/x-sparql-update" ;
+
+    //public static final String contentSPARQL              = "application/sparql-query" ;
+    public static final String contentSPARQLUpdate        = "application/sparql-update" ;
+
     
     // Short names for "output="
     public static final String contentOutputJSON          = "json" ;

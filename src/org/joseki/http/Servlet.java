@@ -18,7 +18,7 @@ import org.joseki.*;
 
 /** The servlet class.
  * @author  Andy Seaborne
- * @version $Id: Servlet.java,v 1.29 2008-04-10 13:36:46 andy_seaborne Exp $
+ * @version $Id: Servlet.java,v 1.30 2008-04-11 09:02:32 andy_seaborne Exp $
  */
 
 public class Servlet extends HttpServlet
@@ -158,6 +158,13 @@ public class Servlet extends HttpServlet
             String sender = httpRequest.getRemoteAddr() ; 
             log.info("["+sender+"] Service URI = <"+serviceURI+">") ;
             
+            // MIME-Type
+            String contentType = httpRequest.getContentType() ;
+            
+//            if ( Joseki.contentSPARQLUpdate.equals(contentType) ||
+//                Joseki.contentSPARQLUpdate_X.equals(contentType) )
+//            {}            
+            
             Request request = setupRequest(serviceURI, httpRequest) ;
             request.setParam(Joseki.VERB, httpRequest.getMethod()) ;
             
@@ -179,7 +186,7 @@ public class Servlet extends HttpServlet
     protected Request setupRequest(String serviceURI, HttpServletRequest httpRequest)
     throws IOException
     {
-        // Assemble parameters
+        // No reader.  Done by standard servlet form processing.
         Request request = new Request(serviceURI, null) ;
         // params => request items
         for ( Enumeration en = httpRequest.getParameterNames() ; en.hasMoreElements() ; )
