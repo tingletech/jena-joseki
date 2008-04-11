@@ -6,7 +6,7 @@
 package org.joseki;
 
 /**
- * @version     $Id: ReturnCodes.java,v 1.7 2008-01-02 12:24:53 andy_seaborne Exp $
+ * @version     $Id: ReturnCodes.java,v 1.8 2008-04-11 14:42:55 andy_seaborne Exp $
  * @author      Andy Seaborne
  */
 
@@ -15,7 +15,7 @@ public class ReturnCodes
     static public final int rcOK                     = 0 ;
     static public final int rcNoSuchQueryLanguage    = 3 ;
     static public final int rcInternalError          = 4 ;
-    static public final int rcJenaException           = 5 ;
+    static public final int rcJenaException          = 5 ;
     static public final int rcNoSuchURI              = 6 ;
     static public final int rcSecurityError          = 7 ;
     static public final int rcOperationNotSupported  = 8 ;
@@ -27,10 +27,12 @@ public class ReturnCodes
     static public final int rcServiceUnavailable     = 14 ;
     static public final int rcResourceNotFound       = 15 ;
     static public final int rcBadRequest             = 16 ;
+    static public final int rcUpdateExecutionFailure = 17 ;
     
     static public final int rcQueryParseFailure      = 100 ;
     static public final int rcQueryExecutionFailure  = 101 ;
     static public final int rcQueryUnknownFormat     = 102 ;
+    
 
     static public String messages[] =
         { "OK",
@@ -49,6 +51,8 @@ public class ReturnCodes
           "Not implemented" ,
           "Service unavailable",
           "Resource not found",
+          "Bad request",
+          "SPARQL/Update failed",
           null // Terminator
     };
 

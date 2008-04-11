@@ -10,13 +10,17 @@ import java.io.Reader;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.joseki.*;
+import org.joseki.DatasetDesc;
+import org.joseki.ExecutionException;
+import org.joseki.Joseki;
+import org.joseki.QueryExecutionException;
+import org.joseki.Request;
+import org.joseki.Response;
+import org.joseki.ReturnCodes;
 import org.joseki.module.Loadable;
 
 import com.hp.hpl.jena.rdf.model.Resource;
-
 import com.hp.hpl.jena.sparql.modify.lang.ParserSPARQLUpdate;
-
 import com.hp.hpl.jena.update.GraphStore;
 import com.hp.hpl.jena.update.GraphStoreFactory;
 import com.hp.hpl.jena.update.UpdateRequest;
@@ -41,14 +45,18 @@ public class SPARQLUpdate extends ProcessorBase implements Loadable
         // Implementation goes here!
         Reader in = request.getStream() ;
 
-        // Reader with a Reader.  Normally discouraged because of charset issues 
-        // Hence no UpdateFactory operations.
+        // Parsing with a Reader.  Normally discouraged because of charset issues 
+        // Hence no UpdateFactory operations and a need to go direct.
         ParserSPARQLUpdate p = new ParserSPARQLUpdate() ;
         UpdateRequest updateRequest = new UpdateRequest() ;
         p.parse(updateRequest, in) ;
         GraphStore gs = GraphStoreFactory.create(datasetDesc.getDataset()) ;
-        gs.execute(updateRequest) ;
-        response.setOK() ;
+        try { gs.execute(updateRequest) ; response.setOK() ;}
+        catch (Exception ex)
+        {
+            ExecutionException execEx = new ExecutionException(ReturnCodes.rcUpdateExecutionFailure,"Update failed") ;
+            response.sendException(execEx) ;
+        }
     }
 }
 

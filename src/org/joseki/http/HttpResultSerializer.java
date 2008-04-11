@@ -21,7 +21,7 @@ import com.hp.hpl.jena.shared.JenaException;
 /** Extracting operation data from HTTP servlet requests and formatting results for sending back.
  * 
  * @author      Andy Seaborne
- * @version     $Id: HttpResultSerializer.java,v 1.8 2008-01-02 12:24:53 andy_seaborne Exp $
+ * @version     $Id: HttpResultSerializer.java,v 1.9 2008-04-11 14:42:56 andy_seaborne Exp $
  */
 public class HttpResultSerializer
 {
@@ -133,9 +133,12 @@ public class HttpResultSerializer
     }
     
     // 400 is SPARQL malformed query
-    // 500 is SPAQRL query request refused
-    static int SPARQL_MalformedQuery = HttpServletResponse.SC_BAD_REQUEST ;
-    static int SPARQL_QueryRequestRefused =  HttpServletResponse.SC_INTERNAL_SERVER_ERROR ;
+    // 500 is SPARQL query request refused
+    
+    // SPARQL/Update errors result in "Bad request"
+    static int SPARQL_MalformedQuery        = HttpServletResponse.SC_BAD_REQUEST ;
+    static int SPARQL_QueryRequestRefused   = HttpServletResponse.SC_INTERNAL_SERVER_ERROR ;
+    static int SPARQL_UpdateFailed          = HttpServletResponse.SC_BAD_REQUEST ;
     
     public void sendError(ExecutionException execEx, HttpServletResponse response)
     {
@@ -197,6 +200,9 @@ public class HttpResultSerializer
                     break ;
                 case ReturnCodes.rcBadRequest:
                     httpRC = SPARQL_MalformedQuery ;
+                    break ;
+                case ReturnCodes.rcUpdateExecutionFailure:
+                    httpRC = SPARQL_UpdateFailed ;
                     break ;
                 default :
                     httpRC = HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
