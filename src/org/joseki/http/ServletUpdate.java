@@ -21,6 +21,17 @@ public class ServletUpdate extends Servlet
 {
     public ServletUpdate() { super("Joseki/Update") ; }
     
+    public void doGet(HttpServletRequest httpRequest, HttpServletResponse httpResponse)
+    {
+        log.info("Update received by HTTP Get - rejected") ;
+        try
+        {
+            httpResponse.sendError(HttpServletResponse.SC_BAD_REQUEST,
+                                   "SPARQL:/Update request received via GET - must use POST") ;
+        } catch (IOException ex)
+        {}
+    }
+    
     public void doPost(HttpServletRequest httpRequest, HttpServletResponse httpResponse)
     {
         doCommon(httpRequest, httpResponse) ;
