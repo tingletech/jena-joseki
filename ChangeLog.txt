@@ -5,6 +5,8 @@ Joseki 3.2
 ----------
 
 + Upgraded to ARQ 2.2 and lucene-core-2.2.0.jar
++ Upgraded Jetty to 6.1.10
+  Jar changes for version number changes.
 
 Joseki 3.1
 ----------

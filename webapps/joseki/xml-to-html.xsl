@@ -16,7 +16,7 @@ FITNESS FOR A PARTICULAR PURPOSE.
 
 Version 1 : Dave Beckett (DAWG)
 Version 2 : Jeen Broekstra (DAWG)
-Customization for SPARQler: Andy Seaborne
+Customization for SPARQLer: Andy Seaborne
 
 -->
 

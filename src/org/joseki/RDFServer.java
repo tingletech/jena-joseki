@@ -10,13 +10,15 @@ import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.mortbay.jetty.Connector;
 import org.mortbay.jetty.Server;
+import org.mortbay.jetty.nio.SelectChannelConnector;
 import org.mortbay.jetty.webapp.WebAppContext;
 import org.mortbay.util.MultiException;
 
 /** Standalone server.
  * 
- * @version $Id: RDFServer.java,v 1.17 2008-01-02 12:24:53 andy_seaborne Exp $
+ * @version $Id: RDFServer.java,v 1.18 2008-05-28 16:51:59 andy_seaborne Exp $
  * @author  Andy Seaborne
  */
 
@@ -84,10 +86,35 @@ public class RDFServer
 
         // Build the web application and server
         try {
-            // And the Jetty server uses SLF4J 
-            server = new Server(port) ;
+            // And the Jetty server uses SLF4J
+
+            // Server, with one NIO-based connector, large input buffer size (for long URLs).
+            server = new Server() ;
+            Connector connector = new SelectChannelConnector() ;
+            connector.setPort(port);
+            connector.setHeaderBufferSize(16*1024) ;
+            server.addConnector(connector) ;
+
+            // Add the webapp.
             webAppContextJoseki = new WebAppContext(server, "webapps/joseki", "/") ;
             server.addHandler(webAppContextJoseki) ;
+
+            // Or configure from an external file.
+//            if ( false )
+//            {
+//                // This will mount Joseki at /joseki.
+//                // java.io.FileNotFoundException
+//                XmlConfiguration configuration = new XmlConfiguration(new URL("file:etc/jetty.xml")) ; 
+//                //or use new XmlConfiguration(new FileInputStream("myJetty.xml"));
+//                configuration.configure(server);
+//            }
+//            else
+//            {
+//                webAppContextJoseki = new WebAppContext(server, "webapps/joseki", "/") ;
+//                server.addHandler(webAppContextJoseki) ;
+//            }
+            
+            // Start server.
             server.start();
         } catch (Exception ex)
         {
@@ -177,31 +204,31 @@ public class RDFServer
             return ; 
 
         
-        // Check that the service registry seen by the webapp is the
-        // same as the one created during initialization.  That is, the
-        // webapp does not have its own class for this.
-        
-        try {
-            ClassLoader cl = webAppContextJoseki.getClassLoader() ;
-            
-            if ( cl == null )
-            {    
-                log.warn("No classloader for webapp!") ;
-                return ;
-            }
-
-            Class cls = cl.loadClass(ServiceRegistry.class.getName());
-
-            if ( ! cls.isAssignableFrom(ServiceRegistry.class))
-            {    
-                log.warn("Found another service configuration subsystem in the web apllication");
-                log.warn("Suspect a second copy of joseki.jar in WEB-INF/lib") ;
-                throw new ConfigurationErrorException("ServiceRegistry clash") ;
-            }
-        } catch (ClassNotFoundException ex)
-        {
-            log.info("Class not found");
-        }
+//        // Check that the service registry seen by the webapp is the
+//        // same as the one created during initialization.  That is, the
+//        // webapp does not have its own class for this.
+//        
+//        try {
+//            ClassLoader cl = webAppContextJoseki.getClassLoader() ;
+//            
+//            if ( cl == null )
+//            {    
+//                log.warn("No classloader for webapp!") ;
+//                return ;
+//            }
+//
+//            Class cls = cl.loadClass(ServiceRegistry.class.getName());
+//
+//            if ( ! cls.isAssignableFrom(ServiceRegistry.class))
+//            {    
+//                log.warn("Found another service configuration subsystem in the web apllication");
+//                log.warn("Suspect a second copy of joseki.jar in WEB-INF/lib") ;
+//                throw new ConfigurationErrorException("ServiceRegistry clash") ;
+//            }
+//        } catch (ClassNotFoundException ex)
+//        {
+//            log.info("Class not found");
+//        }
     }
 
     public void waitUntilStarted()

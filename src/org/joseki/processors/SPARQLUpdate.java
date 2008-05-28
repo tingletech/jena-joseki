@@ -23,6 +23,8 @@ import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.sparql.modify.lang.ParserSPARQLUpdate;
 import com.hp.hpl.jena.update.GraphStore;
 import com.hp.hpl.jena.update.GraphStoreFactory;
+import com.hp.hpl.jena.update.UpdateFactory;
+import com.hp.hpl.jena.update.UpdateProcessor;
 import com.hp.hpl.jena.update.UpdateRequest;
 
 public class SPARQLUpdate extends ProcessorBase implements Loadable
@@ -50,8 +52,10 @@ public class SPARQLUpdate extends ProcessorBase implements Loadable
         ParserSPARQLUpdate p = new ParserSPARQLUpdate() ;
         UpdateRequest updateRequest = new UpdateRequest() ;
         p.parse(updateRequest, in) ;
-        GraphStore gs = GraphStoreFactory.create(datasetDesc.getDataset()) ;
-        try { gs.execute(updateRequest) ; response.setOK() ;}
+        GraphStore graphStore = GraphStoreFactory.create(datasetDesc.getDataset()) ;
+        
+        UpdateProcessor uProc = UpdateFactory.create(updateRequest, graphStore) ;
+        try { uProc.execute() ; response.setOK() ; }
         catch (Exception ex)
         {
             ExecutionException execEx = new ExecutionException(ReturnCodes.rcUpdateExecutionFailure,"Update failed") ;
