@@ -281,7 +281,10 @@
      
         <!-- Out-of-the-box  configuration -->
         <copy todir="${dist.dir}" file="joseki-config.ttl"/>
+
         <copy todir="${dist.dir}" file="joseki-config-example.ttl"/>
+        <copy todir="${dist.dir}" file="joseki-config-sdb.ttl"/>
+        <copy todir="${dist.dir}" file="sdb.ttl"/>
 
         <copy todir="${dist.dir}/bin">
           <fileset dir="bin" excludes="*.~" />
