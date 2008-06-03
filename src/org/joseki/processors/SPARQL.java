@@ -246,7 +246,8 @@ public class SPARQL extends QueryCom implements Loadable
         }
         
         // Check arguments
-        
+        Dataset dataset = null ;
+        boolean useQueryDesc = false ;
         if ( ! allowDatasetDesc )
         {
             // Restrict to service dataset only. 
@@ -255,21 +256,19 @@ public class SPARQL extends QueryCom implements Loadable
             if ( query.hasDatasetDescription() )
                 throw new QueryExecutionException(ReturnCodes.rcArgumentError, "This service does not allow the dataset to be specified in the query") ;
         }
-        
-        // ---- Dataset
-        
-        Dataset dataset = datasetFromProtocol(request) ;
-        
-        boolean useQueryDesc = false ;
-        
-        if ( dataset == null )
+        else
         {
-            // No dataset in protocol
-            if ( query.hasDatasetDescription() )
-                useQueryDesc = true ;
-            // If in query, then the query engine will do the loading.
+            // Protocol
+            dataset = datasetFromProtocol(request) ;
+            // In query itself.
+            if ( dataset == null )
+            {
+                // No dataset in protocol
+                if ( query.hasDatasetDescription() )
+                    useQueryDesc = true ;
+                // If in query, then the query engine will do the loading.
+            }
         }
-        
         // Use the service dataset description if
         // not in query and not in protocol. 
         if ( !useQueryDesc && dataset == null )
@@ -283,7 +282,7 @@ public class SPARQL extends QueryCom implements Loadable
 //            throw new QueryExecutionException(ReturnCodes.rcBadRequest, "No dataset given") ;
         
         if ( useQueryDesc )
-            // If using description, ignore dataset
+            // If using query description, ignore dataset
             dataset = null ;
         
         QueryExecution qexec = getQueryExecution(query, dataset) ;

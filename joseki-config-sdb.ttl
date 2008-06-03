@@ -16,11 +16,19 @@
 ## --------------------------------------------------------------
 ## Services
 
-[]
+## <#service1>
+##     rdf:type            joseki:Service ;
+##     rdfs:label          "SPARQL-SDB" ;
+##     joseki:serviceRef   "sparql" ;      # web.xml just route this name to Joseki
+##     joseki:dataset      <#sdb> ;
+##     joseki:processor    joseki:ProcessorSPARQL_FixedDS ;
+##     .
+
+<#service2>
     rdf:type            joseki:Service ;
-    rdfs:label          "SPARQL-SDB" ;
-    joseki:serviceRef   "sparql" ;      # web.xml just route this name to Joseki
-    joseki:dataset      <#sdb> ;
+    rdfs:label          "SPARQL-SDB (alt)" ;
+    joseki:serviceRef   "sparql/graph" ;   # web.xml just route this name to Joseki
+    joseki:dataset      <#sdb-one-graph> ;
     joseki:processor    joseki:ProcessorSPARQL_FixedDS ;
     .
 
@@ -31,11 +39,12 @@
 ## Special declarations to cause SDB to be used.
 
 ## Initialize SDB.
-
 ## Tell the system that sdb:DatasetStore is an implementation of ja:RDFDataset .
+## Tell the system that sdb:Model is an implementation of ja:RDFDataset .
 
 [] ja:loadClass "com.hp.hpl.jena.sdb.SDB" .
-sdb:DatasetStore rdfs:subClassOf ja:RDFDataset .
+sdb:DatasetStore  rdfs:subClassOf  ja:RDFDataset .
+sdb:Model         rdfs:subClassOf  ja:Model .
 
 ## # For SDB 1.0:
 ## <#sdb> rdf:type sdb:DatasetStore , ja:RDFDataset ;
@@ -63,6 +72,18 @@ sdb:DatasetStore rdfs:subClassOf ja:RDFDataset .
         sdb:sdbPassword  "" ;
         sdb:sdbName      "tmp/SDB" ;   # Location of the database
     ]
+    .
+
+# Pick one graph out of the SDB store.
+# Do not assemble the whole of the store this way - it is less efficient for that.
+<#sdb-one-graph> rdf:type ja:RDFDataset ;
+    ja:defaultGraph 
+    [ a sdb:Model ; 
+      sdb:dataset <#store> ;
+      # Pick out one graph - in this example, a named graph in the store
+      # is used as default graph of the dataset publicalkly visible.
+      ## sdb:namedGraph <http://example/books> ;
+    ] ;
     .
 
 ## --------------------------------------------------------------
