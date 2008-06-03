@@ -1,7 +1,9 @@
 @prefix   :         <http://example/> .
 
-:x1 :p "string"@EN .
-:x2 :p "string"@en .
+:x1 :p "XXX" .
+
+## :x1 :p "string"@EN .
+## :x2 :p "string"@en .
 ## 
 ## _:a :q _:b .
 ## 

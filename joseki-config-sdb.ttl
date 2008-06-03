@@ -80,6 +80,8 @@ sdb:Model         rdfs:subClassOf  ja:Model .
 # Pick one graph out of the SDB store.
 # Do not assemble the whole of the store this way - it is less efficient for that.
 <#sdb-part> rdf:type ja:RDFDataset ;
+    # If ja:namedGraph is used here, there is no correspondence
+    # with the name in the SDB store.
     ja:defaultGraph <#sdb-one-graph> ;
     .
 
@@ -87,8 +89,10 @@ sdb:Model         rdfs:subClassOf  ja:Model .
     sdb:dataset <#sdb> ;
     # Uncomment to pick out a named graph from the store.
     # If no "sdb:namedGraph" appearsm the store's default graph is used.
-    # is used as default graph of the dataset publicalkly visible.
-    ## sdb:namedGraph <http://example/books> ;
+    # is used as default graph of the dataset publically visible.
+    #sdb:namedGraph <http://example/aNamedGraph> ;
+    # Or even the merge of all named graphs
+    #sdb:namedGraph <urn:x-arq:UnionGraph> ;
     .
 
 ## --------------------------------------------------------------
