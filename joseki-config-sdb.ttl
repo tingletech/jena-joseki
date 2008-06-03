@@ -9,26 +9,29 @@
 
 <> rdfs:label "Joseki Configuration File - SDB example" .
 # Stripped down to support one service that exposes an
-# SDB store as a SPARQL endpoint for query.
+# SDB store as a SPARQL endpoint for query and one for 
+# one of the graphs in an SDB store.
 
 []  rdf:type joseki:Server .
 
 ## --------------------------------------------------------------
 ## Services
 
-## <#service1>
-##     rdf:type            joseki:Service ;
-##     rdfs:label          "SPARQL-SDB" ;
-##     joseki:serviceRef   "sparql" ;      # web.xml just route this name to Joseki
-##     joseki:dataset      <#sdb> ;
-##     joseki:processor    joseki:ProcessorSPARQL_FixedDS ;
-##     .
+# Service publishes the whole of the SDB store - this is the usual way to use SDB.
+<#service1>
+    rdf:type            joseki:Service ;
+    rdfs:label          "SPARQL-SDB" ;
+    joseki:serviceRef   "sparql" ;      # web.xml just route this name to Joseki
+    joseki:dataset      <#sdb> ;
+    joseki:processor    joseki:ProcessorSPARQL_FixedDS ;
+    .
 
+# Service that publishes part of an SDB store.
 <#service2>
     rdf:type            joseki:Service ;
     rdfs:label          "SPARQL-SDB (alt)" ;
     joseki:serviceRef   "sparql/graph" ;   # web.xml just route this name to Joseki
-    joseki:dataset      <#sdb-one-graph> ;
+    joseki:dataset      <#sdb-part> ;
     joseki:processor    joseki:ProcessorSPARQL_FixedDS ;
     .
 
@@ -76,14 +79,16 @@ sdb:Model         rdfs:subClassOf  ja:Model .
 
 # Pick one graph out of the SDB store.
 # Do not assemble the whole of the store this way - it is less efficient for that.
-<#sdb-one-graph> rdf:type ja:RDFDataset ;
-    ja:defaultGraph 
-    [ a sdb:Model ; 
-      sdb:dataset <#store> ;
-      # Pick out one graph - in this example, a named graph in the store
-      # is used as default graph of the dataset publicalkly visible.
-      ## sdb:namedGraph <http://example/books> ;
-    ] ;
+<#sdb-part> rdf:type ja:RDFDataset ;
+    ja:defaultGraph <#sdb-one-graph> ;
+    .
+
+<#sdb-one-graph> a sdb:Model ; 
+    sdb:dataset <#sdb> ;
+    # Uncomment to pick out a named graph from the store.
+    # If no "sdb:namedGraph" appearsm the store's default graph is used.
+    # is used as default graph of the dataset publicalkly visible.
+    ## sdb:namedGraph <http://example/books> ;
     .
 
 ## --------------------------------------------------------------

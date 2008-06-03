@@ -1,0 +1,64 @@
+@prefix rdfs:   <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xsd:    <http://www.w3.org/2001/XMLSchema#> .
+
+@prefix module: <http://joseki.org/2003/06/module#> .
+@prefix joseki: <http://joseki.org/2005/06/configuration#> .
+@prefix ja:     <http://jena.hpl.hp.com/2005/11/Assembler#> .
+@prefix sdb:      <http://jena.hpl.hp.com/2007/sdb#> .
+@prefix tdb:     <http://jena.hpl.hp.com/2008/tdb#> .
+
+<> rdfs:label "Joseki Configuration File - SDB example" .
+# Stripped down to support one service that exposes an
+# TDB store as a SPARQL endpoint for query.
+
+[]  rdf:type joseki:Server .
+
+## --------------------------------------------------------------
+## Services
+
+<#service1>
+    rdf:type            joseki:Service ;
+    rdfs:label          "SPARQL-TDB" ;
+    joseki:serviceRef   "sparql" ;      # web.xml just route this name to Joseki
+    joseki:dataset      <#dataset> ;
+    joseki:processor    joseki:ProcessorSPARQL_FixedDS ;
+    .
+
+## --------------------------------------------------------------
+## Datasets
+
+## Initialize TDB.
+[] ja:loadClass "com.hp.hpl.jena.tdb.TDB" .
+tdb:GraphTDB rdfs:subClassOf ja:Model .
+
+<#dataset> rdf:type         ja:RDFDataset ;
+    ja:defaultGraph <#graph> ;
+    . 
+
+<#graph> rdf:type tdb:GraphTDB ;
+    tdb:location "tmp" ;
+    .
+
+## --------------------------------------------------------------
+## Processors
+
+joseki:ProcessorSPARQL_FixedDS
+    rdfs:label "SPARQL processor for fixed datasets" ;
+    rdf:type joseki:Processor ;
+    module:implementation 
+    [   rdf:type   joseki:ServiceImpl ;
+        module:className <java:org.joseki.processors.SPARQL>
+    ] ;
+
+    # This processor does not accept queries with FROM/FROM NAMED
+    joseki:allowExplicitDataset       "false"^^xsd:boolean ;
+    joseki:allowWebLoading            "false"^^xsd:boolean ;
+    # The database is safe for MRSW (multiple-reader, single-writer).
+    joseki:lockingPolicy              joseki:lockingPolicyMRSW ;
+    .
+
+# Local Variables:        
+# tab-width: 4
+# indent-tabs-mode: nil
+# End:

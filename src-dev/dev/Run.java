@@ -24,7 +24,7 @@ public class Run
             System.exit(0) ;
         }
         RunUtils.setLog4j() ;
-        joseki.rdfserver.main(new String[]{"joseki-config-sdb.ttl"}) ;
+        joseki.rdfserver.main(new String[]{"joseki-config-tdb.ttl"}) ;
     }
     
     public static void misc()
