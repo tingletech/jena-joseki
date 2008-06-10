@@ -50,7 +50,6 @@ public class ServletUpdate extends Servlet
                 log.warn(serviceURI+": request not UTF-8: "+charEnc) ;
             reader = httpRequest.getReader() ;
         }
-        
         Request r = new Request(serviceURI, reader) ;
         r.setParam(Joseki.OPERATION, Joseki.OP_UPDATE) ;
         return r ;

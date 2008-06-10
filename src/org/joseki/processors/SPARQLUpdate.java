@@ -46,6 +46,8 @@ public class SPARQLUpdate extends ProcessorBase implements Loadable
 
         // Implementation goes here!
         Reader in = request.getStream() ;
+        if ( in == null )
+            log.warn("Reader is null") ;
 
         // Parsing with a Reader.  Normally discouraged because of charset issues 
         // Hence no UpdateFactory operations and a need to go direct.
