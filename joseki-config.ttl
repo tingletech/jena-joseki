@@ -76,6 +76,10 @@
 
 ## ---- SPARQL/Update
 ## A pair of services - one for SPARQL queries, one for SPARQL/Update
+## Previous web.xml must also be updated to include a defintion for the
+## servlet "SPARQL/Update service processor" and update requests must
+## be routed to this servlet.
+
 
 ## <#serviceUdpate>
 ##     rdf:type            joseki:Service ;
