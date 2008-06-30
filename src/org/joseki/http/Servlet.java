@@ -18,7 +18,7 @@ import org.joseki.*;
 
 /** The servlet class.
  * @author  Andy Seaborne
- * @version $Id: Servlet.java,v 1.30 2008-04-11 09:02:32 andy_seaborne Exp $
+ * @version $Id: Servlet.java,v 1.31 2008-06-30 18:48:50 andy_seaborne Exp $
  */
 
 public class Servlet extends HttpServlet
@@ -186,6 +186,12 @@ public class Servlet extends HttpServlet
     protected Request setupRequest(String serviceURI, HttpServletRequest httpRequest)
     throws IOException
     {
+        return setupRequest(serviceURI, httpRequest, Joseki.OP_QUERY) ;
+    }
+
+    protected Request setupRequest(String serviceURI, HttpServletRequest httpRequest, String opType)
+    throws IOException
+    {
         // No reader.  Done by standard servlet form processing.
         Request request = new Request(serviceURI, null) ;
         // params => request items
@@ -193,36 +199,41 @@ public class Servlet extends HttpServlet
         {
             String k = (String)en.nextElement() ;
             String[] x = httpRequest.getParameterValues(k) ;
+            
             for(int i = 0 ; i < x.length ; i++ )
             {
                 String s = x[i] ;
                 request.setParam(k, s) ;
             }
         }
-        request.setParam(Joseki.OPERATION, Joseki.OP_QUERY) ;
+        request.setParam(Joseki.OPERATION, opType) ;
         return request ;
     }
+    
+    public static boolean isHTMLForm(HttpServletRequest httpRequest)
+    {
+        String s = httpRequest.getContentType() ;
+        if ( s == null )
+            return false ;
 
+        AcceptItem aItem = new AcceptItem(s) ;
+        String t1 = aItem.getType() ;
+        String t2 = aItem.getSubType() ;
+        
+        return ( t1.equalsIgnoreCase("application") && t2.equalsIgnoreCase("x-www-form-urlencoded") ) ;
+    }
+    
     public void doPost(HttpServletRequest httpRequest, HttpServletResponse httpResponse)
     {
         String s = httpRequest.getContentType() ;
-        if ( s != null )
+        if ( s != null && ! isHTMLForm(httpRequest) )
         {
-            // A charset isn't necessary but if it is present it is checked.
-
-            // An accept item is actually a general header parser.
-            AcceptItem aItem = new AcceptItem(s) ;
-            String t1 = aItem.getType() ;
-            String t2 = aItem.getSubType() ;
-
-            if ( ! t1.equalsIgnoreCase("application") || ! t2.equalsIgnoreCase("x-www-form-urlencoded") )
-            {
-                try {
-                    httpResponse.sendError(HttpServletResponse.SC_UNSUPPORTED_MEDIA_TYPE, "Must be application/x-www-form-urlencoded") ;
-                } catch (Exception ex) {}
-                return ;
-            }
+            try {
+                httpResponse.sendError(HttpServletResponse.SC_UNSUPPORTED_MEDIA_TYPE, "Must be application/x-www-form-urlencoded") ;
+            } catch (Exception ex) {}
+            return ;
         }
+
         doCommon(httpRequest, httpResponse) ;
     }
 

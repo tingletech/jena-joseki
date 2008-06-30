@@ -39,6 +39,15 @@ public class ServletUpdate extends Servlet
     
     protected Request setupRequest(String serviceURI, HttpServletRequest httpRequest) throws IOException
     {
+        if ( isHTMLForm(httpRequest) )
+        {
+            // It's an HTTP FORM
+            Request r =  super.setupRequest(serviceURI, httpRequest, Joseki.OP_UPDATE) ;
+            return r ;
+        }
+
+        // ------------------- 
+        // Not a form.
         // Verify charset here.
         String charEnc = httpRequest.getCharacterEncoding() ;
         Reader reader = null ;

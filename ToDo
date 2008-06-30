@@ -1,7 +1,7 @@
 Joseki3
 =======
 
-++ LARQ : per processor index.
+++ Check direct, not HTML form, POST of file.
 
 Add: robots control to forms:
     <META NAME="ROBOTS" CONTENT="NOINDEX">

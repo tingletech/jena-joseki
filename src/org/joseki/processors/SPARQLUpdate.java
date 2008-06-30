@@ -7,6 +7,7 @@
 package org.joseki.processors;
 
 import java.io.Reader;
+import java.io.StringReader;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -44,8 +45,12 @@ public class SPARQLUpdate extends ProcessorBase implements Loadable
             throw new QueryExecutionException(ReturnCodes.rcBadRequest, "Updates must use POST") ;
         log.info("SPARQL/Update Operation") ;
 
-        // Implementation goes here!
+        String x = request.getParam("request") ;
+
         Reader in = request.getStream() ;
+
+        if ( x != null )
+            in = new StringReader(x) ;
         if ( in == null )
             log.warn("Reader is null") ;
 
