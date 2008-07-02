@@ -174,7 +174,9 @@ public class SPARQL extends QueryCom implements Loadable
     {
         while ( ex != null )
         {
-            if ( ex.getClass().getName().equals("com.mysql.jdbc.CommunicationsException") )
+            String name = ex.getClass().getName() ;
+            if ( name.equals("com.mysql.jdbc.CommunicationsException") ||
+                 name.equals("com.mysql.jdbc.exceptions.jdbc4.CommunicationsException") )
                 return true ;
             ex = ex.getCause() ;
         }
