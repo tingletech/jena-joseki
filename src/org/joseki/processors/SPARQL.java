@@ -309,11 +309,17 @@ public class SPARQL extends QueryCom implements Loadable
     {
         if ( query.isSelectType() )
         {
-            // Force query execute now.
-            // Breaks streaming :-( but we need to know if the request succeeds or not 
-            // to cope with MySQL comms timeouts.
+            // Force some query execute now.
+            // To cope with MySQL comms timeouts.  Mutter, mutter.
             ResultSet rs = qexec.execSelect() ;
-            rs = ResultSetFactory.copyResults(rs) ;
+            
+            // Do this to force the query to do something that should touch any underlying database,
+            // and hence ensure the communications layer is working.  MySQL can time out after  
+            // 8 hours of an idle connection
+            rs.hasNext() ;
+            
+            // Old way - heavyweight
+            //rs = ResultSetFactory.copyResults(rs) ;
             response.setResultSet(rs) ;
             log.info("OK/select: "+queryStringLog) ;
             return ;
