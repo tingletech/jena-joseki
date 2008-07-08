@@ -7,6 +7,7 @@
 package org.joseki.processors;
 
 
+import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.shared.Lock;
 import com.hp.hpl.jena.shared.LockMutex;
 
@@ -26,11 +27,35 @@ public abstract class ProcessorBase implements Processor
             operationLock = datasetDesc.getDataset().getLock() ;
         
         String op = request.getParam(Joseki.OPERATION) ;
+        Model defaultModel = null ;
+        if ( datasetDesc.getDataset() != null )
+            defaultModel = datasetDesc.getDataset().getDefaultModel() ;
+        
+        // Transactions - if and only if there is a default model supporting transactions
+        
+        boolean transactions = ( defaultModel != null && defaultModel.supportsTransactions() ) ;
+        boolean needAbort = false ;     // Need to clear up?
+        
         
         operationLock.enterCriticalSection(Lock.READ) ;
+        if ( transactions )
+        {
+            defaultModel.begin();
+            needAbort = true ;
+        }
         try {
             execOperation(request, response, datasetDesc) ;
-        } finally { operationLock.leaveCriticalSection() ; }
+            if ( transactions )
+            {
+                defaultModel.commit();
+                needAbort = false ;
+            }
+        } finally
+        { 
+            if ( needAbort )
+                defaultModel.abort();
+            operationLock.leaveCriticalSection() ;
+        }
     }
 
     public void setLock(Lock lock)
