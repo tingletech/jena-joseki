@@ -1,33 +1,37 @@
 /*
- * (c) Copyright 2005, 2006, 2007, 2008 Hewlett-Packard Development Company, LP
+ * (c) Copyright 2008 Hewlett-Packard Development Company, LP
  * All rights reserved.
  * [See end of file]
  */
 
-package org.joseki.processors;
+package dev;
 
-import com.hp.hpl.jena.query.QueryExecution;
+import com.hp.hpl.jena.rdf.model.Resource;
+import com.hp.hpl.jena.sdb.SDB;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.joseki.ServerInitialization;
 
-import org.joseki.ResponseCallback;
-
-
-public class QueryExecutionClose implements ResponseCallback
+public class SDBInit implements ServerInitialization
 {
-    private QueryExecution qexec ;
+    private static Log log = LogFactory.getLog(SDBInit.class) ;
 
-    public QueryExecutionClose(QueryExecution qexec)
+    public void init(Resource service, Resource implementation)
     {
-        this.qexec = qexec ;
+        log.info("SDB custom initialisation: begin");
+        boolean stream = true;
+        log.info("Setting SDB.jdbcStream: "+stream);
+        SDB.getContext().set(SDB.jdbcStream, stream);
+        int fetch = 10;
+        log.info("Setting SDB.jdbcFetchSize: "+fetch);
+        SDB.getContext().set(SDB.jdbcFetchSize, Integer.toString(fetch));
+        log.info("SDB custom initialisation: end");
     }
-    
-    public void callback()
-    {
-        qexec.close() ;
-    }
+
 }
 
 /*
- * (c) Copyright 2005, 2006, 2007, 2008 Hewlett-Packard Development Company, LP
+ * (c) Copyright 2008 Hewlett-Packard Development Company, LP
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without

@@ -11,20 +11,25 @@ import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.shared.Lock;
 import com.hp.hpl.jena.shared.LockMutex;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.joseki.*;
 
 
 public abstract class ProcessorBase implements Processor
 {
+    private static final Log log = LogFactory.getLog(ProcessorBase.class) ; 
     Lock lock = new LockMutex() ;   // Default and safe choice
     
     /** Execute a operation, providing a lock */ 
     public void exec(Request request, Response response, DatasetDesc datasetDesc) throws ExecutionException
     {
-        Lock operationLock = lock ;
+        Lock thisLock = lock ;
         
         if ( datasetDesc != null && datasetDesc.getDataset() != null )
-            operationLock = datasetDesc.getDataset().getLock() ;
+            thisLock = datasetDesc.getDataset().getLock() ;
+        
+        final Lock operationLock = thisLock ;
         
         String op = request.getParam(Joseki.OPERATION) ;
         Model defaultModel = null ;
@@ -36,22 +41,35 @@ public abstract class ProcessorBase implements Processor
         boolean transactions = ( defaultModel != null && defaultModel.supportsTransactions() ) ;
         boolean needAbort = false ;     // Need to clear up?
         
-        
+        // Ad a callback to undo all done actions
         operationLock.enterCriticalSection(Lock.READ) ;
+        ResponseCallback cbLock = new ResponseCallback() {
+            public void callback()
+            {
+                log.debug("ResponseCallback: criticalSection") ;
+                operationLock.leaveCriticalSection() ;
+            }} ;
+        response.addCallback(cbLock) ;
+        
         if ( transactions )
         {
             defaultModel.begin();
             needAbort = true ;
+            final Model m = defaultModel ;
+            ResponseCallback cb = new ResponseCallback() {
+                public void callback()
+                {
+                    log.debug("ResponseCallback: transaction") ;
+                    m.commit();
+                }} ;
+            response.addCallback(cb) ;
         }
+
         try {
             execOperation(request, response, datasetDesc) ;
-            if ( transactions )
-            {
-                defaultModel.commit();
-                needAbort = false ;
-            }
-        } finally
-        { 
+        } catch (Exception ex)
+        {
+            // Looking bad - abort the transaction, release the lock.
             if ( needAbort )
                 defaultModel.abort();
             operationLock.leaveCriticalSection() ;

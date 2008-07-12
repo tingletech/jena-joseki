@@ -235,10 +235,6 @@ public class SPARQL extends QueryCom implements Loadable
             query = QueryFactory.create(queryString, Syntax.syntaxARQ) ;
         } catch (QueryException ex)
         {
-            // TODO Enable errors to be sent as body
-            //    response.setError(ExecutionError.rcQueryParseFailure)
-            //    OutputString out = response.getOutputStream() ;
-            //    out.write(something meaning full)
             String tmp = queryString +"\n\r" + ex.getMessage() ;
             throw new QueryExecutionException(ReturnCodes.rcQueryParseFailure, "Parse error: \n"+tmp) ;
         } catch (Throwable thrown)
@@ -287,9 +283,16 @@ public class SPARQL extends QueryCom implements Loadable
             // If using query description, ignore dataset
             dataset = null ;
         
-        QueryExecution qexec = getQueryExecution(query, dataset) ;
+        final QueryExecution qexec = getQueryExecution(query, dataset) ;
+        ResponseCallback cb = new ResponseCallback(){
+
+            public void callback()
+            { 
+                log.debug("ResponseCallback: close execution") ;
+                qexec.close(); 
+            }} ;
         
-        response.setCallback(new QueryExecutionClose(qexec)) ;
+        response.addCallback(cb) ;
         executeQuery(query, queryStringLog, qexec, response) ;
         
     }
@@ -386,13 +389,7 @@ public class SPARQL extends QueryCom implements Loadable
                 return null ;
             
             DataSource dataset = null ;
-            
-            // TODO Refactor: get names and call DatasetUtils.createDatasetGraph
-//          if ( graphURL != null && request.getBaseURI() != null )
-//          graphURL = RelURI.resolve(graphURL, request.getBaseURI()) ;
-            
             // Look in cache for loaded graphs!!
-            
             if ( graphURLs != null )
             {
                 if ( dataset == null )

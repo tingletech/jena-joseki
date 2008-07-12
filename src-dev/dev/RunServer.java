@@ -17,7 +17,7 @@ public class RunServer
     {
         RunUtils.setLog4j() ;
         
-        String[] a = new String[]{"joseki-config.ttl"} ;
+        String[] a = new String[]{"joseki-config-dev.ttl"} ;
         //String[] a = args ;
         runJosekiServer(a) ; System.exit(0) ;
         //AxisServer.main(args) ; System.exit(0) ;
@@ -26,7 +26,7 @@ public class RunServer
     public static void runJosekiServer(String[] args) 
     {
         if ( args == null || args.length == 0 )
-            args = new String[]{"joseki-config-test.ttl"} ;
+            args = new String[]{"joseki-config-dev.ttl"} ;
 
         rdfserver.main(args) ;
         

@@ -6,6 +6,10 @@
 
 package org.joseki;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -17,7 +21,8 @@ abstract public class Response
 {
     private static Log log = LogFactory.getLog(Response.class) ;
 
-    private ResponseCallback callback = null ;
+    //private ResponseCallback callback = null ;
+    private List callbacks = new ArrayList() ;
     
     private Model responseModel = null ;
     private ResultSet responseResultSet = null ;
@@ -30,8 +35,11 @@ abstract public class Response
     protected Response(Request request)
     { this.request = request ; }
     
-    public void setCallback(ResponseCallback callback)
-    { this.callback = callback ; }
+    public void addCallback(ResponseCallback callback)
+    { 
+        // Add at front - called in reverse order added (nesting)
+        callbacks.add(0, callback) ;
+    }
     
     public void setModel(Model model) throws QueryExecutionException
     { checkState() ; this.responseModel = model ; }
@@ -88,8 +96,11 @@ abstract public class Response
         responseResultSet = null ;
         responseBoolean = null ;
         
-        if( callback != null )
+        for ( Iterator iter = callbacks.iterator() ; iter.hasNext(); )
+        {
+            ResponseCallback callback = (ResponseCallback) iter.next();
             callback.callback() ;
+        }
         return ;
     }
     
