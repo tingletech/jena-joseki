@@ -60,7 +60,8 @@ public abstract class ProcessorBase implements Processor
                 public void callback()
                 {
                     log.debug("ResponseCallback: transaction") ;
-                    try { m.commit(); } catch (Exception ex) {}
+                    try { m.commit(); }
+                    catch (Exception ex) { log.info("Exception on commit: "+ex.getMessage()) ; }
                 }} ;
             response.addCallback(cb) ;
         }
