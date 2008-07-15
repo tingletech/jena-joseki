@@ -1,6 +1,8 @@
 Joseki3
 =======
 
++ Apache DBCP for connection management for SDB
+
 ++ Check direct, not HTML form, POST of file.
 
 Add: robots control to forms:
