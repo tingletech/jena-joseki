@@ -33,7 +33,7 @@ public abstract class ProcessorBase implements Processor
         
         String op = request.getParam(Joseki.OPERATION) ;
         Model defaultModel = null ;
-        if ( datasetDesc.getDataset() != null )
+        if ( datasetDesc != null && datasetDesc.getDataset() != null )
             defaultModel = datasetDesc.getDataset().getDefaultModel() ;
         
         // Transactions - if and only if there is a default model supporting transactions
