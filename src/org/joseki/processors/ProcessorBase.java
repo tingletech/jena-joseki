@@ -8,6 +8,8 @@ package org.joseki.processors;
 
 
 import com.hp.hpl.jena.rdf.model.Model;
+
+import com.hp.hpl.jena.shared.JenaException;
 import com.hp.hpl.jena.shared.Lock;
 import com.hp.hpl.jena.shared.LockMutex;
 
@@ -68,13 +70,25 @@ public abstract class ProcessorBase implements Processor
 
         try {
             execOperation(request, response, datasetDesc) ;
-        } catch (Exception ex)
+        } catch (ExecutionException ex)
         {
             // Looking bad - abort the transaction, release the lock.
             if ( needAbort )
                 defaultModel.abort();
             operationLock.leaveCriticalSection() ;
+            throw ex ; 
         }
+        // These shoudl have been caught.
+        catch (JenaException ex)
+        {
+            // Looking bad - abort the transaction, release the lock.
+            if ( needAbort )
+                defaultModel.abort();
+            operationLock.leaveCriticalSection() ;
+            log.warn("Internal error - unexpected exception: ", ex) ;
+            throw ex ; 
+        }
+        
     }
 
     public void setLock(Lock lock)

@@ -13,6 +13,8 @@ import org.joseki.graph.LimitingGraph;
 
 import com.hp.hpl.jena.graph.Factory;
 import com.hp.hpl.jena.graph.Graph;
+import com.hp.hpl.jena.shared.NotFoundException;
+
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
 import com.hp.hpl.jena.rdf.model.RDFReader;
@@ -87,6 +89,9 @@ public class GraphUtils
         RDFReader r = m.getReader(syntax) ;
         r.setErrorHandler(new GraphErrorHandler()) ;
         InputStream in = FileManager.get().open(uri) ;
+        if ( in == null )
+            // Not found.
+            throw new NotFoundException("Not found: "+uri) ;
         r.read(m, in, uri) ;
         return m ;
     }
