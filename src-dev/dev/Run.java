@@ -14,6 +14,30 @@ public class Run
 {
     public static void main(String[] argv)
     {
+//        // DataSource?
+//        /*
+//         *  Connection  getConnection()
+//         *  Connection  getConnection(String username, String password) 
+//         */
+//        ConnectionFactory connFactory =  new DriverManagerConnectionFactory("jdbc:", "user", "password") ;
+//        if ( false )
+//        {
+//            DataSource ds = null ;
+//            connFactory = new DataSourceConnectionFactory(ds) ;
+//        }
+//        
+//        ObjectPool connectionPool = new GenericObjectPool(null, 10);
+//        PoolableConnectionFactory pcf = new PoolableConnectionFactory(connFactory,
+//                                                                      connectionPool,
+//                                                                      null,
+//                                                                      null,
+//                                                                      false,
+//                                                                      true) ;
+//        System.exit(0) ;
+        
+
+        
+        
         if ( false )
         {
             AcceptItem a = new AcceptItem("foo/bar;charset=bar") ;
