@@ -30,14 +30,13 @@
 
 ## Initialize TDB.
 [] ja:loadClass "com.hp.hpl.jena.tdb.TDB" .
-tdb:GraphTDB rdfs:subClassOf ja:Model .
 
 <#dataset> rdf:type         ja:RDFDataset ;
     ja:defaultGraph <#graph> ;
     . 
 
 <#graph> rdf:type tdb:GraphTDB ;
-    tdb:location "tmp" ;
+    tdb:location "DB" ;
     .
 
 ## --------------------------------------------------------------
