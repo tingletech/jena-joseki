@@ -18,7 +18,7 @@ import com.hp.hpl.jena.shared.* ;
  * Understands the RDF properties for naming and initializing a new instance. 
  * 
  * @author  Andy Seaborne
- * @version $Id: Loader.java,v 1.5 2008-01-02 12:24:55 andy_seaborne Exp $
+ * @version $Id: Loader.java,v 1.6 2008-08-05 16:30:30 andy_seaborne Exp $
  */
 
 public class Loader
@@ -119,15 +119,10 @@ public class Loader
     
     static private ClassLoader chooseClassLoader()
     {
-        ClassLoader classLoader = null ;
+        ClassLoader classLoader = Thread.currentThread().getContextClassLoader(); ;
     
-        if ( classLoader == null )
-        {
-            // Find our classloader - one that uses the /WEB-INF/lib and classes directory.
-            classLoader = Thread.currentThread().getContextClassLoader();
-            if ( classLoader != null )
-                log.trace("Using thread classloader") ;
-        }
+        if ( classLoader != null )
+        	log.trace("Using thread classloader") ;
         
 //        if (classLoader == null)
 //        {

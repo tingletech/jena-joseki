@@ -83,7 +83,6 @@ public class ResponseHttp extends Response
     protected void doResponseModel(Model model) throws QueryExecutionException
     {
         String mimeType = null ;        // Header request type 
-        String writerMimeType = null ;  // Write for the request
         String charset = null ;
         
         // Return text/plain if it looks like a browser.
@@ -101,25 +100,17 @@ public class ResponseHttp extends Response
 //            log.debug("MIME type (text-like): "+writerMimeType) ;
 //        }
         
-        if ( mimeType == null )
-        {
-            AcceptItem i = HttpUtils.chooseContentType(httpRequest, prefContentType, defaultContentType) ;
-            if ( i != null )
-                mimeType = i.getAcceptType() ;
-        }
-  
-        if ( charset == null )
-        {
-            AcceptItem i = HttpUtils.chooseCharset(httpRequest,  prefCharset, defaultCharset) ;
-            if ( i != null )
-                charset = i.getAcceptType() ;
-        }
+        AcceptItem i = HttpUtils.chooseContentType(httpRequest, prefContentType, defaultContentType) ;
+        if ( i != null )
+        	mimeType = i.getAcceptType() ;
+        AcceptItem i2 = HttpUtils.chooseCharset(httpRequest,  prefCharset, defaultCharset) ;
+        if ( i2 != null )
+        	charset = i.getAcceptType() ;
         
-        if ( writerMimeType == null )
-            writerMimeType = mimeType ;
+        String writerMimeType = mimeType ;
         
         // If the requets is for test/plain, send N3 (sanity - avoid N-triples) 
-        if ( mimeType.equals(Joseki.contentTypeTextPlain) )
+        if ( mimeType != null && mimeType.equals(Joseki.contentTypeTextPlain) )
             // text/plain => text/rdf+n3
             writerMimeType = Joseki.contentTypeN3 ;
         

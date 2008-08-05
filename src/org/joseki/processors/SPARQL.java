@@ -388,46 +388,42 @@ public class SPARQL extends QueryCom implements Loadable
             if ( graphURLs.size() == 0 && namedGraphs.size() == 0 )
                 return null ;
             
-            DataSource dataset = null ;
+            DataSource dataset = DatasetFactory.create() ;
             // Look in cache for loaded graphs!!
-            if ( graphURLs != null )
+
+            // ---- Default graph
             {
-                if ( dataset == null )
-                    dataset = DatasetFactory.create() ;
-                
-                Model model = ModelFactory.createDefaultModel() ;
-                for ( Iterator iter = graphURLs.iterator() ; iter.hasNext() ; )
-                {
-                    String uri = (String)iter.next() ;
-                    if ( uri == null )
-                    {
-                        log.warn("Null "+P_DEFAULT_GRAPH+ " (ignored)") ;
-                        continue ;
-                    }
-                    if ( uri.equals("") )
-                    {
-                        log.warn("Empty "+P_DEFAULT_GRAPH+ " (ignored)") ;
-                        continue ;
-                    }
-                
-                    try {
-                        GraphUtils.loadModel(model, uri, maxTriples) ;
-                        log.info("Load (default) "+uri) ;
-                    } catch (Exception ex)
-                    {
-                        log.info("Failed to load (default) "+uri+" : "+ex.getMessage()) ;
-                        throw new QueryExecutionException(
-                                                          ReturnCodes.rcArgumentUnreadable,
-                                                          "Failed to load URL "+uri) ;
-                    }
-                }
-                dataset.setDefaultModel(model) ;
+            	Model model = ModelFactory.createDefaultModel() ;
+            	for ( Iterator iter = graphURLs.iterator() ; iter.hasNext() ; )
+            	{
+            		String uri = (String)iter.next() ;
+            		if ( uri == null )
+            		{
+            			log.warn("Null "+P_DEFAULT_GRAPH+ " (ignored)") ;
+            			continue ;
+            		}
+            		if ( uri.equals("") )
+            		{
+            			log.warn("Empty "+P_DEFAULT_GRAPH+ " (ignored)") ;
+            			continue ;
+            		}
+
+            		try {
+            			GraphUtils.loadModel(model, uri, maxTriples) ;
+            			log.info("Load (default) "+uri) ;
+            		} catch (Exception ex)
+            		{
+            			log.info("Failed to load (default) "+uri+" : "+ex.getMessage()) ;
+            			throw new QueryExecutionException(
+            					ReturnCodes.rcArgumentUnreadable,
+            					"Failed to load URL "+uri) ;
+            		}
+            	}
+            	dataset.setDefaultModel(model) ;
             }
-            
+            // ---- Named graphs
             if ( namedGraphs != null )
             {
-                if ( dataset == null )
-                    dataset = DatasetFactory.create() ;
                 for ( Iterator iter = namedGraphs.iterator() ; iter.hasNext() ; )
                 {
                     String uri = (String)iter.next() ;
@@ -442,9 +438,9 @@ public class SPARQL extends QueryCom implements Loadable
                         continue ;
                     }
                     try {
-                        Model model = fileManager.loadModel(uri) ;
+                        Model model2 = fileManager.loadModel(uri) ;
                         log.info("Load (named) "+uri) ;
-                        dataset.addNamedModel(uri, model) ;
+                        dataset.addNamedModel(uri, model2) ;
                     } catch (Exception ex)
                     {
                         log.info("Failer to load (named) "+uri+" : "+ex.getMessage()) ;
