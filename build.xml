@@ -5,8 +5,8 @@
 
     <!-- The major and minor version numbers  -->
     <property name="version-major"   value="3"/>
-    <property name="version-minor"   value="3"/>
-    <property name="version-status"  value="-dev"/>
+    <property name="version-minor"   value="2"/>
+    <property name="version-status"  value=""/>
     <property name="version"
          value="${version-major}.${version-minor}${version-status}"/>
 
@@ -285,6 +285,7 @@
         <copy todir="${dist.dir}" file="joseki-config-example.ttl"/>
         <copy todir="${dist.dir}" file="joseki-config-sdb.ttl"/>
         <copy todir="${dist.dir}" file="sdb.ttl"/>
+        <copy todir="${dist.dir}" file="joseki-config-tdb.ttl"/>
 
         <copy todir="${dist.dir}/bin">
           <fileset dir="bin" excludes="*.~" />
