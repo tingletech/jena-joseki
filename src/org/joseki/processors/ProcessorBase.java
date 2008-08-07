@@ -34,6 +34,10 @@ public abstract class ProcessorBase implements Processor
         final Lock operationLock = thisLock ;
         
         String op = request.getParam(Joseki.OPERATION) ;
+        boolean lockType = Lock.READ ;
+        if ( op.equals(Joseki.OP_UPDATE) )
+            lockType = Lock.WRITE ;
+        
         Model defaultModel = null ;
         if ( datasetDesc != null && datasetDesc.getDataset() != null )
             defaultModel = datasetDesc.getDataset().getDefaultModel() ;
@@ -43,8 +47,8 @@ public abstract class ProcessorBase implements Processor
         boolean transactions = ( defaultModel != null && defaultModel.supportsTransactions() ) ;
         boolean needAbort = false ;     // Need to clear up?
         
-        // Ad a callback to undo all done actions
-        operationLock.enterCriticalSection(Lock.READ) ;
+        // Add a callback to undo all done actions
+        operationLock.enterCriticalSection(lockType) ;
         ResponseCallback cbLock = new ResponseCallback() {
             public void callback()
             {
