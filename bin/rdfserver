@@ -5,7 +5,7 @@
 [ "$JOSEKIROOT" = "" ] && { echo "JOSEKIROOT unset" 1>&2 ; exit 1 ; }
 
 # Make sure all the scripts are on the PATH
-CP="$(joseki_path)"
+CP="$($JOSEKIROOT/bin/joseki_path)"
 
 ## ============= java logging
 ## ## If you use Java.util.logging ...
