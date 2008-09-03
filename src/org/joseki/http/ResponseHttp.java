@@ -248,7 +248,11 @@ public class ResponseHttp extends Response
                 log.info("Query execution error (SELECT/XML): "+qEx) ;
                 throw new QueryExecutionException(ReturnCodes.rcQueryExecutionFailure, qEx.getMessage()) ;
             }
-            catch (IOException ioEx) { log.warn("IOException(ignored) "+ioEx, ioEx) ; }
+            catch (IOException ioEx)
+            { 
+                if ( ! (ioEx instanceof java.io.EOFException ) )
+                  log.warn("IOException (not EOF) (ignored) "+ioEx, ioEx) ;
+            } 
             return ;
         }
         
