@@ -224,15 +224,17 @@ public class ResponseHttp extends Response
             contentType = Joseki.contentTypeResultsJSON ;
         }
         
-        // ---- Form: XML
-        if ( serializationType.equals(Joseki.contentTypeResultsXML) )
-        {
-            final String stylesheetURL = paramStylesheet() ;
-            if ( stylesheetURL != null )
-                contentType = Joseki.contentTypeXML ; 
+        try { // I/O related exceptions (includes all sorts things like NIO errors).
 
-            try {
-                output(contentType, null, new OutputContent()
+            // ---- Form: XML
+            if ( serializationType.equals(Joseki.contentTypeResultsXML) )
+            {
+                final String stylesheetURL = paramStylesheet() ;
+                if ( stylesheetURL != null )
+                    contentType = Joseki.contentTypeXML ; 
+
+                try {
+                    output(contentType, null, new OutputContent()
                     {
                         public void output(ServletOutputStream out)
                         {
@@ -242,45 +244,51 @@ public class ResponseHttp extends Response
                                 ResultSetFormatter.outputAsXML(out, booleanResult.booleanValue(), stylesheetURL) ;
                         }
                     }) ;
+                }
+                catch (QueryException qEx)
+                {
+                    log.info("Query execution error (SELECT/XML): "+qEx) ;
+                    throw new QueryExecutionException(ReturnCodes.rcQueryExecutionFailure, qEx.getMessage()) ;
+                }
+                return ;
             }
-            catch (QueryException qEx)
-            {
-                log.info("Query execution error (SELECT/XML): "+qEx) ;
-                throw new QueryExecutionException(ReturnCodes.rcQueryExecutionFailure, qEx.getMessage()) ;
-            }
-            catch (IOException ioEx)
-            { 
-                if ( ! (ioEx instanceof java.io.EOFException ) )
-                  log.warn("IOException (not EOF) (ignored) "+ioEx, ioEx) ;
-            } 
-            return ;
-        }
-        
-        // ---- Form: JSON
-        if ( serializationType.equals(Joseki.contentTypeResultsJSON) )
-        {
-            try {
-                if ( outputField != null && outputField.equals(Joseki.contentOutputJSON) )
-                    contentType = Joseki.contentTypeTextPlain ;
 
-                jsonOutput(contentType, new OutputContent(){
-                    public void output(ServletOutputStream out)
-                    {
-                        if ( resultSet != null )
-                            ResultSetFormatter.outputAsJSON(out, resultSet) ;
-                        if (  booleanResult != null )
-                            ResultSetFormatter.outputAsJSON(out, booleanResult.booleanValue()) ;
-                    }
-                }) ;
-            }
-            catch (QueryException qEx)
+            // ---- Form: JSON
+            if ( serializationType.equals(Joseki.contentTypeResultsJSON) )
             {
-                log.info("Query execution error (SELECT/JSON): "+qEx) ;
-                throw new QueryExecutionException(ReturnCodes.rcQueryExecutionFailure, qEx.getMessage()) ;
+                try {
+                    if ( outputField != null && outputField.equals(Joseki.contentOutputJSON) )
+                        contentType = Joseki.contentTypeTextPlain ;
+
+                    jsonOutput(contentType, new OutputContent(){
+                        public void output(ServletOutputStream out)
+                        {
+                            if ( resultSet != null )
+                                ResultSetFormatter.outputAsJSON(out, resultSet) ;
+                            if (  booleanResult != null )
+                                ResultSetFormatter.outputAsJSON(out, booleanResult.booleanValue()) ;
+                        }
+                    }) ;
+                }
+                catch (QueryException qEx)
+                {
+                    log.info("Query execution error (SELECT/JSON): "+qEx) ;
+                    throw new QueryExecutionException(ReturnCodes.rcQueryExecutionFailure, qEx.getMessage()) ;
+                }
+                return ;
             }
-            catch (IOException ioEx) { log.warn("IOException(ignored) "+ioEx, ioEx) ; }
+        }
+        catch (org.mortbay.jetty.EofException eofEx) { return ; }
+        catch (IOException ioEx)
+        {
+            if ( ! ( ioEx instanceof java.io.EOFException ) )
+                log.warn("IOException(ignored) "+ioEx, ioEx) ;
+            else
+                log.debug("IOException(ignored) "+ioEx, ioEx) ;
             return ;
         }
+        // This catches things like NIO exceptions.
+        catch (Exception ex) { log.debug("Exception "+ex, ex) ; return ; } 
         
         // Not JSON.  Not XML.  Send as a model.
         Model m = null ;
