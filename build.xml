@@ -4,11 +4,13 @@
     <property name="name"            value="joseki"/>
 
     <!-- The major and minor version numbers  -->
-    <property name="version-major"   value="3"/>
-    <property name="version-minor"   value="2.2"/>
-    <property name="version-status"  value=""/>
-    <property name="version"
-         value="${version-major}.${version-minor}${version-status}"/>
+	
+    <property name="version-major"     value="3"/>
+    <property name="version-minor"     value="2"/>
+	<property name="version-revision"  value="1"/>
+  	<property name="version-status"    value=""/>
+  	<property name="version"
+  	            value="${version-major}.${version-minor}.${version-revision}${version-status}"/>
 
     <property name="dist.name"       value="${name}-${version}"/>
     <property name="dist.path"       value="${Name}-${version}"/>
