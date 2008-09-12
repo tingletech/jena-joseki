@@ -15,7 +15,7 @@ import org.joseki.util.Convert;
 /** org.joseki.server.http.HttpUtils
  * 
  * @author Andy Seaborne
- * @version $Id: HttpUtils.java,v 1.5 2008-01-02 12:24:53 andy_seaborne Exp $
+ * @version $Id: HttpUtils.java,v 1.6 2008-09-12 17:07:20 andy_seaborne Exp $
  */
 
 public class HttpUtils
@@ -61,8 +61,8 @@ public class HttpUtils
         return item ;
     }
         
-    static AcceptItem choose(String headerString, AcceptList myPrefs,
-                             AcceptItem defaultAcceptItem)
+    public static AcceptItem choose(String headerString, AcceptList myPrefs,
+                                    AcceptItem defaultAcceptItem)
     {
         if ( headerString == null )
             return defaultAcceptItem ;

@@ -86,7 +86,7 @@ public class ResponseHttp extends Response
         String charset = null ;
         
         // Return text/plain if it looks like a browser.
-        String acceptHeader = httpRequest.getHeader(headerAccept) ;
+        String acceptHeader = paramAcceptField() ;
         if ( acceptHeader == null )
             acceptHeader = Joseki.contentTypeRDFXML ;
         
@@ -100,13 +100,26 @@ public class ResponseHttp extends Response
 //            log.debug("MIME type (text-like): "+writerMimeType) ;
 //        }
         
-        AcceptItem i = HttpUtils.chooseContentType(httpRequest, prefContentType, defaultContentType) ;
+//     // ---- Choose the content type and serialization.
+//        if ( HttpUtils.accept(acceptField, Joseki.contentTypeXML) ||  
+//             HttpUtils.accept(acceptField, Joseki.contentTypeResultsXML) )
+//            contentType = Joseki.contentTypeResultsXML ;
+//        
+//        if ( acceptField.equalsIgnoreCase(Joseki.contentTypeResultsJSON) )
+//            contentType = Joseki.contentTypeResultsJSON ;
+        
+        
+        AcceptItem i = HttpUtils.choose(acceptHeader, prefContentType, defaultContentType) ;
         if ( i != null )
         	mimeType = i.getAcceptType() ;
-        AcceptItem i2 = HttpUtils.chooseCharset(httpRequest,  prefCharset, defaultCharset) ;
-        if ( i2 != null )
-        	charset = i.getAcceptType() ;
         
+        // Ignore charset unless RDF/XML
+        if (  mimeType != null && mimeType.equals(Joseki.contentTypeRDFXML) )
+        {
+            AcceptItem i2 = HttpUtils.chooseCharset(httpRequest,  prefCharset, defaultCharset) ;
+            if ( i2 != null )
+            	charset = i.getAcceptType() ;
+        }
         String writerMimeType = mimeType ;
         
         // If the requets is for test/plain, send N3 (sanity - avoid N-triples) 
@@ -114,7 +127,7 @@ public class ResponseHttp extends Response
             // text/plain => text/rdf+n3
             writerMimeType = Joseki.contentTypeN3 ;
         
-        if ( mimeType == null || charset == null )
+        if ( mimeType == null )
         {
             try
             {

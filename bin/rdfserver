@@ -35,4 +35,7 @@ then
     JAVA="$JAVA_HOME/bin/java"
     fi
 
-exec "$JAVA" -cp "$CP" $LOG joseki.rdfserver "$@"
+#JAVA_ARGS="-server" 
+JAVA_ARGS="-server -Xmx1G" 
+
+exec "$JAVA" $JAVA_ARGS-cp "$CP" $LOG joseki.rdfserver "$@"

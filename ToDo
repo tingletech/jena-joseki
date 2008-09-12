@@ -1,7 +1,8 @@
 Joseki3
 =======
 
-+ Apache DBCP for connection management for SDB
++ ??? Apache DBCP for connection management for SDB
++ Some sort of pooling.
 
 ++ Check direct, not HTML form, POST of file.
 
