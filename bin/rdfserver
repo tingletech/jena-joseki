@@ -38,4 +38,4 @@ then
 #JAVA_ARGS="-server" 
 JAVA_ARGS="-server -Xmx1G" 
 
-exec "$JAVA" $JAVA_ARGS-cp "$CP" $LOG joseki.rdfserver "$@"
+exec "$JAVA" $JAVA_ARGS -cp "$CP" $LOG joseki.rdfserver "$@"
