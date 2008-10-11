@@ -74,7 +74,6 @@ public class SPARQL extends QueryCom implements Loadable
             log.info("Locking policy not declared - default to mutex") ;
             setLock(new LockMutex()) ;
         }
-
         
         if ( service.hasProperty(JosekiVocab.lockingPolicy) )
         {

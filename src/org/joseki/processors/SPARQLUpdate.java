@@ -35,8 +35,6 @@ public class SPARQLUpdate extends ProcessorBase implements Loadable
     public void init(Resource service, Resource implementation)
     {}
 
-    // For now - just a static that is called in the "query" procoessing flow.
-    
     public void execOperation(Request request, Response response, DatasetDesc datasetDesc)
     throws QueryExecutionException
     {

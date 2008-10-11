@@ -82,7 +82,7 @@ public abstract class ProcessorBase implements Processor
             operationLock.leaveCriticalSection() ;
             throw ex ; 
         }
-        // These shoudl have been caught.
+        // These should have been caught.
         catch (JenaException ex)
         {
             // Looking bad - abort the transaction, release the lock.
@@ -100,7 +100,7 @@ public abstract class ProcessorBase implements Processor
         this.lock = lock ;
     }
     
-    /** Execute an operation within a lock */ 
+    /** Execute an operation within a lock and/or a transaction (on the default model) */ 
     public abstract void execOperation(Request request, Response response, DatasetDesc datasetDesc)
     throws ExecutionException ;
 }
