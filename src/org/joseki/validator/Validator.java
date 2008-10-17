@@ -203,7 +203,7 @@ public class Validator extends HttpServlet
             if ( query != null && outputQuads )
             {
                 outStream.println("<p>Quad structure:</p>") ;
-                final Op op = Algebra.toQuadForm(Algebra.compile(query, false)) ;   // No optimization
+                final Op op = Algebra.toQuadForm(Algebra.compile(query, false)) ;
                 final SerializationContext sCxt = new SerializationContext(query) ;
                 Content c = new Content(){
                     public void print(IndentedWriter out)
