@@ -21,7 +21,7 @@ import org.joseki.ReturnCodes;
 import org.joseki.module.Loadable;
 
 import com.hp.hpl.jena.rdf.model.Resource;
-import com.hp.hpl.jena.sparql.modify.lang.ParserSPARQLUpdate;
+import com.hp.hpl.jena.sparql.lang.ParserSPARQLUpdate;
 import com.hp.hpl.jena.update.GraphStore;
 import com.hp.hpl.jena.update.GraphStoreFactory;
 import com.hp.hpl.jena.update.UpdateFactory;
@@ -42,7 +42,14 @@ public class SPARQLUpdate extends ProcessorBase implements Loadable
             // Because nasty things happen otherwise.
             throw new QueryExecutionException(ReturnCodes.rcBadRequest, "Updates must use POST") ;
         log.info("SPARQL/Update Operation") ;
-
+        // Is it a form or is it a plain SPARQL/Update?
+        // Touching the form causes the body to be processed. 
+        
+//        for ( Iterator iter= request.parameterNames() ; iter.hasNext(); )
+//        {
+//            System.out.println(iter.next()) ;
+//        }
+        
         String x = request.getParam("request") ;
 
         Reader in = request.getStream() ;
@@ -50,7 +57,11 @@ public class SPARQLUpdate extends ProcessorBase implements Loadable
         if ( x != null )
             in = new StringReader(x) ;
         if ( in == null )
-            log.warn("Reader is null") ;
+        {
+            ExecutionException execEx = new ExecutionException(ReturnCodes.rcArgumentError, "Bad update request") ;
+            response.sendException(execEx) ;
+            return ;
+        }
 
         // Parsing with a Reader.  Normally discouraged because of charset issues 
         // Hence no UpdateFactory operations and a need to go direct.

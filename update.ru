@@ -1,8 +1,6 @@
 PREFIX : <http://example/>
 
-INSERT
-{ 
-  :x :p :q .
-  :x2 :p :q 
-}
+INSERT DATA { :x :p :v }
 
+INSERT { ?x :p [ :p 1 ] . }
+WHERE { ?x :p :v }

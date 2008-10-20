@@ -1,0 +1,5 @@
+#!/bin/bash
+
+export  http_proxy=
+wget -O - --post-data="request=$(cat update.ru)"  'http://localhost:2020/update/service'
+wget -O - 'http://localhost:2020/sparql/read?query=SELECT * { ?s ?p ?o}'

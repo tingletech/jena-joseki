@@ -81,29 +81,29 @@
 ## be routed to this servlet.
 
 
-## <#serviceUdpate>
-##     rdf:type            joseki:Service ;
-##     rdfs:label          "SPARQL/Update" ;
-##     joseki:serviceRef   "update/service" ;
-##     # dataset part
-##     joseki:dataset      <#mem>;
-##     # Service part.
-##     # This processor will not allow either the protocol,
-##     # nor the query, to specify the dataset.
-##     joseki:processor    joseki:ProcessorSPARQLUpdate
-##     .
-## 
-## <#serviceRead>
-##     rdf:type            joseki:Service ;
-##     rdfs:label          "SPARQL" ;
-##     joseki:serviceRef   "sparql/read" ;
-##     # dataset part
-##     joseki:dataset      <#mem> ;     ## Same dataset
-##     # Service part.
-##     # This processor will not allow either the protocol,
-##     # nor the query, to specify the dataset.
-##     joseki:processor    joseki:ProcessorSPARQL_FixedDS ;
-##     .
+<#serviceUpdate>
+    rdf:type            joseki:Service ;
+    rdfs:label          "SPARQL/Update" ;
+    joseki:serviceRef   "update/service" ;
+    # dataset part
+    joseki:dataset      <#mem>;
+    # Service part.
+    # This processor will not allow either the protocol,
+    # nor the query, to specify the dataset.
+    joseki:processor    joseki:ProcessorSPARQLUpdate
+    .
+
+<#serviceRead>
+    rdf:type            joseki:Service ;
+    rdfs:label          "SPARQL" ;
+    joseki:serviceRef   "sparql/read" ;
+    # dataset part
+    joseki:dataset      <#mem> ;     ## Same dataset
+    # Service part.
+    # This processor will not allow either the protocol,
+    # nor the query, to specify the dataset.
+    joseki:processor    joseki:ProcessorSPARQL_FixedDS ;
+    .
 
 ## --------------------------------------------------------------
 ## Datasets
