@@ -143,7 +143,6 @@
         [ ja:graphName      <http://example.org/name2> ;
           ja:graph          <#model2>
         ] ;
-    ## Short versions?
     .
 
 # A dataset of one model as the default graph, data loaded from a file.
