@@ -27,11 +27,13 @@ public class DumpServlet extends HttpServlet
 
     }
 
+    @Override
     public void init()
     {
         return ;
     }
 
+    @Override
     public void doGet(HttpServletRequest req, HttpServletResponse resp)
     {
         try {
@@ -129,22 +131,27 @@ public class DumpServlet extends HttpServlet
                     }
                 }
             }
-            // To do: create a string for the output so can send to console and return it.
-            Enumeration en = req.getHeaderNames() ;
-
-            for ( ; en.hasMoreElements() ; )
+            
             {
-                String name = (String)en.nextElement() ;
-                String value = req.getHeader(name) ;
-                pw.println("Head: "+name + " = " + value) ;
+                // To do: create a string for the output so can send to console and return it.
+                @SuppressWarnings("unchecked")
+                Enumeration<String> en = (Enumeration<String>)req.getHeaderNames() ;
+
+                for ( ; en.hasMoreElements() ; )
+                {
+                    String name = en.nextElement() ;
+                    String value = req.getHeader(name) ;
+                    pw.println("Head: "+name + " = " + value) ;
+                }
             }
-
-            en = req.getAttributeNames() ;
-            if ( en.hasMoreElements() )
+            
+            @SuppressWarnings("unchecked")
+            Enumeration<String> en2 = (Enumeration<String>)req.getAttributeNames() ;
+            if ( en2.hasMoreElements() )
                 pw.println();
-            for ( ; en.hasMoreElements() ; )
+            for ( ; en2.hasMoreElements() ; )
             {
-                String name = (String)en.nextElement() ;
+                String name = en2.nextElement() ;
                 String value = req.getAttribute(name).toString() ;
                 pw.println("Attr: "+name + " = " + value) ;
             }
@@ -193,12 +200,13 @@ public class DumpServlet extends HttpServlet
                 }
             }
             
-            en = req.getLocales();
+            @SuppressWarnings("unchecked")
+            Enumeration<Locale> en = (Enumeration<Locale>)req.getLocales() ;
             if ( en.hasMoreElements() )
                 pw.println();
             for ( ; en.hasMoreElements() ; )
             {
-                String name = ((Locale)en.nextElement()).toString() ;
+                String name = en.nextElement().toString() ;
                 pw.println("Locale: "+name) ;
             }
 
@@ -245,10 +253,10 @@ the value has
         Properties properties = System.getProperties();
         StringWriter sw = new StringWriter() ;
         PrintWriter pw = new PrintWriter(sw) ;
-        Enumeration en = properties.keys();
+        Enumeration<Object> en = properties.keys();
         while(en.hasMoreElements())
         {
-            String key = (String)en.nextElement();
+            String key = en.toString();
             pw.println(key+": '"+properties.getProperty(key)+"'");
         }
         pw.println() ;
@@ -273,8 +281,8 @@ the value has
         pw.println("servletInfo:  '"+getServletInfo()+"'");
         pw.println("serverInfo:  '"+sc.getServerInfo()+"'");
 
-        Enumeration en = null ;
-        // Deprecated and will be removed - from Servlet API 2.0
+//        Enumeration en = null ;
+//         // Deprecated and will be removed - from Servlet API 2.0
 //        eneration en = sc.getServlets();
 //        if (en != null) {
 //            pw.println("servlets: ");
@@ -288,22 +296,30 @@ the value has
 //                }
 //            }
 //        }
-        en = sc.getInitParameterNames();
-        if (en != null) {
-            pw.println("initParameters: ");
-            while(en.hasMoreElements())
-            {
-                String key = (String)en.nextElement();
-                pw.println(key+": '"+sc.getInitParameter(key)+"'");
+        
+        {
+            @SuppressWarnings("unchecked")
+            Enumeration<String> en = (Enumeration<String>)sc.getInitParameterNames();
+            if (en != null) {
+                pw.println("initParameters: ");
+                while(en.hasMoreElements())
+                {
+                    String key = en.nextElement();
+                    pw.println(key+": '"+sc.getInitParameter(key)+"'");
+                }
             }
         }
-        en = sc.getAttributeNames();
-        if (en != null) {
-            pw.println("attributes: ");
-            while(en.hasMoreElements())
-            {
-                String key = (String)en.nextElement();
-                pw.println(key+": '"+sc.getAttribute(key)+"'");
+        
+        {
+            @SuppressWarnings("unchecked")
+            Enumeration<String> en = (Enumeration<String>)sc.getAttributeNames();
+            if (en != null) {
+                pw.println("attributes: ");
+                while(en.hasMoreElements())
+                {
+                    String key = en.nextElement();
+                    pw.println(key+": '"+sc.getAttribute(key)+"'");
+                }
             }
         }
         pw.println() ;
@@ -317,12 +333,14 @@ the value has
     }
 
     
+    @Override
     public void doPost(HttpServletRequest req, HttpServletResponse resp)
     {
         doGet(req, resp) ;
     }
 
 
+    @Override
     public String getServletInfo()
     {
         return "Dump";

@@ -37,13 +37,16 @@ public class Validator extends HttpServlet
         log.info("-------- Validator") ;
     }
 
+    @Override
     public void init() throws ServletException
     { super.init() ; }
 
+    @Override
     public void init(ServletConfig config) throws ServletException
     { super.init(config) ; }
         
  
+    @Override
     public void destroy()
     {
         log.debug("destroy");
@@ -58,9 +61,11 @@ public class Validator extends HttpServlet
     }
     */
     
+    @Override
     public void doGet(HttpServletRequest httpRequest, HttpServletResponse httpResponse)
     { validationRequest(httpRequest, httpResponse) ; }
 
+    @Override
     public void doPost(HttpServletRequest httpRequest, HttpServletResponse httpResponse)
     { validationRequest(httpRequest, httpResponse) ; }
     

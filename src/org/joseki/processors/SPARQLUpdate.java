@@ -35,6 +35,7 @@ public class SPARQLUpdate extends ProcessorBase implements Loadable
     public void init(Resource service, Resource implementation)
     {}
 
+    @Override
     public void execOperation(Request request, Response response, DatasetDesc datasetDesc)
     throws QueryExecutionException
     {

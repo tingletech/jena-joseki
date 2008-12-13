@@ -48,9 +48,9 @@ public class Configuration
     // --------
     
     ServiceRegistry registry = null ;
-    Map services = new HashMap() ;
-    Set badServiceRefs = new HashSet() ;    // Service references that failed initially checking. 
-    Map datasets = new HashMap() ;          // Dataset resource to description
+    Map<String, Service> services = new HashMap<String, Service>() ;
+    Set<String> badServiceRefs = new HashSet<String>() ;    // Service references that failed initially checking. 
+    Map<Resource, DatasetDesc> datasets = new HashMap<Resource, DatasetDesc>() ;          // Dataset resource to description
     
     // Stats
     int numServices = 0 ;
@@ -75,7 +75,7 @@ public class Configuration
         this.registry = registry ;
         confModel = ModelFactory.createDefaultModel() ;
 
-        Set filesDone = new HashSet() ;
+        Set<String> filesDone = new HashSet<String>() ;
         
         try {
             log.info("==== Configuration ====") ;
@@ -104,9 +104,8 @@ public class Configuration
         log.info("==== Bind services to the server ====") ;
         bindServices(registry) ;
         log.info("==== Initialize datasets ====") ;
-        for ( Iterator iter = registry.names() ; iter.hasNext() ; )
+        for ( String name : registry.names() )
         {
-            String name = (String)iter.next() ;
             Service s = registry.find(name) ;
             try {
                 if ( s.getDatasetDesc() != null )
@@ -156,7 +155,7 @@ public class Configuration
         this.numServiceTriples = numServiceTriples ;
     }
 
-    private void readConfFile(FileManager fileManager, Model confModel2, String filename, Set filesDone)
+    private void readConfFile(FileManager fileManager, Model confModel2, String filename, Set<String> filesDone)
     {
         if ( filesDone.contains(filename) )
             return ;
@@ -178,7 +177,7 @@ public class Configuration
         Query query = makeQuery(s) ; 
         QueryExecution qexec = QueryExecutionFactory.create(query, conf);
 
-        List includes = new ArrayList() ;
+        List<String> includes = new ArrayList<String>() ;
 
         try {
             for ( ResultSet rs = qexec.execSelect() ; rs.hasNext() ; )
@@ -203,9 +202,9 @@ public class Configuration
         } finally { qexec.close() ; } 
         
         confModel.add(conf) ;
-        for ( Iterator iter = includes.iterator() ; iter.hasNext() ; )
+        for ( Iterator<String> iter = includes.iterator() ; iter.hasNext() ; )
         {
-            String fn = (String)iter.next() ; 
+            String fn = iter.next() ; 
             readConfFile(fileManager, confModel, fn, filesDone) ; 
         }
     }
@@ -215,7 +214,7 @@ public class Configuration
 
     private Resource findServer()
     {
-        List x = findByType(JosekiVocab.Server) ;
+        List<RDFNode> x = findByType(JosekiVocab.Server) ;
         if ( x.size() == 0 )
         {
             warn("No server description found") ;
@@ -264,8 +263,8 @@ public class Configuration
             "ORDER BY ?serviceRef" } ;
 
         Query query = makeQuery(s) ;
-        Map refs = new HashMap() ;      // Reference -> service      
-        Map services = new HashMap() ;  // Service -> reference
+        Map<String, RDFNode> refs = new HashMap<String, RDFNode>() ;      // Reference -> service      
+        Map<RDFNode, String> services = new HashMap<RDFNode, String>() ;  // Service -> reference
         
         QueryExecution qexec = QueryExecutionFactory.create(query, confModel) ;
         try {
@@ -303,7 +302,7 @@ public class Configuration
                 
                 if ( services.containsKey(service) ) 
                 {
-                    String r = (String)services.get(service) ; 
+                    String r = services.get(service) ; 
                     warn("Services has same references: \""+ref+"\" and \""+r+"\"") ;
                     badServiceRefs.add(r) ;
                     good = false ;
@@ -320,7 +319,7 @@ public class Configuration
         } finally { qexec.close() ; }
     }
     
-    private Set findServices()
+    private Set<RDFNode> findServices()
     {
         String s[] = new String[]{
             "SELECT *",
@@ -347,7 +346,7 @@ public class Configuration
         }
         
         // Does not mean the services are asscoiated with the server. 
-        Set serviceResources = new HashSet() ; 
+        Set<RDFNode> serviceResources = new HashSet<RDFNode>() ; 
         
         try {
             for ( ; rs.hasNext() ; )
@@ -373,7 +372,7 @@ public class Configuration
                 // ---- Check duplicates
                 if ( services.containsKey(ref) ) 
                 {
-                    Service srv = (Service)services.get(ref) ;
+                    Service srv = services.get(ref) ;
                     srv.setAvailability(false) ;
                     warn("Duplicate service reference: "+ref) ;
                     continue ;
@@ -466,7 +465,7 @@ public class Configuration
 //        }
         
         
-        List x = new ArrayList() ;
+        List<RDFNode> x = new ArrayList<RDFNode>() ;
         try {
             for ( ; rs.hasNext() ; )
             {
@@ -484,9 +483,9 @@ public class Configuration
             throw new RuntimeException("Too many dataset descriptions") ;
         }
 
-        RDFNode n = (RDFNode)x.get(0) ;
+        RDFNode n = x.get(0) ;
         log.info("Dataset: "+Utils.nodeLabel(n)) ;
-        DatasetDesc desc = (DatasetDesc)datasets.get(n) ;
+        DatasetDesc desc = datasets.get(n) ;
         return desc ;
     }
 
@@ -507,10 +506,10 @@ public class Configuration
     
     private void bindServices(ServiceRegistry registry)
     {
-        for ( Iterator iter = services.keySet().iterator() ; iter.hasNext() ; )
+        for ( Iterator<String> iter = services.keySet().iterator() ; iter.hasNext() ; )
         {
-            String ref = (String)iter.next() ;
-            Service srv = (Service)services.get(ref) ;
+            String ref = iter.next() ;
+            Service srv = services.get(ref) ;
             if ( ! srv.isAvailable() )
             {
                 log.info("Service skipped: "+srv.getRef()) ;
@@ -530,9 +529,9 @@ public class Configuration
         if ( false )
         {
             // Debug
-            List x = findByType(DatasetAssemblerVocab.tDataset) ;
+            List<RDFNode> x = findByType(DatasetAssemblerVocab.tDataset) ;
 
-            for ( Iterator iter = x.iterator()  ; iter.hasNext() ; )
+            for ( Iterator<RDFNode> iter = x.iterator()  ; iter.hasNext() ; )
             {
                 Resource r = (Resource)iter.next() ;
                 log.info("Dataset: "+Utils.nodeLabel(r)) ;
@@ -757,15 +756,12 @@ public class Configuration
 //        } finally { qexec.close() ; }
 //    }
 
-    private void checkBoundServices(Set definedServices, Set boundServices)
+    private void checkBoundServices(Set<Resource> definedServices, Set<Resource> boundServices)
     {
-        Set x = new HashSet(definedServices) ;
+        Set<Resource> x = new HashSet<Resource>(definedServices) ;
         x.removeAll(boundServices) ;
-        for ( Iterator iter = x.iterator() ; iter.hasNext() ; )
-        {
-            Resource srv = (Resource)iter.next() ;
+        for ( Resource srv : x  )
             warn("Service not attached to a server: "+Utils.nodeLabel(srv)) ;
-        }
     }
     
     // ----------------------------------------------------------
@@ -782,7 +778,7 @@ public class Configuration
         return ref ;
     }
     
-    private List findByType(Resource r)
+    private List<RDFNode> findByType(Resource r)
     {
         if ( r.isAnon() )
         {
@@ -793,10 +789,10 @@ public class Configuration
         return findByType(r.getURI()) ;
     }
     
-    private List findByType(String classURI)
+    private List<RDFNode> findByType(String classURI)
     {
         // Keep in same order that the query finds them.
-        List things = new ArrayList() ; 
+        List<RDFNode> things = new ArrayList<RDFNode>() ; 
         
         String s = "PREFIX rdf: <"+RDF.getURI()+">\nSELECT ?x { ?x rdf:type <"+classURI+"> }" ;
         Query q = makeQuery(s) ;

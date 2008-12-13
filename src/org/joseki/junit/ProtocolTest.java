@@ -42,6 +42,7 @@ public class ProtocolTest extends TestCase
     public Params getParams() { return httpQuery ; }
     public HttpQuery getHttpQuery() { return httpQuery ; }
     
+    @Override
     protected void runTest() throws Exception
     {
         if ( acceptType != null )

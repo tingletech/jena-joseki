@@ -20,7 +20,7 @@ import com.hp.hpl.jena.rdf.model.*;
 import com.hp.hpl.jena.shared.*;
 import com.hp.hpl.jena.util.FileManager;
 
-public class SPARQL extends QueryCom implements Loadable
+public class SPARQL extends ProcessorBase implements Loadable
 {
     // TODO Refactor into the stages of a query 
     private static Log log = LogFactory.getLog(SPARQL.class) ;
@@ -114,7 +114,8 @@ public class SPARQL extends QueryCom implements Loadable
         log.info("Dataset description: "+allowDatasetDesc+" // Web loading: "+allowWebLoading) ;
     }
     
-    public void execQuery(Request request, Response response, DatasetDesc datasetDesc) throws QueryExecutionException
+    @Override
+    public void execOperation(Request request, Response response, DatasetDesc datasetDesc) throws QueryExecutionException
     {
         execQueryProtected(request, response, datasetDesc, 0) ;
     }
@@ -368,7 +369,7 @@ public class SPARQL extends QueryCom implements Loadable
         if ( d != null && !d.equals("") )
             return true ;
         
-        List n = request.getParams(P_NAMED_GRAPH) ;
+        List<String> n = request.getParams(P_NAMED_GRAPH) ;
         if ( n != null && n.size() > 0 )
             return true ;
         return false ;
@@ -378,8 +379,8 @@ public class SPARQL extends QueryCom implements Loadable
     {
         try {
             
-            List graphURLs = request.getParams(P_DEFAULT_GRAPH) ;
-            List namedGraphs = request.getParams(P_NAMED_GRAPH) ;
+            List<String> graphURLs = request.getParams(P_DEFAULT_GRAPH) ;
+            List<String> namedGraphs = request.getParams(P_NAMED_GRAPH) ;
             
             graphURLs = removeEmptyValues(graphURLs) ;
             namedGraphs = removeEmptyValues(namedGraphs) ;
@@ -393,9 +394,8 @@ public class SPARQL extends QueryCom implements Loadable
             // ---- Default graph
             {
             	Model model = ModelFactory.createDefaultModel() ;
-            	for ( Iterator iter = graphURLs.iterator() ; iter.hasNext() ; )
+            	for ( String uri : graphURLs )
             	{
-            		String uri = (String)iter.next() ;
             		if ( uri == null )
             		{
             			log.warn("Null "+P_DEFAULT_GRAPH+ " (ignored)") ;
@@ -423,9 +423,8 @@ public class SPARQL extends QueryCom implements Loadable
             // ---- Named graphs
             if ( namedGraphs != null )
             {
-                for ( Iterator iter = namedGraphs.iterator() ; iter.hasNext() ; )
+                for ( String uri : namedGraphs )
                 {
-                    String uri = (String)iter.next() ;
                     if ( uri == null )
                     {
                         log.warn("Null "+P_NAMED_GRAPH+ " (ignored)") ;
@@ -463,9 +462,9 @@ public class SPARQL extends QueryCom implements Loadable
         
     }
 
-    private List removeEmptyValues(List strList)
+    private List<String> removeEmptyValues(List<String> strList)
     {
-        for ( Iterator iter = strList.iterator() ; iter.hasNext(); )
+        for ( Iterator<String> iter = strList.iterator() ; iter.hasNext(); )
         {
             String v = (String)iter.next();
             if ( v.equals("") ) 

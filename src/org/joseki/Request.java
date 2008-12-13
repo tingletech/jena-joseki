@@ -12,7 +12,7 @@ import java.util.*;
 
 /** General Request 
  * @author      Andy Seaborne
- * @version     $Id: Request.java,v 1.8 2008-03-16 18:29:23 andy_seaborne Exp $
+ * @version     $Id: Request.java,v 1.9 2008-12-13 20:18:20 andy_seaborne Exp $
  */
 public class Request
 {
@@ -23,7 +23,7 @@ public class Request
     final static Object noValue = new Object() ; 
     // Parameters :: key => List of values pairs
     
-    Map params = new HashMap();
+    Map<String, List<String>> params = new HashMap<String, List<String>>();
 
     public Request(String uri, Reader input)
     {
@@ -35,25 +35,25 @@ public class Request
     
     public String getParam(String param)
     { 
-        List x = getParamsOrNull(param) ;
+        List<String> x = getParamsOrNull(param) ;
         if ( x == null )
             return null ;
         return (String)x.get(0);
     }
     
-    public List getParams(String param)
+    public List<String> getParams(String param)
     {
             if ( ! params.containsKey(param) ) 
-                return new ArrayList() ;
-            List x = (List)params.get(param) ;
+                return new ArrayList<String>() ;
+            List<String> x = params.get(param) ;
             return x ;
     }
     
-    private List getParamsOrNull(String param)
+    private List<String> getParamsOrNull(String param)
     {
             if ( ! params.containsKey(param) ) 
                 return null ;
-            List x = (List)params.get(param) ;
+            List<String> x = params.get(param) ;
             if ( x.size() == 0 )
                 return null ;
             return x ;
@@ -66,8 +66,8 @@ public class Request
     public void setParam(String name, String value)
     {
         if ( ! params.containsKey(name) )
-            params.put(name, new ArrayList()) ;
-        List x = (List)params.get(name) ;
+            params.put(name, new ArrayList<String>()) ;
+        List<String> x = params.get(name) ;
         x.add(value) ;
     }
 
@@ -76,13 +76,13 @@ public class Request
         return getParamsOrNull(param) != null ;
     }
     
-    public Iterator parameterNames()
+    public Iterator<String> parameterNames()
     {
-        List x = new ArrayList() ;
-        for ( Iterator iter = params.keySet().iterator() ; iter.hasNext() ; )
+        List<String> x = new ArrayList<String>() ;
+        for ( Iterator<String> iter = params.keySet().iterator() ; iter.hasNext() ; )
         {
-            String k = (String)iter.next() ;
-            List z = (List)params.get(k) ;
+            String k = iter.next() ;
+            List<String> z = params.get(k) ;
             if ( z.size() != 0 )
                 x.add(k) ;
         }
@@ -99,14 +99,13 @@ public class Request
     {
         StringBuffer sBuff = new StringBuffer() ;
         boolean first = true ;
-        for ( Iterator iter = parameterNames() ; iter.hasNext(); )
+        for ( Iterator<String> iter = parameterNames() ; iter.hasNext(); )
         {
-            String k = (String)iter.next() ;
-            List x = getParamsOrNull(k) ;
+            String k = iter.next() ;
+            List<String> x = getParamsOrNull(k) ;
             if ( x != null )
-                for ( Iterator iter2 = x.iterator() ; iter2.hasNext(); )
+                for ( String v : x )
                 {
-                    String v = (String)iter2.next() ;
                     if ( ! first )
                         sBuff.append(" ") ;
                     first = false ;

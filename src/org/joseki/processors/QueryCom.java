@@ -12,8 +12,10 @@ import org.joseki.Request;
 import org.joseki.Response;
 
 /** Old name - class left for renaming to old naming (compatibility) */
+@Deprecated
 public abstract class QueryCom extends ProcessorBase
 {
+    @Override
     public void execOperation(Request request, Response response, DatasetDesc datasetDesc) throws QueryExecutionException
     {
         execQuery(request, response, datasetDesc) ;

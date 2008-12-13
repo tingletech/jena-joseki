@@ -19,15 +19,20 @@ public class NullOutputStream extends /*Filter*/OutputStream
 	}
 
 	// The OutputStream operations
-	public void close() throws IOException { /* .close() ;*/ }
-	public void flush() throws IOException { /* .flush() ;*/ }
+	@Override
+    public void close() throws IOException { /* .close() ;*/ }
+	@Override
+    public void flush() throws IOException { /* .flush() ;*/ }
 
 	// Need to implement this one.
-	public void write(int b) throws IOException { /* .write(b) ;*/ }
-	public void write(byte b[]) throws IOException { /* this.write(b, 0, b.length) ; */}
+	@Override
+    public void write(int b) throws IOException { /* .write(b) ;*/ }
+	@Override
+    public void write(byte b[]) throws IOException { /* this.write(b, 0, b.length) ; */}
 
 	// Good to implement this one.
-	public void write(byte[] b, int off, int len) throws IOException
+	@Override
+    public void write(byte[] b, int off, int len) throws IOException
 	{
 		// Work function
 	}

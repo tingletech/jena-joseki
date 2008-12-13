@@ -11,7 +11,7 @@ import java.util.* ;
 /** A single general registry to bootstrap from.     
  * 
  * @author Andy Seaborne
- * @version $Id: Registry.java,v 1.4 2008-01-02 12:24:53 andy_seaborne Exp $
+ * @version $Id: Registry.java,v 1.5 2008-12-13 20:18:20 andy_seaborne Exp $
  */
 
 public class Registry
@@ -20,7 +20,7 @@ public class Registry
     static private Registry globalRegistry = null ;
     static { init() ; }
     
-    private Map registry = new HashMap() ; 
+    private Map<String, Object> registry = new HashMap<String, Object>() ; 
     
     private Registry() { }
     

@@ -48,6 +48,7 @@ class ServerSetup extends TestSetup
         super(test) ;
     }
     
+    @Override
     protected void setUp()
     {
         Model m = FileManager.get().loadModel("testing/location-mapping.ttl") ;
@@ -60,6 +61,7 @@ class ServerSetup extends TestSetup
         server.waitUntilStarted() ;
     }
     
+    @Override
     protected void tearDown()
     { server.stop() ; }
 }

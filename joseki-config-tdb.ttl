@@ -8,7 +8,7 @@
 @prefix sdb:      <http://jena.hpl.hp.com/2007/sdb#> .
 @prefix tdb:     <http://jena.hpl.hp.com/2008/tdb#> .
 
-<> rdfs:label "Joseki Configuration File - SDB example" .
+<> rdfs:label "Joseki Configuration File - TDB example" .
 # Stripped down to support one service that exposes an
 # TDB store as a SPARQL endpoint for query.
 
@@ -20,18 +20,37 @@
 <#service1>
     rdf:type            joseki:Service ;
     rdfs:label          "SPARQL-TDB" ;
-    joseki:serviceRef   "sparql" ;      # web.xml just route this name to Joseki
+    joseki:serviceRef   "sparql" ;          # web.xml just route this name to Joseki
     joseki:dataset      <#dataset> ;
     joseki:processor    joseki:ProcessorSPARQL_FixedDS ;
     .
+
+<#service2>
+    rdf:type            joseki:Service ;
+    rdfs:label          "SPARQL-TDB" ;
+    joseki:serviceRef   "sparql/graph" ;    # web.xml just route this name to Joseki
+    joseki:dataset      <#dataset-1graph> ;
+    joseki:processor    joseki:ProcessorSPARQL_FixedDS ;
+    .
+
 
 ## --------------------------------------------------------------
 ## Datasets
 
 ## Initialize TDB.
-[] ja:loadClass "com.hp.hpl.jena.tdb.TDB" .
 
-<#dataset> rdf:type         ja:RDFDataset ;
+[] ja:loadClass "com.hp.hpl.jena.tdb.TDB" .
+tdb:DatasetTDB  rdfs:subClassOf  ja:RDFDataset .
+
+## ---- A whole dadaset managed by TDB
+<#dataset> rdf:type      tdb:DatasetTDB ;
+    tdb:location "DS" ;
+    .
+
+## ---- A single graph inside a general dataset.
+<#dataset-1graph> rdf:type         ja:RDFDataset ;
+    # If ja:namedGraph is used here, there is no
+    # correspondence with the name in the TDB store.
     ja:defaultGraph <#graph> ;
     . 
 

@@ -53,7 +53,7 @@ public class ResponseHttp extends Response
     static AcceptList prefContentType     = new AcceptList(x) ;
 
     // The correct names for the above.
-    static Map correctedTypes = new HashMap() ;
+    static Map<String, String> correctedTypes = new HashMap<String, String>() ;
     static {
         correctedTypes.put(Joseki.contentTypeXML, Joseki.contentTypeRDFXML) ;
         correctedTypes.put(Joseki.contentTypeN3Alt, Joseki.contentTypeN3) ;
@@ -80,6 +80,7 @@ public class ResponseHttp extends Response
         this.httpRequest = httpRequest ; 
     }
     
+    @Override
     protected void doResponseModel(Model model) throws QueryExecutionException
     {
         String mimeType = null ;        // Header request type 
@@ -141,7 +142,7 @@ public class ResponseHttp extends Response
         }
         
         if ( correctedTypes.containsKey(mimeType) )
-            mimeType = (String)correctedTypes.get(mimeType) ;
+            mimeType = correctedTypes.get(mimeType) ;
         
         if ( mimeType.equals(Joseki.contentTypeN3) )
             // Force to UTF-8 for N3 always
@@ -185,11 +186,13 @@ public class ResponseHttp extends Response
         }
     }
     
+    @Override
     protected void doResponseResultSet(ResultSet resultSet) throws QueryExecutionException
     {
         doResponseResult(resultSet, null) ;
     }
     
+    @Override
     protected void doResponseBoolean(final Boolean result) throws QueryExecutionException
     {
         doResponseResult(null, result) ;
@@ -319,10 +322,12 @@ public class ResponseHttp extends Response
     }
     
     
+    @Override
     protected void doResponseNothing() throws QueryExecutionException
     {
     }
 
+    @Override
     protected void doException(ExecutionException execEx)
     {
         HttpResultSerializer httpSerializer = new HttpResultSerializer() ;

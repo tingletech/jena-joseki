@@ -15,14 +15,14 @@ import org.apache.commons.logging.*;
 /** A class to handle a list of accept types (AcceptRanges)
  * 
  * @author Andy Seaborne
- * @version $Id: AcceptList.java,v 1.9 2008-01-02 12:24:53 andy_seaborne Exp $
+ * @version $Id: AcceptList.java,v 1.10 2008-12-13 20:18:20 andy_seaborne Exp $
  */
 
-public class AcceptList
+public class AcceptList implements Iterable<AcceptItem> 
 {
     // Documentation at end
     private static Log log = LogFactory.getLog(AcceptList.class) ;
-    List list ; // List of AcceptRanges
+    List<AcceptItem> list ;
     
     
     /**
@@ -30,9 +30,9 @@ public class AcceptList
      * @param acceptStrings
      */
     
-    public AcceptList(List acceptStrings)
+    public AcceptList(List<AcceptItem> acceptStrings)
     {
-        list = new ArrayList(acceptStrings) ;
+        list = new ArrayList<AcceptItem>(acceptStrings) ;
     }
     
     /**
@@ -42,7 +42,7 @@ public class AcceptList
     
     public AcceptList(String[] acceptStrings)
     {
-        list = new ArrayList() ;
+        list = new ArrayList<AcceptItem>() ;
         for ( int i = 0 ; i < acceptStrings.length ; i++ )
             list.add(new AcceptItem(acceptStrings[i])) ;
     }
@@ -59,7 +59,7 @@ public class AcceptList
         } catch (Exception ex)
         {
             log.warn("Unrecognized accept string (ignored): "+headerString) ;
-            list = new ArrayList() ;
+            list = new ArrayList<AcceptItem>() ;
         }
     }
     
@@ -70,18 +70,17 @@ public class AcceptList
     
     public AcceptItem match(AcceptItem aItem)
     {
-        for ( Iterator iter = list.iterator() ; iter.hasNext() ; )
+        for ( AcceptItem acceptItem : list )
         {
-            AcceptItem i = (AcceptItem)iter.next() ;
             //System.out.println("Check: "+i+" accepts "+aItem) ;
-            if ( i.accepts(aItem) )
+            if ( acceptItem.accepts(aItem) )
             {
                 // Return the more grounded term
                 // E.g. i = text/plain ; aItem = text/*
                 
-                if ( aItem.moreGroundedThan(i) )
-                    i = new AcceptItem(aItem, i.q) ;
-                return i ;
+                if ( aItem.moreGroundedThan(acceptItem) )
+                    acceptItem = new AcceptItem(aItem, acceptItem.q) ;
+                return acceptItem ;
             }
         }
         return null ;
@@ -101,10 +100,9 @@ public class AcceptList
         
         AcceptItem choice = null ;
         
-        for ( Iterator iter = offerList.iterator() ; iter.hasNext() ; )
+        for ( AcceptItem offer : offerList )
         {
-            AcceptItem i2 = (AcceptItem)iter.next() ;
-            AcceptItem m = proposalList.match(i2) ; // XXX
+            AcceptItem m = proposalList.match(offer) ; // XXX
             if ( m != null )
             {
                 if ( choice != null && choice.q >= m.q )
@@ -118,26 +116,20 @@ public class AcceptList
     public AcceptItem first()
     {
         if ( list != null && list.size() > 0 )
-            return (AcceptItem)list.get(0) ;
+            return list.get(0) ;
         return null ;
     }
 
-    public Iterator iterator()
+    //Java6: @Override
+    public Iterator<AcceptItem> iterator()
     { return list.iterator() ; }
     
     // Sort - the leftmost element (lowest index) will be the preferred accept type.
     
-    private static class AcceptTypeCompare implements Comparator
+    private static class AcceptTypeCompare implements Comparator<AcceptItem>
     {
-        public int compare(Object arg1, Object arg2)
+        public int compare(AcceptItem mType1, AcceptItem mType2)
         {
-            if ( ! (arg1 instanceof AcceptItem) )
-                throw new ClassCastException("Not a AcceptItem: "+arg1.getClass().getName()) ;
-            if ( ! (arg2 instanceof AcceptItem) )
-                throw new ClassCastException("Not a AcceptItem: "+arg2.getClass().getName()) ;
-            AcceptItem mType1 = (AcceptItem)arg1 ; 
-            AcceptItem mType2 = (AcceptItem)arg2 ;
-            
             int r = Double.compare(mType1.q, mType2.q) ;
             
             if ( r == 0 )
@@ -182,10 +174,10 @@ public class AcceptList
     
     /** Returns a list of headers, sorted so that the most significant is first */
     
-    static List stringToAcceptList(String s)
+    static List<AcceptItem> stringToAcceptList(String s)
     {
         //s = s.trim() ;
-        List l = new ArrayList() ;
+        List<AcceptItem> l = new ArrayList<AcceptItem>() ;
         if ( s == null )
             return l ;
         
@@ -210,11 +202,11 @@ public class AcceptList
         String tmp = "" ;
         
         boolean first = true ;
-        for ( Iterator iter = list.iterator() ; iter.hasNext() ; )
+        for ( AcceptItem item : list )
         {
             if ( ! first )
                 tmp = tmp +"," ;
-            tmp = tmp + ((AcceptItem)iter.next()).toHeaderString() ;
+            tmp = tmp + item.toHeaderString() ;
             first = false ;
         }
         return tmp ;
@@ -222,9 +214,10 @@ public class AcceptList
     
     /** Debug form */
     
+    @Override
     public String toString() { return acceptListToString(list) ; }
     
-    static String acceptListToString(List x)
+    static String acceptListToString(List<AcceptItem> x)
     {
         if ( x.size() == 0)
             return "(empty)" ;
@@ -232,13 +225,12 @@ public class AcceptList
         String tmp = "" ;
         
         boolean first = true ;
-        for ( Iterator iter = x.iterator() ; iter.hasNext() ; )
+        for ( AcceptItem acceptItem : x )
         {
-            AcceptItem a = (AcceptItem)iter.next() ; 
             if ( ! first )
                 tmp = tmp +" " ;
-            a.toString();
-            tmp = tmp + a ;
+            acceptItem.toString();
+            tmp = tmp + acceptItem ;
             first = false ;
         }
         return tmp ;

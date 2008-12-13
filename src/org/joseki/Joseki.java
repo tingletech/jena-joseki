@@ -9,7 +9,7 @@ import java.util.* ;
 
 /** Constants and other definitions.
  * @author      Andy Seaborne
- * @version     $Id: Joseki.java,v 1.32 2008-04-11 09:02:27 andy_seaborne Exp $
+ * @version     $Id: Joseki.java,v 1.33 2008-12-13 20:18:20 andy_seaborne Exp $
  */
 public class Joseki
 {
@@ -108,25 +108,25 @@ public class Joseki
     
     public static String getReaderType(String contentType)
     {
-        return (String)jenaReaders.get(contentType) ;
+        return jenaReaders.get(contentType) ;
     }
 
     public static String getWriterType(String contentType)
     {
-        return (String)jenaWriters.get(contentType) ;
+        return jenaWriters.get(contentType) ;
     }
 
     public static String setReaderType(String contentType, String writerName)
     {
-        return (String)jenaReaders.put(contentType, writerName) ;
+        return jenaReaders.put(contentType, writerName) ;
     }
 
     public static String setWriterType(String contentType, String writerName)
     {
-        return (String)jenaWriters.put(contentType, writerName) ;
+        return jenaWriters.put(contentType, writerName) ;
     }
     
-    static Map jenaReaders = new HashMap() ;
+    static Map<String, String> jenaReaders = new HashMap<String, String>() ;
     static {
         setReaderType(contentTypeN3, "N3") ;
         setReaderType(contentTypeN3Alt, "N3") ;
@@ -137,7 +137,7 @@ public class Joseki
         setReaderType(contentTypeTurtleAlt, "TURTLE") ;
     }
     
-    static Map jenaWriters = new HashMap() ;
+    static Map<String, String> jenaWriters = new HashMap<String, String>() ;
     static {
         setWriterType(contentTypeXML, "RDF/XML-ABBREV") ;
         setWriterType(contentTypeN3, "N3") ;

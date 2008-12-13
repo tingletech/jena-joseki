@@ -28,6 +28,7 @@ public class LimitingGraph extends WrappedGraph implements GraphWithPerform
         bulk = new LimitingBulkUpdateHandler(this, graph.getBulkUpdateHandler()) ;
     }
 
+    @Override
     public void add( Triple t ) throws AddDeniedException
     {
         count++ ;
@@ -36,6 +37,7 @@ public class LimitingGraph extends WrappedGraph implements GraphWithPerform
     }
 
     /** returns this Graph's bulk-update handler */
+    @Override
     public BulkUpdateHandler getBulkUpdateHandler()
     {
         return bulk ;

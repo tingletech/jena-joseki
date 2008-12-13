@@ -34,6 +34,7 @@ public class Service
     public String getRef() { return "<"+serviceRef+">" ; }
     public DatasetDesc getDatasetDesc() { return dataset ; }
     
+    @Override
     public String toString()
     {
         return "Service: "+serviceRef ;

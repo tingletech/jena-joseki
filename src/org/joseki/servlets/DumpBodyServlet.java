@@ -28,11 +28,13 @@ public class DumpBodyServlet extends HttpServlet
 
     }
 
+    @Override
     public void init()
     {
         return ;
     }
 
+    @Override
     public void doGet(HttpServletRequest req, HttpServletResponse resp)
     {
         log.info("GET") ;
@@ -40,6 +42,7 @@ public class DumpBodyServlet extends HttpServlet
 
     // This resets the input stream
 
+    @Override
     public void doPost(HttpServletRequest req, HttpServletResponse resp)
     {
         try {
@@ -61,6 +64,7 @@ public class DumpBodyServlet extends HttpServlet
     }
 
 
+    @Override
     public String getServletInfo()
     {
         return "DumpBody";

@@ -10,7 +10,7 @@ import java.util.* ;
 
 /** 
  * @author Andy Seaborne
- * @version $Id: ServiceRegistry.java,v 1.7 2008-01-02 12:24:53 andy_seaborne Exp $
+ * @version $Id: ServiceRegistry.java,v 1.8 2008-12-13 20:18:20 andy_seaborne Exp $
  */
 
 public class ServiceRegistry
@@ -20,7 +20,7 @@ public class ServiceRegistry
     static { init() ; }
     
     
-    private Map registry = new HashMap() ; 
+    private Map<String, Service> registry = new HashMap<String, Service>() ; 
     
     //private ServiceRegistry() { }
     
@@ -54,9 +54,9 @@ public class ServiceRegistry
         registry.clear() ;
     }
     
-    public Iterator names()
+    public Collection<String> names()
     {
-        return registry.keySet().iterator() ; 
+        return registry.keySet() ; 
     }
     
 }

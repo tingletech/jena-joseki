@@ -22,7 +22,7 @@ abstract public class Response
     private static Log log = LogFactory.getLog(Response.class) ;
 
     //private ResponseCallback callback = null ;
-    private List callbacks = new ArrayList() ;
+    private List<ResponseCallback> callbacks = new ArrayList<ResponseCallback>() ;
     
     private Model responseModel = null ;
     private ResultSet responseResultSet = null ;
@@ -96,9 +96,9 @@ abstract public class Response
         responseResultSet = null ;
         responseBoolean = null ;
         
-        for ( Iterator iter = callbacks.iterator() ; iter.hasNext(); )
+        for ( Iterator<ResponseCallback> iter = callbacks.iterator() ; iter.hasNext(); )
         {
-            ResponseCallback callback = (ResponseCallback) iter.next();
+            ResponseCallback callback = iter.next();
             callback.callback() ;
         }
         return ;

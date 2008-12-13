@@ -5,7 +5,6 @@
 
 package org.joseki;
 
-import java.util.Iterator;
 import java.util.List;
 
 import org.apache.commons.logging.Log;
@@ -18,7 +17,7 @@ import org.mortbay.util.MultiException;
 
 /** Standalone server.
  * 
- * @version $Id: RDFServer.java,v 1.18 2008-05-28 16:51:59 andy_seaborne Exp $
+ * @version $Id: RDFServer.java,v 1.19 2008-12-13 20:18:20 andy_seaborne Exp $
  * @author  Andy Seaborne
  */
 
@@ -162,7 +161,6 @@ public class RDFServer
     }
     
     /** Start the server */
-    
     public void start()
     {
         try {
@@ -172,11 +170,11 @@ public class RDFServer
             
         } catch (MultiException ex)
         {
-            List exs = ex.getThrowables() ;
+            @SuppressWarnings("unchecked")
+            List<Throwable> exs = (List<Throwable>)ex.getThrowables() ;
             java.net.BindException bindException = null ;
-            for ( Iterator iter = exs.iterator() ; iter.hasNext() ; )
+            for ( Throwable ex2 : exs )
             {
-                Exception ex2 = (Exception)iter.next() ;
                 if ( ex2 instanceof java.net.BindException )
                 {
                     bindException = (java.net.BindException)ex2 ;

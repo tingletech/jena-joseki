@@ -16,7 +16,7 @@ import org.joseki.util.StringUtils ;
 /** A class to handle HTTP Accept types
  * 
  * @author Andy Seaborne
- * @version $Id: AcceptItem.java,v 1.6 2008-01-02 12:24:53 andy_seaborne Exp $
+ * @version $Id: AcceptItem.java,v 1.7 2008-12-13 20:18:20 andy_seaborne Exp $
  */
 
 public class AcceptItem
@@ -30,7 +30,7 @@ public class AcceptItem
     private String type = null ;
     private String subType = null ;
     
-    private Map params = new HashMap() ;
+    private Map<String, String> params = new HashMap<String, String>() ;
     double q = 1.0 ;
     int posn = 0 ;      // Used in sorting to retain order amongst equals. 
     
@@ -47,7 +47,7 @@ public class AcceptItem
         this.acceptType = other.acceptType ;
         this.type = other.type ;
         this.subType = other.subType ;
-        this.params = new HashMap(other.params) ;
+        this.params = new HashMap<String, String>(other.params) ;
         this.q = other.q ;
         // Not posn.
     }
@@ -145,10 +145,10 @@ public class AcceptItem
     {
         StringBuffer b = new StringBuffer() ;
         b.append(acceptType) ;
-        for ( Iterator iter = params.keySet().iterator() ; iter.hasNext() ; )
+        for ( Iterator<String> iter = params.keySet().iterator() ; iter.hasNext() ; )
         {
-            String k = (String)iter.next() ;
-            String v = (String)params.get(k) ;
+            String k = iter.next() ;
+            String v = params.get(k) ;
             b.append(";") ;
             b.append(k) ;
             b.append("=") ;
@@ -161,15 +161,16 @@ public class AcceptItem
      *  form so you can tell parsing happened correctly
      */  
     
+    @Override
     public String toString()
     {
         StringBuffer b = new StringBuffer() ;
         b.append("[") ;
         b.append(acceptType) ;
-        for ( Iterator iter = params.keySet().iterator() ; iter.hasNext() ; )
+        for ( Iterator<String> iter = params.keySet().iterator() ; iter.hasNext() ; )
         {
-            String k = (String)iter.next() ;
-            String v = (String)params.get(k) ;
+            String k = iter.next() ;
+            String v = params.get(k) ;
             b.append(" ") ;
             b.append(k) ;
             b.append("=") ;

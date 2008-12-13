@@ -18,7 +18,7 @@ import org.joseki.*;
 
 /** The servlet class.
  * @author  Andy Seaborne
- * @version $Id: Servlet.java,v 1.31 2008-06-30 18:48:50 andy_seaborne Exp $
+ * @version $Id: Servlet.java,v 1.32 2008-12-13 20:18:20 andy_seaborne Exp $
  */
 
 public class Servlet extends HttpServlet
@@ -67,6 +67,7 @@ public class Servlet extends HttpServlet
         log.info("-------- "+string) ;
     }
 
+    @Override
     public void init() throws ServletException
     {
         super.init() ;
@@ -75,6 +76,7 @@ public class Servlet extends HttpServlet
 
     /** Initializes the servlet.
     */
+    @Override
     public void init(ServletConfig config) throws ServletException
     {
         super.init(config);
@@ -115,6 +117,7 @@ public class Servlet extends HttpServlet
         
     /** Destroys the servlet.
     */
+    @Override
     public void destroy()
     {
         log.debug("destroy");
@@ -128,6 +131,7 @@ public class Servlet extends HttpServlet
         super.service(req, resp);
     }
     */
+    @Override
     public void doGet(HttpServletRequest httpRequest, HttpServletResponse httpResponse)
     {
         doCommon(httpRequest, httpResponse) ;
@@ -195,9 +199,12 @@ public class Servlet extends HttpServlet
         // No reader.  Done by standard servlet form processing.
         Request request = new Request(serviceURI, null) ;
         // params => request items
-        for ( Enumeration en = httpRequest.getParameterNames() ; en.hasMoreElements() ; )
+        @SuppressWarnings("unchecked")
+        Enumeration<String> en = (Enumeration<String>)httpRequest.getParameterNames() ;
+        
+        for ( ; en.hasMoreElements() ; )
         {
-            String k = (String)en.nextElement() ;
+            String k = en.nextElement() ;
             String[] x = httpRequest.getParameterValues(k) ;
             
             for(int i = 0 ; i < x.length ; i++ )
@@ -223,6 +230,7 @@ public class Servlet extends HttpServlet
         return ( t1.equalsIgnoreCase("application") && t2.equalsIgnoreCase("x-www-form-urlencoded") ) ;
     }
     
+    @Override
     public void doPost(HttpServletRequest httpRequest, HttpServletResponse httpResponse)
     {
         String s = httpRequest.getContentType() ;
@@ -280,6 +288,7 @@ public class Servlet extends HttpServlet
     
     /** Returns a short description of the servlet.
     */
+    @Override
     public String getServletInfo()
     {
         //return this.getClass().getName() ;
@@ -307,11 +316,12 @@ public class Servlet extends HttpServlet
         {
             String tmp = servletConfig.getServletName() ;
             log.trace("Servlet = " + (tmp != null ? tmp : "<null>"));
-            Enumeration en = servletConfig.getInitParameterNames();
+            @SuppressWarnings("unchecked")
+            Enumeration<String> en = (Enumeration<String>)servletConfig.getInitParameterNames();
             
             for (; en.hasMoreElements();)
             {
-                String s = (String) en.nextElement();
+                String s = en.nextElement();
                 log.trace("Servlet parameter: " + s + " = " + servletConfig.getInitParameter(s));
             }
         }
@@ -323,11 +333,11 @@ public class Servlet extends HttpServlet
             log.debug("Webapp = " + (tmp != null ? tmp : "<null>"));
 
             // NB This servlet may not have been loaded as part of a web app
-
-            Enumeration en = servletContext.getInitParameterNames();
+            @SuppressWarnings("unchecked")
+            Enumeration<String> en = (Enumeration<String>)servletContext.getInitParameterNames();
             for (;en.hasMoreElements();)
             {
-                String s = (String) en.nextElement();
+                String s = en.nextElement();
                 log.debug("Webapp parameter: " + s + " = " + servletContext.getInitParameter(s));
             }
         }

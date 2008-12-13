@@ -21,6 +21,7 @@ public class ServletUpdate extends Servlet
 {
     public ServletUpdate() { super("Joseki/Update") ; }
     
+    @Override
     public void doGet(HttpServletRequest httpRequest, HttpServletResponse httpResponse)
     {
         log.info("Update received by HTTP Get - rejected") ;
@@ -32,11 +33,13 @@ public class ServletUpdate extends Servlet
         {}
     }
     
+    @Override
     public void doPost(HttpServletRequest httpRequest, HttpServletResponse httpResponse)
     {
         doCommon(httpRequest, httpResponse) ;
     }
     
+    @Override
     protected Request setupRequest(String serviceURI, HttpServletRequest httpRequest) throws IOException
     {
         if ( isHTMLForm(httpRequest) )

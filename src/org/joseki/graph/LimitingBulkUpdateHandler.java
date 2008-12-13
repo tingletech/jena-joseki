@@ -24,7 +24,7 @@ public class LimitingBulkUpdateHandler extends WrappedBulkUpdateHandler
         this.lGraph = graph ;
     }
     
-    //@Override
+    @Override
     public void add( Triple [] triples )
     {
         lGraph.count = lGraph.count+triples.length ;
@@ -32,7 +32,8 @@ public class LimitingBulkUpdateHandler extends WrappedBulkUpdateHandler
         super.add(triples) ;
     }
     
-    //@Override
+    @SuppressWarnings("unchecked")
+    @Override
     public void add( List triples )
     {
         lGraph.count = lGraph.count+triples.size() ;
@@ -40,7 +41,8 @@ public class LimitingBulkUpdateHandler extends WrappedBulkUpdateHandler
         super.add(triples);
     }
     
-     //@Override
+    @SuppressWarnings("unchecked")
+    @Override
     public void add( Iterator it )
     {
         for ( ; it.hasNext() ; )
@@ -52,7 +54,7 @@ public class LimitingBulkUpdateHandler extends WrappedBulkUpdateHandler
         }
     }
     
-    //@Override
+    @Override
     public void add( Graph g, boolean withReifications )
     {
         // Not perfect
@@ -61,7 +63,7 @@ public class LimitingBulkUpdateHandler extends WrappedBulkUpdateHandler
         super.add(g, withReifications) ;
     }
     
-    //@Override
+    @Override
     public void add( Graph g )
     {
         lGraph.count = lGraph.count+g.size() ;
