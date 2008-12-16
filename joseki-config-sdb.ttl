@@ -27,13 +27,13 @@
     .
 
 # Service that publishes part of an SDB store.
-<#service2>
-    rdf:type            joseki:Service ;
-    rdfs:label          "SPARQL-SDB (alt)" ;
-    joseki:serviceRef   "sparql/graph" ;   # web.xml must route this name to Joseki
-    joseki:dataset      <#sdb-part> ;
-    joseki:processor    joseki:ProcessorSPARQL_FixedDS ;
-    .
+## <#service2>
+##     rdf:type            joseki:Service ;
+##     rdfs:label          "SPARQL-SDB (alt)" ;
+##     joseki:serviceRef   "sparql/graph" ;   # web.xml must route this name to Joseki
+##     joseki:dataset      <#sdb-part> ;
+##     joseki:processor    joseki:ProcessorSPARQL_FixedDS ;
+##     .
 
 ## --------------------------------------------------------------
 ## Datasets
@@ -61,13 +61,13 @@ sdb:DatasetStore  rdfs:subClassOf  ja:RDFDataset .
 ##       sdb:sdbType        "postgresql" ;
 ##       sdb:sdbHost        "localhost" ;
 ##       sdb:sdbName        "SDB" ;
+##       sdb:poolSize       5 ;
 
-        # Using 
-        sdb:sdbType      "hsqldb" ;
-        sdb:sdbHost      "file" ;
-        sdb:sdbUser      "sa" ;
-        sdb:sdbPassword  "" ;
-        sdb:sdbName      "tmp/SDB" ;   # Location of the database
+     # Using Apache Derby
+     sdb:sdbHost        "localhost" ;
+     sdb:sdbType        "derby" ;
+     sdb:sdbName        "Derby/SDB" ;
+     sdb:poolSize       5 ;
     ]
     .
 
