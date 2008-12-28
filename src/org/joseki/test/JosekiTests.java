@@ -1,5 +1,5 @@
 /*
- * (c) Copyright 2004, 2005, 2006, 2007, 2008 Hewlett-Packard Development Company, LP
+ * (c) Copyright 2004, 2005, 2006, 2007, 2008, 2009 Hewlett-Packard Development Company, LP
  * All rights reserved.
  * [See end of file]
  */
@@ -11,7 +11,7 @@ import junit.framework.TestSuite;
 
 /** 
  * @author Andy Seaborne
- * @version $Id: JosekiTests.java,v 1.8 2008-01-02 12:24:53 andy_seaborne Exp $
+ * @version $Id: JosekiTests.java,v 1.9 2008-12-28 19:51:04 andy_seaborne Exp $
  */
 
 public class JosekiTests extends TestSuite
@@ -29,7 +29,7 @@ public class JosekiTests extends TestSuite
 }
 
 /*
- * (c) Copyright 2004, 2005, 2006, 2007, 2008 Hewlett-Packard Development Company, LP
+ * (c) Copyright 2004, 2005, 2006, 2007, 2008, 2009 Hewlett-Packard Development Company, LP
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
