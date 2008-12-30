@@ -11,22 +11,16 @@ import java.io.StringReader;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.joseki.DatasetDesc;
-import org.joseki.ExecutionException;
-import org.joseki.Joseki;
-import org.joseki.QueryExecutionException;
-import org.joseki.Request;
-import org.joseki.Response;
-import org.joseki.ReturnCodes;
+import org.joseki.*;
 import org.joseki.module.Loadable;
 
 import com.hp.hpl.jena.rdf.model.Resource;
+
 import com.hp.hpl.jena.sparql.lang.ParserSPARQLUpdate;
-import com.hp.hpl.jena.update.GraphStore;
-import com.hp.hpl.jena.update.GraphStoreFactory;
-import com.hp.hpl.jena.update.UpdateFactory;
-import com.hp.hpl.jena.update.UpdateProcessor;
-import com.hp.hpl.jena.update.UpdateRequest;
+
+import com.hp.hpl.jena.query.Dataset;
+
+import com.hp.hpl.jena.update.*;
 
 public class SPARQLUpdate extends ProcessorBase implements Loadable
 {
@@ -36,8 +30,7 @@ public class SPARQLUpdate extends ProcessorBase implements Loadable
     {}
 
     @Override
-    public void execOperation(Request request, Response response, DatasetDesc datasetDesc)
-    throws QueryExecutionException
+    public void execOperation(Request request, Response response, Dataset dataset) throws ExecutionException
     {
         if ( ! request.getParam(Joseki.VERB).equals("POST") )
             // Because nasty things happen otherwise.
@@ -69,7 +62,7 @@ public class SPARQLUpdate extends ProcessorBase implements Loadable
         ParserSPARQLUpdate p = new ParserSPARQLUpdate() ;
         UpdateRequest updateRequest = new UpdateRequest() ;
         p.parse(updateRequest, in) ;
-        GraphStore graphStore = GraphStoreFactory.create(datasetDesc.getDataset()) ;
+        GraphStore graphStore = GraphStoreFactory.create(dataset) ;
         
         UpdateProcessor uProc = UpdateFactory.create(updateRequest, graphStore) ;
         try { uProc.execute() ; response.setOK() ; }

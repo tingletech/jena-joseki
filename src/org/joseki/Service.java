@@ -22,14 +22,6 @@ public class Service
     }
     
 
-    public ServiceRequest startRequest() throws ExecutionException
-    {
-        if ( ! isAvailable() )
-            throw new ExecutionException(ReturnCodes.rcServiceUnavailable, "Service is not currently available") ;
-        return new ServiceRequest(processor, datasetDesc) ;
-    }
-
-    
     // Replace by service request
 //    public void exec(Request request, Response response) throws ExecutionException
 //    {
@@ -38,6 +30,14 @@ public class Service
 //        processor.exec(request, response, dataset) ;
 //    }
     
+    public ServiceRequest instance(Request request, Response response) throws ExecutionException
+    {
+        if ( ! isAvailable() )
+            throw new ExecutionException(ReturnCodes.rcServiceUnavailable, "Service is not currently available") ;
+        return new ServiceRequest(request, response, processor, datasetDesc) ;
+    }
+
+
     public boolean isAvailable() { return available ; } 
     public void setAvailability(boolean availability) { available = availability ; }
     

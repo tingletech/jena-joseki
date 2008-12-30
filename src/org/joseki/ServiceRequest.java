@@ -13,19 +13,22 @@ public class ServiceRequest
 {
     private static Log log = LogFactory.getLog(ServiceRequest.class) ;
     
-    private DatasetDesc datasetDesc ;
-    private Processor processor ;
+    private final DatasetDesc datasetDesc ;
+    private final Processor   processor ;
+    private final Request     request ;
+    private final Response    response ;
 
-    public ServiceRequest(Processor processor, DatasetDesc datasetDesc )
+    public ServiceRequest(Request request, Response response, Processor processor, DatasetDesc datasetDesc )
     { 
+        this.request = request ;
+        this.response = response ;
         this.datasetDesc = datasetDesc ;
         this.processor = processor ; 
     }
 
     public void start()
     {
-        // Pooling for DatasetDesc
-        log.info("ServiceRequest.start") ;
+        log.debug("ServiceRequest.start") ;
     }
     
     public void exec(Request request, Response response) throws ExecutionException
@@ -35,7 +38,7 @@ public class ServiceRequest
     
     public void finish()
     {
-        log.info("ServiceRequest.finish") ;
+        log.debug("ServiceRequest.finish") ;
     }
 }
 

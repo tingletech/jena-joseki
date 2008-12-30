@@ -46,11 +46,10 @@
 ## Tell the system that sdb:Model is an implementation of ja:RDFDataset .
 
 [] ja:loadClass "com.hp.hpl.jena.sdb.SDB" .
-
-## ??? Why?
 sdb:DatasetStore  rdfs:subClassOf  ja:RDFDataset .
 
 <#sdb> rdf:type sdb:DatasetStore ;
+    joseki:poolSize     5 ;         ## Number of concurrent connections allowed to this dataset.
     sdb:store <#store> .
 
 <#store> rdf:type sdb:Store  ;
@@ -61,13 +60,11 @@ sdb:DatasetStore  rdfs:subClassOf  ja:RDFDataset .
 ##       sdb:sdbType        "postgresql" ;
 ##       sdb:sdbHost        "localhost" ;
 ##       sdb:sdbName        "SDB" ;
-##       sdb:poolSize       5 ;
 
      # Using Apache Derby
      sdb:sdbHost        "localhost" ;
      sdb:sdbType        "derby" ;
      sdb:sdbName        "Derby/SDB" ;
-     sdb:poolSize       5 ;
     ]
     .
 

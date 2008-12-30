@@ -109,8 +109,7 @@ public class Configuration
             Service s = registry.find(name) ;
             try {
                 if ( s.getDatasetDesc() != null )
-                    // Kick it now to make it initialize
-                    s.getDatasetDesc().getDataset() ;
+                    s.getDatasetDesc().initialize() ;
             } catch(Exception ex)
             { 
                 log.warn("Failed to build dataset from description (service name: "+name+"): "+ex.getMessage(), ex) ;

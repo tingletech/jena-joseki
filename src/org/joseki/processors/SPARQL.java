@@ -115,15 +115,15 @@ public class SPARQL extends ProcessorBase implements Loadable
     }
     
     @Override
-    public void execOperation(Request request, Response response, DatasetDesc datasetDesc) throws QueryExecutionException
+    public void execOperation(Request request, Response response, Dataset dataset) throws QueryExecutionException
     {
-        execQueryProtected(request, response, datasetDesc, 0) ;
+        execQueryProtected(request, response, dataset, 0) ;
     }
     
-    public void execQueryProtected(Request request, Response response, DatasetDesc datasetDesc, int attempts) throws QueryExecutionException
+    public void execQueryProtected(Request request, Response response, Dataset dataset, int attempts) throws QueryExecutionException
     {
         try {
-            execQueryWorker(request, response, datasetDesc) ;
+            execQueryWorker(request, response, dataset) ;
         }
         catch (QueryExecutionException qEx)
         { throw qEx; }
@@ -146,8 +146,7 @@ public class SPARQL extends ProcessorBase implements Loadable
             {
                 attempts ++ ;
                 log.warn("Execution failure (retryable) : retry: "+attempts) ;
-                datasetDesc.clearDataset() ;
-                execQueryProtected(request, response, datasetDesc, attempts) ;
+                execQueryProtected(request, response, dataset, attempts) ;
                 return ;
             }
             
@@ -184,7 +183,7 @@ public class SPARQL extends ProcessorBase implements Loadable
     }
     
     
-    private void execQueryWorker(Request request, Response response, DatasetDesc datasetDesc) throws QueryExecutionException
+    private void execQueryWorker(Request request, Response response, Dataset defaultDataset) throws QueryExecutionException
     {
         //log.info("Request: "+request.paramsAsString()) ;
         String queryString = null ;
@@ -270,15 +269,8 @@ public class SPARQL extends ProcessorBase implements Loadable
         // Use the service dataset description if
         // not in query and not in protocol. 
         if ( !useQueryDesc && dataset == null )
-        {
-            if ( datasetDesc != null )
-                dataset = getDataset(datasetDesc) ;
-        }
+                dataset = defaultDataset ;
 
-        // How to test for a fixed dataset ... wait until SPARQL blows up!
-//        if ( !useQueryDesc && dataset == null )
-//            throw new QueryExecutionException(ReturnCodes.rcBadRequest, "No dataset given") ;
-        
         if ( useQueryDesc )
             // If using query description, ignore dataset
             dataset = null ;
@@ -300,11 +292,6 @@ public class SPARQL extends ProcessorBase implements Loadable
     protected QueryExecution getQueryExecution(Query query, Dataset dataset)
     {
         return QueryExecutionFactory.create(query, dataset) ;
-    }
-    
-    protected Dataset getDataset(DatasetDesc datasetDesc)
-    {
-        return datasetDesc.getDataset() ;
     }
     
     private void executeQuery(Query query, String queryStringLog, QueryExecution qexec, Response response)

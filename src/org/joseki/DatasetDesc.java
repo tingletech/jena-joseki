@@ -6,35 +6,91 @@
 
 package org.joseki;
 
+import static org.joseki.vocabulary.JosekiSchemaBase.poolSize;
+
+import java.util.concurrent.BlockingDeque;
+import java.util.concurrent.LinkedBlockingDeque;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.hp.hpl.jena.assembler.Assembler;
-import com.hp.hpl.jena.query.Dataset;
 import com.hp.hpl.jena.rdf.model.Resource;
 
+import com.hp.hpl.jena.assembler.Assembler;
+
+import com.hp.hpl.jena.sparql.util.graph.GraphUtils;
+
+import com.hp.hpl.jena.query.Dataset;
 
 public class DatasetDesc
 {
     static Log log = LogFactory.getLog(DatasetDesc.class) ;
     Resource datasetRoot ; 
-    Dataset dataset = null ;
+    Dataset dataset = null ;    // Unpooled slot.
+    int sizeOfPool = -1 ;       // No pool.
+    BlockingDeque<Dataset> pool = null ;
     
-    public DatasetDesc(Resource datasetRoot) { this.datasetRoot = datasetRoot ; }
-    
-    /** Drop any dataset to free system resources */ 
-    public void __freeDataset() { dataset = null ; }
-    
-    public Resource getResource() { return datasetRoot ; }
-    
-    public Dataset getDataset()
+    public DatasetDesc(Resource datasetRoot)
+    { 
+        this.datasetRoot = datasetRoot ;
+    }
+
+    /** Called to create early (e.g. for checking) */
+    public void initialize()
     {
-        if ( dataset == null )
-            dataset = (Dataset)Assembler.general.open(getResource()) ;
-        return dataset ;
+        if ( datasetRoot.hasProperty(poolSize) )
+        {
+            if ( ! GraphUtils.exactlyOneProperty(datasetRoot, poolSize) )
+                log.fatal("Multiple pool size property ("+Utils.nodeLabel(datasetRoot)+")") ;
+            
+            String x = GraphUtils.getStringValue(datasetRoot, poolSize) ;
+            try {
+                sizeOfPool = Integer.parseInt(x) ;
+            } catch (NumberFormatException ex)
+            {
+                log.fatal("Not a number: "+x) ;
+                throw ex ; 
+            }
+            pool = new LinkedBlockingDeque<Dataset>(sizeOfPool) ;
+            for ( int i = 0 ; i < sizeOfPool ; i++ )
+                pool.addLast(newDataset()) ;
+            log.info(String.format("Pool size %d for dataset %s", sizeOfPool, Utils.nodeLabel(datasetRoot))) ;
+        }
+        else
+            dataset = newDataset() ;
     }
     
-    public void clearDataset() { dataset = null ; }
+    private Dataset newDataset()
+    {
+        return (Dataset)Assembler.general.open(getResource())  ;
+    }
+
+    public Resource getResource() { return datasetRoot ; }
+    
+    public Dataset acquireDataset(Request request, Response response)
+    {
+        if ( dataset != null )
+            return dataset ;
+        // From pool.
+        try
+        { 
+            log.debug("Take from pool") ; 
+            return pool.takeFirst() ;
+        } catch (InterruptedException ex)
+        {
+            throw new JosekiServerException("Failed to get a dataset from the pool (InterruptedException): "+ex.getMessage()) ;
+        }
+    }
+    
+    public void returnDataset(Dataset ds)
+    {
+        
+        if ( pool != null )
+        {
+            log.debug("Return to pool") ;
+            pool.addLast(ds) ;
+        }
+    }
     
     @Override
     public String toString()

@@ -1,4 +1,4 @@
-/* CVS $Id: JosekiSchemaBase.java,v 1.1 2006-10-03 13:22:59 andy_seaborne Exp $ */
+/* CVS $Id: JosekiSchemaBase.java,v 1.2 2008-12-30 19:48:35 andy_seaborne Exp $ */
 package org.joseki.vocabulary; 
 import com.hp.hpl.jena.rdf.model.*;
  
@@ -33,6 +33,8 @@ public class JosekiSchemaBase {
     public static final Property include = m_model.createProperty( "http://joseki.org/2005/06/configuration#include" );
     
     public static final Property dataset = m_model.createProperty( "http://joseki.org/2005/06/configuration#dataset" );
+
+    public static final Property poolSize = m_model.createProperty( "http://joseki.org/2005/06/configuration#poolSize" );
     
     /** <p></p> */
     public static final Property defaultGraph = m_model.createProperty( "http://joseki.org/2005/06/configuration#defaultGraph" );

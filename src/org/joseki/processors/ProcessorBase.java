@@ -13,6 +13,8 @@ import com.hp.hpl.jena.shared.JenaException;
 import com.hp.hpl.jena.shared.Lock;
 import com.hp.hpl.jena.shared.LockMutex;
 
+import com.hp.hpl.jena.query.Dataset;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.joseki.*;
@@ -24,12 +26,30 @@ public abstract class ProcessorBase implements Processor
     Lock lock = new LockMutex() ;   // Default and safe choice
     
     /** Execute a operation, providing a lock */ 
-    public void exec(Request request, Response response, DatasetDesc datasetDesc) throws ExecutionException
+    public void exec(Request request, Response response, final DatasetDesc datasetDesc) throws ExecutionException
     {
         Lock thisLock = lock ;
+        boolean transactions = false ;
+        Model defaultModel = null ;
         
-        if ( datasetDesc != null && datasetDesc.getDataset() != null )
-            thisLock = datasetDesc.getDataset().getLock() ;
+        final Dataset dataset = (datasetDesc==null) ? null : datasetDesc.acquireDataset(request, response) ;
+        if ( dataset != null )
+        {
+            ResponseCallback cbLock = new ResponseCallback() {
+                public void callback()
+                {
+                    log.debug("ResponseCallback: return dataset to pool") ;
+                    datasetDesc.returnDataset(dataset) ;
+                }} ;
+            response.addCallback(cbLock) ;
+            thisLock = dataset.getLock() ;
+            // Transactions - if and only if there is a default model supporting transactions
+            defaultModel = dataset.getDefaultModel() ;
+            transactions = defaultModel.supportsTransactions() ;
+        }
+        
+//        if ( datasetDesc != null && datasetDesc.getDataset() != null )
+//            thisLock = datasetDesc.getDataset().getLock() ;
         
         final Lock operationLock = thisLock ;
         
@@ -38,16 +58,9 @@ public abstract class ProcessorBase implements Processor
         if ( op.equals(Joseki.OP_UPDATE) )
             lockType = Lock.WRITE ;
         
-        Model defaultModel = null ;
-        if ( datasetDesc != null && datasetDesc.getDataset() != null )
-            defaultModel = datasetDesc.getDataset().getDefaultModel() ;
-        
-        // Transactions - if and only if there is a default model supporting transactions
-        
-        boolean transactions = ( defaultModel != null && defaultModel.supportsTransactions() ) ;
         boolean needAbort = false ;     // Need to clear up?
         
-        // Add a callback to undo all done actions
+        // -- Add callbacks to undo all done actions
         operationLock.enterCriticalSection(lockType) ;
         ResponseCallback cbLock = new ResponseCallback() {
             public void callback()
@@ -73,11 +86,11 @@ public abstract class ProcessorBase implements Processor
         }
 
         try {
-            execOperation(request, response, datasetDesc) ;
+            execOperation(request, response, dataset) ;
         } catch (ExecutionException ex)
         {
             // Looking bad - abort the transaction, release the lock.
-            if ( needAbort )
+            if ( needAbort && transactions )
                 defaultModel.abort();
             operationLock.leaveCriticalSection() ;
             throw ex ; 
@@ -86,7 +99,7 @@ public abstract class ProcessorBase implements Processor
         catch (JenaException ex)
         {
             // Looking bad - abort the transaction, release the lock.
-            if ( needAbort )
+            if ( needAbort && transactions )
                 defaultModel.abort();
             operationLock.leaveCriticalSection() ;
             log.warn("Internal error - unexpected exception: ", ex) ;
@@ -101,7 +114,7 @@ public abstract class ProcessorBase implements Processor
     }
     
     /** Execute an operation within a lock and/or a transaction (on the default model) */ 
-    public abstract void execOperation(Request request, Response response, DatasetDesc datasetDesc)
+    public abstract void execOperation(Request request, Response response, Dataset defaultDataset)
     throws ExecutionException ;
 }
 
