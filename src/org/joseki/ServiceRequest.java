@@ -6,8 +6,13 @@
 
 package org.joseki;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 public class ServiceRequest
 {
+    private static Log log = LogFactory.getLog(ServiceRequest.class) ;
+    
     private DatasetDesc datasetDesc ;
     private Processor processor ;
 
@@ -17,14 +22,21 @@ public class ServiceRequest
         this.processor = processor ; 
     }
 
-    public void start() { }
+    public void start()
+    {
+        // Pooling for DatasetDesc
+        log.info("ServiceRequest.start") ;
+    }
     
     public void exec(Request request, Response response) throws ExecutionException
     {
         processor.exec(request, response, datasetDesc) ;
     }
     
-    public void finish() { }
+    public void finish()
+    {
+        log.info("ServiceRequest.finish") ;
+    }
 }
 
 /*

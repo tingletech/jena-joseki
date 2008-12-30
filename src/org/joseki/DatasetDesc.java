@@ -23,7 +23,7 @@ public class DatasetDesc
     public DatasetDesc(Resource datasetRoot) { this.datasetRoot = datasetRoot ; }
     
     /** Drop any dataset to free system resources */ 
-    public void freeDataset() { dataset = null ; }
+    public void __freeDataset() { dataset = null ; }
     
     public Resource getResource() { return datasetRoot ; }
     

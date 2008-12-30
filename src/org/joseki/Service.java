@@ -11,28 +11,38 @@ public class Service
     String serviceRef ;
     Processor processor ;
     boolean available ;
-    DatasetDesc dataset ;
+    DatasetDesc datasetDesc ;
     
-    public Service(Processor proc, String ref, DatasetDesc dataset)
+    public Service(Processor proc, String ref, DatasetDesc datasetDesc)
     {
         this.serviceRef = canonical(ref) ; 
         this.processor = proc ;
-        this.dataset = dataset ;
+        this.datasetDesc = datasetDesc ;
         this.available = true ;
     }
     
-    public void exec(Request request, Response response) throws ExecutionException
+
+    public ServiceRequest startRequest() throws ExecutionException
     {
         if ( ! isAvailable() )
             throw new ExecutionException(ReturnCodes.rcServiceUnavailable, "Service is not currently available") ;
-        processor.exec(request, response, dataset) ;
+        return new ServiceRequest(processor, datasetDesc) ;
     }
+
+    
+    // Replace by service request
+//    public void exec(Request request, Response response) throws ExecutionException
+//    {
+//        if ( ! isAvailable() )
+//            throw new ExecutionException(ReturnCodes.rcServiceUnavailable, "Service is not currently available") ;
+//        processor.exec(request, response, dataset) ;
+//    }
     
     public boolean isAvailable() { return available ; } 
     public void setAvailability(boolean availability) { available = availability ; }
     
     public String getRef() { return "<"+serviceRef+">" ; }
-    public DatasetDesc getDatasetDesc() { return dataset ; }
+    public DatasetDesc getDatasetDesc() { return datasetDesc ; }
     
     @Override
     public String toString()

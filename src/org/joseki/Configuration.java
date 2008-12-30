@@ -40,7 +40,7 @@ import com.hp.hpl.jena.vocabulary.RDFS;
 
 public class Configuration
 {
-    static Log log = LogFactory.getLog(Configuration.class) ;
+    private static Log log = LogFactory.getLog(Configuration.class) ;
     
     Loader loader = new Loader() ;
     Model confModel ;

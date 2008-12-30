@@ -47,7 +47,15 @@ public class Dispatcher
                 throw new ExecutionException(ReturnCodes.rcServiceUnavailable, "Service <"+serviceURI+"> unavailable") ;
             }
     
-            service.exec(request, response) ;
+            final ServiceRequest serviceRequest = service.startRequest() ;
+            serviceRequest.start() ;
+            ResponseCallback cb = new ResponseCallback(){
+                public void callback()
+                {
+                    serviceRequest.finish() ;
+                }} ;
+            response.addCallback(cb) ;
+            serviceRequest.exec(request, response) ;
             response.sendResponse() ;
         }
         catch (ExecutionException ex)

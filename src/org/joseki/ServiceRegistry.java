@@ -10,33 +10,16 @@ import java.util.* ;
 
 /** 
  * @author Andy Seaborne
- * @version $Id: ServiceRegistry.java,v 1.9 2008-12-28 19:51:04 andy_seaborne Exp $
+ * @version $Id: ServiceRegistry.java,v 1.10 2008-12-30 18:34:57 andy_seaborne Exp $
  */
 
 public class ServiceRegistry
 {
-    // Singleton
-    static private ServiceRegistry globalRegistry = null ;
-    static { init() ; }
-    
-    
     private Map<String, Service> registry = new HashMap<String, Service>() ; 
     
-    //private ServiceRegistry() { }
-    
-    //public static ServiceRegistry get() { return globalRegistry ; }
-    
-    private static void init()
-    {
-//        if ( globalRegistry == null )
-//        {
-//            globalRegistry = new ServiceRegistry() ;
-//        }
-    }
-
     public Service find(String name)
     {
-        return (Service)registry.get(name) ;
+        return registry.get(name) ;
     }
     
     public void add(String name, Service handler)
