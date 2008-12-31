@@ -33,6 +33,17 @@
     joseki:processor    joseki:ProcessorSPARQL_FixedDS ;
     .
 
+## SPARQL/Update.
+## Creation of named graph from web requests is not supported.
+
+## <#serviceUpdate>
+##     rdf:type            joseki:Service ;
+##     rdfs:label          "SPARQL/Update" ;
+##     joseki:serviceRef   "update/service" ;
+##     # dataset part
+##     joseki:dataset      <#dataset>;     # Same as service1
+##     joseki:processor    joseki:ProcessorSPARQLUpdate
+##     .
 
 ## --------------------------------------------------------------
 ## Datasets
@@ -75,6 +86,18 @@ joseki:ProcessorSPARQL_FixedDS
     # The database is safe for MRSW (multiple-reader, single-writer).
     joseki:lockingPolicy              joseki:lockingPolicyMRSW ;
     .
+
+
+joseki:ProcessorSPARQLUpdate
+    rdfs:label "SPARQL Udpate processor" ;
+    rdf:type joseki:Processor ;
+    module:implementation 
+    [   rdf:type   joseki:ServiceImpl ;
+        module:className <java:org.joseki.processors.SPARQLUpdate>
+    ] ;
+    joseki:lockingPolicy              joseki:lockingPolicyMRSW ;
+    .
+
 
 # Local Variables:        
 # tab-width: 4

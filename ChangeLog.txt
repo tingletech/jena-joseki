@@ -5,9 +5,10 @@ Joseki 3.2
 ----------
 
 + Streaming queries can now work (requires writing server initialization code for your DB) 
-+ Initial support for SPARQL/Update.
++ Initial support for SPARQL/Update.  Graphs can be updated, but not created, from the web side.
 + Complete integration with SDB
-+ Upgraded to ARQ 2.4, Jena-2.5.6, lucene-core-3.2.1.jar and many other jars.
++ Complete integration with TDB
++ Upgraded to ARQ 2.6.0, Jena-2.5.7, lucene-core-3.2.1.jar and many other jars.
 + Upgraded Jetty to 6.1
 
 Joseki 3.1

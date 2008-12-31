@@ -18,7 +18,7 @@ import org.joseki.*;
 
 /** The servlet class.
  * @author  Andy Seaborne
- * @version $Id: Servlet.java,v 1.33 2008-12-28 19:51:04 andy_seaborne Exp $
+ * @version $Id: Servlet.java,v 1.34 2008-12-31 18:24:16 andy_seaborne Exp $
  */
 
 public class Servlet extends HttpServlet
@@ -87,7 +87,8 @@ public class Servlet extends HttpServlet
         
         if ( initAttempted )
         {
-            log.info("Re-initialization of servlet attempted") ;
+            // This happens - the query and update servlets share this class
+            //log.info("Re-initialization of servlet attempted") ;
             return ;
         }
 

@@ -7,6 +7,12 @@
 package org.joseki.processors;
 
 
+import java.lang.reflect.Method;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.joseki.*;
+
 import com.hp.hpl.jena.rdf.model.Model;
 
 import com.hp.hpl.jena.shared.JenaException;
@@ -14,10 +20,6 @@ import com.hp.hpl.jena.shared.Lock;
 import com.hp.hpl.jena.shared.LockMutex;
 
 import com.hp.hpl.jena.query.Dataset;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.joseki.*;
 
 
 public abstract class ProcessorBase implements Processor
@@ -60,7 +62,7 @@ public abstract class ProcessorBase implements Processor
         
         boolean needAbort = false ;     // Need to clear up?
         
-        // -- Add callbacks to undo all done actions
+        // -- Add callbacks
         operationLock.enterCriticalSection(lockType) ;
         ResponseCallback cbLock = new ResponseCallback() {
             public void callback()
@@ -70,10 +72,11 @@ public abstract class ProcessorBase implements Processor
             }} ;
         response.addCallback(cbLock) ;
         
+        // Always add - TDB supports .commit.
         if ( transactions )
         {
-            defaultModel.begin();
             needAbort = true ;
+            try { defaultModel.begin(); } catch (UnsupportedOperationException ex) { needAbort = false ; }
             final Model m = defaultModel ;
             ResponseCallback cb = new ResponseCallback() {
                 public void callback()
@@ -83,6 +86,24 @@ public abstract class ProcessorBase implements Processor
                     catch (Exception ex) { log.info("Exception on commit: "+ex.getMessage()) ; }
                 }} ;
             response.addCallback(cb) ;
+        } else {
+            // --------
+            // Long term - migrate Sync to ARQ and Commit or Sync on datasets
+            // For now (to avoid a version bump), do a reflection call.
+            if ( dataset != null )
+            {
+                ResponseCallback cb = new ResponseCallback() {
+                    public void callback()
+                    {
+                        log.debug("ResponseCallback: sync") ;
+                        if ( attemptSync(dataset.asDatasetGraph()) )
+                            log.debug("ResponseCallback: sync/done") ;
+                        else
+                            log.debug("ResponseCallback: sync (no action)") ;
+                    }} ;
+                response.addCallback(cb) ;
+            }
+            // --------
         }
 
         try {
@@ -106,6 +127,26 @@ public abstract class ProcessorBase implements Processor
             throw ex ; 
         }
         
+    }
+    
+    private static boolean attemptSync(Object object)
+    {
+        // Attempt "sync(boolean)"
+        try
+        {
+            Method syncMethod = object.getClass().getMethod("sync", new Class<?>[]{Boolean.TYPE}) ;
+            if ( syncMethod != null )
+            {
+                syncMethod.invoke(object, true) ;
+                return true ;
+            }
+            return false;
+        } catch (NoSuchMethodException ex) { return false ; }
+        catch (Exception ex)
+        {
+            log.warn("Failed to call 'sync'", ex) ;
+            return false ;
+        }
     }
 
     public void setLock(Lock lock)

@@ -62,14 +62,15 @@ public class SPARQLUpdate extends ProcessorBase implements Loadable
         ParserSPARQLUpdate p = new ParserSPARQLUpdate() ;
         UpdateRequest updateRequest = new UpdateRequest() ;
         p.parse(updateRequest, in) ;
+        // This clones the dataset, then changes to the dataset are not visible later (e.g. graph create/delete)
         GraphStore graphStore = GraphStoreFactory.create(dataset) ;
         
         UpdateProcessor uProc = UpdateFactory.create(updateRequest, graphStore) ;
         try { uProc.execute() ; response.setOK() ; }
         catch (Exception ex)
         {
-            ExecutionException execEx = new ExecutionException(ReturnCodes.rcUpdateExecutionFailure,"Update failed") ;
-            response.sendException(execEx) ;
+            ExecutionException execEx = new ExecutionException(ReturnCodes.rcUpdateExecutionFailure,"Update failed ("+ex.getMessage()+")") ;
+            throw execEx ;
         }
     }
 }
