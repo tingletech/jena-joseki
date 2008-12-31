@@ -4,10 +4,11 @@ Joseki3
 Joseki 3.2
 ----------
 
++ Java6 now required to run Joseki.
 + Streaming queries can now work (requires writing server initialization code for your DB) 
 + Initial support for SPARQL/Update.  Graphs can be updated, but not created, from the web side.
-+ Complete integration with SDB
-+ Complete integration with TDB
++ Integration with SDB (see joseki-config-sdb.ttl)
++ Integration with TDB (see joseki-config-tdb.ttl)
 + Upgraded to ARQ 2.6.0, Jena-2.5.7, lucene-core-3.2.1.jar and many other jars.
 + Upgraded Jetty to 6.1
 

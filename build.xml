@@ -6,9 +6,9 @@
     <!-- The major and minor version numbers  -->
 	
     <property name="version-major"     value="3"/>
-    <property name="version-minor"     value="2"/>
-    <property name="version-revision"  value="2"/>
-    <property name="version-status"    value=""/>
+    <property name="version-minor"     value="3"/>
+    <property name="version-revision"  value="0"/>
+    <property name="version-status"    value="-rc1"/>
     <property name="version"
   	            value="${version-major}.${version-minor}.${version-revision}${version-status}"/>
 
@@ -21,8 +21,8 @@
     <property name="java.debuglevel" value="source,lines"/>
     <property name="java.deprecation"   value="false"/>
     <property name="java.optimize"   value="true"/>
-    <property name="java.source"     value="1.4"/>
-    <property name="java.target"     value="1.4"/>
+    <property name="java.source"     value="1.6"/>
+    <property name="java.target"     value="1.6"/>
 
     <property name="src.build.dir"         value="bldsrc"/>
     <property name="classes.build.dir"     value="bldbin"/>
