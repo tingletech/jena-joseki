@@ -37,6 +37,7 @@
       <artifactId>arq</artifactId>
       <version>2.6.0</version>
 
+      <!-- See below -->
       <exclusions>
         <exclusion>
           <groupId>woodstox</groupId>
@@ -46,13 +47,28 @@
 
     </dependency>
 
-    <dependency>
+   <dependency>
       <groupId>com.hp.hpl.jena</groupId>
       <artifactId>arq-extra</artifactId>
       <version>2.6.0</version>
     </dependency>
 
-    <!-- No pom in Maven repo1 as "woodstox"
+    <!-- Jena -->
+    <!--
+    <dependency>
+      <groupId>com.hp.hpl.jena</groupId>
+      <artifactId>jena</artifactId>
+      <version>2.5.7</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.hp.hpl.jena</groupId>
+      <artifactId>jenatest</artifactId>
+      <version>2.5.7</version>
+    </dependency>
+    -->
+
+    <!-- No pom in Maven repo1 as "woodstox" (there is the jar there)
 	 and for "org.codehaus.woodstox : The POM groupId is "woodstox"
 	 ARQ has it as woodstox (makes Ivy and Maven work - although Maven reloads each time
     -->
@@ -62,7 +78,6 @@
       <version>3.0.0</version>
     </dependency>
 
-    <!-- But this is a dependency of jenatest (from arq-extra).  Why is it needed again? -->
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
@@ -75,7 +90,6 @@
       <version>6.1.10</version>
     </dependency>    
 
-    <!-- Jena dependencies, needed for Joseki compilation  -->
     <dependency>
       <groupId>commons-logging</groupId>
       <artifactId>commons-logging</artifactId>
@@ -164,6 +178,5 @@
       <layout>default</layout>
     </repository>
   </distributionManagement>
-
 
 </project>
