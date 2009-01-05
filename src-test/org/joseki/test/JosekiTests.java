@@ -11,7 +11,7 @@ import junit.framework.TestSuite;
 
 /** 
  * @author Andy Seaborne
- * @version $Id: JosekiTests.java,v 1.9 2008-12-28 19:51:04 andy_seaborne Exp $
+ * @version $Id: JosekiTests.java,v 1.1 2009-01-05 17:46:00 andy_seaborne Exp $
  */
 
 public class JosekiTests extends TestSuite

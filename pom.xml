@@ -53,8 +53,10 @@
       <version>2.6.0</version>
     </dependency>
 
-    <!-- Jena -->
-    <!--
+    <!-- Jena: Even though ARQ is included above, need Jena dependency to 
+	 pull in all Jena's dependences to run tests
+    -->
+
     <dependency>
       <groupId>com.hp.hpl.jena</groupId>
       <artifactId>jena</artifactId>
@@ -66,7 +68,6 @@
       <artifactId>jenatest</artifactId>
       <version>2.5.7</version>
     </dependency>
-    -->
 
     <!-- No pom in Maven repo1 as "woodstox" (there is the jar there)
 	 and for "org.codehaus.woodstox : The POM groupId is "woodstox"
@@ -113,6 +114,7 @@
 
   <build>
     <sourceDirectory>src</sourceDirectory>
+    <testSourceDirectory>src-test</testSourceDirectory>
 
     <plugins>
       <plugin>
@@ -142,16 +144,17 @@
 	<groupId>org.apache.maven.plugins</groupId>
 	<artifactId>maven-surefire-plugin</artifactId>
 	<configuration>
+	  <!-- Getting to the test resources not sorted out -->
 	  <skip>true</skip>
 	  <includes>
-	    <!-- Does not work - no tests are called.  The code is not in the test area currently.  -->
 	    <include>org/joseki/test/JosekiTests.java</include>
-	    <include>org/joseki/test/ProtocolTests.java</include>
+	    <!-- Needs access to the script files -->
+	    <!-- <include>org/joseki/test/ProtocolTests.java</include> -->
 	  </includes>
 	</configuration>
       </plugin>
 
-      <!-- No javadoc shipped (it's not a library!
+      <!-- No javadoc shipped (it's not a library!)
       <plugin>
 	<groupId>org.apache.maven.plugins</groupId>
 	<artifactId>maven-javadoc-plugin</artifactId>

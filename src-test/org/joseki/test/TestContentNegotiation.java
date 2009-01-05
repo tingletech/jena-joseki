@@ -13,7 +13,7 @@ import junit.framework.TestCase;
 /** org.joseki.server.http.TestContentNegotiation
  * 
  * @author Andy Seaborne
- * @version $Id: TestContentNegotiation.java,v 1.8 2008-12-28 19:51:04 andy_seaborne Exp $
+ * @version $Id: TestContentNegotiation.java,v 1.1 2009-01-05 17:46:00 andy_seaborne Exp $
  */
 
 public class TestContentNegotiation extends TestCase
