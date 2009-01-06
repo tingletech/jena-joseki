@@ -5,6 +5,6 @@
 
 [] lm:mapping
    [ lm:prefix "http://www.w3.org/2001/sw/DataAccess/proto-tests/data/" ;
-     lm:altPrefix "file:testing/DAWG/" ] ,
+     lm:altPrefix "file:testing/DAWG/" ]
    .
 

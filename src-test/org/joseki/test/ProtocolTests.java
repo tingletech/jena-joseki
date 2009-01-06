@@ -6,19 +6,19 @@
 
 package org.joseki.test;
 
-import com.hp.hpl.jena.rdf.model.Model;
-import com.hp.hpl.jena.util.FileManager;
-import com.hp.hpl.jena.util.LocationMapper;
-
-
 import junit.extensions.TestSetup;
-import junit.framework.*;
-
+import junit.framework.Test;
+import junit.framework.TestCase;
+import junit.framework.TestSuite;
 import org.apache.log4j.Level;
 import org.apache.log4j.LogManager;
 import org.joseki.RDFServer;
 import org.joseki.junit.ProtocolTestSuiteFactory;
 import org.joseki.util.RunUtils;
+
+import com.hp.hpl.jena.rdf.model.Model;
+import com.hp.hpl.jena.util.FileManager;
+import com.hp.hpl.jena.util.LocationMapper;
 
 
 public class ProtocolTests extends TestCase

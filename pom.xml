@@ -144,7 +144,6 @@
 	<groupId>org.apache.maven.plugins</groupId>
 	<artifactId>maven-surefire-plugin</artifactId>
 	<configuration>
-	  <!-- Getting to the test resources not sorted out -->
 	  <skip>true</skip>
 	  <includes>
 	    <include>org/joseki/test/JosekiTests.java</include>

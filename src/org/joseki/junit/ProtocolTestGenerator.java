@@ -116,7 +116,7 @@ public class ProtocolTestGenerator implements ManifestItemHandler
         
         // ---- default graph / protocol
         if ( dataset == null && svcDataset == null )
-            System.out.println("No dataset and no service dataset") ;
+            System.err.println(test.getName()+": No dataset and no service dataset") ;
 
         parseDataset(test, dataset) ;
         testSuite.addTest(test) ;
