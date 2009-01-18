@@ -17,7 +17,7 @@ import org.mortbay.util.MultiException;
 
 /** Standalone server.
  * 
- * @version $Id: RDFServer.java,v 1.20 2008-12-28 19:51:04 andy_seaborne Exp $
+ * @version $Id: RDFServer.java,v 1.21 2009-01-18 19:02:19 andy_seaborne Exp $
  * @author  Andy Seaborne
  */
 
@@ -171,7 +171,7 @@ public class RDFServer
         } catch (MultiException ex)
         {
             @SuppressWarnings("unchecked")
-            List<Throwable> exs = (List<Throwable>)ex.getThrowables() ;
+            List<Throwable> exs = ex.getThrowables() ;
             java.net.BindException bindException = null ;
             for ( Throwable ex2 : exs )
             {

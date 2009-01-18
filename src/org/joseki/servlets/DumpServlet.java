@@ -135,7 +135,7 @@ public class DumpServlet extends HttpServlet
             {
                 // To do: create a string for the output so can send to console and return it.
                 @SuppressWarnings("unchecked")
-                Enumeration<String> en = (Enumeration<String>)req.getHeaderNames() ;
+                Enumeration<String> en = req.getHeaderNames() ;
 
                 for ( ; en.hasMoreElements() ; )
                 {
@@ -146,7 +146,7 @@ public class DumpServlet extends HttpServlet
             }
             
             @SuppressWarnings("unchecked")
-            Enumeration<String> en2 = (Enumeration<String>)req.getAttributeNames() ;
+            Enumeration<String> en2 = req.getAttributeNames() ;
             if ( en2.hasMoreElements() )
                 pw.println();
             for ( ; en2.hasMoreElements() ; )
@@ -201,7 +201,7 @@ public class DumpServlet extends HttpServlet
             }
             
             @SuppressWarnings("unchecked")
-            Enumeration<Locale> en = (Enumeration<Locale>)req.getLocales() ;
+            Enumeration<Locale> en = req.getLocales() ;
             if ( en.hasMoreElements() )
                 pw.println();
             for ( ; en.hasMoreElements() ; )
@@ -299,7 +299,7 @@ the value has
         
         {
             @SuppressWarnings("unchecked")
-            Enumeration<String> en = (Enumeration<String>)sc.getInitParameterNames();
+            Enumeration<String> en = sc.getInitParameterNames();
             if (en != null) {
                 pw.println("initParameters: ");
                 while(en.hasMoreElements())
@@ -312,7 +312,7 @@ the value has
         
         {
             @SuppressWarnings("unchecked")
-            Enumeration<String> en = (Enumeration<String>)sc.getAttributeNames();
+            Enumeration<String> en = sc.getAttributeNames();
             if (en != null) {
                 pw.println("attributes: ");
                 while(en.hasMoreElements())

@@ -1,0 +1,27 @@
+jars
+
+javadoc??
+
+doc/*??
+
+sourcecode
+
+
+
+CopyrightNotice.txt
+
+README.xml
+
+pom.xml
+
+joseki-config*.ttl
+
+etc/*
+
+Data/*
+
+Skeleton web app
+
+        <copy todir="${dist.dir}/${webapps.deploy.dir}">
+          <fileset dir="${webapps.build.dir}" />
+        </copy>

@@ -12,7 +12,7 @@ import java.util.*;
 
 /** General Request 
  * @author      Andy Seaborne
- * @version     $Id: Request.java,v 1.10 2008-12-28 19:51:04 andy_seaborne Exp $
+ * @version     $Id: Request.java,v 1.11 2009-01-18 19:02:19 andy_seaborne Exp $
  */
 public class Request
 {
@@ -38,7 +38,7 @@ public class Request
         List<String> x = getParamsOrNull(param) ;
         if ( x == null )
             return null ;
-        return (String)x.get(0);
+        return x.get(0);
     }
     
     public List<String> getParams(String param)

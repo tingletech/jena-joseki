@@ -453,7 +453,7 @@ public class SPARQL extends ProcessorBase implements Loadable
     {
         for ( Iterator<String> iter = strList.iterator() ; iter.hasNext(); )
         {
-            String v = (String)iter.next();
+            String v = iter.next();
             if ( v.equals("") ) 
                 iter.remove() ;
         }

@@ -18,7 +18,7 @@ import org.joseki.*;
 
 /** The servlet class.
  * @author  Andy Seaborne
- * @version $Id: Servlet.java,v 1.34 2008-12-31 18:24:16 andy_seaborne Exp $
+ * @version $Id: Servlet.java,v 1.35 2009-01-18 19:02:19 andy_seaborne Exp $
  */
 
 public class Servlet extends HttpServlet
@@ -201,7 +201,7 @@ public class Servlet extends HttpServlet
         Request request = new Request(serviceURI, null) ;
         // params => request items
         @SuppressWarnings("unchecked")
-        Enumeration<String> en = (Enumeration<String>)httpRequest.getParameterNames() ;
+        Enumeration<String> en = httpRequest.getParameterNames() ;
         
         for ( ; en.hasMoreElements() ; )
         {
@@ -318,7 +318,7 @@ public class Servlet extends HttpServlet
             String tmp = servletConfig.getServletName() ;
             log.trace("Servlet = " + (tmp != null ? tmp : "<null>"));
             @SuppressWarnings("unchecked")
-            Enumeration<String> en = (Enumeration<String>)servletConfig.getInitParameterNames();
+            Enumeration<String> en = servletConfig.getInitParameterNames();
             
             for (; en.hasMoreElements();)
             {
@@ -335,7 +335,7 @@ public class Servlet extends HttpServlet
 
             // NB This servlet may not have been loaded as part of a web app
             @SuppressWarnings("unchecked")
-            Enumeration<String> en = (Enumeration<String>)servletContext.getInitParameterNames();
+            Enumeration<String> en = servletContext.getInitParameterNames();
             for (;en.hasMoreElements();)
             {
                 String s = en.nextElement();
