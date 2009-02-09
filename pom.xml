@@ -8,7 +8,7 @@
   <artifactId>joseki</artifactId>
   <packaging>jar</packaging>
   <name>Joseki</name>
-  <version>3.3-SNAPSHOT</version>
+  <version>3.3.0-SNAPSHOT</version>
   <description/>
   <url>http://joseki.org/</url>
 
@@ -132,7 +132,7 @@
 	<executions> 
 	  <execution>
 	    <id>attach-sources</id>
-	    <phase>package</phase>
+	    <phase>verify</phase>
 	    <goals>
 	      <goal>jar</goal>
 	    </goals>
@@ -152,6 +152,7 @@
 	  </includes>
 	</configuration>
       </plugin>
+      
 
       <!-- No javadoc shipped (it's not a library!)
       <plugin>
@@ -173,9 +174,9 @@
       
   <distributionManagement>
     <repository>
-      <uniqueVersion>false</uniqueVersion>
       <id>jena-repo-dev</id>
       <name>Jena development repo</name>
+      <!-- scp does not work (TERM not set !!) -->
       <url>sftp://jena.hpl.hp.com/var/repo-dev</url>
       <layout>default</layout>
     </repository>
