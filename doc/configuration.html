@@ -80,4 +80,36 @@ processor implemented by a module that is a dynamically loaded Java class.&nbsp;
     joseki:lockingPolicy joseki:lockingPolicyNone ;<br>    .<br><br>joseki:ProcessorSPARQL_FixedDS<br>    rdf:type                     joseki:Processor ;<br>    rdfs:label                   "SPARQL processor for fixed datasets" ;<br>    module:implementation        joseki:ImplSPARQL ;<br>    # This processor does not accept queries with FROM/FROM NAMED<br>    joseki:allowExplicitDataset  "false"^^xsd:boolean ;<br>    joseki:allowWebLoading       "false"^^xsd:boolean ;
     # Fixed background dataset : multiple read requests are OK
     joseki:lockingPolicy joseki:lockingPolicyMRSW ;<br> .<br><br>joseki:ImplSPARQL<br>    rdf:type          joseki:ServiceImpl ;<br>    module:className  &lt;java:org.joseki.processors.SPARQL&gt; .<br><br># For Emacs:<br># Local Variables:<br># tab-width: 4<br># indent-tabs-mode: nil<br># End:<br></pre><p></p>
+
+
+<h3 name="pool" id="pool">Dataset Pooling</h3>
+
+<p>Joseki supports pooling of datasets so that there can be multiple queries
+outstanding and in progress on the the same service endpoint.  This is useful for
+use with SDB where it results in multiple JDBC connections to the underlying
+SQL database.  Because results stream in Joseki, when a request returns from
+the HTTP request, the results of the query may not have been compleetly sent.
+The client has access to the start of the results from the HTTP response 
+stream and will continue to consume results as Joseki streams them.  Joseki
+cleans up aclass="box"ny transactions or locks allocated then returns the dataset to the
+pool for reuse.</p>
+
+<p>A pool is created use the <tt>joseki:poolSize</tt> property on the dataset:</p>
+
+<pre class="box">
+&lt;#dataset&gt; rdf:type ja:RDFDataset ;
+    joseki:poolSize     5 ;
+    ...</pre>
+
+<p>and for SDB that is the <tt>sdb:DatasetStore</tt> (a subclass of <tt>ja:RDFDataset</tt>).</p>
+
+<pre class="box">
+&lt;#sdb&gt; rdf:type sdb:DatasetStore ;
+    joseki:poolSize     5 ;
+    sdb:store &lt;#store&gt; .
+
+&lt;#store&gt; rdf:type sdb:Store  ;
+    rdfs:label "SDB" ;
+    ...</pre>
+
 </body></html>
