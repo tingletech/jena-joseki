@@ -42,7 +42,7 @@
 ## --------------------------------------------------------------
 ## Services
 
-## Services are best described by a blank node - it's the
+## Services are the points that request are sent to.
 ## serviceRef that will be used to match requests to services,
 ## not some resource URI for the description.
 
