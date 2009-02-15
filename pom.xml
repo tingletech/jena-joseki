@@ -168,6 +168,39 @@
 	</executions>
       </plugin>
       -->
+
+      <plugin>
+	<artifactId>maven-assembly-plugin</artifactId>
+	<version>2.2-beta-3</version>
+
+	<configuration>
+	  <descriptors>
+	    <descriptor>assembly.xml</descriptor>
+	  </descriptors>
+        </configuration>
+
+	<!--
+	<executions>
+	  <execution>
+	    <id>create-executable-jar</id>
+	    <phase>package</phase>
+	    <goals>
+	      <goal>single</goal>
+	    </goals>
+	    <configuration>
+
+
+	      <descriptorRefs>
+		<descriptorRef>
+		  jar-with-dependencies
+		</descriptorRef>
+	      </descriptorRefs>
+	    </configuration>
+	  </execution>
+	</executions>
+	-->
+      </plugin>
+
     </plugins>
 
   </build>

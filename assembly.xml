@@ -1,3 +1,44 @@
+<assembly>
+  <id>dist</id>
+  <formats>
+    <!--
+    <format>tar.gz</format>
+    <format>tar.bz2</format>
+    -->
+    <format>zip</format>
+  </formats>
+  <fileSets>
+
+    <fileSet>
+      <includes>
+        <include>README*</include>
+        <include>ChangeLog.txt</include>
+      </includes>
+    </fileSet>
+
+    <fileSet>
+      <directory>src</directory>
+      <useDefaultExcludes>true</useDefaultExcludes>
+    </fileSet>
+
+    <fileSet>
+      <directory>${project.build.directory}</directory>
+      <includes>
+        <include>*.jar</include>
+      </includes>
+    </fileSet>
+
+    <fileSet>
+      <directory>doc</directory>
+      <includes>
+        <include>*.html</include>
+      </includes>
+    </fileSet>
+    
+
+  </fileSets>
+
+<!--
 jars
 
 javadoc??
@@ -25,3 +66,6 @@ Skeleton web app
         <copy todir="${dist.dir}/${webapps.deploy.dir}">
           <fileset dir="${webapps.build.dir}" />
         </copy>
+-->
+
+</assembly>
