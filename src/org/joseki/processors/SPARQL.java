@@ -53,7 +53,7 @@ public class SPARQL extends ProcessorBase implements Loadable
     {
     }
     
-    public void init(Resource service, Resource implementation)
+    public void init(Resource processor, Resource implementation)
     {
         log.info("SPARQL processor") ;
         
@@ -64,20 +64,20 @@ public class SPARQL extends ProcessorBase implements Loadable
         // Only know how to handle http URLs 
         fileManager.addLocatorURL() ;
         
-        if ( service.hasProperty(allowDatasetDescP, XSD_TRUE) )
+        if ( processor.hasProperty(allowDatasetDescP, XSD_TRUE) )
             allowDatasetDesc = true ;
-        if ( service.hasProperty(allowWebLoadingP, XSD_TRUE) )
+        if ( processor.hasProperty(allowWebLoadingP, XSD_TRUE) )
             allowWebLoading = true ;
 
-        if ( ! service.hasProperty(JosekiVocab.lockingPolicy) )
+        if ( ! processor.hasProperty(JosekiVocab.lockingPolicy) )
         {
             log.info("Locking policy not declared - default to mutex") ;
             setLock(new LockMutex()) ;
         }
         
-        if ( service.hasProperty(JosekiVocab.lockingPolicy) )
+        if ( processor.hasProperty(JosekiVocab.lockingPolicy) )
         {
-            RDFNode policy = service.getProperty(JosekiVocab.lockingPolicy).getObject() ;
+            RDFNode policy = processor.getProperty(JosekiVocab.lockingPolicy).getObject() ;
 
             if ( ! policy.isURIResource() )
             {
