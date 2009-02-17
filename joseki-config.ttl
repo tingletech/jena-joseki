@@ -117,7 +117,6 @@
       ] ;
     .
 
-
 <#mem>  rdf:type ja:RDFDataset ;
     rdfs:label "MEM" ;
     ja:defaultGraph [ a ja:MemoryModel ] ;

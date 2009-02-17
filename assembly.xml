@@ -1,5 +1,6 @@
 <assembly>
   <id>dist</id>
+  <baseDirectory>Joseki-3.3.0-assembly</baseDirectory>
   <formats>
     <!--
     <format>tar.gz</format>
@@ -11,9 +12,25 @@
 
     <fileSet>
       <includes>
+        <include>CopyrightNotice.txt</include>
         <include>README*</include>
         <include>ChangeLog.txt</include>
       </includes>
+    </fileSet>
+
+    <fileSet>
+      <outputDirectory></outputDirectory>
+      <includes>
+	<include>joseki-config.ttl</include>
+	<include>joseki-config-example.ttl</include>
+	<include>joseki-config-tdb.ttl</include>
+	<include>joseki-config-sdb.ttl</include>
+	<include>sdb.ttl</include>
+      </includes>
+    </fileSet>
+
+    <fileSet>
+      <directory>webapps</directory>
     </fileSet>
 
     <fileSet>
@@ -23,18 +40,37 @@
 
     <fileSet>
       <directory>${project.build.directory}</directory>
+      <outputDirectory>lib</outputDirectory>
       <includes>
         <include>*.jar</include>
       </includes>
     </fileSet>
 
     <fileSet>
+      <directory>lib</directory>
+      <outputDirectory>lib</outputDirectory>
+      <includes>
+        <include>*.jar</include>
+      </includes>
+      <excludes>
+        <exclude>joseki*.jar</exclude>
+      </excludes>
+    </fileSet>
+    
+    <fileSet>
       <directory>doc</directory>
       <includes>
         <include>*.html</include>
       </includes>
     </fileSet>
-    
+
+    <fileSet>
+      <directory>Data</directory>
+    </fileSet>
+
+    <fileSet>
+      <directory>etc</directory>
+    </fileSet>
 
   </fileSets>
 
@@ -45,7 +81,7 @@ javadoc??
 
 doc/*??
 
-sourcecode
+includecode
 
 
 
