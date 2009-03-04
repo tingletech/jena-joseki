@@ -1,8 +1,8 @@
 Joseki3
 =======
 
-Joseki 3.2
-----------
+Joseki 3.3.0
+------------
 
 + Java6 now required to run Joseki.
 + Streaming queries can now work (requires writing server initialization code for your DB) 
