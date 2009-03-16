@@ -263,8 +263,10 @@ public class Validator extends HttpServlet
         IndentedLineBuffer buff = new IndentedLineBuffer(lineNumbers) ; 
         IndentedWriter out = buff.getIndentedWriter() ;
         content.print(out) ;
-        out.flush() ;        
-        outStream.print(htmlQuote(buff.asString())) ;
+        out.flush() ;  
+        String x = htmlQuote(buff.asString()) ;
+        byte b[] = x.getBytes("UTF-8") ;
+        outStream.write(b) ; ;
         finishFixed(outStream) ;
     }
     
