@@ -1,6 +1,11 @@
 Joseki3
 =======
 
+Joseki 3.4.0
+------------
+
++ Added "output=text" for plain text (UTF-8) output for queries
+
 Joseki 3.3.0
 ------------
 
