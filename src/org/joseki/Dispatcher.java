@@ -128,6 +128,8 @@ public class Dispatcher
         ServiceRegistry tmp = new ServiceRegistry() ;
         try {
             configuration = new Configuration(fileManager, configURI, tmp) ;
+            Registry.add(RDFServer.ServiceRegistryName, tmp) ;
+            serviceRegistry = (ServiceRegistry)Registry.find(RDFServer.ServiceRegistryName) ;
             log.info("Loaded data source configuration: " + configURI);
         } catch (NotFoundException ex)
         {
@@ -139,9 +141,7 @@ public class Dispatcher
             throw new ConfigurationErrorException("RDF Exception: "+rdfEx.getMessage(), rdfEx) ;
             //return false ;
         }
-            
-        Registry.add(RDFServer.ServiceRegistryName, tmp) ;
-        serviceRegistry = (ServiceRegistry)Registry.find(RDFServer.ServiceRegistryName) ;
+
     }
 }
 
