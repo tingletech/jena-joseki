@@ -12,13 +12,12 @@ import org.apache.commons.logging.LogFactory;
 import org.mortbay.jetty.Connector;
 import org.mortbay.jetty.Server;
 import org.mortbay.jetty.nio.BlockingChannelConnector;
-import org.mortbay.jetty.nio.SelectChannelConnector;
 import org.mortbay.jetty.webapp.WebAppContext;
 import org.mortbay.util.MultiException;
 
 /** Standalone server.
  * 
- * @version $Id: RDFServer.java,v 1.22 2009-04-02 15:35:04 andy_seaborne Exp $
+ * @version $Id: RDFServer.java,v 1.23 2009-04-14 15:28:43 andy_seaborne Exp $
  * @author  Andy Seaborne
  */
 
@@ -90,8 +89,9 @@ public class RDFServer
 
             // Server, with one NIO-based connector, large input buffer size (for long URLs).
             server = new Server() ;
-            // TODO Choose which to use.
-            Connector connector = new BlockingChannelConnector() ; // SelectChannelConnector() ;
+            // Using "= new SelectChannelConnector() ;" on Darwin (OS/X) causes problems 
+            // with initialization not seen (thread scheduling?) 
+            Connector connector = new BlockingChannelConnector() ;
             connector.setPort(port);
             connector.setHeaderBufferSize(16*1024) ;
             server.addConnector(connector) ;
