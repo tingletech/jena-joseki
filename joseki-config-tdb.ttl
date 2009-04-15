@@ -53,9 +53,9 @@
 [] ja:loadClass "com.hp.hpl.jena.tdb.TDB" .
 tdb:DatasetTDB  rdfs:subClassOf  ja:RDFDataset .
 
-## ---- A whole dadaset managed by TDB
+## ---- A whole dataset managed by TDB
 <#dataset> rdf:type      tdb:DatasetTDB ;
-    tdb:location "DS-XX" ;
+    tdb:location "/home/afs/Projects/Joseki3/DS-XX" ;
     .
 
 ## ---- A single graph inside a general dataset.
