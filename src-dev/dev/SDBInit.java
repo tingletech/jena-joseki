@@ -8,13 +8,13 @@ package dev;
 
 import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.sdb.SDB;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.joseki.ServerInitialization;
 
 public class SDBInit implements ServerInitialization
 {
-    private static Log log = LogFactory.getLog(SDBInit.class) ;
+    private static Logger log = LoggerFactory.getLogger(SDBInit.class) ;
 
     public void init(Resource service, Resource implementation)
     {

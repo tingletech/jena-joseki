@@ -6,12 +6,12 @@
 
 package org.joseki;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class ServiceRequest
 {
-    private static Log log = LogFactory.getLog(ServiceRequest.class) ;
+    private static Logger log = LoggerFactory.getLogger(ServiceRequest.class) ;
     
     private final DatasetDesc datasetDesc ;
     private final Processor   processor ;

@@ -14,8 +14,8 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.joseki.*;
 
 import com.hp.hpl.jena.rdf.model.Model;
@@ -28,7 +28,7 @@ import com.hp.hpl.jena.query.ResultSetFormatter;
 
 public class ResponseHttp extends Response
 {
-    private static Log log = LogFactory.getLog(ResponseHttp.class) ;
+    private static Logger log = LoggerFactory.getLogger(ResponseHttp.class) ;
     HttpResultSerializer ser = new HttpResultSerializer() ;
     
     static AcceptItem defaultCharset      = new AcceptItem(Joseki.charsetUTF8) ;

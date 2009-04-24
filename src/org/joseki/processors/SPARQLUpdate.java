@@ -9,8 +9,8 @@ package org.joseki.processors;
 import java.io.Reader;
 import java.io.StringReader;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.joseki.*;
 import org.joseki.module.Loadable;
 
@@ -24,7 +24,7 @@ import com.hp.hpl.jena.update.*;
 
 public class SPARQLUpdate extends ProcessorBase implements Loadable
 {
-    private static Log log = LogFactory.getLog(SPARQLUpdate.class) ;
+    private static Logger log = LoggerFactory.getLogger(SPARQLUpdate.class) ;
     
     public void init(Resource service, Resource implementation)
     {}

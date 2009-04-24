@@ -9,8 +9,8 @@ package org.joseki.processors;
 
 import java.lang.reflect.Method;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.joseki.*;
 
 import com.hp.hpl.jena.rdf.model.Model;
@@ -24,7 +24,7 @@ import com.hp.hpl.jena.query.Dataset;
 
 public abstract class ProcessorBase implements Processor
 {
-    private static final Log log = LogFactory.getLog(ProcessorBase.class) ; 
+    private static final Logger log = LoggerFactory.getLogger(ProcessorBase.class) ; 
     Lock lock = new LockMutex() ;   // Default and safe choice
     
     /** Execute a operation, providing a lock */ 

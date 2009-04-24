@@ -5,7 +5,7 @@
 
 package org.joseki.module;
 
-import org.apache.commons.logging.* ;
+import org.slf4j.*;
 
 import org.joseki.vocabulary.JosekiModule ;
 import org.joseki.util.PrintUtils ;
@@ -18,12 +18,12 @@ import com.hp.hpl.jena.shared.* ;
  * Understands the RDF properties for naming and initializing a new instance. 
  * 
  * @author  Andy Seaborne
- * @version $Id: Loader.java,v 1.8 2008-12-28 19:51:05 andy_seaborne Exp $
+ * @version $Id: Loader.java,v 1.9 2009-04-24 14:30:45 andy_seaborne Exp $
  */
 
 public class Loader
 {
-    private static Log log = LogFactory.getLog(Loader.class.getName());
+    private static Logger log = LoggerFactory.getLogger(Loader.class.getName());
 
     protected static ClassLoader classLoader = chooseClassLoader() ;
 

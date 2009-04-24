@@ -5,18 +5,18 @@
 
 package org.joseki.servlets;
 
-import org.apache.commons.logging.*;
+import org.slf4j.*;
 import javax.servlet.*;
 import javax.servlet.http.*;
 import java.io.*;
 
 /**
  * @author      Andy Seaborne
- * @version     $Id: LogFilter.java,v 1.5 2008-12-28 19:51:03 andy_seaborne Exp $
+ * @version     $Id: LogFilter.java,v 1.6 2009-04-24 14:30:31 andy_seaborne Exp $
  */
 public class LogFilter implements Filter
 {
-    static Log log = LogFactory.getLog(LogFilter.class) ; 
+    static Logger log = LoggerFactory.getLogger(LogFilter.class) ; 
     
     private FilterConfig filterConfig = null;
 

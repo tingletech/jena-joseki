@@ -6,21 +6,22 @@
 
 package org.joseki.http;
 
-import javax.servlet.http.HttpServletRequest ;
-import javax.servlet.http.HttpServletResponse ;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.logging.*;
 import org.joseki.util.Convert;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /** org.joseki.server.http.HttpUtils
  * 
  * @author Andy Seaborne
- * @version $Id: HttpUtils.java,v 1.7 2008-12-28 19:51:04 andy_seaborne Exp $
+ * @version $Id: HttpUtils.java,v 1.8 2009-04-24 14:30:44 andy_seaborne Exp $
  */
 
 public class HttpUtils
 {
-    private static Log log = LogFactory.getLog(HttpUtils.class) ;
+    private static Logger log = LoggerFactory.getLogger(HttpUtils.class) ;
 
     /// Relevant headers:
     //  "Accept", "Accept-Encoding", "Accept-Charset"

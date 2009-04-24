@@ -7,8 +7,8 @@
 package org.joseki.junit;
 
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.joseki.vocabulary.TestProtocolVocab;
 
 import com.hp.hpl.jena.n3.IRIResolver;
@@ -23,7 +23,7 @@ import com.hp.hpl.jena.vocabulary.RDFS;
 public class Manifest
 {   
     // DELETE when protocol tests use same vocabulary
-    private static Log log = LogFactory.getLog(Manifest.class) ;
+    private static Logger log = LoggerFactory.getLogger(Manifest.class) ;
     String filename ;
     Model manifest ;
     String manifestName ;

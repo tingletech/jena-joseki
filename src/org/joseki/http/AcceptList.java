@@ -6,22 +6,27 @@
 
 package org.joseki.http;
 
-import java.util.* ;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Iterator;
+import java.util.List;
 
-import org.joseki.util.StringUtils ;
-import org.apache.commons.logging.*;
+import org.joseki.util.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 /** A class to handle a list of accept types (AcceptRanges)
  * 
  * @author Andy Seaborne
- * @version $Id: AcceptList.java,v 1.11 2008-12-28 19:51:04 andy_seaborne Exp $
+ * @version $Id: AcceptList.java,v 1.12 2009-04-24 14:30:44 andy_seaborne Exp $
  */
 
 public class AcceptList implements Iterable<AcceptItem> 
 {
     // Documentation at end
-    private static Log log = LogFactory.getLog(AcceptList.class) ;
+    private static Logger log = LoggerFactory.getLogger(AcceptList.class) ;
     List<AcceptItem> list ;
     
     

@@ -9,8 +9,8 @@ package org.joseki.processors;
 import java.util.Iterator;
 import java.util.List;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.joseki.*;
 import org.joseki.module.Loadable;
 import org.joseki.util.GraphUtils;
@@ -23,7 +23,7 @@ import com.hp.hpl.jena.util.FileManager;
 public class SPARQL extends ProcessorBase implements Loadable
 {
     // TODO Refactor into the stages of a query 
-    private static Log log = LogFactory.getLog(SPARQL.class) ;
+    private static Logger log = LoggerFactory.getLogger(SPARQL.class) ;
     
     static final String policyMRSW  = JosekiVocab.lockingPolicyMRSW.getURI();
     static final String policyMutex = JosekiVocab.lockingPolicyMutex.getURI();

@@ -7,17 +7,17 @@
 package org.joseki.util;
 
 import com.hp.hpl.jena.rdf.model.* ;
-import org.apache.commons.logging.* ;
+import org.slf4j.*;
 
 /** Code to format things for output 
  *  
  * @author     Andy Seaborne
- * @version    $Id: PrintUtils.java,v 1.8 2008-12-28 19:51:05 andy_seaborne Exp $
+ * @version    $Id: PrintUtils.java,v 1.9 2009-04-24 14:30:45 andy_seaborne Exp $
  */
  
 public class PrintUtils
 {
-//    static Log logger = LogFactory.getLog(PrintUtils.class) ;
+//    static Logger logger = LoggerFactory.getLogger(PrintUtils.class) ;
     
     static public String fmt(RDFNode n)
     {
@@ -36,7 +36,7 @@ public class PrintUtils
         return literal.toString() ;
     }
     
-    static public void dumpResource(Log log, Resource r)
+    static public void dumpResource(Logger log, Resource r)
     {
         
         log.info("Resource: "+fmt(r)) ;

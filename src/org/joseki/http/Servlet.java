@@ -7,7 +7,7 @@ package org.joseki.http;
 
 import java.io.IOException;
 import java.util.*;
-import org.apache.commons.logging.*;
+import org.slf4j.*;
 
 import javax.servlet.*;
 import javax.servlet.http.*;
@@ -18,7 +18,7 @@ import org.joseki.*;
 
 /** The servlet class.
  * @author  Andy Seaborne
- * @version $Id: Servlet.java,v 1.35 2009-01-18 19:02:19 andy_seaborne Exp $
+ * @version $Id: Servlet.java,v 1.36 2009-04-24 14:30:44 andy_seaborne Exp $
  */
 
 public class Servlet extends HttpServlet
@@ -26,11 +26,11 @@ public class Servlet extends HttpServlet
     private static final long serialVersionUID = 1L;  // Serializable.
     
     // Use one logger.
-    protected static Log log = null ;
+    protected static Logger log = null ;
     
     // This happens very early - check it.
     static {
-        try { log = LogFactory.getLog(Servlet.class) ; }
+        try { log = LoggerFactory.getLogger(Servlet.class) ; }
         catch (Exception ex)
         {
             System.err.println("Exception creating the logger") ;

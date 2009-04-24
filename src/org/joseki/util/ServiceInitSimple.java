@@ -9,15 +9,15 @@ package org.joseki.util;
 import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.vocabulary.RDFS;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.joseki.ServerInitialization;
 
 /** Example of a server initialization class */ 
 
 public class ServiceInitSimple implements ServerInitialization
 {
-    private static Log log = LogFactory.getLog(ServiceInitSimple.class) ;
+    private static Logger log = LoggerFactory.getLogger(ServiceInitSimple.class) ;
     
     public void init(Resource service, Resource implementation)
     {

@@ -8,7 +8,7 @@ package org.joseki.util;
 
 import java.io.File;
 
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.LoggerFactory;
 
 
 public class RunUtils
@@ -34,7 +34,7 @@ public class RunUtils
         {
             fn = "file:"+fn ;
             System.setProperty("log4j.configuration", fn) ;
-            LogFactory.getLog(RunUtils.class).debug("Setting log4j.configuration: "+fn) ;
+            LoggerFactory.getLogger(RunUtils.class).debug("Setting log4j.configuration: "+fn) ;
             return true ;
         }
         return false ;

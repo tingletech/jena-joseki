@@ -10,13 +10,13 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.LoggerFactory;
 import org.joseki.util.StringUtils ;
 
 /** A class to handle HTTP Accept types
  * 
  * @author Andy Seaborne
- * @version $Id: AcceptItem.java,v 1.8 2008-12-28 19:51:04 andy_seaborne Exp $
+ * @version $Id: AcceptItem.java,v 1.9 2009-04-24 14:30:44 andy_seaborne Exp $
  */
 
 public class AcceptItem
@@ -86,7 +86,7 @@ public class AcceptItem
                     {}
             }
             else
-                LogFactory.getLog(AcceptItem.class).warn("Duff parameter: "+x[i]+" in "+s) ;
+                LoggerFactory.getLogger(AcceptItem.class).warn("Duff parameter: "+x[i]+" in "+s) ;
         }
     }
     

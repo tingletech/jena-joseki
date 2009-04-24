@@ -10,13 +10,13 @@ import com.hp.hpl.jena.shared.JenaException;
 import com.hp.hpl.jena.shared.NotFoundException;
 import com.hp.hpl.jena.util.FileManager;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 public class Dispatcher
 {
-    private static Log log = LogFactory.getLog(Dispatcher.class) ;
+    private static Logger log = LoggerFactory.getLogger(Dispatcher.class) ;
     
     static Configuration   configuration = null ;
     static ServiceRegistry serviceRegistry = null ;
@@ -29,7 +29,7 @@ public class Dispatcher
     {
         if ( serviceRegistry == null )
         {
-            log.fatal("Service registry not initialized") ;
+            log.error("Service registry not initialized") ;
             throw new ExecutionException(ReturnCodes.rcInternalError, "Service registry not initialized") ;
         }
         
@@ -110,7 +110,7 @@ public class Dispatcher
         
         if ( configURI == null )
         {
-            log.fatal("Null for configuration URI") ;
+            log.error("Null for configuration URI") ;
             return ;
         }
         

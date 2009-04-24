@@ -9,8 +9,8 @@ package org.joseki.http;
 import java.io.InputStream;
 import javax.servlet.ServletContext;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.hp.hpl.jena.util.Locator;
 import com.hp.hpl.jena.util.FileUtils;
@@ -19,12 +19,12 @@ import com.hp.hpl.jena.util.TypedStream;
 /** org.joseki.server.LocatorServletContext
  * 
  * @author Andy Seaborne
- * @version $Id: LocatorServletContext.java,v 1.6 2008-12-28 19:51:04 andy_seaborne Exp $
+ * @version $Id: LocatorServletContext.java,v 1.7 2009-04-24 14:30:44 andy_seaborne Exp $
  */
 
 public class LocatorServletContext implements Locator
 {
-    static Log logger = LogFactory.getLog(LocatorServletContext.class) ;
+    static Logger logger = LoggerFactory.getLogger(LocatorServletContext.class) ;
     ServletContext servletContext = null ;
     
     public LocatorServletContext(ServletContext context)

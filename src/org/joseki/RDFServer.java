@@ -7,8 +7,8 @@ package org.joseki;
 
 import java.util.List;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.mortbay.jetty.Connector;
 import org.mortbay.jetty.Server;
 import org.mortbay.jetty.nio.BlockingChannelConnector;
@@ -17,14 +17,14 @@ import org.mortbay.util.MultiException;
 
 /** Standalone server.
  * 
- * @version $Id: RDFServer.java,v 1.23 2009-04-14 15:28:43 andy_seaborne Exp $
+ * @version $Id: RDFServer.java,v 1.24 2009-04-24 14:30:44 andy_seaborne Exp $
  * @author  Andy Seaborne
  */
 
 
 public class RDFServer
 {
-    static final Log log = LogFactory.getLog(RDFServer.class.getName()) ;
+    static final Logger log = LoggerFactory.getLogger(RDFServer.class.getName()) ;
 
     public static final String ServiceRegistryName = "Service Registry" ;
     static int count = 0 ;

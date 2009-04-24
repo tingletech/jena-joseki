@@ -11,8 +11,8 @@ import static org.joseki.vocabulary.JosekiSchemaBase.poolSize;
 import java.util.concurrent.BlockingDeque;
 import java.util.concurrent.LinkedBlockingDeque;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.hp.hpl.jena.rdf.model.Resource;
 
@@ -24,7 +24,7 @@ import com.hp.hpl.jena.query.Dataset;
 
 public class DatasetDesc
 {
-    static Log log = LogFactory.getLog(DatasetDesc.class) ;
+    static Logger log = LoggerFactory.getLogger(DatasetDesc.class) ;
     Resource datasetRoot ; 
     Dataset dataset = null ;    // Unpooled slot.
     int sizeOfPool = -1 ;       // No pool.
@@ -41,14 +41,14 @@ public class DatasetDesc
         if ( datasetRoot.hasProperty(poolSize) )
         {
             if ( ! GraphUtils.exactlyOneProperty(datasetRoot, poolSize) )
-                log.fatal("Multiple pool size property ("+Utils.nodeLabel(datasetRoot)+")") ;
+                log.error("Multiple pool size property ("+Utils.nodeLabel(datasetRoot)+")") ;
             
             String x = GraphUtils.getStringValue(datasetRoot, poolSize) ;
             try {
                 sizeOfPool = Integer.parseInt(x) ;
             } catch (NumberFormatException ex)
             {
-                log.fatal("Not a number: "+x) ;
+                log.error("Not a number: "+x) ;
                 throw ex ; 
             }
             pool = new LinkedBlockingDeque<Dataset>(sizeOfPool) ;

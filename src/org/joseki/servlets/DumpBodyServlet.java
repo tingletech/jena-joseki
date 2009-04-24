@@ -14,14 +14,14 @@ package org.joseki.servlets;
 import java.io.* ;
 import javax.servlet.http.*;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class DumpBodyServlet extends HttpServlet
 {
     private static final long serialVersionUID = 99L;  // Serilizable.
 
-    protected static Log log = LogFactory.getLog(DumpBodyServlet.class) ;
+    protected static Logger log = LoggerFactory.getLogger(DumpBodyServlet.class) ;
 
     public DumpBodyServlet()
     {

@@ -14,8 +14,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.joseki.module.Loadable;
 import org.joseki.module.Loader;
 import org.joseki.module.LoaderException;
@@ -40,7 +40,7 @@ import com.hp.hpl.jena.vocabulary.RDFS;
 
 public class Configuration
 {
-    private static Log log = LogFactory.getLog(Configuration.class) ;
+    private static Logger log = LoggerFactory.getLogger(Configuration.class) ;
     
     Loader loader = new Loader() ;
     Model confModel ;
@@ -83,7 +83,7 @@ public class Configuration
             processModel() ;
         } catch (RuntimeException ex)
         {
-            log.fatal("Failed to parse configuration file", ex) ;
+            log.error("Failed to parse configuration file", ex) ;
             // Clear an structures we may have partialy built.
             confModel = null ;
             services = null ;
@@ -423,7 +423,7 @@ public class Configuration
             }
         } catch (JenaException ex)
         {
-            log.fatal("Problems finding services") ;
+            log.error("Problems finding services") ;
             throw ex ;
         }
         finally { qexec.close() ; }
@@ -836,7 +836,7 @@ public class Configuration
         } catch (QueryParseException ex)
         {
             System.out.println(qs) ;
-            log.fatal("Query failed: "+ex.getMessage()) ;
+            log.error("Query failed: "+ex.getMessage()) ;
             throw new ConfigurationErrorException("Internal error") ;
         }
     }

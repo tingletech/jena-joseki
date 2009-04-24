@@ -7,7 +7,7 @@ package org.joseki.http;
 
 import java.io.*;
 
-import org.apache.commons.logging.* ;
+import org.slf4j.*;
 
 import javax.servlet.http.* ; 
 import org.joseki.Joseki ;
@@ -21,11 +21,11 @@ import com.hp.hpl.jena.shared.JenaException;
 /** Extracting operation data from HTTP servlet requests and formatting results for sending back.
  * 
  * @author      Andy Seaborne
- * @version     $Id: HttpResultSerializer.java,v 1.10 2008-12-28 19:51:04 andy_seaborne Exp $
+ * @version     $Id: HttpResultSerializer.java,v 1.11 2009-04-24 14:30:44 andy_seaborne Exp $
  */
 public class HttpResultSerializer
 {
-    static Log log = LogFactory.getLog(HttpResultSerializer.class) ;
+    static Logger log = LoggerFactory.getLogger(HttpResultSerializer.class) ;
     
     public HttpResultSerializer() {}
 
@@ -47,7 +47,7 @@ public class HttpResultSerializer
                 FileOutputStream out = new FileOutputStream("response.n3");
                 resultModel.write(out, "N3");
                 out.close() ;
-            } catch (IOException ex) { log.fatal("Failed to write 'response.n3'", ex) ; }
+            } catch (IOException ex) { log.error("Failed to write 'response.n3'", ex) ; }
         
         if ( false )
         {
