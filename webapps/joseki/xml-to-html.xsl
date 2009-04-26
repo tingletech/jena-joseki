@@ -16,7 +16,11 @@ FITNESS FOR A PARTICULAR PURPOSE.
 
 Version 1 : Dave Beckett (DAWG)
 Version 2 : Jeen Broekstra (DAWG)
-Customization for SPARQLer: Andy Seaborne
+Customization for SPARQler: Andy Seaborne
+Fix:
+
+> -    <xsl:for-each select="//res:head/res:variable">
+> +    <xsl:for-each select="/res:sparql/res:head/res:variable">
 
 -->
 
@@ -94,7 +98,7 @@ Customization for SPARQLer: Andy Seaborne
 
   <xsl:template match="res:result">
     <xsl:variable name="current" select="."/>
-    <xsl:for-each select="//res:head/res:variable">
+    <xsl:for-each select="/res:sparql/res:head/res:variable">
       <xsl:variable name="name" select="@name"/>
       <td>
 	<xsl:choose>
