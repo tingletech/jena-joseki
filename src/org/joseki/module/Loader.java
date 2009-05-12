@@ -5,31 +5,34 @@
 
 package org.joseki.module;
 
-import org.slf4j.*;
+import org.joseki.util.PrintUtils;
+import org.joseki.vocabulary.JosekiModule;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import org.joseki.vocabulary.JosekiModule ;
-import org.joseki.util.PrintUtils ;
-
-import com.hp.hpl.jena.rdf.model.* ;
-import com.hp.hpl.jena.shared.* ;
+import com.hp.hpl.jena.rdf.model.Literal;
+import com.hp.hpl.jena.rdf.model.RDFNode;
+import com.hp.hpl.jena.rdf.model.Resource;
+import com.hp.hpl.jena.shared.JenaException;
+import com.hp.hpl.jena.shared.PropertyNotFoundException;
+import com.hp.hpl.jena.sparql.lib.SystemUtils;
 
 /**
  * Load classes and instantiate new objects based on loadable classes.
  * Understands the RDF properties for naming and initializing a new instance. 
  * 
  * @author  Andy Seaborne
- * @version $Id: Loader.java,v 1.9 2009-04-24 14:30:45 andy_seaborne Exp $
+ * @version $Id: Loader.java,v 1.10 2009-05-12 12:34:07 andy_seaborne Exp $
  */
 
 public class Loader
 {
     private static Logger log = LoggerFactory.getLogger(Loader.class.getName());
 
-    protected static ClassLoader classLoader = chooseClassLoader() ;
+    protected static ClassLoader classLoader = SystemUtils.chooseClassLoader() ;
 
     public Loader()
-    {
-    }
+    {}
  
     public Loadable loadAndInstantiateImplementation(Resource bindingResource, Class<?> expectedType)  
     {
@@ -115,32 +118,6 @@ public class Loader
         {
             throw new LoaderException("Unexpected exception loading class " + className, ex);
         }
-    }
-    
-    static private ClassLoader chooseClassLoader()
-    {
-        ClassLoader classLoader = Thread.currentThread().getContextClassLoader(); ;
-    
-        if ( classLoader != null )
-        	log.trace("Using thread classloader") ;
-        
-//        if (classLoader == null)
-//        {
-//            classLoader = this.getClass().getClassLoader();
-//            if ( classLoader != null )
-//                logger.trace("Using 'this' classloader") ;
-//        }
-        
-        if ( classLoader == null )
-        {
-            classLoader = ClassLoader.getSystemClassLoader() ;
-            if ( classLoader != null )
-                log.trace("Using system classloader") ;
-        }
-        
-        if ( classLoader == null )
-            throw new LoaderException("Failed to find a classloader") ;
-        return classLoader ;
     }
     
     public static String classNameFromNode(RDFNode n)
