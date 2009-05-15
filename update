@@ -5,8 +5,11 @@
 # Named graph update only works on a mutable dataset (so not an ad-hoc in-memory one)
 
 export  http_proxy=
+echo "=== Update"
 wget -O - --post-data="request=$(cat update.ru)"  'http://localhost:2020/update/service'
 echo
-wget -O - 'http://localhost:2020/sparql?query=SELECT * { ?s ?p ?o}'
+echo "=== Default graph"
+wget -q -O - 'http://localhost:2020/sparql?query=SELECT * { ?s ?p ?o}&output=text'
 echo
-wget -O - 'http://localhost:2020/sparql?query=SELECT * { GRAPH ?g { ?s ?p ?o}}'
+echo "=== Named graphs"
+wget -q -O - 'http://localhost:2020/sparql?query=SELECT * { GRAPH ?g { ?s ?p ?o}}&output=text'

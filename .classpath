@@ -25,8 +25,8 @@
 	<classpathentry kind="lib" path="lib/servlet-api-2.5-6.1.10.jar"/>
 	<classpathentry kind="lib" path="lib/jetty-util-6.1.10.jar"/>
 	<classpathentry kind="lib" path="lib/lucene-core-2.3.1.jar"/>
-	<classpathentry kind="lib" path="lib-tdb/tdb-0.7.2.jar"/>
 	<classpathentry kind="lib" path="lib/slf4j-api-1.5.6.jar"/>
 	<classpathentry kind="lib" path="lib/slf4j-log4j12-1.5.6.jar"/>
+	<classpathentry kind="lib" path="lib-tdb/tdb-0.8.0-dev.jar"/>
 	<classpathentry kind="output" path="classes"/>
 </classpath>

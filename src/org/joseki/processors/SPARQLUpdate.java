@@ -69,6 +69,7 @@ public class SPARQLUpdate extends ProcessorBase implements Loadable
         try { uProc.execute() ; response.setOK() ; }
         catch (Exception ex)
         {
+            log.warn("Udpate failed", ex) ;
             ExecutionException execEx = new ExecutionException(ReturnCodes.rcUpdateExecutionFailure,"Update failed ("+ex.getMessage()+")") ;
             throw execEx ;
         }
