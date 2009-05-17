@@ -6,7 +6,7 @@
 
 export  http_proxy=
 echo "=== Update"
-wget -O - --post-data="request=$(cat update.ru)"  'http://localhost:2020/update/service'
+wget -q -O - --post-data="request=$(cat update.ru)"  'http://localhost:2020/update/service'
 echo
 echo "=== Default graph"
 wget -q -O - 'http://localhost:2020/sparql?query=SELECT * { ?s ?p ?o}&output=text'

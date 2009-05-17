@@ -17,6 +17,8 @@ public class RunServer
     {
         RunUtils.setLog4j() ;
         
+        //TDB.init() ;
+        
         String[] a = new String[]{"joseki-config-tdb.ttl"} ;
         //String[] a = args ;
         runJosekiServer(a) ; System.exit(0) ;

@@ -25,13 +25,13 @@
     joseki:processor    joseki:ProcessorSPARQL_FixedDS ;
     .
 
-<#service2>
-    rdf:type            joseki:Service ;
-    rdfs:label          "SPARQL-TDB" ;
-    joseki:serviceRef   "sparql/graph" ;    # web.xml just route this name to Joseki
-    joseki:dataset      <#dataset-1graph> ;
-    joseki:processor    joseki:ProcessorSPARQL_FixedDS ;
-    .
+## <#service2>
+##     rdf:type            joseki:Service ;
+##     rdfs:label          "SPARQL-TDB" ;
+##     joseki:serviceRef   "sparql/graph" ;    # web.xml just route this name to Joseki
+##     joseki:dataset      <#dataset-1graph> ;
+##     joseki:processor    joseki:ProcessorSPARQL_FixedDS ;
+##     .
 
 ## SPARQL/Update.
 ## Creation of named graph from web requests is not supported.
