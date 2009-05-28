@@ -119,7 +119,7 @@ public class ResponseHttp extends Response
         {
             AcceptItem i2 = HttpUtils.chooseCharset(httpRequest,  prefCharset, defaultCharset) ;
             if ( i2 != null )
-            	charset = i.getAcceptType() ;
+            	charset = i2.getAcceptType() ;
         }
         String writerMimeType = mimeType ;
         

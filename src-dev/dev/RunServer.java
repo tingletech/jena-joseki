@@ -19,7 +19,7 @@ public class RunServer
         
         //TDB.init() ;
         
-        String[] a = new String[]{"joseki-config-tdb.ttl"} ;
+        String[] a = new String[]{"joseki-config.ttl"} ;
         //String[] a = args ;
         runJosekiServer(a) ; System.exit(0) ;
         //AxisServer.main(args) ; System.exit(0) ;
