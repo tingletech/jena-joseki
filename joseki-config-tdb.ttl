@@ -55,7 +55,7 @@ tdb:DatasetTDB  rdfs:subClassOf  ja:RDFDataset .
 
 ## ---- A whole dataset managed by TDB
 <#dataset> rdf:type      tdb:DatasetTDB ;
-    tdb:location "/home/afs/Projects/Joseki3/DB" ;
+    tdb:location "/home/afs/Projects/Joseki3/TDB" ;
     .
 
 ## ---- A single graph inside a general dataset.

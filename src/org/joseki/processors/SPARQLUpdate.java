@@ -66,10 +66,13 @@ public class SPARQLUpdate extends ProcessorBase implements Loadable
         GraphStore graphStore = GraphStoreFactory.create(dataset) ;
         
         UpdateProcessor uProc = UpdateFactory.create(updateRequest, graphStore) ;
-        try { uProc.execute() ; response.setOK() ; }
+        try {
+            uProc.execute() ;
+            response.setOK() ;
+        }
         catch (Exception ex)
         {
-            log.warn("Udpate failed", ex) ;
+            log.warn("Update failed", ex) ;
             ExecutionException execEx = new ExecutionException(ReturnCodes.rcUpdateExecutionFailure,"Update failed ("+ex.getMessage()+")") ;
             throw execEx ;
         }
