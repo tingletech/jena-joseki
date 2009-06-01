@@ -52,6 +52,7 @@
 
 [] ja:loadClass "com.hp.hpl.jena.tdb.TDB" .
 tdb:DatasetTDB  rdfs:subClassOf  ja:RDFDataset .
+tdb:GraphTDB    rdfs:subClassOf  ja:Model .
 
 ## ---- A whole dataset managed by TDB
 <#dataset> rdf:type      tdb:DatasetTDB ;
