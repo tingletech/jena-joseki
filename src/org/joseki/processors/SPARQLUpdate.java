@@ -43,18 +43,23 @@ public class SPARQLUpdate extends ProcessorBase implements Loadable
 //        {
 //            System.out.println(iter.next()) ;
 //        }
+
+        // Find the request 
+        // 1/ request= in the query string
+        // 2/ as the body.
         
         String x = request.getParam("request") ;
 
-        Reader in = request.getStream() ;
-
-        if ( x != null )
+        Reader in = null ;
+        if ( x == null )
+            in = request.getStream() ;
+        else
             in = new StringReader(x) ;
+        
         if ( in == null )
         {
-            ExecutionException execEx = new ExecutionException(ReturnCodes.rcArgumentError, "Bad update request") ;
-            response.sendException(execEx) ;
-            return ;
+            ExecutionException execEx = new ExecutionException(ReturnCodes.rcArgumentError, "Can't find request from 'request' parameter or POST body") ;
+            throw execEx ;
         }
 
         // Parsing with a Reader.  Normally discouraged because of charset issues 
