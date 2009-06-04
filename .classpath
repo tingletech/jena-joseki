@@ -5,10 +5,8 @@
 	<classpathentry kind="src" path="src-test"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/JDBC"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="lib/antlr-2.7.5.jar"/>
 	<classpathentry kind="lib" path="lib/arq.jar" sourcepath="/ARQ/src"/>
 	<classpathentry kind="lib" path="lib/arq-extra.jar"/>
-	<classpathentry kind="lib" path="lib/concurrent.jar"/>
 	<classpathentry kind="lib" path="lib/icu4j_3_4.jar"/>
 	<classpathentry kind="lib" path="lib/iri.jar"/>
 	<classpathentry kind="lib" path="lib/jena.jar"/>
