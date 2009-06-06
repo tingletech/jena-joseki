@@ -12,7 +12,6 @@
 	<classpathentry kind="lib" path="lib/jena.jar"/>
 	<classpathentry kind="lib" path="lib/jenatest.jar"/>
 	<classpathentry kind="lib" path="lib/json.jar"/>
-	<classpathentry kind="lib" path="lib/junit.jar"/>
 	<classpathentry kind="lib" path="lib/log4j-1.2.12.jar"/>
 	<classpathentry kind="lib" path="lib/stax-api-1.0.jar"/>
 	<classpathentry kind="lib" path="lib/wstx-asl-3.0.0.jar"/>
@@ -26,5 +25,6 @@
 	<classpathentry kind="lib" path="lib/slf4j-api-1.5.6.jar"/>
 	<classpathentry kind="lib" path="lib/slf4j-log4j12-1.5.6.jar"/>
 	<classpathentry kind="lib" path="lib-tdb/tdb-0.8.0-dev.jar"/>
+	<classpathentry kind="lib" path="lib/junit-4.5.jar"/>
 	<classpathentry kind="output" path="classes"/>
 </classpath>
