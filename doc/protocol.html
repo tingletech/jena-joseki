@@ -8,7 +8,22 @@
 <h1>Joseki - Protocol</h1>
 
 <p>Joseki supports the HTTP binding for
-<a href="http://www.w3.org/TR/rdf-sparql-protocol/">the SPARQL protocol</a>.</p>
+<a href="http://www.w3.org/TR/rdf-sparql-protocol/">the SPARQL protocol</a> and 
+a protocol for SPARQL/Udpate.</p>
+<p>SPARQL/Query and SPARQL/Update are different languages and should be served 
+from different endpoints.&nbsp; See the example configuration files.</p>
+<h3>SPARQL/Query Protocol</h3>
+<p>The query protocol is described in the
+<a href="http://www.w3.org/TR/rdf-sparql-protocol/">SPARQL Protocol 
+Specification</a>.</p>
+<h3>SPARQL/Update Protocol</h3>
+<p>A SPARQL/Update request is POST'ed to an update endpoint (URL). Only POST is 
+supported.</p>
+<p>The SPARQL/Update request is a string in the format described in the
+<a href="http://www.w3.org/Submission/SPARQL-Update/">SPARQL/Update submission 
+to W3C</a>.</p>
+<p>The request can go in to the URL itself using <code>?request=...</code> or in 
+the body of the HTTP POST.</p>
 <h3>Servlet routing : web.xml</h3>
 <p>The <code>web.xml</code>, which controls routing incoming requests to 
 servlets, must be set correctly. The default <code>web.xml</code> in the 
@@ -26,12 +41,12 @@ provided in the download has a web application of /joseki set to the root
 application so URLs look like: <code>http://host/localhost:2020/sparql</code> 
 because the server port defaults to port 2020.</p>
 <h3>Additional Parameters</h3>
-<p>Some additional parameters are supported: use of these parameters is outside the SPARQL protocol
+<p>Some additional parameters are supported for SPARQL/Query: use of these parameters is outside the SPARQL protocol
 and are not available on all SPARQL servers.</p>
 
 <p>Additional provides the <code>application/sparql-results+json</code>
 MIME type for the
-<a href="http://mindswap.org/~kendall/sparql-results-json/">JSON format for SPARQL query results</a>.</p>
+<a href="http://www.w3.org/TR/rdf-sparql-json-res/">JSON format for SPARQL query results</a>.</p>
 
 <ul>
 

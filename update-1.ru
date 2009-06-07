@@ -25,4 +25,4 @@ CLEAR GRAPH <http://example.com/notThere2>
 
 DROP GRAPH <http://example.com/>
 
-DROP GRAPH <http://example.com/notThere3>
+DROP SILENT GRAPH <http://example.com/notThere3>
