@@ -68,6 +68,8 @@ tdb:GraphTDB    rdfs:subClassOf  ja:Model .
 
 <#graph> rdf:type tdb:GraphTDB ;
     tdb:location "DB" ;
+    # Pick out a named graph
+    # tdb:graphName <http://example/aNamedGraph> ;
     .
 
 ## --------------------------------------------------------------

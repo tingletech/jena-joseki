@@ -95,9 +95,9 @@ sdb:Model rdfs:subClassOf  ja:Model .
     # Uncomment to pick out a named graph from the store.
     # If no "sdb:namedGraph" appearsm the store's default graph is used.
     # is used as default graph of the dataset publically visible.
-    #sdb:namedGraph <http://example/aNamedGraph> ;
+    #sdb:graphName <http://example/aNamedGraph> ;
     # Or even the merge of all named graphs
-    #sdb:namedGraph <urn:x-arq:UnionGraph> ;
+    #sdb:graphName <urn:x-arq:UnionGraph> ;
     .
 
 ## --------------------------------------------------------------
