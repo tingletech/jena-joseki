@@ -20,8 +20,8 @@ import org.slf4j.LoggerFactory;
 
 import com.hp.hpl.jena.query.Query;
 import com.hp.hpl.jena.query.QueryFactory;
-import com.hp.hpl.jena.query.QueryParseException;
 import com.hp.hpl.jena.query.Syntax;
+import com.hp.hpl.jena.sparql.ARQException;
 import com.hp.hpl.jena.sparql.algebra.Algebra;
 import com.hp.hpl.jena.sparql.algebra.Op;
 import com.hp.hpl.jena.sparql.serializer.SerializationContext;
@@ -171,9 +171,18 @@ public class Validator extends HttpServlet
             Query q = null ;
             try {
                 q = QueryFactory.create(queryString, language) ;
-            } catch (QueryParseException ex)
+            } catch (ARQException ex)
             {
+                // Over generous exception (should be QueryException)
+                // but this makes the code robust.
                 outStream.println("<p>Syntax error:</p>") ;
+                startFixed(outStream) ;
+                outStream.println(ex.getMessage()) ;
+                finishFixed(outStream) ;
+            }
+            catch (RuntimeException ex)
+            { 
+                outStream.println("<p>Internal error:</p>") ;
                 startFixed(outStream) ;
                 outStream.println(ex.getMessage()) ;
                 finishFixed(outStream) ;
