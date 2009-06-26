@@ -68,7 +68,8 @@ public class ResponseHttp extends Response
     
     static final String paramStyleSheet = "stylesheet" ;
     static final String paramAccept     = "accept" ;
-    static final String paramOutput     = "output" ;        // See Yahoo! developer: http://developer.yahoo.net/common/json.html 
+    static final String paramOutput1    = "output" ;        // See Yahoo! developer: http://developer.yahoo.net/common/json.html 
+    static final String paramOutput2    = "format" ;        // Alternative name 
     static final String paramCallback   = "callback" ;
     static final String headerAccept    = "Accept" ;
     
@@ -426,7 +427,14 @@ public class ResponseHttp extends Response
 
     private String paramStylesheet() { return fetchParam(paramStyleSheet) ; }
     
-    private String paramOutput()     { return expandShortName(fetchParam(paramOutput)) ; }
+    private String paramOutput()
+    {
+        // Two names.
+        String x = fetchParam(paramOutput1) ;
+        if ( x == null )
+            x = fetchParam(paramOutput2) ;
+        return expandShortName(x) ; 
+    }
     
     private String paramAcceptField()
     {

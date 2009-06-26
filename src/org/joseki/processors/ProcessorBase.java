@@ -38,7 +38,7 @@ public abstract class ProcessorBase implements Processor
         if ( dataset != null )
         {
             ResponseCallback cbLock = new ResponseCallback() {
-                public void callback()
+                public void callback(boolean successfulOperation)
                 {
                     log.debug("ResponseCallback: return dataset to pool") ;
                     datasetDesc.returnDataset(dataset) ;
@@ -65,7 +65,7 @@ public abstract class ProcessorBase implements Processor
         // -- Add callbacks
         operationLock.enterCriticalSection(lockType) ;
         ResponseCallback cbLock = new ResponseCallback() {
-            public void callback()
+            public void callback(boolean successfulOperation)
             {
                 log.debug("ResponseCallback: criticalSection") ;
                 operationLock.leaveCriticalSection() ;
@@ -79,11 +79,13 @@ public abstract class ProcessorBase implements Processor
             try { defaultModel.begin(); } catch (UnsupportedOperationException ex) { needAbort = false ; }
             final Model m = defaultModel ;
             ResponseCallback cb = new ResponseCallback() {
-                public void callback()
+                public void callback(boolean successfulOperation)
                 {
                     log.debug("ResponseCallback: transaction") ;
-                    try { m.commit(); }
-                    catch (Exception ex) { log.info("Exception on commit: "+ex.getMessage()) ; }
+                    if ( successfulOperation )
+                        try { m.commit(); } catch (Exception ex) { log.info("Exception on commit: "+ex.getMessage()) ; }
+                    else
+                        try { m.abort(); }  catch (Exception ex) { log.info("Exception on abort: "+ex.getMessage()) ; }
                 }} ;
             response.addCallback(cb) ;
         } else {
@@ -93,7 +95,7 @@ public abstract class ProcessorBase implements Processor
             if ( dataset != null )
             {
                 ResponseCallback cb = new ResponseCallback() {
-                    public void callback()
+                    public void callback(boolean successfulOperation)
                     {
                         log.debug("ResponseCallback: sync") ;
                         if ( attemptSync(dataset.asDatasetGraph()) )
@@ -110,19 +112,20 @@ public abstract class ProcessorBase implements Processor
             execOperation(request, response, dataset) ;
         } catch (ExecutionException ex)
         {
-            // Looking bad - abort the transaction, release the lock.
-            if ( needAbort && transactions )
-                defaultModel.abort();
-            operationLock.leaveCriticalSection() ;
+            // Callbacks should handle this.
+//            // Looking bad - abort the transaction, release the lock.
+//            if ( needAbort && transactions )
+//                defaultModel.abort();
+//            operationLock.leaveCriticalSection() ;
             throw ex ; 
         }
         // These should have been caught.
         catch (JenaException ex)
         {
-            // Looking bad - abort the transaction, release the lock.
-            if ( needAbort && transactions )
-                defaultModel.abort();
-            operationLock.leaveCriticalSection() ;
+//            // Looking bad - abort the transaction, release the lock.
+//            if ( needAbort && transactions )
+//                defaultModel.abort();
+//            operationLock.leaveCriticalSection() ;
             log.warn("Internal error - unexpected exception: ", ex) ;
             throw ex ; 
         }

@@ -62,6 +62,7 @@ abstract public class Response
             return ;
         }
         doException(execEx) ;
+        doCallbacks(false) ;
     }
     
     public void sendResponse() throws QueryExecutionException
@@ -96,12 +97,17 @@ abstract public class Response
         responseResultSet = null ;
         responseBoolean = null ;
         
+        doCallbacks(true) ;
+        return ;
+    }
+    
+    private void doCallbacks(boolean successfulOperation)
+    {
         for ( Iterator<ResponseCallback> iter = callbacks.iterator() ; iter.hasNext(); )
         {
             ResponseCallback callback = iter.next();
-            callback.callback() ;
+            callback.callback(successfulOperation) ;
         }
-        return ;
     }
     
     abstract protected void doResponseNothing() throws QueryExecutionException ;

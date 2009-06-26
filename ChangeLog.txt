@@ -4,9 +4,14 @@ Joseki3
 Joseki 3.4.0
 ------------
 
++ Imporvements for working with SDB and TDB
+
 + Logging facade now slf4j
 
 + Added "output=text" for plain text (UTF-8) output for queries
+  "format" is a synonym for "output"
+
++ Bug fix for pool'ed connections being unreturned after certain errors.
 
 Joseki 3.3.0
 ------------

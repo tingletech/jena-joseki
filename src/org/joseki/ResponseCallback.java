@@ -8,7 +8,7 @@ package org.joseki ;
 
 public interface ResponseCallback
 {
-    public void callback() ;
+    public void callback(boolean successfulOperation) ;
 }
 
 /*

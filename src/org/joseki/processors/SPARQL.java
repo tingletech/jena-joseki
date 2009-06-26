@@ -278,7 +278,7 @@ public class SPARQL extends ProcessorBase implements Loadable
         final QueryExecution qexec = getQueryExecution(query, dataset) ;
         ResponseCallback cb = new ResponseCallback(){
 
-            public void callback()
+            public void callback(boolean successfulOperation)
             { 
                 log.debug("ResponseCallback: close execution") ;
                 qexec.close(); 
