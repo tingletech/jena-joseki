@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+
+<properties version="1.0">
+  <comment>Joseki System Properties</comment>
+  <entry key="org.joseki.version">${project.version}</entry>
+  <entry key="org.joseki.build.datetime">${build.time.xsd}</entry>
+</properties>
