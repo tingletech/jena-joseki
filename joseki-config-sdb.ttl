@@ -78,7 +78,7 @@ sdb:Model rdfs:subClassOf  ja:Model .
      # Using Apache Derby
      sdb:sdbHost        "localhost" ;
      sdb:sdbType        "derby" ;
-     sdb:sdbName        "Derby/SDB" ;
+     sdb:sdbName        "DB/Derby" ;
     ]
     .
 
