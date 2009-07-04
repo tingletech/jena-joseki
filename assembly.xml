@@ -42,10 +42,6 @@
     </fileSet>
     
     <fileSet>
-      <directory>bin</directory>
-    </fileSet>
-
-    <fileSet>
       <directory>lib</directory>
       <outputDirectory>lib</outputDirectory>
       <includes>
@@ -56,6 +52,10 @@
       </excludes>
     </fileSet>
     
+    <fileSet>
+      <directory>bin</directory>
+    </fileSet>
+
     <fileSet>
       <directory>doc</directory>
       <excludes>
