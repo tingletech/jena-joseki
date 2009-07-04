@@ -1,6 +1,6 @@
 <assembly>
   <id>dist</id>
-  <baseDirectory>Joseki-3.3.0-assembly</baseDirectory>
+  <baseDirectory>Joseki-${project.version}</baseDirectory>
   <formats>
     <!--
     <format>tar.gz</format>
@@ -15,11 +15,11 @@
         <include>CopyrightNotice.txt</include>
         <include>README*</include>
         <include>ChangeLog.txt</include>
+        <include>pom.xml</include>
       </includes>
     </fileSet>
 
     <fileSet>
-      <outputDirectory></outputDirectory>
       <includes>
 	<include>joseki-config.ttl</include>
 	<include>joseki-config-example.ttl</include>
@@ -34,16 +34,15 @@
     </fileSet>
 
     <fileSet>
-      <directory>src</directory>
-      <useDefaultExcludes>true</useDefaultExcludes>
-    </fileSet>
-
-    <fileSet>
       <directory>${project.build.directory}</directory>
       <outputDirectory>lib</outputDirectory>
       <includes>
         <include>*.jar</include>
       </includes>
+    </fileSet>
+    
+    <fileSet>
+      <directory>bin</directory>
     </fileSet>
 
     <fileSet>
@@ -59,9 +58,18 @@
     
     <fileSet>
       <directory>doc</directory>
-      <includes>
-        <include>*.html</include>
-      </includes>
+      <excludes>
+	<exclude>linkcheck</exclude>
+	<exclude>template.html</exclude>
+        <exclude>**/_*/**</exclude>
+        <exclude>javadoc/**</exclude>
+        <exclude>**/desktop.ini</exclude>
+      </excludes>
+    </fileSet>
+
+    <fileSet>
+      <directory>src</directory>
+      <useDefaultExcludes>true</useDefaultExcludes>
     </fileSet>
 
     <fileSet>
@@ -73,35 +81,5 @@
     </fileSet>
 
   </fileSets>
-
-<!--
-jars
-
-javadoc??
-
-doc/*??
-
-includecode
-
-
-
-CopyrightNotice.txt
-
-README.xml
-
-pom.xml
-
-joseki-config*.ttl
-
-etc/*
-
-Data/*
-
-Skeleton web app
-
-        <copy todir="${dist.dir}/${webapps.deploy.dir}">
-          <fileset dir="${webapps.build.dir}" />
-        </copy>
--->
 
 </assembly>

@@ -8,6 +8,9 @@ package dev;
 
 public class Dev
 {
+    // Upgrade/check jars and versions
+    // ARQ
+    
     /* Joseki needs connection management for SDB
      * ServiceRequest (??request)
      *   with .start and .finish
