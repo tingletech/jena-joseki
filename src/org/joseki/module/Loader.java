@@ -22,7 +22,7 @@ import com.hp.hpl.jena.sparql.lib.SystemUtils;
  * Understands the RDF properties for naming and initializing a new instance. 
  * 
  * @author  Andy Seaborne
- * @version $Id: Loader.java,v 1.10 2009-05-12 12:34:07 andy_seaborne Exp $
+ * @version $Id: Loader.java,v 1.11 2009-07-09 15:15:46 andy_seaborne Exp $
  */
 
 public class Loader
@@ -129,7 +129,7 @@ public class Loader
             Literal lit = (Literal)n ;
             className = lit.getLexicalForm() ;
             if ( className.startsWith("java:") ) 
-                className.substring("java:".length()) ; 
+                className = className.substring("java:".length()) ; 
             return className ;
         }
 
