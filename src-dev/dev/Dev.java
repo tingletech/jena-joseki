@@ -8,6 +8,9 @@ package dev;
 
 public class Dev
 {
+    // == maven
+    // Compile depends on ARQ test code.
+    
     // Upgrade/check jars and versions
     // ARQ
     
