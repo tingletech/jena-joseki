@@ -6,7 +6,7 @@
   <artifactId>joseki</artifactId>
   <packaging>jar</packaging>
   <name>Joseki</name>
-  <version>3.4.0-RC-3</version>
+  <version>3.4.0-RC-5</version>
   <description/>
   <url>http://joseki.org/</url>
 
@@ -33,22 +33,14 @@
      <dependency>
       <groupId>com.hp.hpl.jena</groupId>
       <artifactId>arq</artifactId>
-      <version>2.7.0</version>
-
-      <!-- See below -->
-      <exclusions>
-        <exclusion>
-          <groupId>woodstox</groupId>
-          <artifactId>wstx-asl</artifactId>
-        </exclusion>
-      </exclusions>
-
+      <version>2.8.0</version>
     </dependency>
 
-   <dependency>
+    <dependency>
       <groupId>com.hp.hpl.jena</groupId>
-      <artifactId>arq-extra</artifactId>
-      <version>2.7.0</version>
+      <artifactId>arq</artifactId>
+      <version>2.8.0</version>
+      <type>test-jar</type>
     </dependency>
 
     <!-- Jena: Even though ARQ is included above, need Jena dependency to 
@@ -65,16 +57,6 @@
       <groupId>com.hp.hpl.jena</groupId>
       <artifactId>jenatest</artifactId>
       <version>2.6.0</version>
-    </dependency>
-
-    <!-- No pom in Maven repo1 as "woodstox" (there is the jar there)
-	 and for "org.codehaus.woodstox : The POM groupId is "woodstox"
-	 ARQ has it as woodstox (makes Ivy and Maven work - although Maven reloads each time
-    -->
-    <dependency>
-      <groupId>org.codehaus.woodstox</groupId>
-      <artifactId>wstx-asl</artifactId>
-      <version>3.0.0</version>
     </dependency>
 
     <dependency>
