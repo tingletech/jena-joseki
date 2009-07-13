@@ -248,10 +248,6 @@
 
 ## --------------------------------------------------------------
 ## Processors
-## Usually, this section is empty because only standard
-## processors are used via inclusion of common definitions.
-
-## ----- definitions --------------------------------------------------
 
 joseki:ProcessorSPARQL
     rdfs:label "General SPARQL processor" ;
@@ -261,7 +257,7 @@ joseki:ProcessorSPARQL
     # Parameters - this processor processes FROM/FROM NAMED
     joseki:allowExplicitDataset       "true"^^xsd:boolean ;
     joseki:allowWebLoading            "true"^^xsd:boolean ;
-    ## And has no locking policy (it loads daat each time).
+    ## And has no locking policy (it loads data each time).
     ## The default is mutex (one request at a time)
     joseki:lockingPolicy                joseki:lockingPolicyNone ;
     .
@@ -275,13 +271,24 @@ joseki:ProcessorSPARQL_FixedDS
     joseki:allowExplicitDataset       "false"^^xsd:boolean ;
     joseki:allowWebLoading            "false"^^xsd:boolean ;
     joseki:lockingPolicy              joseki:lockingPolicyMRSW ;
-    ## joseki:lockingPolicy                joseki:lockingPolicyMutex ;
+    .
+
+joseki:ProcessorSPARQLUpdate
+    rdfs:label "SPARQL Update processor" ;
+    rdf:type joseki:Processor ;
+    module:implementation joseki:ImplSPARQLUpdate ;
+    joseki:lockingPolicy              joseki:lockingPolicyMRSW ;
     .
 
 joseki:ImplSPARQL
     rdf:type   joseki:ServiceImpl ;
     module:className
         <java:org.joseki.processors.SPARQL> .
+
+joseki:ImplSPARQLUpdate
+    rdf:type   joseki:ServiceImpl ;
+    module:className
+        <java:org.joseki.processors.SPARQLUpdate> .
 
 # Local Variables:        
 # tab-width: 4

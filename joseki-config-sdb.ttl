@@ -119,7 +119,7 @@ joseki:ProcessorSPARQL_FixedDS
     .
 
 joseki:ProcessorSPARQLUpdate
-    rdfs:label "SPARQL Udpate processor" ;
+    rdfs:label "SPARQL Update processor" ;
     rdf:type joseki:Processor ;
     module:implementation 
     [   rdf:type   joseki:ServiceImpl ;
