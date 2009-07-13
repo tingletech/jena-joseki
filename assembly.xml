@@ -1,5 +1,5 @@
 <assembly>
-  <id>dist</id>
+  <!--<id>dist</id>-->
   <baseDirectory>Joseki-${project.version}</baseDirectory>
   <formats>
     <!--
@@ -17,20 +17,6 @@
         <include>ChangeLog.txt</include>
         <include>pom.xml</include>
       </includes>
-    </fileSet>
-
-    <fileSet>
-      <includes>
-	<include>joseki-config.ttl</include>
-	<include>joseki-config-example.ttl</include>
-	<include>joseki-config-tdb.ttl</include>
-	<include>joseki-config-sdb.ttl</include>
-	<include>sdb.ttl</include>
-      </includes>
-    </fileSet>
-
-    <fileSet>
-      <directory>webapps</directory>
     </fileSet>
 
     <fileSet>
@@ -53,6 +39,37 @@
     </fileSet>
     
     <fileSet>
+      <directory>${project.build.directory}</directory>
+      <outputDirectory>lib</outputDirectory>
+      <includes>
+        <include>joseki-${project.version}.jar</include>
+      </includes>
+    </fileSet>
+
+    <!-- But put sources and javadoc at the top level -->
+    <fileSet>
+      <directory>${project.build.directory}</directory>
+      <outputDirectory></outputDirectory>
+      <includes>
+        <include>joseki-${project.version}-sources.jar</include>
+      </includes>
+    </fileSet>
+
+    <fileSet>
+      <includes>
+	<include>joseki-config.ttl</include>
+	<include>joseki-config-example.ttl</include>
+	<include>joseki-config-tdb.ttl</include>
+	<include>joseki-config-sdb.ttl</include>
+	<include>sdb.ttl</include>
+      </includes>
+    </fileSet>
+
+    <fileSet>
+      <directory>webapps</directory>
+    </fileSet>
+
+    <fileSet>
       <directory>bin</directory>
     </fileSet>
 
@@ -65,11 +82,6 @@
         <exclude>javadoc/**</exclude>
         <exclude>**/desktop.ini</exclude>
       </excludes>
-    </fileSet>
-
-    <fileSet>
-      <directory>src</directory>
-      <useDefaultExcludes>true</useDefaultExcludes>
     </fileSet>
 
     <fileSet>
