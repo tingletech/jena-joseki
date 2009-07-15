@@ -44,7 +44,7 @@
     </dependency>
 
     <!-- Jena: Even though ARQ is included above, need Jena dependency to 
-	 pull in all Jena's dependences to run tests
+         pull in all Jena's dependences to run tests
     -->
 
     <dependency>
@@ -104,9 +104,9 @@
     
     <resources>
       <resource>
-	<targetPath>org/joseki</targetPath>
-	<filtering>true</filtering>
-	<directory>resources</directory>
+        <targetPath>org/joseki</targetPath>
+        <filtering>true</filtering>
+        <directory>resources</directory>
       </resource>
     </resources>
     <filters>
@@ -118,105 +118,105 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
         <configuration>
-	  <source>1.6</source>
-	  <target>1.6</target>
+          <source>1.6</source>
+          <target>1.6</target>
         </configuration>
       </plugin>
 
       <plugin>
-	<groupId>org.apache.maven.plugins</groupId>
-	<artifactId>maven-source-plugin</artifactId>
-	<executions> 
-	  <execution>
-	    <id>attach-sources</id>
-	    <phase>verify</phase>
-	    <goals>
-	      <goal>jar</goal>
-	    </goals>
-	  </execution>
-	</executions>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-source-plugin</artifactId>
+        <executions> 
+          <execution>
+            <id>attach-sources</id>
+            <phase>verify</phase>
+            <goals>
+              <goal>jar</goal>
+            </goals>
+          </execution>
+        </executions>
       </plugin>
 
       <plugin>
-	<groupId>org.apache.maven.plugins</groupId>
-	<artifactId>maven-surefire-plugin</artifactId>
-	<configuration>
-	  <skip>true</skip>
-	  <includes>
-	    <include>org/joseki/test/JosekiTests.java</include>
-	    <!-- Needs access to the script files -->
-	    <!-- <include>org/joseki/test/ProtocolTests.java</include> -->
-	  </includes>
-	</configuration>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <configuration>
+          <skip>true</skip>
+          <includes>
+            <include>org/joseki/test/JosekiTests.java</include>
+            <!-- Needs access to the script files -->
+            <!-- <include>org/joseki/test/ProtocolTests.java</include> -->
+          </includes>
+        </configuration>
       </plugin>
       
 
       <!-- No javadoc shipped (it's not a library!)
       <plugin>
-	<groupId>org.apache.maven.plugins</groupId>
-	<artifactId>maven-javadoc-plugin</artifactId>
-	<executions>
-	  <execution>
-	    <id>attach-javadocs</id>
-	    <goals>
-	      <goal>jar</goal>
-	    </goals>
-	  </execution>
-	</executions>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>attach-javadocs</id>
+            <goals>
+              <goal>jar</goal>
+            </goals>
+          </execution>
+        </executions>
       </plugin>
       -->
 
       <plugin>
-	<groupId>org.apache.maven.plugins</groupId>
-	<artifactId>maven-assembly-plugin</artifactId>
-	<configuration>
-	  <descriptors>
-	    <descriptor>assembly.xml</descriptor>
-	  </descriptors>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-assembly-plugin</artifactId>
+        <configuration>
+          <descriptors>
+            <descriptor>assembly.xml</descriptor>
+          </descriptors>
         </configuration>
 
-	<!-- Add to packaging lifecycle phase 'verify' -->
-	<executions>
-	  <execution>
-	    <id>create-assembly</id>
-	    <phase>verify</phase>
-	    <goals>
-	      <goal>attached</goal>
-	    </goals>
-	  </execution>
-	</executions>
+        <!-- Add to packaging lifecycle phase -->
+        <executions>
+          <execution>
+            <id>create-assembly</id>
+            <phase>verify</phase>
+            <goals>
+              <goal>attached</goal>
+            </goals>
+          </execution>
+        </executions>
       </plugin>
 
       <plugin>
-	<groupId>org.apache.maven.plugins</groupId>
-	<artifactId>maven-resources-plugin</artifactId>
-	<configuration>
-	  <encoding>UTF-8</encoding>
-	</configuration>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-resources-plugin</artifactId>
+        <configuration>
+          <encoding>UTF-8</encoding>
+        </configuration>
       </plugin>
       
       <plugin>
-	<groupId>org.apache.maven.plugins</groupId>
+        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-antrun-plugin</artifactId>
         <executions>
           <execution>
-	    <id>ant-generate-resources</id>
+            <id>ant-generate-resources</id>
             <phase>generate-resources</phase>
             <configuration>
-	      <tasks>
-		<mkdir dir="${basedir}/target"/>
-		<tstamp>
-		  <format property="build.time.xsd"  pattern="yyyy-MM-dd'T'HH:mm:ssZ"/>
-		  <format property="build.time.txt"  pattern="yyyy-MM-dd HH:mm Z"/>
-		</tstamp>
-		<echo file="${basedir}/target/filter.properties">
+              <tasks>
+                <mkdir dir="${basedir}/target"/>
+                <tstamp>
+                  <format property="build.time.xsd"  pattern="yyyy-MM-dd'T'HH:mm:ssZ"/>
+                  <format property="build.time.txt"  pattern="yyyy-MM-dd HH:mm Z"/>
+                </tstamp>
+                <echo file="${basedir}/target/filter.properties">
 #begin
 build.time.xsd=${build.time.xsd}
 build.time.txt=${build.time.txt}
 #end 
-		</echo>
-		<echo message="build.time=${build.time.txt}"/>
-	      </tasks>
+                </echo>
+                <echo message="build.time=${build.time.txt}"/>
+              </tasks>
             </configuration>
             <goals>
               <goal>run</goal>
