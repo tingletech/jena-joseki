@@ -9,15 +9,14 @@ package dev;
 public class Dev
 {
     // == maven
-    // Compile depends on ARQ test code.
-    
-    /* Joseki needs connection management for SDB
-     * ServiceRequest (??request)
-     *   with .start and .finish
-     *   to do connection management
-     * Joseki is the container.
-     *   Register a "getConnectionFromOutside()" hanlder with a ServiceRequest.
-     */
+    // --> Add to assembly, and don't copy lib/
+    //    <dependencySets>
+    //      <dependencySet>
+    //        <unpack>false</unpack>
+    //        <scope>test</scope>
+    //        <outputDirectory>lib</outputDirectory>
+    //      </dependencySet>
+    //    </dependencySets>
 }
 
 /*
