@@ -8,15 +8,6 @@ package dev;
 
 public class Dev
 {
-    // == maven
-    // --> Add to assembly, and don't copy lib/
-    //    <dependencySets>
-    //      <dependencySet>
-    //        <unpack>false</unpack>
-    //        <scope>test</scope>
-    //        <outputDirectory>lib</outputDirectory>
-    //      </dependencySet>
-    //    </dependencySets>
 }
 
 /*

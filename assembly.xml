@@ -8,28 +8,34 @@
     -->
     <format>zip</format>
   </formats>
-  <fileSets>
 
+  <dependencySets>
+    <dependencySet>
+      <unpack>false</unpack>
+      <scope>test</scope>
+      <outputDirectory>lib</outputDirectory>
+    </dependencySet>
+  </dependencySets>
+
+  <fileSets>
     <fileSet>
       <includes>
-        <include>CopyrightNotice.txt</include>
-        <include>README*</include>
-        <include>ChangeLog.txt</include>
-        <include>pom.xml</include>
+	<include>CopyrightNotice.txt</include>
+	<include>README*</include>
+	<include>ChangeLog.txt</include>
+	<include>pom.xml</include>
       </includes>
     </fileSet>
 
+    <!-- Additional material for lib/ -->
+    <!--
     <fileSet>
       <directory>lib</directory>
       <outputDirectory>lib</outputDirectory>
-      <includes>
-        <include>*.jar</include>
-      </includes>
-      <excludes>
-        <exclude>joseki*.jar</exclude>
-      </excludes>
     </fileSet>
-    
+    -->
+
+    <!--
     <fileSet>
       <directory>${project.build.directory}</directory>
       <outputDirectory>lib</outputDirectory>
@@ -37,8 +43,9 @@
         <include>joseki-${project.version}.jar</include>
       </includes>
     </fileSet>
+    -->
 
-    <!-- But put sources and javadoc at the top level -->
+    <!-- Put sources at the top level -->
     <fileSet>
       <directory>${project.build.directory}</directory>
       <outputDirectory></outputDirectory>

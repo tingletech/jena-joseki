@@ -175,11 +175,11 @@
 	  </descriptors>
         </configuration>
 
-	<!-- Add to packaging lifecycle phase -->
+	<!-- Add to packaging lifecycle phase 'verify' -->
 	<executions>
 	  <execution>
 	    <id>create-assembly</id>
-	    <phase>package</phase>
+	    <phase>verify</phase>
 	    <goals>
 	      <goal>attached</goal>
 	    </goals>
