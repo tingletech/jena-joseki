@@ -7,35 +7,25 @@ package org.joseki;
 
 import java.util.* ;
 
+import com.hp.hpl.jena.sparql.lib.Metadata;
+
 /** Constants and other definitions.
  * @author      Andy Seaborne
- * @version     $Id: Joseki.java,v 1.35 2009-03-24 17:57:37 andy_seaborne Exp $
+ * @version     $Id: Joseki.java,v 1.36 2009-07-19 15:52:50 andy_seaborne Exp $
  */
 public class Joseki
 {
+    static { Metadata.setMetadata("org/joseki/joseki-properties.xml") ; }
     /** The root package name for ARQ */   
     public static final String PATH = "org.joseki";
    
     /** The product name */   
-    public static final String NAME = "@name@";
+    public static final String NAME = "Joseki";
    
-    /** The Joseki website */   
-    public static final String WEBSITE = "@website@";
-   
-    /** The full name of the current Joseki version */   
-    public static final String VERSION = "@version@";
-   
-    /** The major version number for this release of Joseki */
-    public static final String MAJOR_VERSION = "@version-major@";
-   
-    /** The minor version number for this release of Joseki */
-    public static final String MINOR_VERSION = "@version-minor@";
-   
-    /** The version status for this release of Joseki */
-    public static final String VERSION_STATUS = "@version-status@";
-   
-    /** The date and time at which this release was built */   
-    public static final String BUILD_DATE = "@build-time@";
+    /** The full name of the current ARQ version */   
+    public static final String VERSION = Metadata.get(PATH+".version", "unknown") ;
+    
+    public static final String BUILD_DATE = Metadata.get(PATH+".build.datetime", "unset") ;
 
     /** The Java system property name of the default configuration file */
     public static final String configurationFileProperty  = "org.joseki.rdfserver.config" ;
