@@ -19,10 +19,10 @@
 	<classpathentry kind="lib" path="lib/slf4j-api-1.5.6.jar"/>
 	<classpathentry kind="lib" path="lib/slf4j-log4j12-1.5.6.jar"/>
 	<classpathentry kind="lib" path="lib/junit-4.5.jar"/>
-	<classpathentry kind="lib" path="lib-tdb/tdb-0.8.1.jar"/>
 	<classpathentry kind="lib" path="lib/stax-api-1.0.1.jar"/>
 	<classpathentry kind="lib" path="lib/wstx-asl-3.2.9.jar"/>
 	<classpathentry kind="lib" path="lib/arq-2.8.0-tests.jar"/>
 	<classpathentry kind="lib" path="lib/arq-2.8.0.jar"/>
+	<classpathentry kind="lib" path="lib-tdb/tdb-0.8.2.jar"/>
 	<classpathentry kind="output" path="classes"/>
 </classpath>
