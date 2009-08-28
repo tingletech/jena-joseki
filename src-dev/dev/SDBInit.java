@@ -7,7 +7,8 @@
 package dev;
 
 import com.hp.hpl.jena.rdf.model.Resource;
-import com.hp.hpl.jena.sdb.SDB;
+import com.hp.hpl.jena.sdb.SDB ;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.joseki.ServerInitialization;
