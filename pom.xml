@@ -33,13 +33,13 @@
      <dependency>
       <groupId>com.hp.hpl.jena</groupId>
       <artifactId>arq</artifactId>
-      <version>2.8.0</version>
+      <version>2.8.1-SNAPSHOT</version>
     </dependency>
 
     <dependency>
       <groupId>com.hp.hpl.jena</groupId>
       <artifactId>arq</artifactId>
-      <version>2.8.0</version>
+      <version>2.8.1-SNAPSHOT</version>
       <type>test-jar</type>
     </dependency>
 
@@ -147,6 +147,17 @@
             <!-- Needs access to the script files -->
             <!-- <include>org/joseki/test/ProtocolTests.java</include> -->
           </includes>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-dependency-plugin</artifactId>
+	<configuration>
+          <outputDirectory>lib2</outputDirectory>
+          <overWriteReleases>false</overWriteReleases>
+          <overWriteSnapshots>false</overWriteSnapshots>
+          <overWriteIfNewer>true</overWriteIfNewer>
         </configuration>
       </plugin>
       

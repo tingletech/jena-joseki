@@ -11,11 +11,13 @@ import com.hp.hpl.jena.sparql.lib.Metadata;
 
 /** Constants and other definitions.
  * @author      Andy Seaborne
- * @version     $Id: Joseki.java,v 1.36 2009-07-19 15:52:50 andy_seaborne Exp $
+ * @version     $Id: Joseki.java,v 1.37 2009-08-28 22:14:09 andy_seaborne Exp $
  */
 public class Joseki
 {
-    static { Metadata.setMetadata("org/joseki/joseki-properties.xml") ; }
+    static private String metadataLocation = "org/joseki/joseki-properties.xml" ;
+    static private Metadata metadata = new Metadata(metadataLocation) ;
+    
     /** The root package name for ARQ */   
     public static final String PATH = "org.joseki";
    
@@ -23,18 +25,16 @@ public class Joseki
     public static final String NAME = "Joseki";
    
     /** The full name of the current ARQ version */   
-    public static final String VERSION = Metadata.get(PATH+".version", "unknown") ;
+    public static final String VERSION = metadata.get(PATH+".version", "unknown") ;
     
-    public static final String BUILD_DATE = Metadata.get(PATH+".build.datetime", "unset") ;
+    public static final String BUILD_DATE = metadata.get(PATH+".build.datetime", "unset") ;
 
     /** The Java system property name of the default configuration file */
     public static final String configurationFileProperty  = "org.joseki.rdfserver.config" ;
     
     public static final int defaultPort = 2020 ; 
-    // TODO automate version number (read from file?) 
-    public static String version = "3.2" ;
     public static String httpHeaderField = "X-Joseki-Server" ;
-    public static String httpHeaderValue = "Joseki-"+version ;
+    public static String httpHeaderValue = "Joseki-"+VERSION ;
     
     // TODO Split constants into client-side and server-side constants.
     

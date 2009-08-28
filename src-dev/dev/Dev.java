@@ -8,6 +8,8 @@ package dev;
 
 public class Dev
 {
+	// FROM file: -- needs filemanager protection
+	// Non-existant file causes NPE (recovery is correct though)
 }
 
 /*

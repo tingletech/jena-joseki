@@ -173,7 +173,7 @@
         <copy todir="${webapps.build.dir}/WEB-INF/lib">
           <fileset dir="${lib.dir}"  >
               <include name="*.jar"/>
-              <exclude name="jservlet-api-*.jar"/>
+              <exclude name="servlet-api-*.jar"/>
               <exclude name="jetty.*.jar"/>
               <exclude name="jasper*.jar"/>
           </fileset>
