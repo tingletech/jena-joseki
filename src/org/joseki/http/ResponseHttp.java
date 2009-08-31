@@ -66,12 +66,13 @@ public class ResponseHttp extends Response
     private HttpServletRequest httpRequest ; 
     
     
-    static final String paramStyleSheet = "stylesheet" ;
-    static final String paramAccept     = "accept" ;
-    static final String paramOutput1    = "output" ;        // See Yahoo! developer: http://developer.yahoo.net/common/json.html 
-    static final String paramOutput2    = "format" ;        // Alternative name 
-    static final String paramCallback   = "callback" ;
-    static final String headerAccept    = "Accept" ;
+    static final String paramStyleSheet     = "stylesheet" ;
+    static final String paramAccept         = "accept" ;
+    static final String paramOutput1        = "output" ;        // See Yahoo! developer: http://developer.yahoo.net/common/json.html 
+    static final String paramOutput2        = "format" ;        // Alternative name 
+    static final String paramCallback       = "callback" ;
+    static final String paramForceAccept    = "force-accept" ;  // Force the accept header at the last moment 
+    static final String headerAccept        = "Accept" ;
     
     ResponseHttp(Request request, HttpServletRequest httpRequest, HttpServletResponse httpResponse) 
     { 
@@ -220,34 +221,66 @@ public class ResponseHttp extends Response
         if ( acceptField == null )
             acceptField = Joseki.contentTypeResultsXML ;
         
-        String outputField = paramOutput() ;
+        // The MIME type by correct content negotiation.  This will be the Content: field.
         String contentType = Joseki.contentTypeResultsXML ;
+        // Whether the request (not the header) has an accept field request.
+        String acceptParam = fetchParam(paramAccept) ;
         
-        // ---- Choose the content type and serialization.
+        // ---- Step 1 -- Choose the content type
         if ( HttpUtils.accept(acceptField, Joseki.contentTypeXML) ||  
              HttpUtils.accept(acceptField, Joseki.contentTypeResultsXML) )
             contentType = Joseki.contentTypeResultsXML ;
         
-        if ( acceptField.equalsIgnoreCase(Joseki.contentTypeResultsJSON) )
+        if ( acceptField.equals(Joseki.contentTypeResultsJSON) )
             contentType = Joseki.contentTypeResultsJSON ;
+
+        // contentType now set.
+        
+        // ---- Step 2 -- Choose the serialization. 
         
         // Serialialization is the content type unless overridden. 
+        // This is what we dispatch on.
         String serializationType = contentType ;
 
-        // output field causes the serialization to be set
-        if ( outputField != null )
+        // ---- Step 3 : Does &output= override?
+        // Requested output type by the web form or &output= in the request.
+        // Overrides content negotiation. 
+        String outputField = paramOutput() ;    // Expands short names
+
+        if ( outputField != null ) 
         {
-            serializationType = outputField ;
-            contentType = Joseki.contentTypeResultsJSON ;
+            if ( outputField.equals("json") || outputField.equals(Joseki.contentTypeResultsJSON) )
+            {
+                serializationType = Joseki.contentTypeResultsJSON ;
+                contentType = Joseki.contentTypeResultsJSON ;
+            }
+            if ( outputField.equals("xml") || outputField.equals(Joseki.contentTypeResultsXML) )
+            {
+                serializationType = Joseki.contentTypeResultsXML ;
+                contentType = Joseki.contentTypeResultsXML ;
+            }
+            if ( outputField.equals("text") || outputField.equals(Joseki.contentTypeTextPlain) )
+            {
+                serializationType = Joseki.contentTypeTextPlain ;
+                contentType = Joseki.contentTypeTextPlain ;
+            }
         }
+
+        // ---- Step 4: Style sheet - change to application/xml.
+        final String stylesheetURL = paramStylesheet() ;
+        if ( stylesheetURL != null && serializationType.equals(Joseki.contentTypeResultsXML))
+            contentType = Joseki.contentTypeXML ; 
+        
+        
+        // ---- Step 5: text/plain?
+        
+        String forceAccept = paramForceAccept() ;
+        if ( forceAccept != null )
+            contentType = forceAccept ;
 
         // ---- Form: XML
         if ( serializationType.equals(Joseki.contentTypeResultsXML) )
         {
-            final String stylesheetURL = paramStylesheet() ;
-            if ( stylesheetURL != null )
-                contentType = Joseki.contentTypeXML ; 
-
             try {
                 output(contentType, null, new OutputContent()
                 {
@@ -425,6 +458,12 @@ public class ResponseHttp extends Response
         httpResponse.flushBuffer();
     }
 
+    private String paramForceAccept()
+    {
+        String x = fetchParam(paramForceAccept) ;
+        return expandShortName(x) ; 
+    }
+    
     private String paramStylesheet() { return fetchParam(paramStyleSheet) ; }
     
     private String paramOutput()
