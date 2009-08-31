@@ -92,25 +92,6 @@ public class ResponseHttp extends Response
         if ( acceptHeader == null )
             acceptHeader = Joseki.contentTypeRDFXML ;
         
-//        String textContentType =  HttpUtils.match(acceptHeader, "text/*") ; 
-//
-//        if ( textContentType != null )
-//        {
-//            // Send to a browser.  Send as whatever the default type is for the 
-//            writerMimeType = Joseki.contentTypeForText ;
-//            mimeType = Joseki.contentTypeForText ;
-//            log.debug("MIME type (text-like): "+writerMimeType) ;
-//        }
-        
-//     // ---- Choose the content type and serialization.
-//        if ( HttpUtils.accept(acceptField, Joseki.contentTypeXML) ||  
-//             HttpUtils.accept(acceptField, Joseki.contentTypeResultsXML) )
-//            contentType = Joseki.contentTypeResultsXML ;
-//        
-//        if ( acceptField.equalsIgnoreCase(Joseki.contentTypeResultsJSON) )
-//            contentType = Joseki.contentTypeResultsJSON ;
-        
-        
         AcceptItem i = HttpUtils.choose(acceptHeader, prefContentType, defaultContentType) ;
         if ( i != null )
         	mimeType = i.getAcceptType() ;
