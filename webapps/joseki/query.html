@@ -23,10 +23,15 @@ SELECT ?book ?title
 WHERE 
   { ?book dc:title ?title }</textarea>
 	  <br/>
-	  XSLT style sheet (leave blank for none): 
-	  <input name="stylesheet" size="25" value="/xml-to-html.xsl" />
-	  or JSON output: <input type="checkbox" name="output" value="json"/>
+	  Output XML: <input type="radio" name="output" value="xml" checked/>
+	  with XSLT style sheet (leave blank for none): 
+	  <input name="stylesheet" size="25" value="/xml-to-html.xsl" /> <br/>
+	  or JSON output: <input type="radio" name="output" value="json"/> <br/>
+	  or text output: <input type="radio" name="output" value="text"/> <br/>
+	  Force the accept header to <tt>text/plain</tt> regardless 
+ 	  <input type="checkbox" name="force-accept" value="text/plain"/>
 	  <br/>
+	   
 	  <input type="submit" value="Get Results" />
 	</p>
       </form>

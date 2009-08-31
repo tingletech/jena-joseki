@@ -76,7 +76,6 @@ public class ResponseHttp extends Response
     
     ResponseHttp(Request request, HttpServletRequest httpRequest, HttpServletResponse httpResponse) 
     { 
-        // TODO Move content negotiation to constructor so early failures.
         super(request) ;
         this.httpResponse = httpResponse ;
         this.httpRequest = httpRequest ; 
