@@ -1,0 +1,10 @@
+PREFIX foaf:       <http://xmlns.com/foaf/0.1/>
+
+SELECT ?nameX ?nameY
+{
+   ?x foaf:knows ?y .
+   ?y foaf:knows ?x .
+   ?x foaf:name ?nameX .
+   ?y foaf:name ?nameY .
+   FILTER(?nameX < ?nameY)  # De-duplicate
+}

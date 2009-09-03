@@ -1,0 +1,52 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Language" content="en-gb">
+<meta name="GENERATOR" content="Microsoft FrontPage 6.0">
+<meta name="ProgId" content="FrontPage.Editor.Document">
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<title>XML Summer School</title>
+<link rel="stylesheet" type="text/css" href="doc.css">
+</head>
+
+<body>
+
+<h1>XML Summer School : September 2009 : Practicals</h1>
+<p>This page: <a href="http://sparql.org/xmlss.html">http://sparql.org/xmlss.html</a> </p>
+<p>SPARQL spec: <a href="http://www.w3.org/TR/rdf-sparql-query/">
+http://www.w3.org/TR/rdf-sparql-query/</a></p>
+<p>Query web form: <a href="http://sparql.org/xmlss_query.html">
+http://sparql.org/xmlss_query.html</a></p>
+<h2>Practical 1</h2>
+<p>The data is already loaded into the query service.</p>
+<ol>
+  <li>Try some queries:<ol>
+  <li>All triples (<a href="q-all.rq.txt">example</a>)</li>
+	<li>Get Alice's name given email is <tt>&lt;mailto:alice@example.com&gt;</tt>. 
+	(<a href="q-alice-by-mbox.rq.txt">example</a>)</li>
+	<li>Find the name of the pairsof people who know each other, that is 
+	everybody who knows foaf:knows someone who foaf:knows them back (bonus: 
+	without duplicates) (<a href="q-who-knows-who.rq.txt">example</a>)</li>
+	<li>Find the books with SPARQL in the title (use regex) (<a href="q-regex.rq.txt">example</a>)</li>
+</ol>
+	</li>
+  <li>Execute an example query.&nbsp; Look at the URL used for the request and the 
+  XML returned (use &quot;view source&quot;).<ol>
+  <li>Try a CONSTRUCT query.</li>
+</ol>
+	</li>
+  <li>Use the <a href="http://www.sparql.org/validator.html">validator</a> to look at the SPARQL algebra.</li>
+</ol>
+<h2>Practical 2</h2>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+
+<h2>Software installed</h2>
+<p>The server is running <a href="http://www.joseki.org/">Joseki</a> for the 
+SPARQL protocol and <a href="http://jena.sf.net/ARQ">ARQ</a> (and
+<a href="http://jena.sf.net/">Jena</a>) for the query engine. All are open 
+source with a BSD-class license.</p>
+
+</body>
+
+</html>
