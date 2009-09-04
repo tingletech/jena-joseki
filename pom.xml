@@ -239,7 +239,32 @@ build.time.txt=${build.time.txt}
     </plugins>
 
   </build>
-      
+  
+  <repositories>
+    <!-- jena-repo is mirrored to Maven central repository -->
+    <!--
+    <repository>
+      <id>repo-jena</id>
+      <name>Jena Maven - Repository</name>
+      <layout>default</layout>
+      <url>http://jena.hpl.hp.com/repo</url>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+    </repository>
+    -->
+    <!-- jena-repo-dev is where SNAPSHOTs are published -->  
+    <repository>
+      <id>repo-jena-dev</id>
+      <name>Jena Maven - Development Repository</name>
+      <layout>default</layout>
+      <url>http://jena.hpl.hp.com/repo-dev</url>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+    </repository>
+  </repositories>
+
   <distributionManagement>
     <downloadUrl>http://jena.hpl.hp.com/repo-dev</downloadUrl>
     <repository>

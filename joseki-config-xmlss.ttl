@@ -74,19 +74,31 @@
     joseki:processor    joseki:ProcessorSPARQL_FixedDS ;
     .
 
-<#serviceXML-SS>
+<#serviceXML-SS-1>
     rdf:type            joseki:Service ;
     rdfs:label          "XML SS" ;
-    joseki:serviceRef   "sparql/xmlss" ;   # web.xml must route this name to Joseki
+    joseki:serviceRef   "sparql/xmlss1" ;
     # dataset part
-    joseki:dataset      <#xmlss> ;
+    joseki:dataset      <#xmlss1> ;
     # Service part.
     # This processor will not allow either the protocol,
     # nor the query, to specify the dataset.
     joseki:processor    joseki:ProcessorSPARQL_FixedDS ;
     .
 
-<#xmlss>
+<#serviceXML-SS-2>
+    rdf:type            joseki:Service ;
+    rdfs:label          "XML SS" ;
+    joseki:serviceRef   "sparql/xmlss2" ;
+    # dataset part
+    joseki:dataset      <#xmlss2> ;
+    # Service part.
+    # This processor will not allow either the protocol,
+    # nor the query, to specify the dataset.
+    joseki:processor    joseki:ProcessorSPARQL_FixedDS ;
+    .
+
+<#xmlss1>
     rdf:type ja:RDFDataset ;
     rdfs:label "Books" ;
     ja:defaultGraph 
@@ -95,6 +107,38 @@
         ja:content [ja:externalContent <file:Data/data.ttl> ] ;
       ] ;
     .
+
+<#xmlss2>   rdf:type ja:RDFDataset ;
+    ja:defaultGraph    [ a ja:MemoryModel ;
+                         ja:content [ ja:externalContent <file:Data/data-manifest.ttl> ] 
+                       ] ;
+    ja:namedGraph
+        [ ja:graphName      <http://example.org/alice> ;
+          ja:graph          <#data-alice> ] ;
+    ja:namedGraph
+        [ ja:graphName      <http://example.org/bob> ;
+          ja:graph          <#data-bob> ] ;
+    ja:namedGraph
+        [ ja:graphName      <http://example.org/charlie> ;
+          ja:graph          <#data-charlie> ] ;
+    ja:namedGraph
+        [ ja:graphName      <http://example.org/dave> ;
+          ja:graph          <#data-dave> ] ;
+    .
+
+<#data-alice>  a ja:MemoryModel ;
+    ja:content [ ja:externalContent <file:Data/data-alice.ttl> ] .
+
+<#data-bob>  a ja:MemoryModel ;
+    ja:content [ ja:externalContent <file:Data/data-bob.ttl> ] .
+
+<#data-charlie>  a ja:MemoryModel ;
+    ja:content [ ja:externalContent <file:Data/data-charlie.ttl> ] .
+
+<#data-dave>  a ja:MemoryModel ;
+    ja:content [ ja:externalContent <file:Data/data-dave.ttl> ] .
+
+
 
 
 ## ---- SPARQL/Update

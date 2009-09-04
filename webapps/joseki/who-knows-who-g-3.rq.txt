@@ -1,0 +1,35 @@
+PREFIX  rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX  rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX  foaf:   <http://xmlns.com/foaf/0.1/>
+PREFIX  dc:     <http://purl.org/dc/elements/1.1/>
+
+SELECT ?X ?Y
+{ 
+    # Closer - but people can make statements about two other people.
+    GRAPH ?g1 
+    { 
+        ?x1 foaf:knows ?y1 . 
+        # Use mbox to identify people.
+        ?x1 foaf:mbox ?mbox_x .
+        ?y1 foaf:mbox ?mbox_y .
+    }
+
+     # Check claims.
+     ?xClaim foaf:mbox ?mbox_x .
+     ?xClaim dc:publisher ?g1 .
+
+    GRAPH ?g2
+    { 
+        # Use mbox to find the node representing a person.
+        ?x2 foaf:mbox ?mbox_x .
+        ?y2 foaf:mbox ?mbox_y .
+        ?y2 foaf:knows ?x2 .    # x and y reversed
+    }
+
+    ?yClaim foaf:mbox ?mbox_y .
+    ?yClaim dc:publisher ?g2 .
+
+    ?xClaim foaf:name ?X .
+    ?yClaim foaf:name ?Y .
+    FILTER(?X < ?Y)
+}
