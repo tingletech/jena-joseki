@@ -15,29 +15,39 @@
 <p>This page: <a href="http://sparql.org/xmlss.html">http://sparql.org/xmlss.html</a> </p>
 <p>SPARQL spec: <a href="http://www.w3.org/TR/rdf-sparql-query/">
 http://www.w3.org/TR/rdf-sparql-query/</a></p>
-<p>Query web form: <a href="http://sparql.org/xmlss_query.html">
+<p>Query web form: <a href="xmlss_query.html">
 http://sparql.org/xmlss_query.html</a></p>
 <h2>Practical 1</h2>
 <p>The data is already loaded into the query service.</p>
 <ol>
-  <li>Try some queries:<ol>
-  <li>All triples (<a href="q-all.rq.txt">example</a>)</li>
+  <li>Try some queries:<ul>
+	<li>List all triples (<a href="q-all.rq.txt">example</a>)</li>
 	<li>Get Alice's name given email is <tt>&lt;mailto:alice@example.com&gt;</tt>. 
 	(<a href="q-alice-by-mbox.rq.txt">example</a>)</li>
-	<li>Find the name of the pairsof people who know each other, that is 
+	<li>Find the name of the pairs of people who know each other, that is 
 	everybody who knows foaf:knows someone who foaf:knows them back (bonus: 
 	without duplicates) (<a href="q-who-knows-who.rq.txt">example</a>)</li>
 	<li>Find the books with SPARQL in the title (use regex) (<a href="q-regex.rq.txt">example</a>)</li>
-</ol>
+	</ul>
 	</li>
   <li>Execute an example query.&nbsp; Look at the URL used for the request and the 
-  XML returned (use &quot;view source&quot;).<ol>
-  <li>Try a CONSTRUCT query.</li>
-</ol>
+  XML returned (use &quot;view source&quot;).<ul>
+	<li>Try again with a CONSTRUCT query.</li>
+	</ul>
 	</li>
-  <li>Use the <a href="http://www.sparql.org/validator.html">validator</a> to look at the SPARQL algebra.</li>
+  <li>Use the <a href="/validator.html">validator</a> to look at the SPARQL algebra.</li>
 </ol>
 <h2>Practical 2</h2>
+<p>This practical looks at named graphs.</p>
+<ol>
+	<li>Find the names of the graphs. It is the list of people's FOAF files. 
+	(<a href="q-graph-names.rq.txt">example</a>)</li>
+	<li>Find the name of the pairs of people who know each other, but ensure 
+	that only claims about a person come from their FOAF file.<ul>
+		<li>This does not work: why?</li>
+	</ul>
+	</li>
+</ol>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 
