@@ -180,6 +180,8 @@ public class ResponseHttp extends Response
         doResponseResult(null, result) ;
     }
 
+    static AcceptList myPrefs = new AcceptList(Joseki.contentTypeResultsXML, Joseki.contentTypeResultsJSON) ;
+    static AcceptItem dft = new AcceptItem(Joseki.contentTypeResultsXML) ;
     
     // One of the other argument must be null
     private void doResponseResult(final ResultSet resultSet, final Boolean booleanResult) throws QueryExecutionException
@@ -201,18 +203,21 @@ public class ResponseHttp extends Response
         if ( acceptField == null )
             acceptField = Joseki.contentTypeResultsXML ;
         
-        // The MIME type by correct content negotiation.  This will be the Content: field.
-        String contentType = Joseki.contentTypeResultsXML ;
-        // Whether the request (not the header) has an accept field request.
-        String acceptParam = fetchParam(paramAccept) ;
+        //String acceptParam = fetchParam(paramAccept) ;
         
         // ---- Step 1 -- Choose the content type
-        if ( HttpUtils.accept(acceptField, Joseki.contentTypeXML) ||  
-             HttpUtils.accept(acceptField, Joseki.contentTypeResultsXML) )
+
+        AcceptItem item = HttpUtils.choose(acceptField, myPrefs, dft) ;
+        String contentType = item.getAcceptType() ;
+        if ( contentType == null )
             contentType = Joseki.contentTypeResultsXML ;
         
-        if ( acceptField.equals(Joseki.contentTypeResultsJSON) )
-            contentType = Joseki.contentTypeResultsJSON ;
+//        if ( HttpUtils.accept(acceptField, Joseki.contentTypeXML) ||  
+//             HttpUtils.accept(acceptField, Joseki.contentTypeResultsXML) )
+//            contentType = Joseki.contentTypeResultsXML ;
+//        
+//        if ( HttpUtils.accept(acceptField, Joseki.contentTypeResultsJSON) )
+//            contentType = Joseki.contentTypeResultsJSON ;
 
         // contentType now set.
         

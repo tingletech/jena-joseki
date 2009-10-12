@@ -20,7 +20,7 @@ import org.slf4j.LoggerFactory;
 /** A class to handle a list of accept types (AcceptRanges)
  * 
  * @author Andy Seaborne
- * @version $Id: AcceptList.java,v 1.12 2009-04-24 14:30:44 andy_seaborne Exp $
+ * @version $Id: AcceptList.java,v 1.13 2009-10-12 17:26:04 andy_seaborne Exp $
  */
 
 public class AcceptList implements Iterable<AcceptItem> 
@@ -45,7 +45,7 @@ public class AcceptList implements Iterable<AcceptItem>
      * @param acceptStrings
      */
     
-    public AcceptList(String[] acceptStrings)
+    public AcceptList(String... acceptStrings)
     {
         list = new ArrayList<AcceptItem>() ;
         for ( int i = 0 ; i < acceptStrings.length ; i++ )

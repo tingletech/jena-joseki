@@ -1,10 +1,15 @@
 Joseki3
 =======
 
+Joseki 3.4.1
+------------
++ Upgrade to latest Jena and ARQ
++ Improve content negotation.
+
 Joseki 3.4.0
 ------------
 
-+ Imporvements for working with SDB and TDB
++ Improvements for working with SDB and TDB
 
 + Logging facade now slf4j
 
