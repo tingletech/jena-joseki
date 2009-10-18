@@ -6,7 +6,7 @@
   <artifactId>joseki</artifactId>
   <packaging>jar</packaging>
   <name>Joseki</name>
-  <version>3.4.1-SNAPSHOT</version>
+  <version>3.4.1-RC-1</version>
   <description/>
   <url>http://joseki.org/</url>
 
@@ -38,24 +38,7 @@
 
     <dependency>
       <groupId>com.hp.hpl.jena</groupId>
-      <artifactId>arq</artifactId>
-      <version>2.8.1</version>
-      <type>test-jar</type>
-    </dependency>
-
-    <!-- Jena: Even though ARQ is included above, need Jena dependency to 
-         pull in all Jena's dependences to run tests
-    -->
-
-    <dependency>
-      <groupId>com.hp.hpl.jena</groupId>
       <artifactId>jena</artifactId>
-      <version>2.6.2</version>
-    </dependency>
-
-    <dependency>
-      <groupId>com.hp.hpl.jena</groupId>
-      <artifactId>jenatest</artifactId>
       <version>2.6.2</version>
     </dependency>
 
@@ -110,7 +93,7 @@
       </resource>
     </resources>
     <filters>
-      <filter>${basedir}/target/filter.properties</filter>
+      <filter>${project.basedir}/target/filter.properties</filter>
     </filters>
     
     <plugins>
@@ -215,17 +198,18 @@
             <phase>generate-resources</phase>
             <configuration>
               <tasks>
-                <mkdir dir="${basedir}/target"/>
+                <mkdir dir="${project.basedir}/target"/>
                 <tstamp>
                   <format property="build.time.xsd"  pattern="yyyy-MM-dd'T'HH:mm:ssZ"/>
                   <format property="build.time.txt"  pattern="yyyy-MM-dd HH:mm Z"/>
                 </tstamp>
-                <echo file="${basedir}/target/filter.properties">
+                <echo file="${project.basedir}/target/filter.properties">
 #begin
 build.time.xsd=${build.time.xsd}
 build.time.txt=${build.time.txt}
 #end 
                 </echo>
+                <echo message="Version = ${project.version}"/>
                 <echo message="build.time=${build.time.txt}"/>
               </tasks>
             </configuration>
@@ -242,7 +226,7 @@ build.time.txt=${build.time.txt}
   
   <repositories>
     <!-- jena-repo is mirrored to Maven central repository -->
-    <!--
+
     <repository>
       <id>repo-jena</id>
       <name>Jena Maven - Repository</name>
@@ -252,7 +236,7 @@ build.time.txt=${build.time.txt}
         <enabled>false</enabled>
       </snapshots>
     </repository>
-    -->
+
     <!-- jena-repo-dev is where SNAPSHOTs are published -->  
     <repository>
       <id>repo-jena-dev</id>
@@ -270,16 +254,20 @@ build.time.txt=${build.time.txt}
     <repository>
       <id>jena-repo</id>
       <name>Jena repo</name>
+
+      <!--<url>sftp://openjena.org/var/repo-dev</url>-->
       <url>sftp://openjena.org/var/repo-dev</url>
       <!--<url>file:tmp</url>-->
+
       <layout>default</layout>
     </repository> 
     <snapshotRepository>
       <id>jena-repo-dev</id>
       <name>Jena development repo</name>
-      <!-- scp does not work (TERM not set !!) -->
+
       <url>sftp://openjena.org/var/repo-dev</url>
       <!--<url>file:tmp</url>-->
+
       <layout>default</layout>
     </snapshotRepository>
   </distributionManagement>
