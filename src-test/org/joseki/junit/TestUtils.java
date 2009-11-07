@@ -17,7 +17,7 @@ import com.hp.hpl.jena.sparql.util.FmtUtils;
 /** Test utilities.
  * 
  * @author Andy Seaborne
- * @version $Id: TestUtils.java,v 1.8 2008-12-28 19:51:04 andy_seaborne Exp $
+ * @version $Id: TestUtils.java,v 1.1 2009-11-07 20:16:57 andy_seaborne Exp $
  */
 
 public class TestUtils

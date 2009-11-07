@@ -56,7 +56,7 @@ tdb:GraphTDB    rdfs:subClassOf  ja:Model .
 
 ## ---- A whole dataset managed by TDB
 <#dataset> rdf:type      tdb:DatasetTDB ;
-    tdb:location "/home/afs/Projects/Joseki3/TDB" ;
+    tdb:location "TDB" ;
     .
 
 ## ---- A single graph inside a general dataset.
