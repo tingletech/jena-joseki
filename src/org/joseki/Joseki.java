@@ -11,7 +11,7 @@ import com.hp.hpl.jena.sparql.lib.Metadata;
 
 /** Constants and other definitions.
  * @author      Andy Seaborne
- * @version     $Id: Joseki.java,v 1.37 2009-08-28 22:14:09 andy_seaborne Exp $
+ * @version     $Id: Joseki.java,v 1.38 2009-11-13 14:10:42 andy_seaborne Exp $
  */
 public class Joseki
 {
@@ -73,8 +73,11 @@ public class Joseki
     public static final String contentOutputXML           = "xml" ;
     public static final String contentOutputSPARQL        = "sparql" ;
     public static final String contentOutputText          = "text" ;
+    public static final String contentOutputCSV           = "text" ;
 
     public static final String contentTypeTextPlain       = "text/plain" ;
+    public static final String contentTypeTextCSV         = "text/csv" ;
+
     //public static final String contentTypeTextJavascript  = "text/javascript" ;
     //public static final String contentTypeForText         = contentTypeTextPlain ;
     

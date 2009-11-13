@@ -249,6 +249,13 @@ public class ResponseHttp extends Response
                 serializationType = Joseki.contentTypeTextPlain ;
                 contentType = Joseki.contentTypeTextPlain ;
             }
+            
+            if ( outputField.equals("csv") || outputField.equals(Joseki.contentTypeTextCSV) )
+            {
+                serializationType = Joseki.contentTypeTextCSV ;
+                contentType = Joseki.contentTypeTextCSV ;
+            }
+
         }
 
         // ---- Step 4: Style sheet - change to application/xml.
@@ -344,6 +351,39 @@ public class ResponseHttp extends Response
                             ResultSetFormatter.out(out, resultSet) ;
                         if (  booleanResult != null )
                             ResultSetFormatter.out(out, booleanResult.booleanValue()) ;
+                    }
+                }) ;
+            }
+            catch (QueryException qEx)
+            {
+                log.info("Query execution error (SELECT/Text): "+qEx) ;
+                throw new QueryExecutionException(ReturnCodes.rcQueryExecutionFailure, qEx.getMessage()) ;
+            }
+            catch (org.mortbay.jetty.EofException eofEx) { }
+            catch (IOException ioEx)
+            {
+                if ( ! ( ioEx instanceof java.io.EOFException ) )
+                    log.warn("IOException[SELECT/Text] (ignored) "+ioEx, ioEx) ;
+                else
+                    log.debug("IOException [SELECT/Text] (ignored) "+ioEx, ioEx) ;
+            }
+            // This catches things like NIO exceptions.
+            catch (Exception ex) { log.debug("Exception [SELECT/Text] "+ex, ex) ; } 
+            return ;
+        }
+        
+        if ( serializationType.equals(Joseki.contentTypeTextCSV) )
+        {
+            try {
+                contentType = Joseki.contentTypeTextCSV ;
+
+                textOutput(contentType, new OutputContent(){
+                    public void output(ServletOutputStream out)
+                    {
+                        if ( resultSet != null )
+                            ResultSetFormatter.outputAsCSV(out, resultSet) ;
+                        if (  booleanResult != null )
+                            ResultSetFormatter.outputAsCSV(out, booleanResult.booleanValue()) ;
                     }
                 }) ;
             }
@@ -493,6 +533,8 @@ public class ResponseHttp extends Response
             return Joseki.contentTypeResultsXML ;
         if ( str.equalsIgnoreCase(Joseki.contentOutputText) )
             return Joseki.contentTypeTextPlain ;
+        if ( str.equalsIgnoreCase(Joseki.contentOutputCSV) )
+            return Joseki.contentTypeTextCSV ;
         return str ;
     }
     

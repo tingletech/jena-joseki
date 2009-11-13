@@ -6,12 +6,12 @@
 
 package dev;
 
-import com.hp.hpl.jena.rdf.model.Resource;
-import com.hp.hpl.jena.sdb.SDB ;
+import org.joseki.ServerInitialization ;
+import org.slf4j.Logger ;
+import org.slf4j.LoggerFactory ;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.joseki.ServerInitialization;
+import com.hp.hpl.jena.rdf.model.Resource ;
+import com.hp.hpl.jena.sdb.SDB ;
 
 public class SDBInit implements ServerInitialization
 {

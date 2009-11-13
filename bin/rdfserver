@@ -38,4 +38,8 @@ then
 #JAVA_ARGS="-server" 
 JAVA_ARGS="-server -Xmx1G" 
 
+# If Jetty needs to handle very large incomign requests (e.g. SPARQL/Update)
+# you may need to add ...
+# JAVA_ARGS="$JAVA_ARGS -Dorg.mortbay.jetty.Request.maxFormContentSize=500000"
+
 exec "$JAVA" $JAVA_ARGS -cp "$CP" $LOG joseki.rdfserver "$@"
