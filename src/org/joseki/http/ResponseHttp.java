@@ -290,10 +290,9 @@ public class ResponseHttp extends Response
                 log.info("Query execution error (SELECT/XML): "+qEx) ;
                 throw new QueryExecutionException(ReturnCodes.rcQueryExecutionFailure, qEx.getMessage()) ;
             }
-            catch (org.mortbay.jetty.EofException eofEx) { }
             catch (IOException ioEx)
             {
-                if ( ! ( ioEx instanceof java.io.EOFException ) )
+                if ( isEOFexception(ioEx) )
                     log.warn("IOException[(SELECT/XML)] (ignored) "+ioEx, ioEx) ;
                 else
                     log.debug("IOException[(SELECT/XML)] (ignored) "+ioEx, ioEx) ;
@@ -325,10 +324,10 @@ public class ResponseHttp extends Response
                 log.info("Query execution error (SELECT/JSON): "+qEx) ;
                 throw new QueryExecutionException(ReturnCodes.rcQueryExecutionFailure, qEx.getMessage()) ;
             }
-            catch (org.mortbay.jetty.EofException eofEx) { }
             catch (IOException ioEx)
             {
-                if ( ! ( ioEx instanceof java.io.EOFException ) )
+                if ( isEOFexception(ioEx) )
+
                     log.warn("IOException[SELECT/JSON] (ignored) "+ioEx, ioEx) ;
                 else
                     log.debug("IOException [SELECT/JSON] (ignored) "+ioEx, ioEx) ;
@@ -359,10 +358,9 @@ public class ResponseHttp extends Response
                 log.info("Query execution error (SELECT/Text): "+qEx) ;
                 throw new QueryExecutionException(ReturnCodes.rcQueryExecutionFailure, qEx.getMessage()) ;
             }
-            catch (org.mortbay.jetty.EofException eofEx) { }
             catch (IOException ioEx)
             {
-                if ( ! ( ioEx instanceof java.io.EOFException ) )
+                if ( isEOFexception(ioEx) ) 
                     log.warn("IOException[SELECT/Text] (ignored) "+ioEx, ioEx) ;
                 else
                     log.debug("IOException [SELECT/Text] (ignored) "+ioEx, ioEx) ;
@@ -392,10 +390,9 @@ public class ResponseHttp extends Response
                 log.info("Query execution error (SELECT/Text): "+qEx) ;
                 throw new QueryExecutionException(ReturnCodes.rcQueryExecutionFailure, qEx.getMessage()) ;
             }
-            catch (org.mortbay.jetty.EofException eofEx) { }
             catch (IOException ioEx)
             {
-                if ( ! ( ioEx instanceof java.io.EOFException ) )
+                if ( isEOFexception(ioEx) )
                     log.warn("IOException[SELECT/Text] (ignored) "+ioEx, ioEx) ;
                 else
                     log.debug("IOException [SELECT/Text] (ignored) "+ioEx, ioEx) ;
@@ -415,6 +412,15 @@ public class ResponseHttp extends Response
     }
     
     
+    private static boolean isEOFexception(IOException ioEx)
+    {
+        if ( ioEx.getClass().getName().equals("org.mortbay.jetty.EofException eofEx") )
+            return true ;
+        if ( ioEx instanceof java.io.EOFException )
+            return true ;
+        return false ;
+    }
+
     @Override
     protected void doResponseNothing() throws QueryExecutionException
     {
