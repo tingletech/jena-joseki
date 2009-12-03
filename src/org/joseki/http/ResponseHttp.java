@@ -347,8 +347,6 @@ public class ResponseHttp extends Response
         if ( serializationType.equals(Joseki.contentTypeTextPlain) )
         {
             try {
-                contentType = Joseki.contentTypeTextPlain ;
-
                 textOutput(contentType, new OutputContent(){
                     public void output(ServletOutputStream out)
                     {
@@ -383,7 +381,6 @@ public class ResponseHttp extends Response
                 OutputContent output ;
                 if ( serializationType.equals(Joseki.contentTypeTextCSV) )
                 {
-                    contentType = Joseki.contentTypeTextCSV ;
                     output = new OutputContent(){
                         public void output(ServletOutputStream out)
                         {
@@ -396,7 +393,6 @@ public class ResponseHttp extends Response
                 }
                 else
                 {
-                    contentType = Joseki.contentTypeTextTSV ;
                     output = new OutputContent(){
                         public void output(ServletOutputStream out)
                         {
