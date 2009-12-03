@@ -11,7 +11,7 @@ import com.hp.hpl.jena.sparql.lib.Metadata;
 
 /** Constants and other definitions.
  * @author      Andy Seaborne
- * @version     $Id: Joseki.java,v 1.38 2009-11-13 14:10:42 andy_seaborne Exp $
+ * @version     $Id: Joseki.java,v 1.39 2009-12-03 22:13:36 andy_seaborne Exp $
  */
 public class Joseki
 {
@@ -77,6 +77,7 @@ public class Joseki
 
     public static final String contentTypeTextPlain       = "text/plain" ;
     public static final String contentTypeTextCSV         = "text/csv" ;
+    public static final String contentTypeTextTSV         = "text/tab-separated-values" ;
 
     //public static final String contentTypeTextJavascript  = "text/javascript" ;
     //public static final String contentTypeForText         = contentTypeTextPlain ;

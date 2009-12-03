@@ -1,6 +1,10 @@
 Joseki3
 =======
 
+Joseki 3.4.2
+------------
++ Add CSV (comma separated values) and TSV (tab separated values) output formats. 
+
 Joseki 3.4.1
 ------------
 + Upgrade to latest Jena and ARQ

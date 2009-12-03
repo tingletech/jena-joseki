@@ -256,6 +256,12 @@ public class ResponseHttp extends Response
                 contentType = Joseki.contentTypeTextCSV ;
             }
 
+            if ( outputField.equals("tsv") || outputField.equals(Joseki.contentTypeTextTSV) )
+            {
+                serializationType = Joseki.contentTypeTextTSV ;
+                contentType = Joseki.contentTypeTextTSV ;
+            }
+
         }
 
         // ---- Step 4: Style sheet - change to application/xml.
@@ -370,35 +376,53 @@ public class ResponseHttp extends Response
             return ;
         }
         
-        if ( serializationType.equals(Joseki.contentTypeTextCSV) )
+        if ( serializationType.equals(Joseki.contentTypeTextCSV) || 
+            serializationType.equals(Joseki.contentTypeTextTSV) )
         {
             try {
-                contentType = Joseki.contentTypeTextCSV ;
-
-                textOutput(contentType, new OutputContent(){
-                    public void output(ServletOutputStream out)
-                    {
-                        if ( resultSet != null )
-                            ResultSetFormatter.outputAsCSV(out, resultSet) ;
-                        if (  booleanResult != null )
-                            ResultSetFormatter.outputAsCSV(out, booleanResult.booleanValue()) ;
-                    }
-                }) ;
+                OutputContent output ;
+                if ( serializationType.equals(Joseki.contentTypeTextCSV) )
+                {
+                    contentType = Joseki.contentTypeTextCSV ;
+                    output = new OutputContent(){
+                        public void output(ServletOutputStream out)
+                        {
+                            if ( resultSet != null )
+                                ResultSetFormatter.outputAsCSV(out, resultSet) ;
+                            if (  booleanResult != null )
+                                ResultSetFormatter.outputAsCSV(out, booleanResult.booleanValue()) ;
+                        }
+                    } ;
+                }
+                else
+                {
+                    contentType = Joseki.contentTypeTextTSV ;
+                    output = new OutputContent(){
+                        public void output(ServletOutputStream out)
+                        {
+                            if ( resultSet != null )
+                                ResultSetFormatter.outputAsTSV(out, resultSet) ;
+                            if (  booleanResult != null )
+                                ResultSetFormatter.outputAsTSV(out, booleanResult.booleanValue()) ;
+                        }
+                    } ;
+                }
+                textOutput(contentType, output) ;
             }
             catch (QueryException qEx)
             {
-                log.info("Query execution error (SELECT/Text): "+qEx) ;
+                log.info("Query execution error (SELECT/CSV-TSV): "+qEx) ;
                 throw new QueryExecutionException(ReturnCodes.rcQueryExecutionFailure, qEx.getMessage()) ;
             }
             catch (IOException ioEx)
             {
                 if ( isEOFexception(ioEx) )
-                    log.warn("IOException[SELECT/Text] (ignored) "+ioEx, ioEx) ;
+                    log.warn("IOException[SELECT/CSV-TSV] (ignored) "+ioEx, ioEx) ;
                 else
-                    log.debug("IOException [SELECT/Text] (ignored) "+ioEx, ioEx) ;
+                    log.debug("IOException [SELECT/CSV-TSV] (ignored) "+ioEx, ioEx) ;
             }
             // This catches things like NIO exceptions.
-            catch (Exception ex) { log.debug("Exception [SELECT/Text] "+ex, ex) ; } 
+            catch (Exception ex) { log.debug("Exception [SELECT/CSV-TSV] "+ex, ex) ; } 
             return ;
         }
         
