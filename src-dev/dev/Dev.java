@@ -8,6 +8,11 @@ package dev;
 
 public class Dev
 {
+    // Creating named graphs in an plain js:RDFDataset does not work.
+    
+	// query is MIME type application/sparql-query
+	// Check for multiple use of an endpoint.
+
 	// FROM file: -- needs filemanager protection
 	// Non-existant file causes NPE (recovery is correct though)
 }

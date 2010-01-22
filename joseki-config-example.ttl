@@ -103,7 +103,7 @@
 
 
 ## SPARQL Update
-## <#serviceUdpate>
+## <#serviceUpdate>
 ##     rdf:type            joseki:Service ;
 ##     rdfs:label          "SPARQL/Update" ;
 ##     joseki:serviceRef   "update/service" ;

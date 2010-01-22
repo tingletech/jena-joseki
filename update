@@ -8,10 +8,17 @@ UPDATE="${1:-update.ru}"
 
 export  http_proxy=
 echo "=== Update"
-wget -q -O - --post-data="request=$(cat $UPDATE)"  'http://localhost:2020/update/service'
+
+## Either a HTML form (Content-Type:application/x-www-form-urlencoded)
+## Needs a "request="
+#wget -q -O - --post-data="request=$(cat $UPDATE)"  'http://localhost:2020/update/service'
+
+## Or another Content-Type and the raw request.
+wget -q -O - --header "Content-Type: " --post-data="$(cat $UPDATE)"  'http://localhost:2020/update/service'
+
 echo
 echo "=== Default graph"
-wget -q -O - 'http://localhost:2020/sparql?query=SELECT * { ?s ?p ?o}&output=text'
+wget -q -O - 'http://localhost:2020/sparql/read?query=SELECT * { ?s ?p ?o}&output=text'
 echo
 echo "=== Named graphs"
-wget -q -O - 'http://localhost:2020/sparql?query=SELECT * { GRAPH ?g { ?s ?p ?o}}&output=text'
+wget -q -O - 'http://localhost:2020/sparql/read?query=SELECT * { GRAPH ?g { ?s ?p ?o}}&output=text'
