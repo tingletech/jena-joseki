@@ -34,7 +34,8 @@ public abstract class ProcessorBase implements Processor
         boolean transactions = false ;
         Model defaultModel = null ;
         
-        final Dataset dataset = (datasetDesc==null) ? null : datasetDesc.acquireDataset(request, response) ;
+        final Dataset dataset = buildDataset(datasetDesc, request, response)  ;
+
         if ( dataset != null )
         {
             ResponseCallback cbLock = new ResponseCallback() {
@@ -132,6 +133,11 @@ public abstract class ProcessorBase implements Processor
         
     }
     
+    private Dataset buildDataset(DatasetDesc datasetDesc, Request request, Response response)
+    {
+        return (datasetDesc==null) ? null : datasetDesc.acquireDataset(request, response) ;
+    }
+
     private static boolean attemptSync(Object object)
     {
         // Attempt "sync(boolean)"
