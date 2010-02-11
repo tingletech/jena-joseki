@@ -8,7 +8,10 @@ package dev;
 
 public class Dev
 {
+    // &stream=true to have streamed SELECT results.
+    
     // Creating named graphs in an plain js:RDFDataset does not work.
+    // Use new DatasetGraphMem from ARQ.
     
 	// query is MIME type application/sparql-query
 	// Check for multiple use of an endpoint.
