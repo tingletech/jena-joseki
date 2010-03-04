@@ -269,11 +269,10 @@ public class Validator extends HttpServlet
     private void output(ServletOutputStream outStream, Content content, boolean lineNumbers) throws IOException
     {
         startFixed(outStream) ;
-        IndentedLineBuffer buff = new IndentedLineBuffer(lineNumbers) ; 
-        IndentedWriter out = buff.getIndentedWriter() ;
+        IndentedLineBuffer out = new IndentedLineBuffer(lineNumbers) ; 
         content.print(out) ;
         out.flush() ;  
-        String x = htmlQuote(buff.asString()) ;
+        String x = htmlQuote(out.asString()) ;
         byte b[] = x.getBytes("UTF-8") ;
         outStream.write(b) ; ;
         finishFixed(outStream) ;

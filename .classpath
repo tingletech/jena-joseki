@@ -4,7 +4,6 @@
 	<classpathentry kind="src" path="src-dev"/>
 	<classpathentry kind="src" path="src-test"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="lib/log4j-1.2.12.jar"/>
 	<classpathentry kind="lib" path="lib/jetty-6.1.10.jar"/>
 	<classpathentry kind="lib" path="lib/jetty-util-6.1.10.jar"/>
 	<classpathentry kind="lib" path="lib/lucene-core-2.3.1.jar"/>
@@ -22,5 +21,6 @@
 	<classpathentry kind="lib" path="lib-tdb/tdb-0.8.4.jar"/>
 	<classpathentry kind="lib" path="lib/arq-2.8.3-SNAPSHOT-tests.jar"/>
 	<classpathentry kind="lib" path="lib/arq-2.8.3-SNAPSHOT.jar"/>
+	<classpathentry kind="lib" path="lib/log4j-1.2.14.jar"/>
 	<classpathentry kind="output" path="classes"/>
 </classpath>
