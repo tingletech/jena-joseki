@@ -14,6 +14,10 @@ public class Run
 {
     public static void main(String[] argv)
     {
+        /*
+         * 
+         * http://www.sparql.org/sparql?query=PREFIX+foaf%3A+++%3Chttp%3A%2F%2Fxmlns.com%2Ffoaf%2F0.1%2F%3E%0D%0APREFIX+dc%3A++++++%3Chttp%3A%2F%2Fpurl.org%2Fdc%2Felements%2F1.1%2F%3E%0D%0ASELECT+*%0D%0AFROM++%3Chttp%3A%2F%2Fmmt.me.uk%2Ffoaf.rdf%3E%0D%0AWHERE+%0D%0A++{+%3Fs+%3Fp+%3Fo+}&default-graph-uri=http://mmt.me.uk/foaf.rdf&stylesheet=%2Fxml-to-html.xsl&output=text 
+         */
         if ( false )
         {
             AcceptItem a = new AcceptItem("foo/bar;charset=bar") ;
