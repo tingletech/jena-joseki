@@ -21,7 +21,6 @@ abstract public class Response
 {
     private static Logger log = LoggerFactory.getLogger(Response.class) ;
 
-    //private ResponseCallback callback = null ;
     private List<ResponseCallback> callbacks = new ArrayList<ResponseCallback>() ;
     
     private Model responseModel = null ;
