@@ -19,8 +19,8 @@
 	<classpathentry kind="lib" path="lib/slf4j-api-1.5.8.jar"/>
 	<classpathentry kind="lib" path="lib/slf4j-log4j12-1.5.8.jar"/>
 	<classpathentry kind="lib" path="lib-tdb/tdb-0.8.4.jar"/>
-	<classpathentry kind="lib" path="lib/arq-2.8.3-SNAPSHOT-tests.jar"/>
-	<classpathentry kind="lib" path="lib/arq-2.8.3-SNAPSHOT.jar"/>
 	<classpathentry kind="lib" path="lib/log4j-1.2.14.jar"/>
+	<classpathentry kind="lib" path="lib/arq-2.8.3.jar"/>
+	<classpathentry kind="lib" path="lib/arq-2.8.3-tests.jar"/>
 	<classpathentry kind="output" path="classes"/>
 </classpath>
