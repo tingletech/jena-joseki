@@ -6,21 +6,27 @@
 
 package org.joseki.processors;
 
-import java.io.Reader;
-import java.io.StringReader;
+import java.io.Reader ;
+import java.io.StringReader ;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.joseki.*;
-import org.joseki.module.Loadable;
+import org.joseki.ExecutionException ;
+import org.joseki.Joseki ;
+import org.joseki.QueryExecutionException ;
+import org.joseki.Request ;
+import org.joseki.Response ;
+import org.joseki.ReturnCodes ;
+import org.joseki.module.Loadable ;
+import org.slf4j.Logger ;
+import org.slf4j.LoggerFactory ;
 
-import com.hp.hpl.jena.rdf.model.Resource;
-
-import com.hp.hpl.jena.sparql.lang.ParserSPARQLUpdate;
-
-import com.hp.hpl.jena.query.Dataset;
-
-import com.hp.hpl.jena.update.*;
+import com.hp.hpl.jena.query.Dataset ;
+import com.hp.hpl.jena.rdf.model.Resource ;
+import com.hp.hpl.jena.sparql.lang.ParserARQUpdate ;
+import com.hp.hpl.jena.update.GraphStore ;
+import com.hp.hpl.jena.update.GraphStoreFactory ;
+import com.hp.hpl.jena.update.UpdateFactory ;
+import com.hp.hpl.jena.update.UpdateProcessor ;
+import com.hp.hpl.jena.update.UpdateRequest ;
 
 public class SPARQLUpdate extends ProcessorBase implements Loadable
 {
@@ -64,7 +70,10 @@ public class SPARQLUpdate extends ProcessorBase implements Loadable
 
         // Parsing with a Reader.  Normally discouraged because of charset issues 
         // Hence no UpdateFactory operations and a need to go direct.
-        ParserSPARQLUpdate p = new ParserSPARQLUpdate() ;
+        
+        // NOT SPARQL 1.1 yet.
+        
+        ParserARQUpdate p = new ParserARQUpdate() ;
         UpdateRequest updateRequest = new UpdateRequest() ;
         p.parse(updateRequest, in) ;
         // This clones the dataset, then changes to the dataset are not visible later (e.g. graph create/delete)
