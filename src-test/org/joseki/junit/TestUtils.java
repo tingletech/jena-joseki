@@ -6,18 +6,17 @@
 
 package org.joseki.junit;
 
-import com.hp.hpl.jena.rdf.model.Literal;
-import com.hp.hpl.jena.rdf.model.Property;
-import com.hp.hpl.jena.rdf.model.RDFNode;
-import com.hp.hpl.jena.rdf.model.Resource;
-import com.hp.hpl.jena.sparql.junit.QueryTestException;
-import com.hp.hpl.jena.sparql.util.FmtUtils;
+import com.hp.hpl.jena.rdf.model.Literal ;
+import com.hp.hpl.jena.rdf.model.Property ;
+import com.hp.hpl.jena.rdf.model.RDFNode ;
+import com.hp.hpl.jena.rdf.model.Resource ;
+import com.hp.hpl.jena.sparql.util.FmtUtils ;
 
 
 /** Test utilities.
  * 
  * @author Andy Seaborne
- * @version $Id: TestUtils.java,v 1.1 2009-11-07 20:16:57 andy_seaborne Exp $
+ * @version $Id: TestUtils.java,v 1.2 2010-05-15 16:28:33 andy_seaborne Exp $
  */
 
 public class TestUtils
@@ -33,7 +32,7 @@ public class TestUtils
         if ( n instanceof Resource )
             return (Resource)n ;
         
-        throw new QueryTestException("Manifest problem (not a Resource): "+
+        throw new RuntimeException("Manifest problem (not a Resource): "+
                                      FmtUtils.stringForRDFNode(n)+" => "+
                                      FmtUtils.stringForRDFNode(p)
                                      ) ;
@@ -50,7 +49,7 @@ public class TestUtils
         if ( n instanceof Literal )
             return ((Literal)n).getLexicalForm() ;
         
-        throw new QueryTestException("Manifest problem (not a Literal): "+
+        throw new RuntimeException("Manifest problem (not a Literal): "+
                                      FmtUtils.stringForRDFNode(n)+" => "+
                                      FmtUtils.stringForRDFNode(p)
                                      ) ;
@@ -74,7 +73,7 @@ public class TestUtils
                 return r2.getURI() ;
         }
         
-        throw new QueryTestException("Manifest problem: "+
+        throw new RuntimeException("Manifest problem: "+
                                      FmtUtils.stringForRDFNode(n)+" => "+
                                      FmtUtils.stringForRDFNode(p)
                                      ) ;
