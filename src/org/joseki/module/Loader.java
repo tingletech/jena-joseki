@@ -5,24 +5,24 @@
 
 package org.joseki.module;
 
-import org.joseki.util.PrintUtils;
-import org.joseki.vocabulary.JosekiModule;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.joseki.util.PrintUtils ;
+import org.joseki.vocabulary.JosekiModule ;
+import org.openjena.atlas.lib.SystemUtils ;
+import org.slf4j.Logger ;
+import org.slf4j.LoggerFactory ;
 
-import com.hp.hpl.jena.rdf.model.Literal;
-import com.hp.hpl.jena.rdf.model.RDFNode;
-import com.hp.hpl.jena.rdf.model.Resource;
-import com.hp.hpl.jena.shared.JenaException;
-import com.hp.hpl.jena.shared.PropertyNotFoundException;
-import com.hp.hpl.jena.sparql.lib.SystemUtils;
+import com.hp.hpl.jena.rdf.model.Literal ;
+import com.hp.hpl.jena.rdf.model.RDFNode ;
+import com.hp.hpl.jena.rdf.model.Resource ;
+import com.hp.hpl.jena.shared.JenaException ;
+import com.hp.hpl.jena.shared.PropertyNotFoundException ;
 
 /**
  * Load classes and instantiate new objects based on loadable classes.
  * Understands the RDF properties for naming and initializing a new instance. 
  * 
  * @author  Andy Seaborne
- * @version $Id: Loader.java,v 1.11 2009-07-09 15:15:46 andy_seaborne Exp $
+ * @version $Id: Loader.java,v 1.12 2010-07-19 17:42:29 andy_seaborne Exp $
  */
 
 public class Loader

@@ -6,37 +6,37 @@
 
 package org.joseki;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.ArrayList ;
+import java.util.HashMap ;
+import java.util.HashSet ;
+import java.util.Iterator ;
+import java.util.List ;
+import java.util.Map ;
+import java.util.Set ;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.joseki.module.Loadable;
-import org.joseki.module.Loader;
-import org.joseki.module.LoaderException;
+import org.joseki.module.Loadable ;
+import org.joseki.module.Loader ;
+import org.joseki.module.LoaderException ;
+import org.openjena.atlas.lib.StrUtils ;
+import org.slf4j.Logger ;
+import org.slf4j.LoggerFactory ;
 
-import com.hp.hpl.jena.query.*;
-import com.hp.hpl.jena.rdf.model.Literal;
-import com.hp.hpl.jena.rdf.model.Model;
-import com.hp.hpl.jena.rdf.model.ModelFactory;
-import com.hp.hpl.jena.rdf.model.RDFNode;
-import com.hp.hpl.jena.rdf.model.Resource;
-import com.hp.hpl.jena.rdf.model.Statement;
-import com.hp.hpl.jena.rdf.model.StmtIterator;
-import com.hp.hpl.jena.shared.JenaException;
-import com.hp.hpl.jena.shared.NotFoundException;
-import com.hp.hpl.jena.sparql.core.assembler.AssemblerUtils;
-import com.hp.hpl.jena.sparql.core.assembler.DatasetAssemblerVocab;
-import com.hp.hpl.jena.sparql.resultset.ResultSetRewindable;
-import com.hp.hpl.jena.sparql.util.StringUtils;
-import com.hp.hpl.jena.util.FileManager;
-import com.hp.hpl.jena.vocabulary.RDF;
-import com.hp.hpl.jena.vocabulary.RDFS;
+import com.hp.hpl.jena.query.* ;
+import com.hp.hpl.jena.rdf.model.Literal ;
+import com.hp.hpl.jena.rdf.model.Model ;
+import com.hp.hpl.jena.rdf.model.ModelFactory ;
+import com.hp.hpl.jena.rdf.model.RDFNode ;
+import com.hp.hpl.jena.rdf.model.Resource ;
+import com.hp.hpl.jena.rdf.model.Statement ;
+import com.hp.hpl.jena.rdf.model.StmtIterator ;
+import com.hp.hpl.jena.shared.JenaException ;
+import com.hp.hpl.jena.shared.NotFoundException ;
+import com.hp.hpl.jena.sparql.core.assembler.AssemblerUtils ;
+import com.hp.hpl.jena.sparql.core.assembler.DatasetAssemblerVocab ;
+import com.hp.hpl.jena.sparql.resultset.ResultSetRewindable ;
+import com.hp.hpl.jena.util.FileManager ;
+import com.hp.hpl.jena.vocabulary.RDF ;
+import com.hp.hpl.jena.vocabulary.RDFS ;
 
 public class Configuration
 {
@@ -824,7 +824,7 @@ public class Configuration
 //        }
 //        
 //        String qs = sBuff.toString() ;
-        String qs = stdHeaders()+StringUtils.join("\n", a) ;
+        String qs = stdHeaders()+StrUtils.strjoin("\n", a) ;
         return makeQuery(qs) ;
     }
 

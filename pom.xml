@@ -6,7 +6,7 @@
   <artifactId>joseki</artifactId>
   <packaging>jar</packaging>
   <name>Joseki</name>
-  <version>3.4.2-RC-3</version>
+  <version>3.4.2-RC-4</version>
   <description/>
   <url>http://joseki.org/</url>
 
@@ -30,7 +30,9 @@
   <properties>
     <this.root>${project.artifactId}-${project.version}</this.root>
     <ver.jena>2.6.3</ver.jena>
-    <ver.arq>2.8.4</ver.arq>
+    <ver.arq>2.8.5</ver.arq>
+    <ver.tdb>0.8.7</ver.tdb>
+    <ver.sdb>1.3.2-RC-5</ver.sdb>
   </properties>
 
   <dependencies>
@@ -62,6 +64,20 @@
       <type>test-jar</type>
       <version>${ver.jena}</version>
       <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>com.hp.hpl.jena</groupId>
+      <artifactId>tdb</artifactId>
+      <version>${ver.tdb}</version>
+      <scope>optional</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>com.hp.hpl.jena</groupId>
+      <artifactId>sdb</artifactId>
+      <version>${ver.sdb}</version>
+      <scope>optional</scope>
     </dependency>
 
     <dependency>

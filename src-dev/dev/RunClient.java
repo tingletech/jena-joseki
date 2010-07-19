@@ -8,11 +8,12 @@
 package dev;
 
 
-import com.hp.hpl.jena.query.QueryException;
-import com.hp.hpl.jena.query.QueryExecution;
-import com.hp.hpl.jena.query.ResultSetFormatter;
-import com.hp.hpl.jena.sparql.engine.http.QueryEngineHTTP;
-import com.hp.hpl.jena.sparql.util.StringUtils;
+import org.openjena.atlas.lib.StrUtils ;
+
+import com.hp.hpl.jena.query.QueryException ;
+import com.hp.hpl.jena.query.QueryExecution ;
+import com.hp.hpl.jena.query.ResultSetFormatter ;
+import com.hp.hpl.jena.sparql.engine.http.QueryEngineHTTP ;
 
 public class RunClient
 {
@@ -41,7 +42,7 @@ public class RunClient
     }
     static private String concat(String [] a)
     {
-        return StringUtils.join("\n", a) ; 
+        return StrUtils.strjoin("\n", a) ; 
     }
     
 }
