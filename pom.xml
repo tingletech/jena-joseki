@@ -6,7 +6,7 @@
   <artifactId>joseki</artifactId>
   <packaging>jar</packaging>
   <name>Joseki</name>
-  <version>3.4.2</version>
+  <version>3.4.3-SNAPSHOT</version>
   <description/>
   <url>http://joseki.org/</url>
 
@@ -311,8 +311,8 @@ build.time.txt=${build.time.txt}
       <id>jena-repo</id>
       <name>Jena repo</name>
 
-      <url>sftp://openjena.org/var/repo</url>
-      <!--<url>sftp://openjena.org/var/repo-dev</url>-->
+      <!--<url>sftp://openjena.org/var/repo</url>-->
+      <url>sftp://openjena.org/var/repo-dev</url>
 
       <layout>default</layout>
     </repository> 
