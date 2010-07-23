@@ -3,6 +3,7 @@ Joseki3
 
 Joseki 3.4.2
 ------------
++ Now ship (zip download) with copies of SDB and TDB compiled against the same set of dependences.
 + Add CSV (comma separated values) and TSV (tab separated values) output formats. 
 
 Joseki 3.4.1
