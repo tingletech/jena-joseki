@@ -74,6 +74,30 @@
     joseki:processor    joseki:ProcessorSPARQL_FixedDS ;
     .
 
+## XML-SS
+
+<#serviceXML-SS>
+    rdf:type            joseki:Service ;
+    rdfs:label          "XML SS" ;
+    joseki:serviceRef   "sparql/xmlss" ;   # web.xml must route this name to Joseki
+    # dataset part
+    joseki:dataset      <#xmlss> ;
+    # Service part.
+    # This processor will not allow either the protocol,
+    # nor the query, to specify the dataset.
+    joseki:processor    joseki:ProcessorSPARQL_FixedDS ;
+    .
+
+<#xmlss>
+    rdf:type ja:RDFDataset ;
+    rdfs:label "Books" ;
+    ja:defaultGraph 
+      [ rdfs:label "data-xmlss.ttl" ;
+        a ja:MemoryModel ;
+        ja:content [ja:externalContent <file:Data/data-xmlss.ttl> ] ;
+      ] ;
+    .
+
 ## ---- SPARQL/Update
 ## A pair of services - one for SPARQL queries, one for SPARQL/Update
 ## Previous web.xml must also be updated to include a defintion for the
