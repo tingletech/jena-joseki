@@ -168,7 +168,7 @@
         <executions> 
           <execution>
             <id>attach-sources</id>
-            <phase>verify</phase>
+            <phase>package</phase>
             <goals>
               <goal>jar</goal>
             </goals>
@@ -225,11 +225,11 @@
           </descriptors>
         </configuration>
 
-        <!-- Add to packaging lifecycle phase -->
+        <!-- Add to packaging lifecycle phase : must be last -->
         <executions>
           <execution>
             <id>create-assembly</id>
-            <phase>verify</phase>
+            <phase>package</phase>
             <goals>
               <goal>attached</goal>
             </goals>
