@@ -69,6 +69,9 @@
 
     <fileSet>
       <directory>webapps</directory>
+      <includes>
+	<include>joseki/**</include>
+      </includes>
     </fileSet>
 
     <fileSet>
