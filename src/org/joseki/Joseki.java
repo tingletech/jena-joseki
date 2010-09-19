@@ -7,14 +7,18 @@ package org.joseki;
 
 import java.util.* ;
 
+import com.hp.hpl.jena.query.ARQ ;
 import com.hp.hpl.jena.sparql.lib.Metadata;
 
 /** Constants and other definitions.
  * @author      Andy Seaborne
- * @version     $Id: Joseki.java,v 1.39 2009-12-03 22:13:36 andy_seaborne Exp $
+ * @version     $Id: Joseki.java,v 1.40 2010-09-19 14:04:31 andy_seaborne Exp $
  */
 public class Joseki
 {
+    public static void init() {}
+    static { ARQ.init(); }
+    
     static private String metadataLocation = "org/joseki/joseki-properties.xml" ;
     static private Metadata metadata = new Metadata(metadataLocation) ;
     

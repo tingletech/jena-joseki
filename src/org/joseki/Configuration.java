@@ -63,7 +63,7 @@ public class Configuration
     int warnings = 0 ;
     
     // Ensure that the DataSource assembler from ARQ is loaded (processes Datasets)
-    static {  AssemblerUtils.init() ; }
+    static {  ARQ.init() ; AssemblerUtils.init() ; }
     
     public Configuration(String filename, ServiceRegistry registry)
     {
