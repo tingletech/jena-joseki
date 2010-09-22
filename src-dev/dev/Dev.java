@@ -8,6 +8,10 @@ package dev;
 
 public class Dev
 {
+    // data validator : more ErrorHandlerMsg out of test and catch fatal exception.
+    // Syntax type.
+    // Indirection.
+    
     // &stream=true to have streamed SELECT results.
     
     // Creating named graphs in an plain js:RDFDataset does not work.

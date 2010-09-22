@@ -44,6 +44,13 @@ PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.2//EN"
     </servlet-class>
   </servlet>
 
+  <servlet>
+    <servlet-name>Data Validator</servlet-name>
+    <servlet-class>
+      org.joseki.validator.DataValidator
+    </servlet-class>
+  </servlet>
+
   <!-- Well-known servlets for testing -->
 
   <servlet>
@@ -99,6 +106,11 @@ PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.2//EN"
   <servlet-mapping>
     <servlet-name>Validator</servlet-name>
     <url-pattern>/validator</url-pattern>
+  </servlet-mapping>
+
+  <servlet-mapping>
+    <servlet-name>Data Validator</servlet-name>
+    <url-pattern>/data-validator</url-pattern>
   </servlet-mapping>
 
   <servlet-mapping>

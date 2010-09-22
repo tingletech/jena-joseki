@@ -24,7 +24,7 @@ import com.hp.hpl.jena.rdf.model.Resource ;
 import com.hp.hpl.jena.sparql.lang.ParserARQUpdate ;
 import com.hp.hpl.jena.update.GraphStore ;
 import com.hp.hpl.jena.update.GraphStoreFactory ;
-import com.hp.hpl.jena.update.UpdateFactory ;
+import com.hp.hpl.jena.update.UpdateExecutionFactory ;
 import com.hp.hpl.jena.update.UpdateProcessor ;
 import com.hp.hpl.jena.update.UpdateRequest ;
 
@@ -70,16 +70,12 @@ public class SPARQLUpdate extends ProcessorBase implements Loadable
 
         // Parsing with a Reader.  Normally discouraged because of charset issues 
         // Hence no UpdateFactory operations and a need to go direct.
-        
-        // NOT SPARQL 1.1 yet.
-        
+
         ParserARQUpdate p = new ParserARQUpdate() ;
         UpdateRequest updateRequest = new UpdateRequest() ;
         p.parse(updateRequest, in) ;
-        // This clones the dataset, then changes to the dataset are not visible later (e.g. graph create/delete)
         GraphStore graphStore = GraphStoreFactory.create(dataset) ;
-        
-        UpdateProcessor uProc = UpdateFactory.create(updateRequest, graphStore) ;
+        UpdateProcessor uProc = UpdateExecutionFactory.create(updateRequest, graphStore) ;
         try {
             uProc.execute() ;
             response.setOK() ;
