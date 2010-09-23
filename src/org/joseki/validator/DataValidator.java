@@ -6,10 +6,12 @@
 
 package org.joseki.validator;
 
+import static org.openjena.riot.SysRIOT.fmtMessage ;
+
 import java.io.IOException ;
+import java.io.PrintStream ;
 import java.io.Reader ;
 import java.io.StringReader ;
-import java.util.List ;
 
 import javax.servlet.ServletConfig ;
 import javax.servlet.ServletException ;
@@ -18,9 +20,10 @@ import javax.servlet.http.HttpServlet ;
 import javax.servlet.http.HttpServletRequest ;
 import javax.servlet.http.HttpServletResponse ;
 
+import org.openjena.atlas.io.IO ;
 import org.openjena.atlas.lib.Sink ;
+import org.openjena.atlas.lib.SinkWrapper ;
 import org.openjena.riot.ErrorHandler ;
-import org.openjena.riot.ErrorHandlerTestLib ;
 import org.openjena.riot.Lang ;
 import org.openjena.riot.RiotException ;
 import org.openjena.riot.RiotReader ;
@@ -31,6 +34,7 @@ import org.slf4j.Logger ;
 import org.slf4j.LoggerFactory ;
 
 import com.hp.hpl.jena.sparql.core.Quad ;
+import com.hp.hpl.jena.sparql.util.FmtUtils ;
 
 public class DataValidator extends HttpServlet 
 {
@@ -81,39 +85,52 @@ public class DataValidator extends HttpServlet
             Tokenizer tokenizer = createTokenizer(httpRequest, httpResponse) ;
             if ( tokenizer == null )
                 return ;
-            // Error handler capture.
-            
-            ErrorHandlerTestLib.ErrorHandlerMsg errorHandler = new ErrorHandlerTestLib.ErrorHandlerMsg() ;
-            
-            LangRIOT parser = setupParser(tokenizer, errorHandler) ;
-            RiotException exception = null ;
-            try {
-                parser.parse() ;
-            } catch (RiotException ex) { exception = ex ; } 
-            
+
             ServletOutputStream outStream = httpResponse.getOutputStream() ;
+            ErrorHandlerMsg errorHandler = new ErrorHandlerMsg(outStream) ;
             
-            List<String> msg = errorHandler.msgs ;
-            if ( msg.size() == 0 && exception == null )
-            {
-                outStream.println("<p>OK</p>") ;
-                return ;
-            }
-                
-            startFixed(outStream) ;
-            for ( String s : msg)
-            {
-                outStream.println(s) ;
-            }
-            finishFixed(outStream) ;
+            PrintStream stdout = System.out ;
+            PrintStream stderr = System.err ;
+            System.setOut(new PrintStream(outStream)) ;
+            System.setErr(new PrintStream(outStream)) ;
             
-            if ( exception != null )
-            {
+            LangRIOT parser = setupParser(tokenizer, errorHandler, outStream) ;
+            
+            outStream.println("<html>") ;
+            printHead(outStream) ;
+            outStream.println("</html>") ;
+            outStream.println("<body>") ;
+            
+            outStream.println("<h1>RIOT Parser Report</h1>") ;
+            outStream.println("<p>Line and column numbers refer to original input</p>") ;
+            outStream.println("<p>&nbsp;</p>") ;
+            try {
                 startFixed(outStream) ;
-                outStream.println(exception.getMessage()) ;
+                RiotException exception = null ;
+                try {
+                    parser.parse() ;
+                    System.out.flush() ;
+                    System.err.flush() ;
+                } catch (RiotException ex) { exception = ex ; } 
+                
+                // Exception shoudl have caused an error/fatal message.  
+//                if ( exception != null )
+//                {
+//                    finishFixed(outStream) ;
+//                    startFixed(outStream) ;
+//                    outStream.println(exception.getMessage()) ;
+//                    finishFixed(outStream) ;
+//                }
+            } finally 
+            {
                 finishFixed(outStream) ;
+                System.out.flush() ;
+                System.err.flush() ;
+                System.setOut(stdout) ;
+                System.setErr(stdout) ;
             }
             
+            outStream.println("</body>") ;
         } catch (Exception ex)
         {
             log.warn("Exception in validationRequest",ex) ;
@@ -122,14 +139,30 @@ public class DataValidator extends HttpServlet
     
     static final long LIMIT = 50000 ;
     
-    private LangRIOT setupParser(Tokenizer tokenizer, ErrorHandler errorHandler)
+    private LangRIOT setupParser(Tokenizer tokenizer, ErrorHandler errorHandler, final ServletOutputStream outStream)
     {
-        Sink<Quad> sink = new Sink<Quad>(){
+        Sink<Quad> sink = new Sink<Quad>()
+        {
+            public void send(Quad quad)
+            {
+                String $ = FmtUtils.stringForQuad(quad) ;
+                $ = htmlQuote($) ;
+                try { 
+                    outStream.print($) ;
+                    outStream.println(" .") ;
+                } catch (IOException ex) { IO.exception(ex) ; }
+            }
+            public void close() {}
+            public void flush() {}
+        } ;
+        
+        Sink<Quad> sink2 = new SinkWrapper<Quad>(sink){
             long count = 0 ;
             public void close() {}
             public void flush() {}
-            public void send(Quad arg0)
+            public void send(Quad quad)
             { 
+                super.send(quad) ;
                 count++ ;
                 if ( count > LIMIT )
                     throw new RiotException("Limit exceeded") ;
@@ -138,9 +171,41 @@ public class DataValidator extends HttpServlet
         // Language?
         LangRIOT parser = RiotReader.createParserQuads(tokenizer, Lang.TURTLE, null, sink) ;
         parser.getProfile().setHandler(errorHandler) ;
+        parser.getProfile().setHandler(errorHandler) ;
         return parser ;
     }
 
+    // Error handler that records messages
+    private static class ErrorHandlerMsg implements ErrorHandler
+    {
+        private ServletOutputStream out ;
+
+        ErrorHandlerMsg(ServletOutputStream out) { this.out = out ; }
+        
+        public void warning(String message, long line, long col)
+        { output(message, line, col, "warning") ; }
+    
+        // Attempt to continue.
+        public void error(String message, long line, long col)
+        { output(message, line, col, "error") ; }
+    
+        public void fatal(String message, long line, long col)
+        { output(message, line, col, "error") ; throw new RiotException(fmtMessage(message, line, col)) ; }
+        
+        private void output(String message, long line, long col, String className)
+        {
+            try {
+                String str = fmtMessage(message, line, col) ;
+                str = htmlQuote(str) ;
+                out.print("<div class=\""+className+"\">") ;
+                out.print(str) ;
+                out.print("</div>") ;
+            } catch (IOException ex) { IO.exception(ex) ; }
+        }
+       
+        
+    }
+    
     private Tokenizer createTokenizer(HttpServletRequest httpRequest, HttpServletResponse httpResponse) throws Exception
     {
         Reader reader = null ;  
@@ -173,8 +238,6 @@ public class DataValidator extends HttpServlet
             reader = new StringReader(args[0]) ;
         }
         
-        
-        
         if ( reader == null )
         {
             httpResponse.sendError(HttpServletResponse.SC_BAD_REQUEST, "Can't find data to validate") ;
@@ -184,7 +247,7 @@ public class DataValidator extends HttpServlet
         return TokenizerFactory.makeTokenizer(reader) ;
     }
 
-    private String htmlQuote(String str)
+    private static String htmlQuote(String str)
     {
         StringBuffer sBuff = new StringBuffer() ;
         for ( int i = 0 ; i < str.length() ; i++ )
@@ -205,12 +268,12 @@ public class DataValidator extends HttpServlet
         return sBuff.toString() ; 
     }
 
-    private void startFixed(ServletOutputStream outStream) throws IOException
+    private static void startFixed(ServletOutputStream outStream) throws IOException
     {
         outStream.println("<pre class=\"box\">") ;
     }
 
-    private void columns(String prefix, ServletOutputStream outStream) throws IOException
+    private static void columns(String prefix, ServletOutputStream outStream) throws IOException
     {
         outStream.print(prefix) ;
         outStream.println("         1         2         3         4         5         6         7") ;
@@ -218,12 +281,12 @@ public class DataValidator extends HttpServlet
         outStream.println("12345678901234567890123456789012345678901234567890123456789012345678901234567890") ;
     }
     
-    private void finishFixed(ServletOutputStream outStream) throws IOException
+    private static void finishFixed(ServletOutputStream outStream) throws IOException
     {
         outStream.println("</pre>") ;
     }
     
-    private void printHead(ServletOutputStream outStream) throws IOException
+    private static void printHead(ServletOutputStream outStream) throws IOException
     {
         outStream.println("<head>") ;
         outStream.println(" <title>Jena Data Validator Report</title>") ;

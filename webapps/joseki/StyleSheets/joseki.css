@@ -9,6 +9,9 @@ body {
 
 p { margin-left: 2% ; margin-right: 2% ; }
 
+.warning { color: #FF0000 ; }
+.error   { color: #FF0000 ;  font-weight: bold; }
+
 /* Makes lists a little tighter
 li { line-height: 14pt ; }
 */
