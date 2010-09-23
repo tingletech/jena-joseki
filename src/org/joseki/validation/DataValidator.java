@@ -4,7 +4,7 @@
  * [See end of file]
  */
 
-package org.joseki.validator;
+package org.joseki.validation;
 
 import static org.openjena.riot.SysRIOT.fmtMessage ;
 
