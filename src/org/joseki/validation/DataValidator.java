@@ -33,7 +33,9 @@ import org.openjena.riot.tokens.TokenizerFactory ;
 import org.slf4j.Logger ;
 import org.slf4j.LoggerFactory ;
 
+import com.hp.hpl.jena.graph.Node ;
 import com.hp.hpl.jena.sparql.core.Quad ;
+import com.hp.hpl.jena.sparql.serializer.SerializationContext ;
 import com.hp.hpl.jena.sparql.util.FmtUtils ;
 
 public class DataValidator extends HttpServlet 
@@ -85,6 +87,17 @@ public class DataValidator extends HttpServlet
             Tokenizer tokenizer = createTokenizer(httpRequest, httpResponse) ;
             if ( tokenizer == null )
                 return ;
+            
+            String syntax = httpRequest.getParameter(paramSyntax) ;
+            if ( syntax == null || syntax.equals("") )
+                syntax = Lang.NQUADS.getName() ;
+
+            Lang language = Lang.get(syntax) ;
+            if ( language == null )
+            {
+                httpResponse.sendError(HttpServletResponse.SC_BAD_REQUEST, "Unknown syntax: "+syntax) ;
+                return ;
+            }
 
             ServletOutputStream outStream = httpResponse.getOutputStream() ;
             ErrorHandlerMsg errorHandler = new ErrorHandlerMsg(outStream) ;
@@ -94,7 +107,7 @@ public class DataValidator extends HttpServlet
             System.setOut(new PrintStream(outStream)) ;
             System.setErr(new PrintStream(outStream)) ;
             
-            LangRIOT parser = setupParser(tokenizer, errorHandler, outStream) ;
+            LangRIOT parser = setupParser(tokenizer, language, errorHandler, outStream) ;
             
             httpResponse.setCharacterEncoding("UTF-8") ;
             httpResponse.setContentType("text/html") ;
@@ -143,14 +156,30 @@ public class DataValidator extends HttpServlet
     
     static final long LIMIT = 50000 ;
     
-    private LangRIOT setupParser(Tokenizer tokenizer, ErrorHandler errorHandler, final ServletOutputStream outStream)
+    
+    private LangRIOT setupParser(Tokenizer tokenizer, Lang language, ErrorHandler errorHandler, final ServletOutputStream outStream)
     {
         Sink<Quad> sink = new Sink<Quad>()
         {
+            SerializationContext sCxt = new SerializationContext() ;
             public void send(Quad quad)
             {
-                String $ = FmtUtils.stringForQuad(quad) ;
-                $ = htmlQuote($) ;
+                // Clean up!
+                StringBuilder sb = new StringBuilder() ;
+
+                sb.append(formatNode(quad.getSubject())) ;
+                sb.append("  ") ;
+                sb.append(formatNode(quad.getPredicate())) ;
+                sb.append("  ") ;
+                sb.append(formatNode(quad.getObject())) ;
+                
+                if ( ! quad.isTriple() )
+                {
+                    sb.append("  ") ;
+                    sb.append(formatNode(quad.getGraph())) ;
+                }
+
+                String $ = htmlQuote(sb.toString()) ;
                 try { 
                     outStream.print($) ;
                     outStream.println(" .") ;
@@ -158,6 +187,7 @@ public class DataValidator extends HttpServlet
             }
             public void close() {}
             public void flush() {}
+            String formatNode(Node n) { return FmtUtils.stringForNode(n, sCxt) ; }
         } ;
         
         Sink<Quad> sink2 = new SinkWrapper<Quad>(sink){
@@ -173,7 +203,7 @@ public class DataValidator extends HttpServlet
             }
         } ;
         // Language?
-        LangRIOT parser = RiotReader.createParserQuads(tokenizer, Lang.TURTLE, null, sink) ;
+        LangRIOT parser = RiotReader.createParserQuads(tokenizer, language, null, sink) ;
         parser.getProfile().setHandler(errorHandler) ;
         parser.getProfile().setHandler(errorHandler) ;
         return parser ;
@@ -199,8 +229,8 @@ public class DataValidator extends HttpServlet
         private void output(String message, long line, long col, String typeName, String className)
         {
             try {
-                //String str = fmtMessage(message, line, col) ;
-                String str = typeName+": "+message ;
+                String str = fmtMessage(message, line, col) ;
+                //String str = typeName+": "+message ;
                 str = htmlQuote(str) ;
                 out.print("<div class=\""+className+"\">") ;
                 out.print(str) ;

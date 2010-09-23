@@ -13,6 +13,7 @@
 	  <textarea name="data" cols="70" rows="30">
 # Prefixes for Turtle or TriG - these can be edited or removed.
 @base          <http://example.org/base/> .
+@prefix :      <http://example.org/> .
 @prefix xsd:   <http://www.w3.org/2001/XMLSchema#> .
 @prefix rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .
@@ -21,11 +22,14 @@
 
 </textarea>
 <br/>
-<!--
+
   Input syntax:
-    <input type="radio" name="languageSyntax" value="SPARQL" checked="checked"/>SPARQL
-    <input type="radio" name="languageSyntax" value="ARQ"/>SPARQL extended syntax
+    <input type="radio" name="languageSyntax" value="Turtle" checked="checked"/>Turtle
+    <input type="radio" name="languageSyntax" value="TriG"/>TriG
+    <input type="radio" name="languageSyntax" value="N-Triples"/>N-Triples
+    <input type="radio" name="languageSyntax" value="N-Quads"/>N-Quad
   <br/>
+<!--
 Output syntax:
   <input type="checkbox" name="outputFormat" value="sparql" checked="checked"/>SPARQL
   <input type="checkbox" name="outputFormat" value="algebra"/>SPARQL algebra

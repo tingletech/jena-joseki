@@ -40,21 +40,21 @@ PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.2//EN"
   <servlet>
     <servlet-name>SPARQL 1.1 Query Validator</servlet-name>
     <servlet-class>
-      org.joseki.validator.QueryValidator
+      org.joseki.validation.QueryValidator
     </servlet-class>
   </servlet>
 
   <servlet>
     <servlet-name>SPARQL 1.1 Update Validator</servlet-name>
     <servlet-class>
-      org.joseki.validator.UpdateValidator
+      org.joseki.validation.UpdateValidator
     </servlet-class>
   </servlet>
 
   <servlet>
     <servlet-name>RDF Data Validator</servlet-name>
     <servlet-class>
-      org.joseki.validator.DataValidator
+      org.joseki.validation.DataValidator
     </servlet-class>
   </servlet>
 
