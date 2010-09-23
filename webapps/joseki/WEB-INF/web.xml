@@ -38,14 +38,21 @@ PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.2//EN"
   <!-- Validator -->
 
   <servlet>
-    <servlet-name>Validator</servlet-name>
+    <servlet-name>SPARQL 1.1 Query Validator</servlet-name>
     <servlet-class>
-      org.joseki.validator.Validator
+      org.joseki.validator.QueryValidator
     </servlet-class>
   </servlet>
 
   <servlet>
-    <servlet-name>Data Validator</servlet-name>
+    <servlet-name>SPARQL 1.1 Update Validator</servlet-name>
+    <servlet-class>
+      org.joseki.validator.UpdateValidator
+    </servlet-class>
+  </servlet>
+
+  <servlet>
+    <servlet-name>RDF Data Validator</servlet-name>
     <servlet-class>
       org.joseki.validator.DataValidator
     </servlet-class>
@@ -104,12 +111,23 @@ PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.2//EN"
   </servlet-mapping>
 
   <servlet-mapping>
-    <servlet-name>Validator</servlet-name>
+    <servlet-name>SPARQL 1.1 Query Validator</servlet-name>
+    <url-pattern>/query-validator</url-pattern>
+  </servlet-mapping>
+
+  <servlet-mapping>
+    <servlet-name>SPARQL 1.1 Update Validator</servlet-name>
+    <url-pattern>/update-validator</url-pattern>
+  </servlet-mapping>
+
+  <!-- Compatibility -->
+  <servlet-mapping>
+    <servlet-name>SPARQL 1.1 Query Validator</servlet-name>
     <url-pattern>/validator</url-pattern>
   </servlet-mapping>
 
   <servlet-mapping>
-    <servlet-name>Data Validator</servlet-name>
+    <servlet-name>RDF Data Validator</servlet-name>
     <url-pattern>/data-validator</url-pattern>
   </servlet-mapping>
 

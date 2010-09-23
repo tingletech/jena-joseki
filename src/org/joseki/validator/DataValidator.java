@@ -38,11 +38,11 @@ import com.hp.hpl.jena.sparql.util.FmtUtils ;
 
 public class DataValidator extends HttpServlet 
 {
-    protected static Logger log = LoggerFactory.getLogger("DataValidator") ;
+    protected static Logger log = LoggerFactory.getLogger("Data Validator") ;
     
     public DataValidator() 
     {
-        log.info("-------- DataValidator") ;
+        log.info("-------- Data Validator") ;
     }
 
     @Override
@@ -95,6 +95,10 @@ public class DataValidator extends HttpServlet
             System.setErr(new PrintStream(outStream)) ;
             
             LangRIOT parser = setupParser(tokenizer, errorHandler, outStream) ;
+            
+            httpResponse.setCharacterEncoding("UTF-8") ;
+            httpResponse.setContentType("text/html") ;
+            httpResponse.setHeader(respService, "Joseki/ARQ RDF Data Validator: http://jena.sourceforge.net/ARQ") ;
             
             outStream.println("<html>") ;
             printHead(outStream) ;
@@ -183,27 +187,26 @@ public class DataValidator extends HttpServlet
         ErrorHandlerMsg(ServletOutputStream out) { this.out = out ; }
         
         public void warning(String message, long line, long col)
-        { output(message, line, col, "warning") ; }
+        { output(message, line, col, "Warning", "warning") ; }
     
         // Attempt to continue.
         public void error(String message, long line, long col)
-        { output(message, line, col, "error") ; }
+        { output(message, line, col, "Error", "error") ; }
     
         public void fatal(String message, long line, long col)
-        { output(message, line, col, "error") ; throw new RiotException(fmtMessage(message, line, col)) ; }
+        { output(message, line, col, "Fatal", "error") ; throw new RiotException(fmtMessage(message, line, col)) ; }
         
-        private void output(String message, long line, long col, String className)
+        private void output(String message, long line, long col, String typeName, String className)
         {
             try {
-                String str = fmtMessage(message, line, col) ;
+                //String str = fmtMessage(message, line, col) ;
+                String str = typeName+": "+message ;
                 str = htmlQuote(str) ;
                 out.print("<div class=\""+className+"\">") ;
                 out.print(str) ;
                 out.print("</div>") ;
             } catch (IOException ex) { IO.exception(ex) ; }
         }
-       
-        
     }
     
     private Tokenizer createTokenizer(HttpServletRequest httpRequest, HttpServletResponse httpResponse) throws Exception

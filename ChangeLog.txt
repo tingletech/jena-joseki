@@ -4,6 +4,11 @@ Joseki3
 Joseki 3.4.3
 ------------
 
++ Upgrade to ARQ 2.8.6
++ SPARQL Update (language) support.
++ Validators now include SPARQL Query, SPARQL Update and RDF Data.
+  Names of Valitor servlets have changed - see web.xml. 
+
 Joseki 3.4.2
 ------------
 + Now ship (zip download) with copies of SDB and TDB compiled against the same set of dependences.

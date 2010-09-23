@@ -1,40 +1,38 @@
 /*
  * (c) Copyright 2006, 2007, 2008, 2009 Hewlett-Packard Development Company, LP
+ * (c) Copyright 2010 Epimorphics Ltd. 
  * All rights reserved.
  * [See end of file]
  */
 
 package org.joseki.validator;
 
-import java.io.IOException;
+import java.io.IOException ;
 
-import javax.servlet.ServletConfig;
-import javax.servlet.ServletException;
-import javax.servlet.ServletOutputStream;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import javax.servlet.ServletConfig ;
+import javax.servlet.ServletException ;
+import javax.servlet.ServletOutputStream ;
+import javax.servlet.http.HttpServlet ;
+import javax.servlet.http.HttpServletRequest ;
+import javax.servlet.http.HttpServletResponse ;
 
 import org.openjena.atlas.io.IndentedLineBuffer ;
 import org.openjena.atlas.io.IndentedWriter ;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.slf4j.Logger ;
+import org.slf4j.LoggerFactory ;
 
-import com.hp.hpl.jena.query.Query;
-import com.hp.hpl.jena.query.QueryFactory;
-import com.hp.hpl.jena.query.Syntax;
-import com.hp.hpl.jena.sparql.ARQException;
-import com.hp.hpl.jena.sparql.algebra.Algebra;
-import com.hp.hpl.jena.sparql.algebra.Op;
-import com.hp.hpl.jena.sparql.serializer.SerializationContext;
+import com.hp.hpl.jena.query.Syntax ;
+import com.hp.hpl.jena.sparql.ARQException ;
+import com.hp.hpl.jena.update.UpdateFactory ;
+import com.hp.hpl.jena.update.UpdateRequest ;
 
-public class Validator extends HttpServlet 
+public class UpdateValidator extends HttpServlet 
 {
-    protected static Logger log = LoggerFactory.getLogger("Validator") ;
+    protected static Logger log = LoggerFactory.getLogger("Update Validator") ;
     
-    public Validator() 
+    public UpdateValidator() 
     {
-        log.info("-------- Validator") ;
+        log.info("-------- Update Validator") ;
     }
 
     @Override
@@ -71,7 +69,7 @@ public class Validator extends HttpServlet
     
     static final String paramLineNumbers      = "linenumbers" ;
     static final String paramFormat           = "outputFormat" ;
-    static final String paramQuery            = "query" ;
+    static final String paramUpdate            = "update" ;
     static final String paramSyntax           = "languageSyntax" ;
     //static final String paramSyntaxExtended   = "extendedSyntax" ;
     static final String respService           = "X-Service" ;
@@ -82,21 +80,21 @@ public class Validator extends HttpServlet
             if ( log.isDebugEnabled() )
                 log.debug("validation request") ;
             
-            String[] args = httpRequest.getParameterValues(paramQuery) ;
+            String[] args = httpRequest.getParameterValues(paramUpdate) ;
             
             if ( args == null || args.length == 0 )
             {
-                httpResponse.sendError(HttpServletResponse.SC_BAD_REQUEST, "No query parameter to validator") ;
+                httpResponse.sendError(HttpServletResponse.SC_BAD_REQUEST, "No update parameter to validator") ;
                 return ;
             }
             
             if ( args.length > 1 )
             {
-                httpResponse.sendError(HttpServletResponse.SC_BAD_REQUEST, "Too many query parameters") ;
+                httpResponse.sendError(HttpServletResponse.SC_BAD_REQUEST, "Too many update parameters") ;
                 return ;
             }
 
-            final String queryString = httpRequest.getParameter(paramQuery).replaceAll("(\r|\n| )*$", "") ;
+            final String queryString = httpRequest.getParameter(paramUpdate).replaceAll("(\r|\n| )*$", "") ;
 //            queryString = queryString.replace("\r\n", "\n") ;
 //            queryString.replaceAll("(\r|\n| )*$", "") ;
             
@@ -115,13 +113,15 @@ public class Validator extends HttpServlet
 
             String a[] = httpRequest.getParameterValues(paramFormat) ;
             
-            boolean outputSPARQL = false ;
+            // Currentl default.
+            boolean outputSPARQL = true ;
             boolean outputPrefix = false ;
             boolean outputAlgebra = false ;
             boolean outputQuads = false ;
             
             if ( a != null )
             {
+                outputSPARQL = false ;
                 for ( int i = 0 ; i < a.length ; i++ )
                 {
                     if ( a[i].equals("sparql") ) 
@@ -146,7 +146,7 @@ public class Validator extends HttpServlet
             // Headers
             httpResponse.setCharacterEncoding("UTF-8") ;
             httpResponse.setContentType("text/html") ;
-            httpResponse.setHeader(respService, "Joseki/ARQ SPARQL Validator: http://jena.sourceforge.net/ARQ") ;
+            httpResponse.setHeader(respService, "Joseki/ARQ SPARQL Update Validator: http://openjena.org/ARQ") ;
             
             ServletOutputStream outStream = httpResponse.getOutputStream() ;
 
@@ -155,7 +155,8 @@ public class Validator extends HttpServlet
             printHead(outStream) ;
             
             outStream.println("<body>") ;
-            outStream.println("<h1>SPARQL Validator</h1>") ;
+            outStream.println("<h1>SPARQL Update Validator</h1>") ;
+            
             // Print query as received
             {
                 outStream.println("<p>Input:</p>") ;
@@ -168,9 +169,9 @@ public class Validator extends HttpServlet
             }
             
             // Attempt to parse it.
-            Query q = null ;
+            UpdateRequest request= null ;
             try {
-                q = QueryFactory.create(queryString, language) ;
+                request = UpdateFactory.create(queryString, "http://example/base/", language) ;
             } catch (ARQException ex)
             {
                 // Over generous exception (should be QueryException)
@@ -189,42 +190,45 @@ public class Validator extends HttpServlet
             }
             
             // Because we pass into anon inner classes
-            final Query query = q ;
+            final UpdateRequest updateRequest = request ;
             
             // OK?  Pretty print
-            if ( query != null && outputSPARQL )
+            if ( updateRequest != null && outputSPARQL )
             {
-                outStream.println("<p>Formatted, parsed query:</p>") ;
+                outStream.println("<p>Formatted, parsed update request:</p>") ;
                 Content c = new Content(){
                     public void print(IndentedWriter out)
-                    { query.serialize(out) ; }
+                    {
+                        updateRequest.output(out) ;
+                    }
+                        
                 } ;
                 output(outStream, c, lineNumbers) ;
             }
             
-            if ( query != null && outputAlgebra )
-            {
-                outStream.println("<p>Algebra structure:</p>") ;
-                final Op op = Algebra.compile(query) ;   // No optimization
-                final SerializationContext sCxt = new SerializationContext(query) ;
-                Content c = new Content(){
-                    public void print(IndentedWriter out)
-                    {  op.output(out, sCxt) ; }
-                } ;
-                output(outStream, c , lineNumbers) ;
-            }
-            
-            if ( query != null && outputQuads )
-            {
-                outStream.println("<p>Quad structure:</p>") ;
-                final Op op = Algebra.toQuadForm(Algebra.compile(query)) ;
-                final SerializationContext sCxt = new SerializationContext(query) ;
-                Content c = new Content(){
-                    public void print(IndentedWriter out)
-                    {  op.output(out, sCxt) ; }
-                } ;
-                output(outStream, c , lineNumbers) ;
-            }
+//            if ( query != null && outputAlgebra )
+//            {
+//                outStream.println("<p>Algebra structure:</p>") ;
+//                final Op op = Algebra.compile(query) ;   // No optimization
+//                final SerializationContext sCxt = new SerializationContext(query) ;
+//                Content c = new Content(){
+//                    public void print(IndentedWriter out)
+//                    {  op.output(out, sCxt) ; }
+//                } ;
+//                output(outStream, c , lineNumbers) ;
+//            }
+//            
+//            if ( query != null && outputQuads )
+//            {
+//                outStream.println("<p>Quad structure:</p>") ;
+//                final Op op = Algebra.toQuadForm(Algebra.compile(query)) ;
+//                final SerializationContext sCxt = new SerializationContext(query) ;
+//                Content c = new Content(){
+//                    public void print(IndentedWriter out)
+//                    {  op.output(out, sCxt) ; }
+//                } ;
+//                output(outStream, c , lineNumbers) ;
+//            }
             
             outStream.println("</html>") ;
             
@@ -299,6 +303,7 @@ public class Validator extends HttpServlet
 
 /*
  * (c) Copyright 2006, 2007, 2008, 2009 Hewlett-Packard Development Company, LP
+ * (c) Copyright 2010 Epimorphics Ltd. 
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
