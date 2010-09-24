@@ -130,7 +130,7 @@ public class DataValidator extends HttpServlet
                     System.err.flush() ;
                 } catch (RiotException ex) { exception = ex ; } 
                 
-                // Exception shoudl have caused an error/fatal message.  
+                // Exception should have caused an error/fatal message.  
 //                if ( exception != null )
 //                {
 //                    finishFixed(outStream) ;

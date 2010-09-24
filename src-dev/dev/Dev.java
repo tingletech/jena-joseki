@@ -1,5 +1,5 @@
 /*
- * (c) Copyright 2008, 2009 Hewlett-Packard Development Company, LP
+ * (c) Copyright 2010 Epimorphics Ltd.
  * All rights reserved.
  * [See end of file]
  */
@@ -8,24 +8,17 @@ package dev;
 
 public class Dev
 {
-    // data validator : more ErrorHandlerMsg out of test and catch fatal exception.
-    // Syntax type.
-    // Indirection.
+    // Triple/quad count for data validator
+    // URL upload.
+    // Syntax type for Update
     
     // &stream=true to have streamed SELECT results.
-    
-    // Creating named graphs in an plain js:RDFDataset does not work.
-    // Use new DatasetGraphMem from ARQ.
-    
-	// query is MIME type application/sparql-query
-	// Check for multiple use of an endpoint.
-
 	// FROM file: -- needs filemanager protection
 	// Non-existant file causes NPE (recovery is correct though)
 }
 
 /*
- * (c) Copyright 2008, 2009 Hewlett-Packard Development Company, LP
+ * (c) Copyright 2010 Epimorphics Ltd.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
