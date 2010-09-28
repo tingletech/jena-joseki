@@ -256,7 +256,7 @@ the value has
         Enumeration<Object> en = properties.keys();
         while(en.hasMoreElements())
         {
-            String key = en.toString();
+            String key = en.nextElement().toString();
             pw.println(key+": '"+properties.getProperty(key)+"'");
         }
         pw.println() ;
