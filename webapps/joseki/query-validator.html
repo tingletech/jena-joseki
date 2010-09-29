@@ -12,8 +12,12 @@
       <form action="query-validator">
 	<p>
 	  <textarea name="query" cols="70" rows="30">
-PREFIX books:   &lt;http://example.org/book/&gt;
-PREFIX dc:      &lt;http://purl.org/dc/elements/1.1/&gt;
+PREFIX xsd:     &lt;http://www.w3.org/2001/XMLSchema#>
+PREFIX rdf:     &lt;http://www.w3.org/1999/02/22-rdf-syntax-ns#> 
+PREFIX rdfs:    &lt;http://www.w3.org/2000/01/rdf-schema#>
+PREFIX owl:     &lt;http://www.w3.org/2002/07/owl#>
+PREFIX fn:      &lt;http://www.w3.org/2005/xpath-functions#>
+PREFIX apf:     &lt;http://jena.hpl.hp.com/ARQ/property#>
 
 SELECT ?book ?title
 WHERE
