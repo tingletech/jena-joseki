@@ -1,1 +1,5 @@
-SELECT * FROM <http://www.purl.org/net/ontology/beer.owl> { ?s ?p ?o }
+prefix : <http://example/> 
+
+SELECT * 
+{ :s :p :o }
+#{ ?s ?p ?o }
