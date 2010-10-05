@@ -12,7 +12,7 @@ import com.hp.hpl.jena.sparql.lib.Metadata;
 
 /** Constants and other definitions.
  * @author      Andy Seaborne
- * @version     $Id: Joseki.java,v 1.40 2010-09-19 14:04:31 andy_seaborne Exp $
+ * @version     $Id: Joseki.java,v 1.41 2010-10-05 20:46:41 andy_seaborne Exp $
  */
 public class Joseki
 {
@@ -127,24 +127,26 @@ public class Joseki
     
     static Map<String, String> jenaReaders = new HashMap<String, String>() ;
     static {
-        setReaderType(contentTypeN3, "N3") ;
-        setReaderType(contentTypeN3Alt, "N3") ;
-        setReaderType(contentTypeRDFXML, "RDF/XML") ;
-        setReaderType(contentTypeNTriples, "N-TRIPLE") ;
-        setReaderType(contentTypeXML, "RDF/XML") ;
-        setReaderType(contentTypeTurtle, "TURTLE") ;
-        setReaderType(contentTypeTurtleAlt, "TURTLE") ;
+        setReaderType(contentTypeN3,            "N3") ;
+        setReaderType(contentTypeN3Alt,         "N3") ;
+        setReaderType(contentTypeRDFXML,        "RDF/XML") ;
+        setReaderType(contentTypeNTriples,      "N-TRIPLE") ;
+        setReaderType(contentTypeNTriples,      "N-TRIPLE") ;
+        setReaderType(contentTypeXML,           "RDF/XML") ;
+        setReaderType(contentTypeTurtle,        "TURTLE") ;
+        setReaderType(contentTypeTurtleAlt,     "TURTLE") ;
     }
     
     static Map<String, String> jenaWriters = new HashMap<String, String>() ;
     static {
-        setWriterType(contentTypeXML, "RDF/XML-ABBREV") ;
-        setWriterType(contentTypeN3, "N3") ;
-        setWriterType(contentTypeN3Alt, "N3") ;
-        setWriterType(contentTypeRDFXML, "RDF/XML-ABBREV") ;
-        setWriterType(contentTypeNTriples, "N-TRIPLE") ;
-        setWriterType(contentTypeTurtle, "TURTLE") ;
-        setWriterType(contentTypeTurtleAlt, "TURTLE") ;
+        setWriterType(contentTypeXML,           "RDF/XML-ABBREV") ;
+        setWriterType(contentTypeN3,            "N3") ;
+        setWriterType(contentTypeN3Alt,         "N3") ;
+        setWriterType(contentTypeRDFXML,        "RDF/XML-ABBREV") ;
+        setWriterType(contentTypeNTriples,      "N-TRIPLE") ;
+        setWriterType(contentTypeNTriplesAlt,   "N-TRIPLE") ;
+        setWriterType(contentTypeTurtle,        "TURTLE") ;
+        setWriterType(contentTypeTurtleAlt,     "TURTLE") ;
     }
 }
 

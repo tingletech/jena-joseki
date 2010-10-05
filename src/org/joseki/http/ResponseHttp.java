@@ -105,11 +105,6 @@ public class ResponseHttp extends Response
         }
         String writerMimeType = mimeType ;
         
-        // If the requets is for test/plain, send N3 (sanity - avoid N-triples) 
-        if ( mimeType != null && mimeType.equals(Joseki.contentTypeTextPlain) )
-            // text/plain => text/rdf+n3
-            writerMimeType = Joseki.contentTypeN3 ;
-        
         if ( mimeType == null )
         {
             try
