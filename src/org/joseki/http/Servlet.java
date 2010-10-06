@@ -18,7 +18,7 @@ import org.joseki.*;
 
 /** The servlet class.
  * @author  Andy Seaborne
- * @version $Id: Servlet.java,v 1.36 2009-04-24 14:30:44 andy_seaborne Exp $
+ * @version $Id: Servlet.java,v 1.37 2010-10-06 10:45:09 andy_seaborne Exp $
  */
 
 public class Servlet extends HttpServlet
@@ -161,7 +161,8 @@ public class Servlet extends HttpServlet
             serviceURI = Service.canonical(serviceURI) ;
             
             String sender = httpRequest.getRemoteAddr() ; 
-            log.info("["+sender+"] Service URI = <"+serviceURI+">") ;
+            log.info("Request: "+httpRequest.getRequestURL().toString()) ;
+            log.info("Service URI = <"+serviceURI+">") ;
             
             // MIME-Type
             String contentType = httpRequest.getContentType() ;
