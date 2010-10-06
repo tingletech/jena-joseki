@@ -18,7 +18,7 @@ import org.joseki.*;
 
 /** The servlet class.
  * @author  Andy Seaborne
- * @version $Id: Servlet.java,v 1.37 2010-10-06 10:45:09 andy_seaborne Exp $
+ * @version $Id: Servlet.java,v 1.38 2010-10-06 16:54:17 andy_seaborne Exp $
  */
 
 public class Servlet extends HttpServlet
@@ -165,7 +165,7 @@ public class Servlet extends HttpServlet
             log.info("Service URI = <"+serviceURI+">") ;
             
             // MIME-Type
-            String contentType = httpRequest.getContentType() ;
+            //String contentType = httpRequest.getContentType() ;
             
 //            if ( Joseki.contentSPARQLUpdate.equals(contentType) ||
 //                Joseki.contentSPARQLUpdate_X.equals(contentType) )
