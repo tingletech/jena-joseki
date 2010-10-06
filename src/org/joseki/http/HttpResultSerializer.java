@@ -21,7 +21,7 @@ import com.hp.hpl.jena.shared.JenaException;
 /** Extracting operation data from HTTP servlet requests and formatting results for sending back.
  * 
  * @author      Andy Seaborne
- * @version     $Id: HttpResultSerializer.java,v 1.11 2009-04-24 14:30:44 andy_seaborne Exp $
+ * @version     $Id: HttpResultSerializer.java,v 1.12 2010-10-06 09:51:34 andy_seaborne Exp $
  */
 public class HttpResultSerializer
 {
@@ -56,6 +56,7 @@ public class HttpResultSerializer
             //resultModel.write(sw, writerType);
             resultModel.write(sw, "N3");
             log.info("\n"+sw.toString()) ;
+            
             
         }
 
