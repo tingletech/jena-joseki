@@ -6,8 +6,12 @@
 
 package dev;
 
-public class Dev
+public class DevJoseki
 {
+    // Accept type for a default-graph URL.
+    // GraphUtils.readUtils
+    
+    // Redirect?
     // Triple/quad count for data validator
     // URL upload.
     // Syntax type for Update

@@ -86,14 +86,25 @@ public class GraphUtils
         // Temporary model wrapper 
         Graph g = new LimitingGraph(graph, limit) ;
         Model m = ModelFactory.createModelForGraph(g) ;
-        RDFReader r = m.getReader(syntax) ;
-        r.setErrorHandler(new GraphErrorHandler()) ;
-        InputStream in = FileManager.get().open(uri) ;
-        if ( in == null )
-            // Not found.
-            throw new NotFoundException("Not found: "+uri) ;
-        r.read(m, in, uri) ;
-        return m ;
+        
+        // If it's RDF/XML, go via Jena and set the HTTP readers.
+//        if ( FileUtils.langXML.equals(syntax) )
+//        {
+//            m.read(uri, uri) ;
+//            return m ;
+//        }
+//        else
+        {
+            // Otherwise open raw and hope the syntax is right. 
+            RDFReader r = m.getReader(syntax) ;
+            r.setErrorHandler(new GraphErrorHandler()) ;
+            InputStream in = FileManager.get().open(uri) ;
+            if ( in == null )
+                // Not found.
+                throw new NotFoundException("Not found: "+uri) ;
+            r.read(m, in, uri) ;
+            return m ;
+        }
     }
 }
 
