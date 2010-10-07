@@ -106,9 +106,7 @@ public class DataValidator extends HttpServlet
             PrintStream stderr = System.err ;
             System.setOut(new PrintStream(outStream)) ;
             System.setErr(new PrintStream(outStream)) ;
-            
-            LangRIOT parser = setupParser(tokenizer, language, errorHandler, outStream) ;
-            
+
             httpResponse.setCharacterEncoding("UTF-8") ;
             httpResponse.setContentType("text/html") ;
             httpResponse.setHeader(respService, "Joseki/ARQ RDF Data Validator: http://jena.sourceforge.net/ARQ") ;
@@ -122,22 +120,14 @@ public class DataValidator extends HttpServlet
             outStream.println("<p>Line and column numbers refer to original input</p>") ;
             outStream.println("<p>&nbsp;</p>") ;
             try {
+                LangRIOT parser = setupParser(tokenizer, language, errorHandler, outStream) ;
                 startFixed(outStream) ;
                 RiotException exception = null ;
                 try {
                     parser.parse() ;
                     System.out.flush() ;
                     System.err.flush() ;
-                } catch (RiotException ex) { exception = ex ; } 
-                
-                // Exception should have caused an error/fatal message.  
-//                if ( exception != null )
-//                {
-//                    finishFixed(outStream) ;
-//                    startFixed(outStream) ;
-//                    outStream.println(exception.getMessage()) ;
-//                    finishFixed(outStream) ;
-//                }
+                } catch (RiotException ex) { exception = ex ; }
             } finally 
             {
                 finishFixed(outStream) ;
