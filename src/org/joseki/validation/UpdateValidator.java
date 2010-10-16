@@ -278,7 +278,7 @@ public class UpdateValidator extends HttpServlet
         out.flush() ;  
         String x = htmlQuote(out.asString()) ;
         byte b[] = x.getBytes("UTF-8") ;
-        outStream.write(b) ; ;
+        outStream.write(b) ;
         finishFixed(outStream) ;
     }
     

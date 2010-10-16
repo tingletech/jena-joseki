@@ -182,8 +182,9 @@ public class DataValidator extends HttpServlet
         
         Sink<Quad> sink2 = new SinkWrapper<Quad>(sink){
             long count = 0 ;
-            public void close() {}
-            public void flush() {}
+            @Override public void close() {}
+            @Override public void flush() {}
+            @Override 
             public void send(Quad quad)
             { 
                 super.send(quad) ;

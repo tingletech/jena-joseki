@@ -18,7 +18,7 @@ import org.joseki.*;
 
 /** The servlet class.
  * @author  Andy Seaborne
- * @version $Id: Servlet.java,v 1.38 2010-10-06 16:54:17 andy_seaborne Exp $
+ * @version $Id: Servlet.java,v 1.39 2010-10-16 16:46:43 andy_seaborne Exp $
  */
 
 public class Servlet extends HttpServlet
@@ -195,8 +195,8 @@ public class Servlet extends HttpServlet
         return setupRequest(serviceURI, httpRequest, Joseki.OP_QUERY) ;
     }
 
-    protected Request setupRequest(String serviceURI, HttpServletRequest httpRequest, String opType)
-    throws IOException
+    @SuppressWarnings("unused")
+    protected Request setupRequest(String serviceURI, HttpServletRequest httpRequest, String opType) throws IOException
     {
         // No reader.  Done by standard servlet form processing.
         Request request = new Request(serviceURI, null) ;
