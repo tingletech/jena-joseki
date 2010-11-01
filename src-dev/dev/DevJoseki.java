@@ -8,6 +8,8 @@ package dev;
 
 public class DevJoseki
 {
+    // FROM <file.rdf> ==> exception?
+    
     // Accept type for a default-graph URL.
     // GraphUtils.readUtils
     
