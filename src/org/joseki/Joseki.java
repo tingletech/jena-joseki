@@ -12,7 +12,7 @@ import com.hp.hpl.jena.sparql.lib.Metadata;
 
 /** Constants and other definitions.
  * @author      Andy Seaborne
- * @version     $Id: Joseki.java,v 1.41 2010-10-05 20:46:41 andy_seaborne Exp $
+ * @version     $Id: Joseki.java,v 1.42 2010-11-04 08:59:59 andy_seaborne Exp $
  */
 public class Joseki
 {
@@ -131,7 +131,7 @@ public class Joseki
         setReaderType(contentTypeN3Alt,         "N3") ;
         setReaderType(contentTypeRDFXML,        "RDF/XML") ;
         setReaderType(contentTypeNTriples,      "N-TRIPLE") ;
-        setReaderType(contentTypeNTriples,      "N-TRIPLE") ;
+        setReaderType(contentTypeNTriplesAlt,   "N-TRIPLE") ;
         setReaderType(contentTypeXML,           "RDF/XML") ;
         setReaderType(contentTypeTurtle,        "TURTLE") ;
         setReaderType(contentTypeTurtleAlt,     "TURTLE") ;

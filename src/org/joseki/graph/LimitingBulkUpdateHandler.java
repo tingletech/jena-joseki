@@ -32,22 +32,20 @@ public class LimitingBulkUpdateHandler extends WrappedBulkUpdateHandler
         super.add(triples) ;
     }
     
-    @SuppressWarnings("unchecked")
     @Override
-    public void add( List triples )
+    public void add( List<Triple> triples )
     {
         lGraph.count = lGraph.count+triples.size() ;
         lGraph.checkSize() ;
         super.add(triples);
     }
     
-    @SuppressWarnings("unchecked")
     @Override
-    public void add( Iterator it )
+    public void add( Iterator<Triple> it )
     {
         for ( ; it.hasNext() ; )
         {
-            Triple t = (Triple)it.next() ;
+            Triple t = it.next() ;
             lGraph.count++ ;
             lGraph.checkSize() ;
             graph.add(t) ;
