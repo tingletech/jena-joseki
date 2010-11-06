@@ -8,6 +8,10 @@ package dev;
 
 public class DevJoseki
 {
+    // CORS
+    // Access-Control-Allow-Origin
+    // http://hacks.mozilla.org/2009/07/cross-site-xmlhttprequest-with-cors/
+    
     // FROM <file.rdf> ==> exception?
     
     // Accept type for a default-graph URL.
