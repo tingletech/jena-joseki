@@ -21,7 +21,7 @@
 	<classpathentry kind="lib" path="lib/jetty-util-6.1.25.jar"/>
 	<classpathentry kind="lib" path="lib/servlet-api-2.5-20081211.jar"/>
 	<classpathentry kind="lib" path="lib/sdb-1.3.3-SNAPSHOT.jar"/>
-	<classpathentry kind="lib" path="lib/arq-2.8.6-RC-1-tests.jar"/>
-	<classpathentry kind="lib" path="lib/arq-2.8.6-RC-1.jar"/>
+	<classpathentry kind="lib" path="lib/arq-2.8.6-tests.jar"/>
+	<classpathentry kind="lib" path="lib/arq-2.8.6.jar"/>
 	<classpathentry kind="output" path="classes"/>
 </classpath>
