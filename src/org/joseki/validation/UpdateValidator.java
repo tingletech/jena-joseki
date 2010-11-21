@@ -94,23 +94,25 @@ public class UpdateValidator extends HttpServlet
                 return ;
             }
 
-            final String queryString = httpRequest.getParameter(paramUpdate).replaceAll("(\r|\n| )*$", "") ;
-//            queryString = queryString.replace("\r\n", "\n") ;
-//            queryString.replaceAll("(\r|\n| )*$", "") ;
-            
-            String querySyntax = httpRequest.getParameter(paramSyntax) ;
-            if ( querySyntax == null || querySyntax.equals("") )
-                querySyntax = "SPARQL" ;
+            final String updateString = httpRequest.getParameter(paramUpdate).replaceAll("(\r|\n| )*$", "") ;
 
-            Syntax language = Syntax.lookup(querySyntax) ;
-            if ( language == null )
+            // TEMP Default to ARQ update syntax, not strict SPARQL 1.1
+            Syntax language = Syntax.syntaxARQ_Update ;
+
+            String updateSyntax = httpRequest.getParameter(paramSyntax) ;
+            if ( updateSyntax != null && ! updateSyntax.equals("") )
             {
-                httpResponse.sendError(HttpServletResponse.SC_BAD_REQUEST, "Unknown syntax: "+querySyntax) ;
-                return ;
+                updateSyntax = "SPARQL" ;
+                Syntax language2 = Syntax.lookup(updateSyntax) ; 
+                if ( language2 == null )
+                {
+                    httpResponse.sendError(HttpServletResponse.SC_BAD_REQUEST, "Unknown syntax: "+updateSyntax) ;
+                    return ;
+                }
+                language = language2 ;
             }
             
             String lineNumbersArg = httpRequest.getParameter(paramLineNumbers) ; 
-
             String a[] = httpRequest.getParameterValues(paramFormat) ;
             
             // Currentl default.
@@ -163,7 +165,7 @@ public class UpdateValidator extends HttpServlet
                 // Not Java's finest hour.
                 Content c = new Content(){
                     public void print(IndentedWriter out)
-                    { out.print(queryString) ; }
+                    { out.print(updateString) ; }
                 } ;
                 output(outStream, c, lineNumbers) ;
             }
@@ -171,7 +173,7 @@ public class UpdateValidator extends HttpServlet
             // Attempt to parse it.
             UpdateRequest request= null ;
             try {
-                request = UpdateFactory.create(queryString, "http://example/base/", language) ;
+                request = UpdateFactory.create(updateString, "http://example/base/", language) ;
             } catch (ARQException ex)
             {
                 // Over generous exception (should be QueryException)
@@ -205,30 +207,6 @@ public class UpdateValidator extends HttpServlet
                 } ;
                 output(outStream, c, lineNumbers) ;
             }
-            
-//            if ( query != null && outputAlgebra )
-//            {
-//                outStream.println("<p>Algebra structure:</p>") ;
-//                final Op op = Algebra.compile(query) ;   // No optimization
-//                final SerializationContext sCxt = new SerializationContext(query) ;
-//                Content c = new Content(){
-//                    public void print(IndentedWriter out)
-//                    {  op.output(out, sCxt) ; }
-//                } ;
-//                output(outStream, c , lineNumbers) ;
-//            }
-//            
-//            if ( query != null && outputQuads )
-//            {
-//                outStream.println("<p>Quad structure:</p>") ;
-//                final Op op = Algebra.toQuadForm(Algebra.compile(query)) ;
-//                final SerializationContext sCxt = new SerializationContext(query) ;
-//                Content c = new Content(){
-//                    public void print(IndentedWriter out)
-//                    {  op.output(out, sCxt) ; }
-//                } ;
-//                output(outStream, c , lineNumbers) ;
-//            }
             
             outStream.println("</html>") ;
             
