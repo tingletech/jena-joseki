@@ -38,7 +38,7 @@ then
 #JAVA_ARGS="-server" 
 JAVA_ARGS="-server -Xmx1G" 
 
-# If Jetty needs to handle very large incomign requests (e.g. SPARQL/Update)
+# If Jetty needs to handle very large incoming requests (e.g. SPARQL/Update)
 # you may need to add ...
 # JAVA_ARGS="$JAVA_ARGS -Dorg.mortbay.jetty.Request.maxFormContentSize=500000"
 
