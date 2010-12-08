@@ -97,7 +97,7 @@ public class UpdateValidator extends HttpServlet
             final String updateString = httpRequest.getParameter(paramUpdate).replaceAll("(\r|\n| )*$", "") ;
 
             // TEMP Default to ARQ update syntax, not strict SPARQL 1.1
-            Syntax language = Syntax.syntaxARQ_Update ;
+            Syntax language = Syntax.syntaxARQ ;
 
             String updateSyntax = httpRequest.getParameter(paramSyntax) ;
             if ( updateSyntax != null && ! updateSyntax.equals("") )
