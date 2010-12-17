@@ -16,7 +16,7 @@
 	<classpathentry kind="lib" path="lib/log4j-1.2.14.jar"/>
 	<classpathentry kind="lib" path="lib/jena-2.6.4-tests.jar"/>
 	<classpathentry kind="lib" path="lib/jena-2.6.4.jar"/>
-	<classpathentry kind="lib" path="lib/tdb-0.8.8-RC-1.jar"/>
+	<classpathentry kind="lib" path="lib/tdb-0.8.8.jar"/>
 	<classpathentry kind="lib" path="lib/jetty-6.1.25.jar"/>
 	<classpathentry kind="lib" path="lib/jetty-util-6.1.25.jar"/>
 	<classpathentry kind="lib" path="lib/servlet-api-2.5-20081211.jar"/>
