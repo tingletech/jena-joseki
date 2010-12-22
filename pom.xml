@@ -6,7 +6,7 @@
   <artifactId>joseki</artifactId>
   <packaging>jar</packaging>
   <name>Joseki</name>
-  <version>3.4.3</version>
+  <version>3.4.4-SNAPSHOT</version>
   <description/>
   <url>http://joseki.org/</url>
 
