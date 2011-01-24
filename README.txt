@@ -4,8 +4,7 @@ Joseki: The Jena RDF Server
     http://www.joseki.org/
 
 	Andy Seaborne
-	andy.seaborne@hp.com
-	July 2005
+	andy.seaborne@epimorphics.com
 
 Joseki is a server implementing the SPARQL protocol.
 
@@ -71,19 +70,11 @@ A simple server can be run by:
 
 1/ Add all the JARs in lib/ to the CLASSPATH
 2/ Run
-   java -cp <classpath> joseki.rdfserver Examples/joseki-examples.n3
+   java -cp <classpath> joseki.rdfserver joseki-config.ttl
 
 For more details on configuring and running a server, see:
 
-Quick Guide:
-http://www.joseki.org/publishing.html
-
-Server configuration:
-http://www.joseki.org/running.html
-
-Details of the configuration file:
-http://www.joseki.org/configuration.html
-
+http://www.joseki.org/documentation.html
 
 Documentation
 -------------
