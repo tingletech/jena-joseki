@@ -20,7 +20,7 @@
 <#service1>
     rdf:type            joseki:Service ;
     rdfs:label          "SPARQL-TDB" ;
-    joseki:serviceRef   "sparql" ;          # web.xml just route this name to Joseki
+    joseki:serviceRef   "sparql" ;          # web.xml must route this name to Joseki
     joseki:dataset      <#dataset> ;
     joseki:processor    joseki:ProcessorSPARQL_FixedDS ;
     .
@@ -28,7 +28,7 @@
 ## <#service2>
 ##     rdf:type            joseki:Service ;
 ##     rdfs:label          "SPARQL-TDB" ;
-##     joseki:serviceRef   "sparql/graph" ;    # web.xml just route this name to Joseki
+##     joseki:serviceRef   "sparql/graph" ;    # web.xml ust route this name to Joseki
 ##     joseki:dataset      <#dataset-1graph> ;
 ##     joseki:processor    joseki:ProcessorSPARQL_FixedDS ;
 ##     .
@@ -59,18 +59,18 @@ tdb:GraphTDB    rdfs:subClassOf  ja:Model .
     tdb:location "TDB" ;
     .
 
-## ---- A single graph inside a general dataset.
-<#dataset-1graph> rdf:type         ja:RDFDataset ;
-    # If ja:namedGraph is used here, there is no
-    # correspondence with the name in the TDB store.
-    ja:defaultGraph <#graph> ;
-    . 
-
-<#graph> rdf:type tdb:GraphTDB ;
-    tdb:location "DB" ;
-    # Pick out a named graph
-    # tdb:graphName <http://example/aNamedGraph> ;
-    .
+## ## ---- A single graph inside a general dataset.
+## <#dataset-1graph> rdf:type         ja:RDFDataset ;
+##     # If ja:namedGraph is used here, there is no
+##     # correspondence with the name in the TDB store.
+##     ja:defaultGraph <#graph> ;
+##     . 
+## 
+## <#graph> rdf:type tdb:GraphTDB ;
+##     tdb:location "DB" ;
+##     # Pick out a named graph
+##     # tdb:graphName <http://example/aNamedGraph> ;
+##     .
 
 ## --------------------------------------------------------------
 ## Processors

@@ -70,7 +70,7 @@
 []
     rdf:type            joseki:Service ;
     rdfs:label          "SPARQL on the books model" ;
-    joseki:serviceRef   "books" ;   # web.xml just route this name to Joseki
+    joseki:serviceRef   "books" ;   # web.xml must route this name to Joseki
     # dataset part
     joseki:dataset      <#books> ;
     # Service part.

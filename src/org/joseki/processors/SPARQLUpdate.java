@@ -55,6 +55,8 @@ public class SPARQLUpdate extends ProcessorBase implements Loadable
         // 2/ as the body.
         
         String x = request.getParam("request") ;
+        if ( x == null )
+            request.getParam("update") ;
 
         Reader in = null ;
         if ( x == null )
