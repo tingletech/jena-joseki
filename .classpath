@@ -16,12 +16,12 @@
 	<classpathentry kind="lib" path="lib/log4j-1.2.14.jar"/>
 	<classpathentry kind="lib" path="lib/jena-2.6.4-tests.jar"/>
 	<classpathentry kind="lib" path="lib/jena-2.6.4.jar"/>
-	<classpathentry kind="lib" path="lib/tdb-0.8.9.jar"/>
 	<classpathentry kind="lib" path="lib/jetty-6.1.25.jar"/>
 	<classpathentry kind="lib" path="lib/jetty-util-6.1.25.jar"/>
 	<classpathentry kind="lib" path="lib/servlet-api-2.5-20081211.jar"/>
-	<classpathentry kind="lib" path="lib/sdb-1.3.3.jar"/>
-	<classpathentry kind="lib" path="lib/arq-2.8.7-tests.jar"/>
-	<classpathentry kind="lib" path="lib/arq-2.8.7.jar"/>
+	<classpathentry kind="lib" path="lib/arq-2.8.8-SNAPSHOT-tests.jar"/>
+	<classpathentry kind="lib" path="lib/arq-2.8.8-SNAPSHOT.jar"/>
+	<classpathentry kind="lib" path="lib/sdb-1.3.4-SNAPSHOT.jar"/>
+	<classpathentry kind="lib" path="lib/tdb-0.8.10-SNAPSHOT.jar"/>
 	<classpathentry kind="output" path="classes"/>
 </classpath>
