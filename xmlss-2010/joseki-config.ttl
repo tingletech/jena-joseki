@@ -135,9 +135,9 @@
 <#books>   rdf:type ja:RDFDataset ;
     rdfs:label "Books" ;
     ja:defaultGraph 
-      [ rdfs:label "books.n3" ;
+      [ rdfs:label "books.ttl" ;
         a ja:MemoryModel ;
-        ja:content [ja:externalContent <file:Data/books.n3> ] ;
+        ja:content [ja:externalContent <file:Data/books.ttl> ] ;
       ] ;
     .
 

@@ -133,8 +133,8 @@ _:ds1   rdf:type joseki:RDFDataSet ;
 _:books   rdf:type joseki:RDFDataSet ;
     rdfs:label "Books" ;
    joseki:defaultGraph
-      [ rdfs:label "books.n3" ;
-        jms:loadWith  <file:Data/books.n3> ] ;
+      [ rdfs:label "books.ttl" ;
+        jms:loadWith  <file:Data/books.ttl> ] ;
     .
 
 # A dataset of one model as the default graph
