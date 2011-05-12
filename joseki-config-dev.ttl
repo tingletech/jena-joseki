@@ -5,99 +5,31 @@
 @prefix module: <http://joseki.org/2003/06/module#> .
 @prefix joseki: <http://joseki.org/2005/06/configuration#> .
 @prefix ja:     <http://jena.hpl.hp.com/2005/11/Assembler#> .
-@prefix sdb:      <http://jena.hpl.hp.com/2007/sdb#> .
 
-<> rdfs:label "Joseki Configuration File - SDB example" .
-# Stripped down to support one service that exposes an
-# SDB store as a SPARQL endpoint for query and one for 
-# one of the graphs in an SDB store.
+[]  rdf:type joseki:Server .
 
-[]  rdf:type joseki:Server ;
-    joseki:initialization
-        [ module:implementation 
-            [ module:className <java:dev.SDBInit> ; ]
-        ] ;
-    .
-
-## --------------------------------------------------------------
-## Services
-
-# Service publishes the whole of the SDB store - this is the usual way to use SDB.
 <#service1>
     rdf:type            joseki:Service ;
-    rdfs:label          "SPARQL-SDB" ;
-    joseki:serviceRef   "sparql" ;      # web.xml must route this name to Joseki
-    joseki:dataset      <#sdb> ;
+    rdfs:label          "TDB/Query" ;
+    joseki:serviceRef   "sparql" ;
+    joseki:dataset      <#tdb> ;
     joseki:processor    joseki:ProcessorSPARQL_FixedDS ;
     .
-
-# Service that publishes part of an SDB store.
 <#service2>
     rdf:type            joseki:Service ;
-    rdfs:label          "SPARQL-SDB (alt)" ;
-    joseki:serviceRef   "sparql/graph" ;   # web.xml must route this name to Joseki
-    joseki:dataset      <#sdb-part> ;
-    joseki:processor    joseki:ProcessorSPARQL_FixedDS ;
+    rdfs:label          "TDB/Update" ;
+    joseki:serviceRef   "update" ;
+    joseki:dataset      <#tdb> ;
+    joseki:processor     joseki:ProcessorSPARQLUpdate ;
     .
 
-## --------------------------------------------------------------
-## Datasets
+@prefix tdb:     <http://jena.hpl.hp.com/2008/tdb#> .
+[] ja:loadClass "com.hp.hpl.jena.tdb.TDB" .
+tdb:DatasetTDB  rdfs:subClassOf  ja:RDFDataset .
+tdb:GraphTDB    rdfs:subClassOf  ja:Model .
 
-## See also SDB documentation -- http://jena.hpl.hp.com/wiki/SDB
-## Special declarations to cause SDB to be used.
-
-## Initialize SDB.
-## Tell the system that sdb:DatasetStore is an implementation of ja:RDFDataset .
-## Tell the system that sdb:Model is an implementation of ja:RDFDataset .
-
-[] ja:loadClass "com.hp.hpl.jena.sdb.SDB" .
-sdb:DatasetStore  rdfs:subClassOf  ja:RDFDataset .
-sdb:Model         rdfs:subClassOf  ja:Model .
-
-## # For SDB 1.0:
-## <#sdb> rdf:type sdb:DatasetStore , ja:RDFDataset ;
-##     rdfs:label "SDB" ;
-##     sdb:layout         "layout2" ;
-##     sdb:connection ...
-
-# For SDB >=1.1 :
-<#sdb> rdf:type sdb:DatasetStore ;
-    sdb:store <#store> .
-
-<#store> rdf:type sdb:Store  ;
-    rdfs:label "SDB" ;
-    sdb:layout         "layout2" ;
-    sdb:connection 
-    [ rdf:type sdb:SDBConnection ;
-      sdb:sdbType        "postgresql" ;
-      sdb:sdbHost        "localhost" ;
-      sdb:sdbName        "SDB" ;
-
-##         # Using HSQLDB
-##         sdb:sdbType      "hsqldb" ;
-##         sdb:sdbHost      "file" ;
-##         sdb:sdbUser      "sa" ;
-##         sdb:sdbPassword  "" ;
-##         sdb:sdbName      "tmp/SDB" ;   # Location of the database
-    ]
-    .
-
-# Pick one graph out of the SDB store.
-# Do not assemble the whole of the store this way - it is less efficient for that.
-<#sdb-part> rdf:type ja:RDFDataset ;
-    # If ja:namedGraph is used here, there is no correspondence
-    # with the name in the SDB store.
-    ja:defaultGraph <#sdb-one-graph> ;
-    .
-
-<#sdb-one-graph> a sdb:Model ; 
-    sdb:dataset <#sdb> ;
-    # Uncomment to pick out a named graph from the store.
-    # If no "sdb:namedGraph" appearsm the store's default graph is used.
-    # is used as default graph of the dataset publically visible.
-    #sdb:namedGraph <http://example/aNamedGraph> ;
-    # Or even the merge of all named graphs
-    #sdb:namedGraph <urn:x-arq:UnionGraph> ;
+<#tdb> rdf:type      tdb:DatasetTDB ;
+    tdb:location "TDB" ;
     .
 
 ## --------------------------------------------------------------
@@ -117,6 +49,18 @@ joseki:ProcessorSPARQL_FixedDS
     # The database is safe for MRSW (multiple-reader, single-writer).
     joseki:lockingPolicy              joseki:lockingPolicyMRSW ;
     .
+
+
+joseki:ProcessorSPARQLUpdate
+    rdfs:label "SPARQL Update processor" ;
+    rdf:type joseki:Processor ;
+    module:implementation 
+    [   rdf:type   joseki:ServiceImpl ;
+        module:className <java:org.joseki.processors.SPARQLUpdate>
+    ] ;
+    joseki:lockingPolicy              joseki:lockingPolicyMRSW ;
+    .
+
 
 # Local Variables:        
 # tab-width: 4
