@@ -24,7 +24,6 @@
 	<include>README*</include>
 	<include>ChangeLog.txt</include>
 	<include>pom.xml</include>
-	<include>build.xml</include>
       </includes>
     </fileSet>
 
