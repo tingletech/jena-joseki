@@ -17,6 +17,7 @@ public class SDBInit implements ServerInitialization
 {
     private static Logger log = LoggerFactory.getLogger(SDBInit.class) ;
 
+    @Override
     public void init(Resource service, Resource implementation)
     {
         log.info("SDB custom initialisation: begin");

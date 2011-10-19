@@ -32,6 +32,7 @@ public class SPARQLUpdate extends ProcessorBase implements Loadable
 {
     private static Logger log = LoggerFactory.getLogger(SPARQLUpdate.class) ;
     
+    @Override
     public void init(Resource service, Resource implementation)
     {}
 

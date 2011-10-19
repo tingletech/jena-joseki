@@ -32,6 +32,7 @@ public class LocatorServletContext implements Locator
         servletContext = context ;
     }
     
+    @Override
     public TypedStream open(String resourceName)
     {
         if ( servletContext == null)
@@ -51,6 +52,7 @@ public class LocatorServletContext implements Locator
 
     }
 
+    @Override
     public String getName() { return "LocatorServletContext" ; }
 }
 

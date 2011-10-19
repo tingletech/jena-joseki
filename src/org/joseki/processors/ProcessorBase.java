@@ -28,6 +28,7 @@ public abstract class ProcessorBase implements Processor
     Lock lock = new LockMutex() ;   // Default and safe choice
     
     /** Execute a operation, providing a lock */ 
+    @Override
     public void exec(Request request, Response response, final DatasetDesc datasetDesc) throws ExecutionException
     {
         Lock thisLock = lock ;
@@ -39,6 +40,7 @@ public abstract class ProcessorBase implements Processor
         if ( dataset != null )
         {
             ResponseCallback cbLock = new ResponseCallback() {
+                @Override
                 public void callback(boolean successfulOperation)
                 {
                     log.debug("ResponseCallback: return dataset to pool") ;
@@ -66,6 +68,7 @@ public abstract class ProcessorBase implements Processor
         // -- Add callbacks
         operationLock.enterCriticalSection(lockType) ;
         ResponseCallback cbLock = new ResponseCallback() {
+            @Override
             public void callback(boolean successfulOperation)
             {
                 log.debug("ResponseCallback: criticalSection") ;
@@ -80,6 +83,7 @@ public abstract class ProcessorBase implements Processor
             try { defaultModel.begin(); } catch (UnsupportedOperationException ex) { needAbort = false ; }
             final Model m = defaultModel ;
             ResponseCallback cb = new ResponseCallback() {
+                @Override
                 public void callback(boolean successfulOperation)
                 {
                     log.debug("ResponseCallback: transaction") ;
@@ -96,6 +100,7 @@ public abstract class ProcessorBase implements Processor
             if ( dataset != null )
             {
                 ResponseCallback cb = new ResponseCallback() {
+                    @Override
                     public void callback(boolean successfulOperation)
                     {
                         log.debug("ResponseCallback: sync") ;

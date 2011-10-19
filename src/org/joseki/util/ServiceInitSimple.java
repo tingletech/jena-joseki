@@ -19,6 +19,7 @@ public class ServiceInitSimple implements ServerInitialization
 {
     private static Logger log = LoggerFactory.getLogger(ServiceInitSimple.class) ;
     
+    @Override
     public void init(Resource service, Resource implementation)
     {
         if ( implementation.hasProperty(RDFS.label) )

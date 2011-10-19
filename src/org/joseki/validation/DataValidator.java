@@ -152,6 +152,7 @@ public class DataValidator extends HttpServlet
         Sink<Quad> sink = new Sink<Quad>()
         {
             SerializationContext sCxt = new SerializationContext() ;
+            @Override
             public void send(Quad quad)
             {
                 // Clean up!
@@ -175,7 +176,9 @@ public class DataValidator extends HttpServlet
                     outStream.println(" .") ;
                 } catch (IOException ex) { IO.exception(ex) ; }
             }
+            @Override
             public void close() {}
+            @Override
             public void flush() {}
             String formatNode(Node n) { return FmtUtils.stringForNode(n, sCxt) ; }
         } ;
@@ -207,13 +210,16 @@ public class DataValidator extends HttpServlet
 
         ErrorHandlerMsg(ServletOutputStream out) { this.out = out ; }
         
+        @Override
         public void warning(String message, long line, long col)
         { output(message, line, col, "Warning", "warning") ; }
     
         // Attempt to continue.
+        @Override
         public void error(String message, long line, long col)
         { output(message, line, col, "Error", "error") ; }
     
+        @Override
         public void fatal(String message, long line, long col)
         { output(message, line, col, "Fatal", "error") ; throw new RiotException(fmtMessage(message, line, col)) ; }
         

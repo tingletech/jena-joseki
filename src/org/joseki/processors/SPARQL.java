@@ -53,6 +53,7 @@ public class SPARQL extends ProcessorBase implements Loadable
     {
     }
     
+    @Override
     public void init(Resource processor, Resource implementation)
     {
         log.info("SPARQL processor") ;
@@ -278,6 +279,7 @@ public class SPARQL extends ProcessorBase implements Loadable
         final QueryExecution qexec = getQueryExecution(query, dataset) ;
         ResponseCallback cb = new ResponseCallback(){
 
+            @Override
             public void callback(boolean successfulOperation)
             { 
                 log.debug("ResponseCallback: close execution") ;

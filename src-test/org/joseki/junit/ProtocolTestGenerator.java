@@ -53,6 +53,7 @@ public class ProtocolTestGenerator implements ManifestItemHandler
 
      */
 
+    @Override
     public boolean processManifestItem(Resource manifest,
                                        Resource entry, 
                                        String testName) 

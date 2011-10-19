@@ -126,6 +126,7 @@ public class AcceptList implements Iterable<AcceptItem>
     }
 
     //Java6: @Override
+    @Override
     public Iterator<AcceptItem> iterator()
     { return list.iterator() ; }
     
@@ -133,6 +134,7 @@ public class AcceptList implements Iterable<AcceptItem>
     
     private static class AcceptTypeCompare implements Comparator<AcceptItem>
     {
+        @Override
         public int compare(AcceptItem mType1, AcceptItem mType2)
         {
             int r = Double.compare(mType1.q, mType2.q) ;

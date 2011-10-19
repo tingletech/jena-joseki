@@ -164,6 +164,7 @@ public class UpdateValidator extends HttpServlet
                 outStream.println("<p>Input:</p>") ;
                 // Not Java's finest hour.
                 Content c = new Content(){
+                    @Override
                     public void print(IndentedWriter out)
                     { out.print(updateString) ; }
                 } ;
@@ -199,6 +200,7 @@ public class UpdateValidator extends HttpServlet
             {
                 outStream.println("<p>Formatted, parsed update request:</p>") ;
                 Content c = new Content(){
+                    @Override
                     public void print(IndentedWriter out)
                     {
                         updateRequest.output(out) ;

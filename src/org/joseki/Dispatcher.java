@@ -50,6 +50,7 @@ public class Dispatcher
             final ServiceRequest serviceRequest = service.instance(request, response) ;
             serviceRequest.start() ;
             ResponseCallback cb = new ResponseCallback(){
+                @Override
                 public void callback(boolean successfulOperation)
                 {
                     log.debug("ResponseCallback: service request finish") ;

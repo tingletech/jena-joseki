@@ -22,12 +22,14 @@ public class GraphErrorHandler implements RDFErrorHandler
     int errors = 0 ;
     int fatalErrors = 0 ;
     
+    @Override
     public void warning(Exception arg0)
     {
         warnings ++ ;
         log.warn(arg0.getMessage()) ;
     }
 
+    @Override
     public void error(Exception e) {
         log.error(e.getMessage()) ;
         errors ++ ;
@@ -36,6 +38,7 @@ public class GraphErrorHandler implements RDFErrorHandler
         : new JenaException( e );
     }
 
+    @Override
     public void fatalError(Exception e) {
         fatalErrors++ ;
         log.error(e.getMessage());
