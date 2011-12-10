@@ -10,6 +10,12 @@
   <description/>
   <url>http://joseki.org/</url>
 
+  <parent>
+    <groupId>org.apache.jena</groupId>
+    <artifactId>jena-top</artifactId>
+    <version>0-incubating-SNAPSHOT</version>
+  </parent>
+
   <organization>
     <name>The Jena Project</name>
     <url>http://www.openjena.org/</url>
@@ -70,14 +76,14 @@
       <groupId>com.hp.hpl.jena</groupId>
       <artifactId>tdb</artifactId>
       <version>${ver.tdb}</version>
-      <scope>optional</scope>
+      <optional>true</optional>
     </dependency>
 
     <dependency>
       <groupId>com.hp.hpl.jena</groupId>
       <artifactId>sdb</artifactId>
       <version>${ver.sdb}</version>
-      <scope>optional</scope>
+      <optional>true</optional>
     </dependency>
 
     <dependency>
@@ -143,6 +149,10 @@
     <sourceDirectory>src</sourceDirectory>
     <testSourceDirectory>src-test</testSourceDirectory>
     
+    <filters>
+      <filter>${project.basedir}/target/filter.properties</filter>
+    </filters>
+    
     <resources>
       <resource>
         <targetPath>org/joseki</targetPath>
@@ -150,10 +160,7 @@
         <directory>resources</directory>
       </resource>
     </resources>
-    <filters>
-      <filter>${project.basedir}/target/filter.properties</filter>
-    </filters>
-    
+
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -253,7 +260,7 @@
         <executions>
           <execution>
             <id>ant-generate-resources</id>
-            <phase>generate-resources</phase>
+            <phase>initialize</phase>
             <configuration>
               <target>
                 <mkdir dir="${project.basedir}/target"/>
