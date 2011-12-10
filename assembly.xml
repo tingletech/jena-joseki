@@ -1,5 +1,5 @@
 <assembly>
-  <!--<id>dist</id>-->
+  <id>dist</id>
   <baseDirectory>apache-${project.artifactId}-${project.version}</baseDirectory>
   <formats>
     <!--
