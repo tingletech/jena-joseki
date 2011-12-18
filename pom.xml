@@ -36,52 +36,67 @@
 
   <properties>
     <this.root>${project.artifactId}-${project.version}</this.root>
-    <ver.jena>2.7.1-SNAPSHOT</ver.jena>
-    <ver.arq>2.9.1-SNAPSHOT</ver.arq>
-    <ver.tdb>0.9.1-SNAPSHOT</ver.tdb>
-    <ver.sdb>1.3.5-SNAPSHOT</ver.sdb>
+    <ver.jena>2.7.1-incubating-SNAPSHOT</ver.jena>
+    <ver.arq>2.9.1-incubating-SNAPSHOT</ver.arq>
+    <ver.tdb>0.9.0-incubating-SNAPSHOT</ver.tdb>
+    <ver.sdb>1.3.4-incubating-SNAPSHOT</ver.sdb>
   </properties>
+
+    <!-- Testing against staged artifacts -->
+  <repositories>
+    <repository>
+      <id>apache.jena.staging</id>
+      <name>Apache jena Staging Repository</name>
+      <url>https://repository.apache.org/content/repositories/orgapachejena-334</url>
+      <releases>
+	<enabled>true</enabled>
+      </releases>
+      <snapshots>
+	<enabled>false</enabled>
+      </snapshots>
+    </repository>
+  </repositories>
 
   <dependencies>
 
-     <dependency>
-      <groupId>com.hp.hpl.jena</groupId>
-      <artifactId>arq</artifactId>
+    <dependency>
+      <groupId>org.apache.jena</groupId>
+      <artifactId>jena-arq</artifactId>
       <version>${ver.arq}</version>
     </dependency>
 
     <dependency>
-      <groupId>com.hp.hpl.jena</groupId>
-      <artifactId>arq</artifactId>
+      <groupId>org.apache.jena</groupId>
+      <artifactId>jena-arq</artifactId>
       <version>${ver.arq}</version>
       <classifier>tests</classifier>
       <scope>test</scope>
     </dependency>
 
     <dependency>
-      <groupId>com.hp.hpl.jena</groupId>
-      <artifactId>jena</artifactId>
+      <groupId>org.apache.jena</groupId>
+      <artifactId>jena-core</artifactId>
       <version>${ver.jena}</version>
     </dependency>
 
     <dependency>
-      <groupId>com.hp.hpl.jena</groupId>
-      <artifactId>jena</artifactId>
+      <groupId>org.apache.jena</groupId>
+      <artifactId>jena-core</artifactId>
       <classifier>tests</classifier>
       <version>${ver.jena}</version>
       <scope>test</scope>
     </dependency>
 
     <dependency>
-      <groupId>com.hp.hpl.jena</groupId>
-      <artifactId>tdb</artifactId>
+      <groupId>org.apache.jena</groupId>
+      <artifactId>jena-tdb</artifactId>
       <version>${ver.tdb}</version>
-      <optional>true</optional>
+       <optional>true</optional>
     </dependency>
 
     <dependency>
-      <groupId>com.hp.hpl.jena</groupId>
-      <artifactId>sdb</artifactId>
+      <groupId>org.apache.jena</groupId>
+      <artifactId>jena-sdb</artifactId>
       <version>${ver.sdb}</version>
       <optional>true</optional>
     </dependency>
