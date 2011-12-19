@@ -377,7 +377,7 @@ public class SPARQL extends ProcessorBase implements Loadable
             if ( graphURLs.size() == 0 && namedGraphs.size() == 0 )
                 return null ;
             
-            DataSource dataset = DatasetFactory.create() ;
+            Dataset dataset = DatasetFactory.createMem() ;
             // Look in cache for loaded graphs!!
 
             // ---- Default graph
