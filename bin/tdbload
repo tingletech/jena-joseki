@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+set -eu
+
+sdir=`find ./target -name "jena-joseki*SNAPSHOT" -type d`
+
+java -Xmx1200M -server -cp "$sdir/WEB-INF/lib/*" tdb.tdbloader $@
