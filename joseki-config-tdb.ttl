@@ -36,14 +36,14 @@
 ## SPARQL/Update.
 ## Creation of named graph from web requests is not supported.
 
-<#serviceUpdate>
-    rdf:type            joseki:Service ;
-    rdfs:label          "SPARQL/Update" ;
-    joseki:serviceRef   "update/service" ;
-    # dataset part
-    joseki:dataset      <#dataset>;     # Same as service1
-    joseki:processor    joseki:ProcessorSPARQLUpdate
-    .
+# <#serviceUpdate>
+#    rdf:type            joseki:Service ;
+#    rdfs:label          "SPARQL/Update" ;
+#    joseki:serviceRef   "update/service" ;
+#    # dataset part
+#    joseki:dataset      <#dataset>;     # Same as service1
+#    joseki:processor    joseki:ProcessorSPARQLUpdate
+#    .
 
 ## --------------------------------------------------------------
 ## Datasets
@@ -56,7 +56,7 @@ tdb:GraphTDB    rdfs:subClassOf  ja:Model .
 
 ## ---- A whole dataset managed by TDB
 <#dataset> rdf:type      tdb:DatasetTDB ;
-    tdb:location "TDB" ;
+    tdb:location "/Users/tingle/graph/eac-graph-2012/jena/snac-tdb/" ;
     .
 
 ## ## ---- A single graph inside a general dataset.
