@@ -124,11 +124,6 @@ PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.2//EN"
     <url-pattern>/data-validator</url-pattern>
   </servlet-mapping>
 
-  <servlet-mapping>
-    <servlet-name>SPARQL Update service processor</servlet-name>
-    <url-pattern>/update/*</url-pattern>
-  </servlet-mapping>
-
   <!-- A few utilities -->
 
   <servlet-mapping>
