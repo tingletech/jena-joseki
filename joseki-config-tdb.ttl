@@ -20,7 +20,7 @@
 <#service1>
     rdf:type            joseki:Service ;
     rdfs:label          "SPARQL-TDB1" ;
-    joseki:serviceRef   "sparql-eac" ;          # web.xml must route this name to Joseki
+    joseki:serviceRef   "eac" ;          # web.xml must route this name to Joseki
     joseki:dataset      <#dataset1> ;
     joseki:processor    joseki:ProcessorSPARQL_FixedDS ;
     .
@@ -28,7 +28,7 @@
 <#service2>
     rdf:type            joseki:Service ;
     rdfs:label          "SPARQL-TDB2" ;
-    joseki:serviceRef   "sparql-snac-viaf" ;          # web.xml must route this name to Joseki
+    joseki:serviceRef   "snac-viaf" ;          # web.xml must route this name to Joseki
     joseki:dataset      <#dataset2> ;
     joseki:processor    joseki:ProcessorSPARQL_FixedDS ;
     .

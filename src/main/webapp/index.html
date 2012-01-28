@@ -5,26 +5,29 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
   <head>
     <title>SNAC SPARQLer - An RDF Query Server</title>
-    <link rel="stylesheet" type="text/css" href="StyleSheets/joseki.css" />
+    <link rel="stylesheet" type="text/css" href="./joseki.css" />
   </head>
 <body>
     <h1>SNAC SPARQLer</h1>
     <ul>
-      <li><a href="http://socialarchive.iath.virginia.edu/">Social Networks and Archival Context Project (SNAC)</a></li>
-      <li><a href="http://code.google.com/p/eac-graph-load/downloads/detail?name=20110815-graphML%2Brdf.tar.gz">Raw Data</a></li>
-      <li><a href="https://gist.github.com/1593245">RDF Snippets</a></li>
+      <li><a href="http://socialarchive.iath.virginia.edu/">Social Networks and Archival Context Project (SNAC)</a> project website</li>
+      <li><a href="http://code.google.com/p/eac-graph-load/downloads/detail?name=20110815-graphML%2Brdf.tar.gz">Raw Data</a> on google code</li>
+      <li><a href="https://gist.github.com/1593245">RDF Snippets</a> github:gist</li>
     </ul>
+<p>RDF data made available by the
+<a href="http://socialarchive.iath.virginia.edu/">Social Networks and Archival Context Project (SNAC)</a> under
+<a href="http://www.opendatacommons.org/licenses/by/">Open Data Commons Attribution License</a>.
+</p>
     
-    <h2>Query forms</h2>
-
+    <h2>SPARQL Query forms</h2>
     <h3><code>eac.rdf @ http://socialarchive.iath.virginia.edu/sparql/eac</code></h3>
 
-    <div class="moreindent">
+    <div>
 
-      <form action="sparql-eac" method="get">
+      <form action="eac" method="get">
 	<p>General SPARQL query : input query, set any options and press "Get Results"</p>
 	<p>
-	  <textarea style="background-color: #F0F0F0;" name="query" cols="140" rows="20">
+	  <textarea id="eac.rdf" name="query" cols="100" rows="20">
 PREFIX foaf: <http://xmlns.com/foaf/0.1/>
 PREFIX arch: <http://purl.org/archival/vocab/arch#>
 SELECT ?name WHERE {
@@ -55,12 +58,12 @@ ORDER BY ?name
     <hr/>
 
     <h3><code>snac-viaf.rdf @ http://socialarchive.iath.virginia.edu/sparql/snac-viaf</code></h3>
-    <div class="moreindent">
+    <div>
 
-      <form action="sparql-snac-viaf" method="get">
+      <form action="snac-viaf" method="get">
 	<p>General SPARQL query : input query, set any options and press "Get Results"</p>
 	<p>
-	  <textarea style="background-color: #F0F0F0;" name="query" cols="70" rows="20">SELECT DISTINCT ?class
+	  <textarea id="snac-viaf.rdf" style="background-color: #F0F0F0;" name="query" cols="70" rows="20">SELECT DISTINCT ?class
 WHERE {
   ?s a ?class .
 }
@@ -113,9 +116,14 @@ OFFSET 0
     <p>In addition, the following Jena storage system is used with Joseki in SNAC:</p>
     <ul>
     	<li><a href="http://jena.sf.net/TDB/">TDB</a>: a custom storage engine</li>
-      <li><a href="https://code.google.com/p/eac-graph-load/source/browse/rdf/load_jena.bash">Load the TDB with SNAC RDF</div></li>
+      <li><a href="https://code.google.com/p/eac-graph-load/source/browse/rdf/load_jena.bash">Load the TDB with SNAC RDF</a></div></li>
     </ul>
 
+<p>RDF data made available by the
+<a href="http://socialarchive.iath.virginia.edu/">Social Networks and Archival Context Project (SNAC)</a> under
+<a href="http://www.opendatacommons.org/licenses/by/">Open Data Commons Attribution License</a>.
+</p>
+<p>SNAC Research Sponsored by <a href="http://www.neh.gov/">National Endowment for the Humanaties</a>
 
 
 </body>

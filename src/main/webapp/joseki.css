@@ -77,6 +77,12 @@ h1 {
 h2 {
     font-size: 12pt;
     line-height: 16pt ;
+}
+h3 {
+    font-size: 10pt;
+    line-height: 14pt ;
+}
+h2, h3 {
     font-size: 110%;
     font-weight: bold;
     color: #003399;
