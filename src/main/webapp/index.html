@@ -4,21 +4,86 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
   <head>
-    <title>SPARQLer - An RDF Query Server</title>
+    <title>SNAC SPARQLer - An RDF Query Server</title>
     <link rel="stylesheet" type="text/css" href="StyleSheets/joseki.css" />
   </head>
 <body>
-    <h1>SPARQLer</h1>
+    <h1>SNAC SPARQLer</h1>
+    <ul>
+      <li><a href="http://socialarchive.iath.virginia.edu/">Social Networks and Archival Context Project (SNAC)</a></li>
+      <li><a href="http://code.google.com/p/eac-graph-load/downloads/detail?name=20110815-graphML%2Brdf.tar.gz">Raw Data</a></li>
+      <li><a href="https://gist.github.com/1593245">RDF Snippets</a></li>
+    </ul>
     
-    <p>&nbsp;</p>
-
     <h2>Query forms</h2>
 
-    <ul>
-      <li><a href="sparql-eac.html">sparql-eac</a></li>
-      <li><a href="sparql-snac-viaf.html">sparql-snac-viaf</a></li>
-    </ul>
+    <h3><code>eac.rdf @ http://socialarchive.iath.virginia.edu/sparql/eac</code></h3>
 
+    <div class="moreindent">
+
+      <form action="sparql-eac" method="get">
+	<p>General SPARQL query : input query, set any options and press "Get Results"</p>
+	<p>
+	  <textarea style="background-color: #F0F0F0;" name="query" cols="140" rows="20">
+PREFIX foaf: <http://xmlns.com/foaf/0.1/>
+PREFIX arch: <http://purl.org/archival/vocab/arch#>
+SELECT ?name WHERE {
+  <http://socialarchive.iath.virginia.edu/xtf/view?docId=faulkner-william-cr.xml#entity> arch:appearsWith{2} ?p . 
+  ?p foaf:name ?name . 
+  FILTER(?name != "Faulkner, William." )
+}
+ORDER BY ?name
+</textarea>
+	  <br/>
+	  Target graph URI (or use <code>FROM</code> in the query)
+	  <input name="default-graph-uri" size="25" value="" />
+	  <br/>
+	  Output XML: <input type="radio" name="output" value="xml" checked/>
+	  with XSLT style sheet (leave blank for none): 
+	  <input name="stylesheet" size="25" value="./xml-to-html.xsl" /> <br/>
+	  or JSON output: <input type="radio" name="output" value="json"/> <br/>
+	  or text output: <input type="radio" name="output" value="text"/> <br/>
+	  or CSV output: <input type="radio" name="output" value="csv"/> <br/>
+	  or TSV output: <input type="radio" name="output" value="tsv"/> <br/>
+          Force the accept header to <tt>text/plain</tt> regardless 
+ 	  <input type="checkbox" name="force-accept" value="text/plain"/>	  <br/>
+	  <input type="submit" value="Get Results" />
+	</p>
+      </form>
+    </div>
+
+    <hr/>
+
+    <h3><code>snac-viaf.rdf @ http://socialarchive.iath.virginia.edu/sparql/snac-viaf</code></h3>
+    <div class="moreindent">
+
+      <form action="sparql-snac-viaf" method="get">
+	<p>General SPARQL query : input query, set any options and press "Get Results"</p>
+	<p>
+	  <textarea style="background-color: #F0F0F0;" name="query" cols="70" rows="20">SELECT DISTINCT ?class
+WHERE {
+  ?s a ?class .
+}
+LIMIT 25
+OFFSET 0
+</textarea>
+	  <br/>
+	  Target graph URI (or use <code>FROM</code> in the query)
+	  <input name="default-graph-uri" size="25" value="" />
+	  <br/>
+	  Output XML: <input type="radio" name="output" value="xml" checked/>
+	  with XSLT style sheet (leave blank for none): 
+	  <input name="stylesheet" size="25" value="./xml-to-html.xsl" /> <br/>
+	  or JSON output: <input type="radio" name="output" value="json"/> <br/>
+	  or text output: <input type="radio" name="output" value="text"/> <br/>
+	  or CSV output: <input type="radio" name="output" value="csv"/> <br/>
+	  or TSV output: <input type="radio" name="output" value="tsv"/> <br/>
+          Force the accept header to <tt>text/plain</tt> regardless 
+ 	  <input type="checkbox" name="force-accept" value="text/plain"/>	  <br/>
+	  <input type="submit" value="Get Results" />
+	</p>
+      </form>
+    </div>
     <hr/>
 
     <p>SPARQL is defined by 3 documents:</p>
@@ -34,9 +99,10 @@
 	  <a href="http://www.w3.org/TR/rdf-sparql-XMLres/">SPARQL XML results format</a>
       </li>
     </ul>
+    <p>There is also a book <a href="http://www.learningsparql.com/">Learning SPARQL: Querying and Updating with SPARQL 1.1</a> by Bob DuCharme
     <hr/>
-    <p>Complete download from the <a href="http://www.joseki.org/download.html">Joseki download page</a>
-    which includes this set of services.</p>
+    <p>Built from <a href="https://github.com/tingletech/jena-joseki">custom repo on github</a> that is <a href="https://github.com/tingletech/jena-joseki">forked from apache</a>.
+</p>
 
     <p>The Joseki download consists of the following RDF systems:</p>
     <ul>
@@ -44,12 +110,13 @@
       <li><a href="http://jena.sourceforge.net/ARQ/">ARQ</a> : A SPARQL query engine for Jena</li>
       <li><a href="http://jena.sourceforge.net/">Jena</a> : An RDF Framework for Java</li>
     </ul>
-    <p>In addition, the following Jena storage systems work with Joseki:</p>
+    <p>In addition, the following Jena storage system is used with Joseki in SNAC:</p>
     <ul>
     	<li><a href="http://jena.sf.net/TDB/">TDB</a>: a custom storage engine</li>
-    	<li><a href="http://jena.sf.net/SDB/">SDB</a>: a storage engine using relational database technology</li>
+      <li><a href="https://code.google.com/p/eac-graph-load/source/browse/rdf/load_jena.bash">Load the TDB with SNAC RDF</div></li>
     </ul>
-    
+
+
 
 </body>
 </html>
