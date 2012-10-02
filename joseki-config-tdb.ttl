@@ -43,12 +43,12 @@ tdb:GraphTDB    rdfs:subClassOf  ja:Model .
 
 ## ---- A whole dataset managed by TDB
 <#dataset1> rdf:type      tdb:DatasetTDB ;
-    tdb:location "/home/btingle/graph/eac-graph-load/eac.tdb/" ;
+    tdb:location "/home/snac/eac-graph-load/eac.tdb/" ;
     .
 
 ## --------------------------------------------------------------
 <#dataset2> rdf:type      tdb:DatasetTDB ;
-    tdb:location "/home/btingle/graph/eac-graph-load/snac-viaf.tdb/" ;
+    tdb:location "/home/snac/eac-graph-load/snac-viaf.tdb/" ;
     .
 
 ## --------------------------------------------------------------

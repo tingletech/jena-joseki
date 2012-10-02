@@ -19,7 +19,7 @@ PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.2//EN"
     <!-- Configuration file -->
     <init-param>
       <param-name>org.joseki.rdfserver.config</param-name>
-      <param-value>/home/btingle/graph/eac-graph-load/jena-joseki/joseki-config-tdb.ttl</param-value>
+      <param-value>/home/snac/eac-graph-load/jena-joseki/joseki-config-tdb.ttl</param-value>
     </init-param>
 
   </servlet>
